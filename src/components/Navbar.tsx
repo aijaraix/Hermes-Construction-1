@@ -92,15 +92,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Audit Bundle & Heartbeat Actions */}
         <div className="flex items-center gap-2">
-          <a
-            href="/api/download-source-bundle"
-            download="hermes-construction-source-5be9b4b.zip"
-            className="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-300 font-semibold text-xs rounded-xl transition flex items-center gap-1.5 shadow-md"
-            title="Download full source code bundle for independent audit"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download Source Bundle (.zip)</span>
-          </a>
+          <div className="flex flex-col items-end">
+            <a
+              href="/api/download-source-bundle"
+              download="hermes-construction-source-4186755.zip"
+              className="px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-300 font-semibold text-xs rounded-xl transition flex items-center gap-1.5 shadow-md"
+              title="Download full Phase 3.17 source code bundle for independent audit"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download Source Bundle (.zip)</span>
+            </a>
+            <span className="text-[10px] text-emerald-400 font-mono mt-0.5">
+              Source Bundle: Phase 3.17 | Commit: 4186755 | Generated: 2026-08-20T20:38:55Z
+            </span>
+          </div>
 
           <a
             href="/api/commit-manifest"

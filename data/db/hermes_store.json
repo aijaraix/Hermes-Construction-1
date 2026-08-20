@@ -7,14 +7,14 @@
     "overall_training_score": 88.4,
     "total_projects_started": 10,
     "total_projects_completed": 7,
-    "total_heartbeat_count": 359,
+    "total_heartbeat_count": 719,
     "total_failures_detected": 28,
     "total_failures_repaired": 25,
     "total_components_created": 14,
     "total_materials_learned": 85,
     "total_knowledge_entities": 3,
-    "last_heartbeat_at": "2026-08-20T18:28:59.938Z",
-    "next_heartbeat_at": "2026-08-20T18:29:09.938Z",
+    "last_heartbeat_at": "2026-08-20T20:38:40.397Z",
+    "next_heartbeat_at": "2026-08-20T20:38:50.397Z",
     "model_quota_state": "HEALTHY",
     "compute_quota_state": "OPTIMAL",
     "pause_controls": {
@@ -514,340 +514,89 @@
       ],
       "bom": [
         {
-          "id": "BOM-0001",
-          "item": "4000 PSI Ready-Mix Concrete",
+          "id": "BOM-CONC-001",
+          "item": "4000 PSI Ready-Mix Structural Concrete (Fly Ash Mix)",
           "category": "Structure",
-          "specification": "ACI 318 Exposure Class F0, S1, C1, W1",
-          "modeledQuantity": 48,
+          "specification": "ASTM C94 / ACI 318 Exposure Class C2 (Chloride Resistant, 0.40 max w/cm)",
+          "modeledQuantity": 24.9,
           "unit": "cu yd",
           "wastePercent": 5,
-          "procurementQuantity": 51,
+          "procurementQuantity": 27,
           "sourceComponentIds": [
             "SLAB-1-001"
           ],
           "unitPrice": 165,
-          "priceSource": "VERIFIED CURRENT PRICE",
+          "priceSource": "VERIFIED CURRENT QUOTE",
           "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
+          "supplierName": "CEMEX Florida Ready Mix (Tampa Plant)",
+          "supplierDistanceMiles": 8.4,
           "leadTimeWeeks": 1,
-          "estimatedTotalCost": 8415,
-          "confidence": 96
+          "estimatedTotalCost": 4455,
+          "confidence": 95
         },
         {
-          "id": "BOM-0002",
-          "item": "1/2\" Post-Tensioning Steel Strands",
+          "id": "BOM-REBAR-001",
+          "item": "#5 Grade 60 Continuous Deformed Rebar (ASTM A615)",
           "category": "Structure",
-          "specification": "ASTM A416 Grade 270 Unbonded",
-          "modeledQuantity": 1850,
+          "specification": "ASTM A615 Grade 60 (#5 Bar, 0.625\" Diameter, 1.043 lbs/ft)",
+          "modeledQuantity": 467,
           "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 1943,
+          "wastePercent": 8,
+          "procurementQuantity": 505,
           "sourceComponentIds": [
-            "SLAB-1-001"
+            "SLAB-1-001",
+            "WALL-1-101"
           ],
-          "unitPrice": 165,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Gerdau Rebar Supply",
-          "supplierDistanceMiles": 28.5,
-          "leadTimeWeeks": 2,
-          "estimatedTotalCost": 320595,
-          "confidence": 96
+          "unitPrice": 1.45,
+          "priceSource": "PUBLISHED CURRENT PRICE",
+          "priceDate": "2026-08-18",
+          "supplierName": "Gerdau Rebar Supply (Tampa Branch)",
+          "supplierDistanceMiles": 12.1,
+          "leadTimeWeeks": 1,
+          "estimatedTotalCost": 732.25,
+          "confidence": 92
         },
         {
-          "id": "BOM-0003",
-          "item": "#5 Rebar Perimeter Stem Wall",
+          "id": "BOM-CMU-001",
+          "item": "8x8x16 ASTM C90 Lightweight Concrete Masonry Units (CMU)",
           "category": "Structure",
-          "specification": "ASTM A615 Grade 60",
-          "modeledQuantity": 920,
-          "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 966,
-          "sourceComponentIds": [
-            "SLAB-1-001"
-          ],
-          "unitPrice": 165,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Gerdau Rebar Supply",
-          "supplierDistanceMiles": 28.5,
-          "leadTimeWeeks": 2,
-          "estimatedTotalCost": 159390,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0004",
-          "item": "8x8x16 Lightweight CMU Block",
-          "category": "Structure",
-          "specification": "ASTM C90 Grade N Type 1",
-          "modeledQuantity": 1420,
+          "specification": "ASTM C90 Type I Moisture-Controlled Normal/Lightweight Block",
+          "modeledQuantity": 473,
           "unit": "ea",
           "wastePercent": 5,
-          "procurementQuantity": 1491,
+          "procurementQuantity": 497,
           "sourceComponentIds": [
             "WALL-1-101"
           ],
-          "unitPrice": 18.5,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
+          "unitPrice": 3.85,
+          "priceSource": "PUBLISHED CURRENT PRICE",
+          "priceDate": "2026-08-10",
+          "supplierName": "CEMEX Masonry Depot (Tampa)",
+          "supplierDistanceMiles": 8.4,
           "leadTimeWeeks": 1,
-          "estimatedTotalCost": 27584,
-          "confidence": 96
+          "estimatedTotalCost": 1913.45,
+          "confidence": 90
         },
         {
-          "id": "BOM-0005",
-          "item": "3000 PSI Masonry Grout Fill",
-          "category": "Structure",
-          "specification": "ASTM C476 Fine Grout",
-          "modeledQuantity": 18,
-          "unit": "cu yd",
-          "wastePercent": 5,
-          "procurementQuantity": 19,
-          "sourceComponentIds": [
-            "WALL-1-101"
-          ],
-          "unitPrice": 18.5,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 352,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0006",
-          "item": "#4 Vertical Rebar @ 32\" o.c.",
-          "category": "Structure",
-          "specification": "ASTM A615 Grade 60",
-          "modeledQuantity": 680,
-          "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 714,
-          "sourceComponentIds": [
-            "WALL-1-101"
-          ],
-          "unitPrice": 18.5,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Gerdau Rebar Supply",
-          "supplierDistanceMiles": 28.5,
-          "leadTimeWeeks": 2,
-          "estimatedTotalCost": 13209,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0007",
-          "item": "5/8\" Type-X Gypsum Board",
-          "category": "Structure",
-          "specification": "ASTM C1396 Fire-Rated",
-          "modeledQuantity": 1680,
-          "unit": "sq ft",
-          "wastePercent": 5,
-          "procurementQuantity": 1764,
-          "sourceComponentIds": [
-            "WALL-1-101"
-          ],
-          "unitPrice": 18.5,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "L&W Supply Gypsum Depot",
-          "supplierDistanceMiles": 8.2,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 32634,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0008",
-          "item": "24-Ga Galvalume Standing Seam Metal",
+          "id": "BOM-ROOF-001",
+          "item": "24-Ga Galvalume Standing Seam Metal Roof Panels",
           "category": "Envelope",
-          "specification": "Kynar 500 Finish, 150 MPH Rated",
-          "modeledQuantity": 1620,
+          "specification": "24-Gauge AZ50 Galvalume Kynar 500 Finish, 160 MPH Wind Rated",
+          "modeledQuantity": 1496,
           "unit": "sq ft",
-          "wastePercent": 5,
-          "procurementQuantity": 1701,
+          "wastePercent": 7,
+          "procurementQuantity": 1601,
           "sourceComponentIds": [
             "ROOF-2-001"
           ],
-          "unitPrice": 14.2,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 24154,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0009",
-          "item": "5/8\" CDX Exterior Plywood Sheathing",
-          "category": "Envelope",
-          "specification": "APA Rated Sheathing Exposure 1",
-          "modeledQuantity": 1620,
-          "unit": "sq ft",
-          "wastePercent": 5,
-          "procurementQuantity": 1701,
-          "sourceComponentIds": [
-            "ROOF-2-001"
-          ],
-          "unitPrice": 14.2,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 24154,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0010",
-          "item": "Self-Adhered Ice & Water Shield WRB",
-          "category": "Envelope",
-          "specification": "ASTM D1970 High Temp Membrane",
-          "modeledQuantity": 1620,
-          "unit": "sq ft",
-          "wastePercent": 5,
-          "procurementQuantity": 1701,
-          "sourceComponentIds": [
-            "ROOF-2-001"
-          ],
-          "unitPrice": 14.2,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 24154,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0011",
-          "item": "3\" Schedule 40 PVC DWV Pipe",
-          "category": "Plumbing",
-          "specification": "ASTM D2665 Solvent Weld Joints",
-          "modeledQuantity": 45,
-          "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 48,
-          "sourceComponentIds": [
-            "PIPE-2-045"
-          ],
-          "unitPrice": 8.5,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Ferguson Plumbing Supply",
-          "supplierDistanceMiles": 6.1,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 408,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0012",
-          "item": "PVC Solvent Cement & Primer",
-          "category": "Plumbing",
-          "specification": "Low-VOC Heavy Duty PVC Cement",
-          "modeledQuantity": 2,
-          "unit": "ea",
-          "wastePercent": 5,
-          "procurementQuantity": 3,
-          "sourceComponentIds": [
-            "PIPE-2-045"
-          ],
-          "unitPrice": 8.5,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Ferguson Plumbing Supply",
-          "supplierDistanceMiles": 6.1,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 26,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0013",
-          "item": "10\" Round R-8 Insulated Flex Duct",
-          "category": "HVAC",
-          "specification": "UL 181 Class 1 Flexible Air Duct",
-          "modeledQuantity": 65,
-          "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 69,
-          "sourceComponentIds": [
-            "DUCT-1-012"
-          ],
-          "unitPrice": 11,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Johnstone Supply Mechanical",
-          "supplierDistanceMiles": 11,
+          "unitPrice": 7.2,
+          "priceSource": "SUPPLIER ESTIMATE",
+          "priceDate": "2026-08-12",
+          "supplierName": "Gulf Coast Metal Roofing Supply",
+          "supplierDistanceMiles": 14.2,
           "leadTimeWeeks": 2,
-          "estimatedTotalCost": 759,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0014",
-          "item": "Galvanized Sheet Metal Trunk Supply",
-          "category": "HVAC",
-          "specification": "26 Gauge ASTM A653",
-          "modeledQuantity": 24,
-          "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 26,
-          "sourceComponentIds": [
-            "DUCT-1-012"
-          ],
-          "unitPrice": 11,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 286,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0015",
-          "item": "20A Commercial GFCI Outlet",
-          "category": "Electrical",
-          "specification": "UL 943 Class A Self-Testing",
-          "modeledQuantity": 1,
-          "unit": "ea",
-          "wastePercent": 5,
-          "procurementQuantity": 2,
-          "sourceComponentIds": [
-            "RECEPTACLE-1-022"
-          ],
-          "unitPrice": 28,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "CEMEX Florida Ready Mix",
-          "supplierDistanceMiles": 12.4,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 56,
-          "confidence": 96
-        },
-        {
-          "id": "BOM-0016",
-          "item": "12/2 THHN Copper Wire in EMT",
-          "category": "Electrical",
-          "specification": "ASTM B3 Solid Copper",
-          "modeledQuantity": 35,
-          "unit": "lin ft",
-          "wastePercent": 5,
-          "procurementQuantity": 37,
-          "sourceComponentIds": [
-            "RECEPTACLE-1-022"
-          ],
-          "unitPrice": 28,
-          "priceSource": "VERIFIED CURRENT PRICE",
-          "priceDate": "2026-08-15",
-          "supplierName": "Ferguson Plumbing Supply",
-          "supplierDistanceMiles": 6.1,
-          "leadTimeWeeks": 1,
-          "estimatedTotalCost": 1036,
-          "confidence": 96
+          "estimatedTotalCost": 11527.2,
+          "confidence": 88
         }
       ],
       "suppliers": [
@@ -1102,7 +851,7 @@
         "changeOrderRisk": 75
       },
       "createdAt": "2026-08-18T10:00:00Z",
-      "updatedAt": "2026-08-20T18:28:54.660Z",
+      "updatedAt": "2026-08-20T20:38:40.397Z",
       "snapshots": [
         {
           "id": "SNAP-HOTEL-FL-00127-V001",
@@ -23004,6 +22753,27 @@
   "assemblyPatterns": [],
   "activityLogs": [
     {
+      "id": "LOG-1787257739821-2139",
+      "timestamp": "2026-08-20T20:28:59.821Z",
+      "swarm": "HERMES PERSISTENCE",
+      "message": "Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: 661",
+      "type": "success"
+    },
+    {
+      "id": "LOG-1787256216978-8103",
+      "timestamp": "2026-08-20T20:03:36.978Z",
+      "swarm": "HERMES PERSISTENCE",
+      "message": "Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: 510",
+      "type": "success"
+    },
+    {
+      "id": "LOG-1787254691733-3698",
+      "timestamp": "2026-08-20T19:38:11.733Z",
+      "swarm": "HERMES PERSISTENCE",
+      "message": "Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: 359",
+      "type": "success"
+    },
+    {
       "id": "LOG-1787250539942-4788",
       "timestamp": "2026-08-20T18:28:59.942Z",
       "swarm": "INSPECTOR SWARM",
@@ -23540,27 +23310,6 @@
       "timestamp": "2026-08-20T18:12:16.532Z",
       "swarm": "TASK GRAPH",
       "message": "Unlocked & Started Stage: [CHANGE_ORDER_PREVENTION] assigned to PRIME-ORCHESTRATOR-01",
-      "type": "info"
-    },
-    {
-      "id": "LOG-1787249536532-9185",
-      "timestamp": "2026-08-20T18:12:16.532Z",
-      "swarm": "DIGITAL TWIN",
-      "message": "Saved intermediate 3D BIM Twin Snapshot Version V017 (1 components)",
-      "type": "info"
-    },
-    {
-      "id": "LOG-1787249536531-3474",
-      "timestamp": "2026-08-20T18:12:16.531Z",
-      "swarm": "TASK GRAPH",
-      "message": "Completed Stage: [JOB_SCHEDULE_4D] by RISK-AGENT-02",
-      "type": "success"
-    },
-    {
-      "id": "LOG-1787249526530-6132",
-      "timestamp": "2026-08-20T18:12:06.530Z",
-      "swarm": "QUANTITY SWARM",
-      "message": "Updated BOM: 2 materials quantified from 3D BIM model geometry.",
       "type": "info"
     }
   ]
