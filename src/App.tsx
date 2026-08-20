@@ -11,6 +11,10 @@ import { ChangeOrderView } from './components/ChangeOrderView';
 import { GymView } from './components/GymView';
 import { CustomizerView } from './components/CustomizerView';
 import { AuditTrailView } from './components/AuditTrailView';
+import { AgentOrganizationView } from './components/AgentOrganizationView';
+import { KnowledgeGymView } from './components/KnowledgeGymView';
+import { RoomCoordinationView } from './components/RoomCoordinationView';
+import { ReadinessGateView } from './components/ReadinessGateView';
 import { X, Info, CheckCircle2, AlertTriangle, ShieldCheck, DollarSign, Layers } from 'lucide-react';
 
 export default function App() {
@@ -270,6 +274,12 @@ export default function App() {
             )}
           </div>
         )}
+
+        {/* Phase 3.15 Autonomous Organization & Knowledge Tabs */}
+        {activeTab === 'org' && <AgentOrganizationView />}
+        {activeTab === 'knowledge-gym' && <KnowledgeGymView />}
+        {activeTab === 'room-coord' && <RoomCoordinationView />}
+        {activeTab === 'readiness-gate' && <ReadinessGateView />}
 
         {/* Tab 2: Dashboard */}
         {activeTab === 'dashboard' && (

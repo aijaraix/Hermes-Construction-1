@@ -1,408 +1,377 @@
-import { SwarmAgentEntity } from '../src/types/hermes';
+import { AgentContract, AgentOnboardingState, SwarmAgentEntity, SystemCategory } from '../src/types/hermes';
 
 export const FULL_SWARM_AGENTS: SwarmAgentEntity[] = [
-  // HERMES PRIME
   {
-    id: 'PRIME-ORCHESTRATOR-01',
-    name: 'HERMES Prime Orchestrator',
-    swarmGroup: 'Executive Control',
-    specialty: 'Autonomous System Supervision & Gym Curriculum Control',
-    status: 'RUNNING',
-    confidence: 99.4,
-    lastAction: 'Evaluating system skill gaps & scheduling next gym task',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // PROJECT PLANNING
-  {
-    id: 'PLAN-REQ-01',
-    name: 'Project Requirements Agent',
-    swarmGroup: 'Project Planning',
-    specialty: 'Owner Requirements Translation & Project Scope Definition',
-    status: 'IDLE',
-    confidence: 96.5,
-    lastAction: 'Parsed project brief for 2-Story Tampa Residence',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
+    id: 'AGENT-SWARM-01',
+    name: 'HERMES Prime Orchestrator Swarm',
+    type: 'ORCHESTRATOR',
+    specialty: 'Master Construction Governance & Gym Control',
+    status: 'ACTIVE',
+    activeTaskId: 'TASK-SYS-01',
+    decisionsCount: 142,
+    revisionsCount: 12,
+    accuracy: 99.2
   },
   {
-    id: 'PLAN-PROG-02',
-    name: 'Building Program Agent',
-    swarmGroup: 'Project Planning',
-    specialty: 'Room Area Programming & Spatial Balance Optimization',
-    status: 'IDLE',
-    confidence: 95.8,
-    lastAction: 'Allocated 2,450 sq ft across Living, Kitchen, 3 Bed, 2.5 Bath',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'PLAN-FEAS-03',
-    name: 'Site Feasibility Agent',
-    swarmGroup: 'Project Planning',
-    specialty: 'Zoning Setbacks, Height Restrictions & Coverage Limits',
-    status: 'IDLE',
-    confidence: 97.1,
-    lastAction: 'Verified Tampa RS-60 zoning 25ft front setback compliance',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'PLAN-STRAT-04',
-    name: 'Construction Strategy Agent',
-    swarmGroup: 'Project Planning',
-    specialty: 'Phasing Strategy, Long-Lead Scheduling & Trade Sequencing',
-    status: 'IDLE',
-    confidence: 94.9,
-    lastAction: 'Established 20-stage sequential task graph execution path',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'PLAN-DEP-05',
-    name: 'Project Dependency Agent',
-    swarmGroup: 'Project Planning',
-    specialty: 'Task Prerequisite Mapping & Critical Path Graph Generation',
-    status: 'IDLE',
-    confidence: 98.2,
-    lastAction: 'Resolved foundation-to-underground plumbing dependency lock',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // SITE / CIVIL
-  {
-    id: 'CIVIL-PARCEL-01',
-    name: 'Parcel Boundaries Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Property Line Georeferencing & Easement Clearance',
-    status: 'IDLE',
-    confidence: 96.0,
-    lastAction: 'Mapped 7,500 sq ft parcel GIS coordinates',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-SURVEY-02',
-    name: 'Topographic Survey Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Elevation Contour Mapping & Benchmark Datum Establishment',
-    status: 'IDLE',
-    confidence: 95.4,
-    lastAction: 'Established NAVD88 benchmark datum @ +9.5 ft elevation',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-GRADE-03',
-    name: 'Grading Vector Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Surface Slope Calculation & Positive Drainage Flow Direction',
-    status: 'IDLE',
-    confidence: 97.8,
-    lastAction: 'Calculated 2% site slope away from building foundation',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-STORM-04',
-    name: 'Stormwater Hydraulics Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Rational Method Runoff Volume & Detention Basin Sizing',
-    status: 'IDLE',
-    confidence: 94.2,
-    lastAction: 'Sized 10-year storm event retention swale',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-DRAIN-05',
-    name: 'Drainage Inspector Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Site Drainage Slope Vector Verification & Runoff Audit',
-    status: 'IDLE',
-    confidence: 98.6,
-    lastAction: 'Verified water runoff vectors reach municipal storm sewer',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-UTIL-06',
-    name: 'Utility Connection Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Water Main Tap, Sewer Tie-in & Underground Electric Conduit Route',
-    status: 'IDLE',
-    confidence: 95.1,
-    lastAction: 'Mapped 6" SDR-35 PVC sewer lateral connection @ 1/4" fall',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-EXCAV-07',
-    name: 'Excavation Depth Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Footing Trench Trenching & Cut/Fill Balancing',
-    status: 'IDLE',
-    confidence: 96.3,
-    lastAction: 'Calculated 42 cu yd cut volume for continuous footings',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-EARTH-08',
-    name: 'Earthwork Quantity Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Compacted Fill Volume & Structural Gravel Bed Sizing',
-    status: 'IDLE',
-    confidence: 99.1,
-    lastAction: 'Quantified 65 cu yd compacted lime rock fill base',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'CIVIL-LOGIST-09',
-    name: 'Site Logistics & Access Agent',
-    swarmGroup: 'Site / Civil',
-    specialty: 'Concrete Truck Turning Radius, Laydown Area & Staging',
-    status: 'IDLE',
-    confidence: 94.7,
-    lastAction: 'Designated 40ft wide staging area on north parcel edge',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // ENVIRONMENT
-  {
-    id: 'ENV-CLIMATE-01',
-    name: 'Climate Zone Agent',
-    swarmGroup: 'Environment',
-    specialty: 'ASHRAE Climate Zone Profile & Thermal Insulation Sizing',
-    status: 'IDLE',
-    confidence: 98.0,
-    lastAction: 'Assigned Zone 1A Hot-Humid envelope resistance parameters',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'ENV-COASTAL-02',
-    name: 'Coastal Exposure Agent',
-    swarmGroup: 'Environment',
-    specialty: 'Salt Spray Corrosion Resistance & SS316 Fastener Requirements',
-    status: 'IDLE',
-    confidence: 97.5,
-    lastAction: 'Mandated SS316 stainless anchors for exterior exposure within 3 miles',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'ENV-FLOOD-03',
-    name: 'Flood Risk Hydrodynamics Agent',
-    swarmGroup: 'Environment',
-    specialty: 'Base Flood Elevation (BFE) & Hydrostatic Relief Vents',
-    status: 'IDLE',
-    confidence: 98.9,
-    lastAction: 'Set finish floor elevation +2.0 ft above BFE Zone AE',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'ENV-WIND-04',
-    name: 'Wind Uplift Dynamics Agent',
-    swarmGroup: 'Environment',
-    specialty: 'FBC HVHZ 160 MPH Wind Load & Continuous Tie-Down Path',
-    status: 'IDLE',
-    confidence: 99.0,
-    lastAction: 'Calculated 38.5 PSF roof uplift suction pressure @ corners',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'ENV-SEISMIC-05',
-    name: 'Seismic Category Agent',
-    swarmGroup: 'Environment',
-    specialty: 'Seismic Design Category A Shear Anchor Check',
-    status: 'IDLE',
-    confidence: 96.8,
-    lastAction: 'Verified low seismic risk Category A minimal lateral anchor requirement',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // STRUCTURAL
-  {
-    id: 'STRUCT-FOUND-01',
-    name: 'Foundation Design Agent',
-    swarmGroup: 'Structural Engineering',
-    specialty: 'Monolithic Slab, Stem Wall & Helical Pile Geometries',
-    status: 'IDLE',
-    confidence: 98.2,
-    lastAction: 'Designed 20" x 12" continuous stem wall with #5 rebar stirrups',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'STRUCT-LOAD-02',
-    name: 'Load Path Vector Agent',
-    swarmGroup: 'Structural Engineering',
-    specialty: 'Gravity & Lateral Load Vector Tracing Roof-to-Foundation',
-    status: 'IDLE',
-    confidence: 99.2,
-    lastAction: 'Verified continuous tension tie load path via Simpson HDU hold-downs',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'STRUCT-SLAB-03',
-    name: 'Slab & Deck Agent',
-    swarmGroup: 'Structural Engineering',
-    specialty: 'ACI 318 Post-Tensioned & Fiber-Reinforced Concrete Slabs',
-    status: 'IDLE',
-    confidence: 98.0,
-    lastAction: 'Specified 5000 PSI concrete with 15-mil Stego Wrap vapor barrier',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'STRUCT-INSP-04',
-    name: 'Structural Inspector Agent',
-    swarmGroup: 'Independent Verification',
-    specialty: 'Rebar Spacing, Concrete Cylinder Strength & Anchor Bolt Audits',
-    status: 'IDLE',
-    confidence: 99.5,
-    lastAction: 'Audited slab anchor bolt spacing for FBC HVHZ compliance',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // PLUMBING
-  {
-    id: 'PLUMB-ROUTE-01',
-    name: 'Plumbing Routing Agent',
-    swarmGroup: 'MEP Services',
-    specialty: 'IPC Gravity Drainage Slope (1/4" per ft) & Riser Stack Routing',
-    status: 'IDLE',
-    confidence: 96.7,
-    lastAction: 'Routed 3" PVC sanitary stack from second floor baths down to main drain',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'PLUMB-INSP-02',
-    name: 'Plumbing Inspector Agent',
-    swarmGroup: 'Independent Verification',
-    specialty: 'IPC Hydraulic Fixture Unit Calculations & Vent Fall Verification',
-    status: 'IDLE',
-    confidence: 98.7,
-    lastAction: 'Audited fixture unit drainage load & trap seal protection',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // ELECTRICAL
-  {
-    id: 'ELEC-PANEL-01',
-    name: 'Electrical Service & Panel Agent',
-    swarmGroup: 'MEP Services',
-    specialty: 'NEC 2023 200A 120/240V Service Entry, Feeders & Breaker Schedules',
-    status: 'IDLE',
-    confidence: 97.3,
-    lastAction: 'Balanced 40-circuit panel load schedule with 25% spare capacity',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'ELEC-INSP-02',
-    name: 'Electrical Inspector Agent',
-    swarmGroup: 'Independent Verification',
-    specialty: 'NEC Conduit Fill, AFCI/GFCI Protection & Voltage Drop Audits',
-    status: 'IDLE',
-    confidence: 99.1,
-    lastAction: 'Verified AFCI protection on all bedroom branch circuits',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // HVAC
-  {
-    id: 'HVAC-LOAD-01',
-    name: 'HVAC Thermal Load Agent',
-    swarmGroup: 'MEP Services',
-    specialty: 'Manual J Cooling/Heating Load & Duct Static Pressure Design',
-    status: 'IDLE',
-    confidence: 96.1,
-    lastAction: 'Calculated 3.5 Ton cooling load (1,400 CFM) for second floor zone',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'HVAC-INSP-02',
-    name: 'HVAC Inspector Agent',
-    swarmGroup: 'Independent Verification',
-    specialty: 'Duct Leakage Testing & ASHRAE 62.2 Fresh Air Ventilation Audit',
-    status: 'IDLE',
-    confidence: 98.4,
-    lastAction: 'Audited ERV fresh air intake clearance from exhaust vents',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // QUANTITY & COMMERCIAL
-  {
-    id: 'COMM-BOM-01',
-    name: 'Deterministic BOM Agent',
-    swarmGroup: 'Commercial & Sourcing',
-    specialty: 'Volumetric & Surface Extraction from 3D BIM Geometry',
-    status: 'IDLE',
-    confidence: 99.8,
-    lastAction: 'Extracted 52 cu yd concrete & 2,840 sq ft drywall sheathing',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'COMM-SOURCING-02',
-    name: 'Local Supply Chain Agent',
-    swarmGroup: 'Commercial & Sourcing',
-    specialty: 'Geographic Supplier Matching, Delivery Distances & Real Quoting',
-    status: 'IDLE',
-    confidence: 94.3,
-    lastAction: 'Matched Miami Ready-Mix Supplier (3.8 miles) @ $165/cu yd',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'COMM-RISK-03',
-    name: 'Change-Order Risk Prevention Agent',
-    swarmGroup: 'Commercial & Sourcing',
-    specialty: 'Trade Clash Detection & Material Lead-Time Risk Mitigation',
-    status: 'IDLE',
-    confidence: 96.9,
-    lastAction: 'Prevented HVAC-to-Plumbing joist penetration clash in Floor 2 deck',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-
-  // KNOWLEDGE & JUDGE
-  {
-    id: 'KNOW-GRAPH-01',
-    name: 'Construction Corpus Ingestion Agent',
-    swarmGroup: 'Knowledge System',
-    specialty: 'FEMA/FBC/IPC Ingestion & Assembly Pattern Extraction',
-    status: 'IDLE',
-    confidence: 98.1,
-    lastAction: 'Ingested FBC 2023 HVHZ Fastener spacing standards',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
-  {
-    id: 'JUDGE-FINAL-01',
-    name: 'Final Project Construction Judge Agent',
-    swarmGroup: 'Independent Verification',
-    specialty: 'Holistic Constructability, Code Compliance & Score Certification',
-    status: 'IDLE',
-    confidence: 99.6,
-    lastAction: 'Certified Tampa Residence project score @ 92.4 / 100',
-    lastActionTime: new Date().toISOString(),
-    retryCount: 0,
-  },
+    id: 'AGENT-SWARM-02',
+    name: 'Structural Engineering Swarm',
+    type: 'SPECIALIST',
+    specialty: 'ACI 318 Concrete & ASCE 7 Wind Uplift Analysis',
+    status: 'ACTIVE',
+    activeTaskId: 'TASK-STRUCT-01',
+    decisionsCount: 98,
+    revisionsCount: 4,
+    accuracy: 97.5
+  }
 ];
+
+export class AgentRegistry {
+  private static contracts: Map<string, AgentContract> = new Map();
+  private static initialized = false;
+
+  public static initialize(): void {
+    if (this.initialized) return;
+
+    // 1. Leadership & Governance Roles
+    this.registerContract({
+      roleId: 'HERMES-PRIME-ORCHESTRATOR',
+      roleName: 'HERMES Construction Prime Leader',
+      managerRoleId: 'NONE',
+      discipline: 'Management',
+      responsibilities: [
+        'Govern global autonomous construction mission & Gym readiness',
+        'Monitor core readiness gate percentage and control Gym curriculum advancement',
+        'Resolve major cross-discipline executive conflicts',
+        'Enforce quality, risk, and professional engineering boundaries'
+      ],
+      inputs: ['Project executive reports', 'Core readiness gate metrics', 'Inspection sweep summaries'],
+      outputs: ['Curriculum block directives', 'System pause/resume commands', 'Executive conflict resolutions'],
+      tools: ['calculateReadinessGate()', 'updateGymBlockState()', 'escalateToProfessionalReview()'],
+      knowledgeDomains: ['Autonomous Construction Governance', 'FBC 2023 Master Code', 'ACI 318-19', 'ASCE 7-22'],
+      canConsult: ['PROJECT-EXECUTIVE-01', 'CONSTRUCTION-KNOWLEDGE-DIRECTOR', 'QUALITY-INSPECTION-DIRECTOR'],
+      cannotDo: ['Cannot bypass inspection sweep failures', 'Cannot unblock Gym if readiness < 85%'],
+      validationRequirements: ['100% agreement on safety critical overrides'],
+      escalationRules: ['Escalate to human owner if unresolvable legal/professional ambiguity arises'],
+      knowledgeCurriculum: ['Autonomous Construction Management', 'Risk Frameworks'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 100.0,
+      knowledgeCoveragePct: 100.0,
+      isCoreHouse1Role: true
+    });
+
+    this.registerContract({
+      roleId: 'PROJECT-EXECUTIVE-01',
+      roleName: 'Project Executive',
+      managerRoleId: 'HERMES-PRIME-ORCHESTRATOR',
+      discipline: 'Management',
+      responsibilities: [
+        'Translate Prime objectives into project scope & strategy',
+        'Track milestones, budget targets, and location compliance'
+      ],
+      inputs: ['Prime directives', 'Site location profile'],
+      outputs: ['Project delivery strategy', 'Scope boundary definitions'],
+      tools: ['evaluateBudgetVariance()', 'checkSchedulePath()'],
+      knowledgeDomains: ['Project Delivery Methods', 'Contract Risk', 'Florida Construction Law'],
+      canConsult: ['PROJECT-SUPERINTENDENT-01', 'PROJECT-CONTROLS-MANAGER'],
+      cannotDo: ['Cannot alter structural load formulas'],
+      validationRequirements: ['Scope approval by Prime'],
+      escalationRules: ['Escalate cost overruns > 5% to Prime'],
+      knowledgeCurriculum: ['Construction Project Management'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 98.0,
+      knowledgeCoveragePct: 96.0,
+      isCoreHouse1Role: true
+    });
+
+    this.registerContract({
+      roleId: 'PROJECT-SUPERINTENDENT-01',
+      roleName: 'Project Superintendent',
+      managerRoleId: 'PROJECT-EXECUTIVE-01',
+      discipline: 'Management',
+      responsibilities: [
+        'Govern master trade sequencing and field constructability',
+        'Verify crane, staging, access, and temporary works logistics',
+        'Conduct final building walkthrough before closeout'
+      ],
+      inputs: ['Discipline manager proposals', 'BIM model state'],
+      outputs: ['Master Trade Sequence', 'Constructability Signoff'],
+      tools: ['evaluateTradeSequence()', 'checkSiteStaging()'],
+      knowledgeDomains: ['Construction Means & Methods', 'Trade Sequencing', 'OSHA Safety'],
+      canConsult: ['SPATIAL-COORDINATION-SUPERINTENDENT', 'QUALITY-INSPECTION-DIRECTOR'],
+      cannotDo: ['Cannot override failing structural inspections'],
+      validationRequirements: ['Constructability score >= 90%'],
+      escalationRules: ['Escalate trade sequence deadlock to Executive'],
+      knowledgeCurriculum: ['Field Superintendent Practices', 'OSHA 1926'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 96.0,
+      knowledgeCoveragePct: 94.0,
+      isCoreHouse1Role: true
+    });
+
+    this.registerContract({
+      roleId: 'CONSTRUCTION-KNOWLEDGE-DIRECTOR',
+      roleName: 'Construction Knowledge Director',
+      managerRoleId: 'HERMES-PRIME-ORCHESTRATOR',
+      discipline: 'Management',
+      responsibilities: [
+        'Govern Knowledge Swarm, source discovery, and ingestion pipeline',
+        'Operate Knowledge Gym and calculate agent competency & coverage',
+        'Assign agent knowledge curricula and generate Agent Knowledge Packs'
+      ],
+      inputs: ['Authoritative Source Registry', 'Agent knowledge gaps'],
+      outputs: ['Agent Knowledge Packs', 'Agent Learning Reports', 'Competency Scores'],
+      tools: ['runIngestionWorker()', 'extractStructuredKnowledge()', 'calculateCompetency()'],
+      knowledgeDomains: ['Construction Ontology', 'Building Science', 'Code Ingestion'],
+      canConsult: ['KNOWLEDGE-RIGHTS-GOVERNANCE-AGENT', 'LEARNING-COMPETENCY-MANAGER'],
+      cannotDo: ['Cannot ingest copyrighted text without rights clearance'],
+      validationRequirements: ['Source citation provenance required for all facts'],
+      escalationRules: ['Escalate source rights ambiguity to Prime'],
+      knowledgeCurriculum: ['Building Science Corpus', 'Knowledge Engineering'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 99.0,
+      knowledgeCoveragePct: 98.0,
+      isCoreHouse1Role: true
+    });
+
+    // 2. Discipline Managers (16 Roles)
+    const disciplineManagers: Array<{ id: string; name: string; disc: any }> = [
+      { id: 'SITE-CIVIL-MANAGER', name: 'Site & Civil Manager', disc: 'Site' },
+      { id: 'STRUCTURAL-ENGINEERING-MANAGER', name: 'Structural Engineering Manager', disc: 'Structure' },
+      { id: 'BUILDING-ENVELOPE-MANAGER', name: 'Building Envelope Manager', disc: 'Envelope' },
+      { id: 'PLUMBING-SYSTEMS-MANAGER', name: 'Plumbing Systems Manager', disc: 'Plumbing' },
+      { id: 'ELECTRICAL-SYSTEMS-MANAGER', name: 'Electrical Systems Manager', disc: 'Electrical' },
+      { id: 'MECHANICAL-HVAC-MANAGER', name: 'Mechanical HVAC Manager', disc: 'HVAC' },
+      { id: 'FIRE-LIFE-SAFETY-MANAGER', name: 'Fire & Life Safety Manager', disc: 'Fire Protection' },
+      { id: 'SPATIAL-COORDINATION-SUPERINTENDENT', name: 'Spatial Coordination Superintendent', disc: 'Management' },
+      { id: 'QUALITY-INSPECTION-DIRECTOR', name: 'Quality & Inspection Director', disc: 'Quality' },
+      { id: 'COMMISSIONING-CLOSEOUT-DIRECTOR', name: 'Commissioning & Closeout Director', disc: 'Closeout' },
+      { id: 'PROJECT-CONTROLS-MANAGER', name: 'Project Controls Manager', disc: 'Procurement' },
+      { id: 'ENVIRONMENTAL-CLIMATE-MANAGER', name: 'Environmental & Climate Manager', disc: 'Site' },
+      { id: 'MATERIALS-INTELLIGENCE-MANAGER', name: 'Materials Intelligence Manager', disc: 'Management' },
+      { id: 'MEANS-METHODS-MANAGER', name: 'Means & Methods Manager', disc: 'Management' },
+      { id: 'QUANTITY-ESTIMATING-MANAGER', name: 'Quantity & Estimating Manager', disc: 'Procurement' },
+      { id: 'PROCUREMENT-LOGISTICS-MANAGER', name: 'Procurement & Logistics Manager', disc: 'Procurement' }
+    ];
+
+    disciplineManagers.forEach(dm => {
+      this.registerContract({
+        roleId: dm.id,
+        roleName: dm.name,
+        managerRoleId: 'PROJECT-SUPERINTENDENT-01',
+        discipline: dm.disc,
+        responsibilities: [`Govern all specialist trade agents in ${dm.name} discipline`, 'Review trade proposals and resolve trade clashes'],
+        inputs: ['Specialist proposals', 'Code standards'],
+        outputs: ['Approved trade submittals', 'Escalation notices'],
+        tools: ['reviewProposal()', 'checkCodeRules()'],
+        knowledgeDomains: [dm.name, 'FBC 2023'],
+        canConsult: ['PROJECT-SUPERINTENDENT-01'],
+        cannotDo: ['Cannot approve unvalidated calculations'],
+        validationRequirements: ['100% code rule compliance'],
+        escalationRules: ['Escalate unresolvable clashes to Superintendent'],
+        knowledgeCurriculum: [`${dm.name} Master Curriculum`],
+        readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+        competencyScore: 95.0,
+        knowledgeCoveragePct: 92.0,
+        isCoreHouse1Role: true
+      });
+    });
+
+    // 3. Spatial Managers
+    this.registerContract({
+      roleId: 'FLOOR-MANAGER-L01',
+      roleName: 'Floor Construction Manager Level 1',
+      managerRoleId: 'SPATIAL-COORDINATION-SUPERINTENDENT',
+      discipline: 'Architecture',
+      responsibilities: ['Coordinate Level 1 room layouts, corridors, shafts, and floor penetrations'],
+      inputs: ['Room proposals for L01'],
+      outputs: ['Level 1 Integrated Spatial Layout'],
+      tools: ['checkFloorClashes()', 'coordinateRisers()'],
+      knowledgeDomains: ['Floor Spatial Coordination', 'FBC Chapter 10 Egress'],
+      canConsult: ['ROOM-MANAGER-204'],
+      cannotDo: ['Cannot alter structural columns'],
+      validationRequirements: ['Zero corridor/shaft spatial collisions'],
+      escalationRules: ['Escalate riser conflict to Spatial Superintendent'],
+      knowledgeCurriculum: ['Floor Coordination Practices'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 94.0,
+      knowledgeCoveragePct: 90.0,
+      isCoreHouse1Role: true
+    });
+
+    this.registerContract({
+      roleId: 'FLOOR-MANAGER-L02',
+      roleName: 'Floor Construction Manager Level 2',
+      managerRoleId: 'SPATIAL-COORDINATION-SUPERINTENDENT',
+      discipline: 'Architecture',
+      responsibilities: ['Coordinate Level 2 room layouts, corridors, shafts, and floor penetrations'],
+      inputs: ['Room proposals for L02'],
+      outputs: ['Level 2 Integrated Spatial Layout'],
+      tools: ['checkFloorClashes()', 'coordinateRisers()'],
+      knowledgeDomains: ['Floor Spatial Coordination', 'FBC Chapter 10 Egress'],
+      canConsult: ['ROOM-MANAGER-204'],
+      cannotDo: ['Cannot alter structural columns'],
+      validationRequirements: ['Zero corridor/shaft spatial collisions'],
+      escalationRules: ['Escalate riser conflict to Spatial Superintendent'],
+      knowledgeCurriculum: ['Floor Coordination Practices'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 94.0,
+      knowledgeCoveragePct: 90.0,
+      isCoreHouse1Role: true
+    });
+
+    this.registerContract({
+      roleId: 'ROOM-MANAGER-204',
+      roleName: 'Room Construction Manager Room 204',
+      managerRoleId: 'FLOOR-MANAGER-L02',
+      discipline: 'Architecture',
+      responsibilities: [
+        'Coordinate room-level trade placements (Electrical, HVAC, Plumbing, Fixtures)',
+        'Evaluate component placement for usability, ergonomics, accessibility, and serviceability',
+        'Issue consultation requests to resolve spatial clashes inside Room 204'
+      ],
+      inputs: ['Trade proposals for Room 204'],
+      outputs: ['Room 204 Coordinated Layout', 'Trade Consultation Records'],
+      tools: ['evaluateDeviceErgonomics()', 'issueConsultation()', 'checkRoomClash()'],
+      knowledgeDomains: ['Room Ergonomics', 'ADA Accessibility', 'NEC Device Placement'],
+      canConsult: ['ELECTRICAL-BRANCH-CIRCUIT-AGENT', 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT'],
+      cannotDo: ['Cannot move structural load bearing walls without Structural Manager approval'],
+      validationRequirements: ['100% device usability and clash prevention'],
+      escalationRules: ['Escalate multi-trade grid deadlock to Floor Manager L02'],
+      knowledgeCurriculum: ['Room Spatial Management'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 95.0,
+      knowledgeCoveragePct: 91.0,
+      isCoreHouse1Role: true
+    });
+
+    // 4. Register Representative Trade Specialist Agents (Populating up to 125+ Roles)
+    const tradeSpecialistTemplates: Array<{
+      id: string;
+      name: string;
+      manager: string;
+      disc: SystemCategory | 'Civil' | 'Controls' | 'Quality' | 'Procurement';
+      isCore: boolean;
+      status: AgentOnboardingState;
+      comp: number;
+      cov: number;
+    }> = [
+      // Site & Civil
+      { id: 'PARCEL-SURVEY-ANALYSIS-AGENT', name: 'Parcel & Survey Analysis Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 92 },
+      { id: 'TOPOGRAPHY-GRADING-AGENT', name: 'Topography & Grading Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 90 },
+      { id: 'SOILS-GEOTECHNICAL-AGENT', name: 'Soils & Geotechnical Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
+      { id: 'STORMWATER-DRAINAGE-AGENT', name: 'Stormwater & Drainage Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 91, cov: 89 },
+      { id: 'UTILITY-CONNECTION-AGENT', name: 'Utility Connection Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 91 },
+
+      // Structural
+      { id: 'SHALLOW-FOOTING-DESIGN-AGENT', name: 'Shallow Footing Design Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 94 },
+      { id: 'CONCRETE-SLAB-STRUCTURAL-AGENT', name: 'Concrete Slab Structural Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 92 },
+      { id: 'WOOD-FRAMING-TRUSS-AGENT', name: 'Wood Framing & Truss Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 91 },
+      { id: 'MASONRY-CMU-STRUCTURAL-AGENT', name: 'Masonry CMU Structural Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 90 },
+      { id: 'FASTENER-UPLIFT-AGENT', name: 'Fastener & Uplift Anchor Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 97, cov: 95 },
+
+      // Envelope
+      { id: 'WATERPROOFING-FLASHING-AGENT', name: 'Waterproofing & Flashing Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 91 },
+      { id: 'THERMAL-INSULATION-AGENT', name: 'Thermal Insulation Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 89 },
+      { id: 'STANDING-SEAM-ROOFING-AGENT', name: 'Standing Seam Roofing Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
+
+      // Plumbing
+      { id: 'DOMESTIC-WATER-PIPING-AGENT', name: 'Domestic Water Piping Specialist', manager: 'PLUMBING-SYSTEMS-MANAGER', disc: 'Plumbing', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 90 },
+      { id: 'SANITARY-DRAIN-VENT-AGENT', name: 'Sanitary Drain & Vent Specialist', manager: 'PLUMBING-SYSTEMS-MANAGER', disc: 'Plumbing', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 92 },
+
+      // Electrical
+      { id: 'MAIN-SERVICE-PANEL-AGENT', name: 'Main Service & Panel Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 93 },
+      { id: 'BRANCH-CIRCUIT-RECEPTACLE-AGENT', name: 'Branch Circuit & Receptacle Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 92 },
+      { id: 'LIGHTING-SWITCHING-AGENT', name: 'Lighting & Switching Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 91 },
+
+      // HVAC
+      { id: 'HEATING-COOLING-LOAD-AGENT', name: 'Heating & Cooling Load Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
+      { id: 'HVAC-DUCT-ROUTING-AGENT', name: 'Duct Routing & Friction Loss Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 91 },
+      { id: 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT', name: 'Supply & Return Diffuser Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 90 },
+
+      // Fire
+      { id: 'FIRE-SPRINKLER-EGRESS-AGENT', name: 'Fire Sprinkler & Egress Specialist', manager: 'FIRE-LIFE-SAFETY-MANAGER', disc: 'Fire Protection', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 94 },
+
+      // Inspection
+      { id: 'INDEPENDENT-STRUCTURAL-INSPECTOR', name: 'Independent Structural Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 98, cov: 96 },
+      { id: 'INDEPENDENT-MEP-INSPECTOR', name: 'Independent MEP Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 97, cov: 95 },
+      { id: 'INDEPENDENT-ENVELOPE-INSPECTOR', name: 'Independent Envelope Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 94 },
+
+      // Sourcing & Quantities
+      { id: 'QUANTITY-TAKEOFF-AGENT', name: 'Quantity Takeoff Estimator', manager: 'QUANTITY-ESTIMATING-MANAGER', disc: 'Procurement', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
+      { id: 'SUPPLIER-PRICING-AGENT', name: 'Supplier Pricing Specialist', manager: 'PROCUREMENT-LOGISTICS-MANAGER', disc: 'Procurement', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 91 }
+    ];
+
+    tradeSpecialistTemplates.forEach(t => {
+      this.registerContract({
+        roleId: t.id,
+        roleName: t.name,
+        managerRoleId: t.manager,
+        discipline: t.disc,
+        responsibilities: [`Execute domain analysis and 3D placement for ${t.name}`],
+        inputs: ['Project specification', 'BIM model'],
+        outputs: ['Trade components', 'Calculation proof'],
+        tools: ['calculateDomainMath()', 'queryKnowledgePack()'],
+        knowledgeDomains: [t.name, 'FBC 2023'],
+        canConsult: [t.manager],
+        cannotDo: ['Cannot violate building code minimums'],
+        validationRequirements: ['100% calculation compliance'],
+        escalationRules: ['Escalate code failure to Discipline Manager'],
+        knowledgeCurriculum: [`${t.name} Curriculum`],
+        readinessStatus: t.status,
+        competencyScore: t.comp,
+        knowledgeCoveragePct: t.cov,
+        isCoreHouse1Role: t.isCore
+      });
+    });
+
+    // Dynamically expand to 132 total defined roles
+    for (let i = 1; i <= 84; i++) {
+      const id = `SPECIALIST-TRADE-ROLE-${String(i).padStart(3, '0')}`;
+      this.registerContract({
+        roleId: id,
+        roleName: `Specialist Trade Role #${i}`,
+        managerRoleId: 'MEANS-METHODS-MANAGER',
+        discipline: 'Architecture',
+        responsibilities: [`Perform specialized construction calculations for trade domain #${i}`],
+        inputs: ['Subsystem requirements'],
+        outputs: ['Trade submittal'],
+        tools: ['runTradeAnalysis()'],
+        knowledgeDomains: [`Trade Domain #${i}`],
+        canConsult: ['MEANS-METHODS-MANAGER'],
+        cannotDo: ['Cannot execute without manager signoff'],
+        validationRequirements: ['Competency score >= 85%'],
+        escalationRules: ['Escalate knowledge gaps to Knowledge Director'],
+        knowledgeCurriculum: [`Specialist Curriculum #${i}`],
+        readinessStatus: i <= 20 ? 'READY_FOR_CONSTRUCTION_WORK' : 'RESEARCHING',
+        competencyScore: i <= 20 ? 90.0 : 65.0,
+        knowledgeCoveragePct: i <= 20 ? 88.0 : 55.0,
+        isCoreHouse1Role: i <= 10
+      });
+    }
+
+    this.initialized = true;
+  }
+
+  public static registerContract(contract: AgentContract): void {
+    this.contracts.set(contract.roleId, contract);
+  }
+
+  public static getContract(roleId: string): AgentContract | undefined {
+    this.initialize();
+    return this.contracts.get(roleId);
+  }
+
+  public static getAllContracts(): AgentContract[] {
+    this.initialize();
+    return Array.from(this.contracts.values());
+  }
+
+  public static updateContractState(roleId: string, updates: Partial<AgentContract>): AgentContract | undefined {
+    this.initialize();
+    const existing = this.contracts.get(roleId);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...updates };
+    this.contracts.set(roleId, updated);
+    return updated;
+  }
+}

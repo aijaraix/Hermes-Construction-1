@@ -629,3 +629,240 @@ export interface CorpusSourceItem {
   confidenceScore: number;
 }
 
+export type AgentOnboardingState = 
+  | 'DEFINED'
+  | 'CURRICULUM_ASSIGNED'
+  | 'SOURCE_PLAN_ASSIGNED'
+  | 'RESEARCHING'
+  | 'INGESTING'
+  | 'EXTRACTING_KNOWLEDGE'
+  | 'VALIDATING_SOURCES'
+  | 'MANAGER_REVIEW'
+  | 'COMPETENCY_TESTING'
+  | 'READY_FOR_SHADOW_WORK'
+  | 'READY_FOR_CONSTRUCTION_WORK'
+  | 'RESTRICTED'
+  | 'RETRAINING_REQUIRED';
+
+export type MessageType = 
+  | 'TASK_ASSIGNMENT'
+  | 'CONSULTATION_REQUEST'
+  | 'CONSULTATION_RESPONSE'
+  | 'DESIGN_PROPOSAL'
+  | 'CONFLICT_NOTICE'
+  | 'REVISION_REQUEST'
+  | 'CALCULATION_REQUEST'
+  | 'MATERIAL_REQUEST'
+  | 'KNOWLEDGE_REQUEST'
+  | 'KNOWLEDGE_GAP'
+  | 'INSPECTION_REQUEST'
+  | 'FAILURE_NOTICE'
+  | 'REPAIR_REQUEST'
+  | 'REINSPECTION_REQUEST'
+  | 'MANAGER_ESCALATION'
+  | 'APPROVAL'
+  | 'REJECTION'
+  | 'INFORMATION_REQUIRED';
+
+export interface AgentContract {
+  roleId: string;
+  roleName: string;
+  managerRoleId: string;
+  discipline: SystemCategory | 'Management' | 'Civil' | 'Controls' | 'Quality' | 'Procurement' | 'Closeout';
+  responsibilities: string[];
+  inputs: string[];
+  outputs: string[];
+  tools: string[];
+  knowledgeDomains: string[];
+  canConsult: string[];
+  cannotDo: string[];
+  validationRequirements: string[];
+  escalationRules: string[];
+  knowledgeCurriculum: string[];
+  readinessStatus: AgentOnboardingState;
+  competencyScore: number;
+  knowledgeCoveragePct: number;
+  isCoreHouse1Role: boolean;
+  activeTaskId?: string;
+  lastLearningReportId?: string;
+}
+
+export interface AgentMessage {
+  messageId: string;
+  projectId: string;
+  senderRoleId: string;
+  receiverRoleId: string;
+  messageType: MessageType;
+  scope: string; // e.g. "ROOM-204" or "BUILDING"
+  componentIds: string[];
+  payload: Record<string, any>;
+  reasoning: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  timestamp: string;
+  responseRequired: boolean;
+  status: 'OPEN' | 'RESOLVED' | 'ESCALATED';
+}
+
+export interface AgentLearningReport {
+  reportId: string;
+  agentRoleId: string;
+  managerRoleId: string;
+  knowledgeObjective: string;
+  sourcesResearched: string[];
+  sourcesApproved: string[];
+  sourcesRejected: string[];
+  chunksCreated: number;
+  entitiesExtracted: number;
+  rulesExtracted: number;
+  processesExtracted: number;
+  failureModesExtracted: number;
+  calculationsExtracted: number;
+  contradictionsFound: number;
+  unresolvedQuestions: string[];
+  knowledgeGapsRemaining: string[];
+  coverageBefore: number;
+  coverageAfter: number;
+  confidence: number;
+  managerReviewResult: 'APPROVED' | 'NEEDS_REVISION' | 'REJECTED';
+  timestamp: string;
+}
+
+export interface AuthoritativeSourceDefinition {
+  sourceId: string;
+  title: string;
+  publisher: string;
+  agencyOrOrganization: string;
+  URL: string;
+  documentURLIfPermitted?: string;
+  discipline: string;
+  applicableAgentRoles: string[];
+  topics: string[];
+  geographicScope: string;
+  jurisdiction: string;
+  publicationDate: string;
+  editionVersion: string;
+  authorityLevel: 
+    | 'PRIMARY_GOVERNMENT'
+    | 'PRIMARY_TECHNICAL'
+    | 'PRIMARY_MANUFACTURER'
+    | 'CONSENSUS_STANDARD'
+    | 'UNIVERSITY_RESEARCH'
+    | 'SECONDARY_TECHNICAL'
+    | 'REFERENCE_ONLY';
+  accessType: 'FREE_PUBLIC' | 'PERMITTED_BULK' | 'VIEW_ONLY_METADATA';
+  copyrightLicenseStatus: 'PUBLIC_DOMAIN' | 'PERMITTED_OPEN' | 'COPYRIGHT_METADATA_ONLY';
+  bulkIngestionPermitted: boolean;
+  fullTextStoragePermitted: boolean;
+  chunkingPermitted: boolean;
+  citationRequirements: string;
+  lastChecked: string;
+  freshnessCategory: 
+    | 'FOUNDATIONAL_MATERIAL_SCIENCE'
+    | 'CODE_REGULATION'
+    | 'MANUFACTURER_PRODUCT_DATA'
+    | 'LOCAL_PRICE'
+    | 'SUPPLY_LEAD_TIME';
+  priority: number;
+}
+
+export interface KnowledgeChunk {
+  chunkId: string;
+  sourceId: string;
+  pageOrSection: string;
+  headingHierarchy: string[];
+  rawText: string;
+  normalizedText: string;
+  topic: string;
+  discipline: string;
+  agentTags: string[];
+  materialTags: string[];
+  processTags: string[];
+  locationTags: string[];
+  jurisdictionTags: string[];
+  version: string;
+  embeddingReference?: string;
+  sourceURL: string;
+  retrievalTimestamp: string;
+  rightsStatus: string;
+}
+
+export interface KnowledgeEntity {
+  entityId: string;
+  name: string;
+  category: 
+    | 'MATERIAL_PROPERTY'
+    | 'PHYSICAL_FACT'
+    | 'ENGINEERING_PROPERTY'
+    | 'CODE_RULE'
+    | 'MANUFACTURER_PRODUCT_DATA'
+    | 'INSTALLATION_REQUIREMENT'
+    | 'CONSTRUCTION_PRACTICE'
+    | 'FAILURE_HISTORY'
+    | 'REGIONAL_PRACTICE'
+    | 'PRICE_DATA'
+    | 'SUPPLY_DATA';
+  properties: Record<string, any>;
+  sourceIds: string[];
+  confidence: number;
+  validationLevel: KnowledgeValidationLevel;
+}
+
+export interface KnowledgeGapItem {
+  gapId: string;
+  agentRoleId: string;
+  topic: string;
+  question: string;
+  impactedDecision: string;
+  status: 'OPEN' | 'RESEARCHING' | 'RESOLVED';
+  createdAt: string;
+  resolvedAt?: string;
+  resolutionNote?: string;
+}
+
+export interface MaterialOntologyItem {
+  materialId: string;
+  family: string;
+  subfamily: string;
+  chemicalComposition?: string;
+  grade: string;
+  dimensions?: string;
+  strength?: string;
+  density?: string;
+  moistureBehavior: string;
+  thermalBehavior: string;
+  fireBehavior: string;
+  corrosionBehavior: string;
+  decayBehavior: string;
+  uvBehavior: string;
+  intendedUseType: 
+    | 'TEMPORARY_SACRIFICIAL'
+    | 'TEMPORARY_REUSABLE'
+    | 'PERMANENT_INTERIOR'
+    | 'PERMANENT_EXTERIOR'
+    | 'PERMANENT_BELOW_GRADE'
+    | 'PERMANENT_WET_LOCATION'
+    | 'PERMANENT_COASTAL_MARINE';
+  intendedUseDurationMonths?: number;
+  compatibility: string[];
+  installationMethods: string[];
+  failureModes: string[];
+  unitCost: number;
+  priceSource: PriceSourceType;
+  leadTimeWeeks: number;
+}
+
+export interface CoreReadinessGate {
+  totalDefinedRoles: number;
+  totalCoreHouse1Roles: number;
+  curriculumAssignedCount: number;
+  initialIngestionCompleteCount: number;
+  managerReviewedCount: number;
+  shadowTestedCount: number;
+  certifiedCount: number;
+  requiredCertificationThreshold: number;
+  coreConstructionReadinessPct: number;
+  isGymBlocked: boolean;
+  gymBlockReason: string;
+}
+
+

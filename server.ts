@@ -3,6 +3,12 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { primeOrchestrator } from './server/primeOrchestrator';
 import { researchConstructionTopic } from './server/geminiService';
+import { AgentRegistry } from './server/agentRegistry';
+import { OrganizationEngine } from './server/organizationEngine';
+import { SourceRegistry } from './server/sourceRegistry';
+import { KnowledgeIngestionEngine } from './server/knowledgeIngestionEngine';
+import { RoomCoordinationEngine } from './server/roomCoordinationEngine';
+import { CloseoutEngine } from './server/closeoutEngine';
 
 async function startServer() {
   const app = express();
@@ -188,6 +194,68 @@ async function startServer() {
     } catch (e: any) {
       res.status(500).json({ error: e.message });
     }
+  });
+
+  // Phase 3.15 Autonomous Organization & Knowledge API Endpoints
+  app.get('/api/organization/contracts', (req, res) => {
+    res.json(AgentRegistry.getAllContracts());
+  });
+
+  app.get('/api/organization/messages', (req, res) => {
+    res.json(OrganizationEngine.getAllMessages());
+  });
+
+  app.get('/api/organization/readiness', (req, res) => {
+    res.json(OrganizationEngine.getCoreReadinessGate());
+  });
+
+  app.get('/api/knowledge/sources', (req, res) => {
+    res.json(SourceRegistry.getAllSources());
+  });
+
+  app.get('/api/knowledge/chunks', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getChunks());
+  });
+
+  app.get('/api/knowledge/entities', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getEntities());
+  });
+
+  app.get('/api/knowledge/reports', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getLearningReports());
+  });
+
+  app.get('/api/knowledge/gaps', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getKnowledgeGaps());
+  });
+
+  app.post('/api/knowledge/ingest', (req, res) => {
+    try {
+      const { agentRoleId } = req.body || { agentRoleId: 'HVAC-DUCT-ROUTING-AGENT' };
+      const report = KnowledgeIngestionEngine.triggerIngestionWorker(agentRoleId);
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  app.get('/api/room/scope', (req, res) => {
+    const roomId = (req.query.roomId as string) || 'ROOM-204';
+    res.json(RoomCoordinationEngine.getRoomScope(roomId));
+  });
+
+  app.post('/api/room/coordinate', (req, res) => {
+    try {
+      const { roomId } = req.body || { roomId: 'ROOM-204' };
+      const result = RoomCoordinationEngine.executeRoomCoordinationCycle(roomId);
+      res.json(result);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  app.get('/api/closeout/audits', (req, res) => {
+    res.json(CloseoutEngine.getCloseoutAudits());
   });
 
   // Vite Middleware in Development vs Static Production Serving
