@@ -1,6 +1,6 @@
 import React from 'react';
 import { PrimeHeartbeatState } from '../types/hermes';
-import { Activity, ShieldAlert, Cpu, Layers, DollarSign, Calendar, Wrench, MapPin, RefreshCw, Sparkles, ShieldCheck } from 'lucide-react';
+import { Activity, ShieldAlert, Cpu, Layers, DollarSign, Calendar, Wrench, MapPin, RefreshCw, Sparkles, ShieldCheck, Download, FileCode } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -42,10 +42,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center gap-2">
               <h1 className="text-base font-bold text-slate-100 tracking-tight">HERMES CONSTRUCTION</h1>
               <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800">
-                Prime Autonomous v2.4
+                Commit 5be9b4b
               </span>
             </div>
-            <p className="text-xs text-slate-400">Autonomous Construction Intelligence & Digital Building System</p>
+            <p className="text-xs text-slate-400">Autonomous Construction System — House #1 Validation Laboratory</p>
           </div>
         </div>
 
@@ -86,15 +86,38 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Prime Heartbeat Trigger Action */}
-        <button
-          onClick={onTriggerHeartbeat}
-          disabled={isTriggering}
-          className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold text-xs rounded-xl transition shadow-md shadow-cyan-600/20 flex items-center gap-2 disabled:opacity-50"
-        >
-          <RefreshCw className={`w-4 h-4 ${isTriggering ? 'animate-spin' : ''}`} />
-          {isTriggering ? 'Swarm Heartbeat Active...' : 'Trigger Heartbeat Turn'}
-        </button>
+        {/* Audit Bundle & Heartbeat Actions */}
+        <div className="flex items-center gap-2">
+          <a
+            href="/api/download-source-bundle"
+            download="hermes-construction-source-5be9b4b.zip"
+            className="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-300 font-semibold text-xs rounded-xl transition flex items-center gap-1.5 shadow-md"
+            title="Download full source code bundle for independent audit"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Download Source Bundle (.zip)</span>
+          </a>
+
+          <a
+            href="/api/commit-manifest"
+            target="_blank"
+            rel="noreferrer"
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-semibold text-xs rounded-xl transition flex items-center gap-1.5"
+            title="View git commit manifest and log"
+          >
+            <FileCode className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Commit Manifest</span>
+          </a>
+
+          <button
+            onClick={onTriggerHeartbeat}
+            disabled={isTriggering}
+            className="px-3.5 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold text-xs rounded-xl transition shadow-md shadow-cyan-600/20 flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isTriggering ? 'animate-spin' : ''}`} />
+            {isTriggering ? 'Swarm...' : 'Trigger Heartbeat'}
+          </button>
+        </div>
       </div>
 
       {/* Navigation Tabs */}

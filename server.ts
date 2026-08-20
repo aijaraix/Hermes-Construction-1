@@ -169,6 +169,17 @@ async function startServer() {
     res.json(primeOrchestrator.getLearnedLessons());
   });
 
+  // Source Bundle & Remote Audit Endpoints
+  app.get('/api/download-source-bundle', (req, res) => {
+    const bundlePath = path.join(process.cwd(), 'public', 'hermes-construction-source.zip');
+    res.download(bundlePath, 'hermes-construction-source-5be9b4b.zip');
+  });
+
+  app.get('/api/commit-manifest', (req, res) => {
+    const manifestPath = path.join(process.cwd(), 'public', 'COMMIT_MANIFEST.txt');
+    res.sendFile(manifestPath);
+  });
+
   app.post('/api/research', async (req, res) => {
     try {
       const { query, location } = req.body;
