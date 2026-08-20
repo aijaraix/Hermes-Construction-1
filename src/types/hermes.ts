@@ -1117,5 +1117,101 @@ export interface ResearchRecord {
   timestamp: string;
 }
 
+// ======================================================================
+// PHASE 3.17.2 GENUINE REASONING & INDEPENDENT EVALUATION EXTENSIONS
+// ======================================================================
+
+export interface CompetencyScenario {
+  scenarioId: string;
+  agentRoleId: string;
+  discipline: SystemCategory | 'Management' | 'Civil' | 'Controls' | 'Quality' | 'Procurement' | 'Closeout';
+  difficulty: 'FUNDAMENTAL' | 'PRACTITIONER' | 'EXPERT' | 'HARD_BOUNDARY';
+  jurisdiction: string;
+  buildingType: string;
+  location: string;
+  roomId: string;
+  scenarioTitle: string;
+  scenarioDescription: string;
+  inputs: Record<string, any>;
+  constraints: Record<string, any>;
+  availableEvidence: string[];
+  knowledgePackId: string;
+  hiddenValidationRules: Record<string, any>; // Hidden from agent during execution!
+  expectedOutputSchema: Record<string, any>;
+  createdAt: string;
+  version: string;
+}
+
+export interface AgentExecutionRecord {
+  executionId: string;
+  agentRoleId: string;
+  modelProvider: string; // e.g. "GoogleGemini" or "LocalReasoningEngine"
+  modelName: string; // e.g. "gemini-2.5-flash"
+  scenarioId: string;
+  knowledgePackId: string;
+  retrievedChunkIds: string[];
+  promptHash: string;
+  rawResponse: string;
+  structuredProposal: Record<string, any>;
+  citations: string[];
+  toolCalls: any[];
+  startedAt: string;
+  completedAt: string;
+  usageMetadata?: any;
+  executionStatus: 'EXECUTED' | 'NOT_EXECUTED' | 'FAILED';
+}
+
+export interface ValidationResult {
+  validationId: string;
+  executionId: string;
+  scenarioId: string;
+  agentRoleId: string;
+  mathScorePct: number;
+  codeCompliancePct: number;
+  sourceGroundingPct: number;
+  completenessPct: number;
+  assumptionQualityPct: number;
+  uncertaintyHandlingPct: number;
+  overallScorePct: number;
+  passed: boolean;
+  criticalFailure: boolean;
+  criticalFailureReason?: string;
+  calculatedMetrics: Record<string, number | string | boolean>;
+  violations: string[];
+  unsupportedCitations: string[];
+  validatedAt: string;
+}
+
+export interface TopicCompetency {
+  topicId: string;
+  topicName: string;
+  scorePct: number;
+  status: 'UNTESTED' | 'TESTED_PASS' | 'TESTED_FAIL' | 'RETRAINED_PASS';
+  lastEvaluatedAt: string;
+}
+
+export interface CertificationScope {
+  status: 'UNTESTED' | 'RETRAINING_REQUIRED' | 'READY_FOR_SHADOW_WORK' | 'READY_FOR_CONSTRUCTION_WORK';
+  buildingType: string;
+  jurisdiction: string;
+  climateZone: string;
+  allowedScope: string;
+  limitations: string[];
+  certifiedAt: string;
+}
+
+export interface LiveLearningActivity {
+  activityId: string;
+  timestamp: string;
+  agentRoleId: string;
+  agentName: string;
+  activityType: 'SCENARIO_DISPATCHED' | 'RETRIEVAL_COMPLETED' | 'AGENT_REASONED' | 'VALIDATOR_EVALUATED' | 'GAP_DETECTED' | 'RETRAINING_STARTED' | 'MANAGER_REVIEWED' | 'SHADOW_DISPATCHED' | 'SHADOW_EVALUATED' | 'CERTIFIED';
+  title: string;
+  details: string;
+  realityTag: 'REAL_EXECUTION' | 'DETERMINISTIC_VALIDATION' | 'MODEL_GENERATED' | 'SOURCE_GROUNDED' | 'FAILED' | 'RETRAINING' | 'MANAGER_APPROVED' | 'SHADOW_ONLY';
+  executionId?: string;
+}
+
+
 
 

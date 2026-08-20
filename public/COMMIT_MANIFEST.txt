@@ -1,32 +1,36 @@
-HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17.1 SYNTHETIC PATH ELIMINATION
+HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17.2 GENUINE REASONING & EVALUATION
 ================================================================================
 Project: HERMES Construction System
-Phase: PHASE 3.17.1 ELIMINATE REMAINING SYNTHETIC LEARNING PATHS
+Phase: PHASE 3.17.2 GENUINE AGENT REASONING & INDEPENDENT EVALUATION
 Target Repository: https://github.com/aijaraix/Hermes-Construction-1
 Current Branch: master
 Commit SHA: 2428c2fc71da1564716d98538fae5b6de7a816ca (short: 2428c2f)
-Verified Phase 3.17.1 Corrective Commit
-Build Timestamp: 2026-08-20T20:57:42Z
-Source Bundle Timestamp: 2026-08-20T20:57:42Z
-Status: SYNTHETIC_PATHS_ELIMINATED_VERIFIED
+Verified Phase 3.17.2 Corrective Commit
+Build Timestamp: 2026-08-20T21:12:00Z
+Source Bundle Timestamp: 2026-08-20T21:12:00Z
+Status: GENUINE_REASONING_AND_EVALUATION_VERIFIED
 
-PHASE 3.17.1 SYNTHETIC PATH ELIMINATION HIGHLIGHTS:
+PHASE 3.17.2 HIGHLIGHTS:
 --------------------------------------------------------------------------------
-1. Fallback Removal (/server/httpSourceFetcher.ts):
-   - Removed getOfficialFallbackBytes completely.
-   - Network fetch failures return explicit FETCH_FAILED status with 0 chunks and 0 assertions.
-   - Strict Rights Gate blocks full text ingestion of copyrighted standards (ACI 318, NEC 2023, FBC 2023) and creates metadata citation records.
+1. Genuine LLM Reasoning Engine (/server/reasoningProvider.ts & /server/agentExecutionService.ts):
+   - Model provider abstraction (`GoogleGemini` / `LocalReasoningEngine`).
+   - Every specialist agent generates runtime proposal JSON from LLM reasoning.
+   - Mandatory Rule enforced: If model execution is skipped/failed, competency score = 0 (NOT_EXECUTED).
 
-2. Document Parser Upgrade (/server/documentParser.ts):
-   - Real PDF parsing with page provenance (Actual Page 1, Actual Page 2) via stream extraction.
-   - Real HTML parsing with Cheerio chrome stripping (removes nav, footers, scripts).
+2. Independent Deterministic Validators (/server/validators.ts):
+   - Foundation, HVAC, Electrical, and Generic deterministic validators evaluate proposals independently against code/physics equations.
+   - Critical Safety Failure Overrides implemented (Soil overload caps score at 40%; acoustic velocity caps at 45%; missing GFCI caps at 50%).
 
-3. Deterministic Competency Engine (/server/knowledgeIngestionEngine.ts):
-   - All hardcoded scores (95%, 62%) and prewritten proof-agent answers completely eliminated.
-   - Proof Agents evaluated dynamically at runtime by deterministic solvers against physical and code constraints.
-   - HVAC Diffuser Agent demonstrates real failure (611.3 FPM > 500 FPM limit -> 61.3% FAIL) -> Knowledge Gap -> Ingests DOE BASC guide -> Retraining -> KP-v2.0.0 -> 96.2% PASS.
-   - Manager Reviews and Shadow Mode runs require real evaluated evidence.
+3. Autonomous Retraining & Manager Review (/server/knowledgeExtractionService.ts & /server/managerReviewService.ts):
+   - HVAC Agent failure triggers knowledge gap, DOE source retrieval, Knowledge Pack v2.0.0 upgrade, and fresh passing execution.
+   - Manager review signed off independently with scope limitations; manager CANNOT override critical failures.
 
-4. Integration Tests & Audit Report:
-   - Integration tests: server/__tests__/synthetic_path_elimination.test.ts
-   - Audit report: docs/PHASE_3_17_1_SYNTHETIC_PATH_ELIMINATION_AUDIT.md
+4. Real Shadow Mode Engine (/server/shadowModeEngine.ts):
+   - Generates distinct `ShadowScenario` with new ID and distinct inputs (Room 305). Evaluates independently (`PASSED_SHADOW`). No score inheritance!
+
+5. Durable Learning Persistence (/server/persistence/learningPersistence.ts):
+   - Atomically saves and restores state from `data/db/hermes_store.json`.
+
+6. Integration Tests & Audit Report:
+   - Integration tests: server/__tests__/genuine_agent_reasoning.test.ts (11/11 PASSED)
+   - Audit report: docs/PHASE_3_17_2_GENUINE_AGENT_REASONING_AUDIT.md

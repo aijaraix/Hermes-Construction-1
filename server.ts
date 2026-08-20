@@ -281,6 +281,20 @@ async function startServer() {
     res.json(KnowledgeIngestionEngine.getKnowledgeGaps());
   });
 
+  app.get('/api/knowledge/activities', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getLiveActivities());
+  });
+
+  app.get('/api/knowledge/executions', (req, res) => {
+    res.json(AgentExecutionService.getExecutionHistory());
+  });
+
+  app.get('/api/knowledge/execution/:id', (req, res) => {
+    const exec = AgentExecutionService.getExecution(req.params.id);
+    if (!exec) return res.status(404).json({ error: 'Execution record not found' });
+    res.json(exec);
+  });
+
   app.post('/api/knowledge/ingest', (req, res) => {
     try {
       const { agentRoleId } = req.body || {};

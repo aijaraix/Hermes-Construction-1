@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { AuthoritativeSourceDefinition, FetchedDocument, KnowledgeChunk, KnowledgeAssertion, AgentAuditTrace, ManagerReviewRecord, CompetencyTestResult, HttpSourceFetchRecord } from '../types/hermes';
-import { BookOpen, Database, RefreshCw, FileText, CheckCircle2, ShieldCheck, AlertCircle, ArrowUpRight, Play, Sparkles, Layers, ShieldAlert, Cpu, Award, Zap, ChevronRight, XCircle } from 'lucide-react';
+import { AuthoritativeSourceDefinition, FetchedDocument, KnowledgeChunk, KnowledgeAssertion, AgentAuditTrace, ManagerReviewRecord, CompetencyTestResult, HttpSourceFetchRecord, LiveLearningActivity, AgentExecutionRecord } from '../types/hermes';
+import { BookOpen, Database, RefreshCw, CheckCircle2, ShieldCheck, ArrowUpRight, Play, Sparkles, Layers, Award, Zap, XCircle, Activity, Eye, FileJson, Cpu } from 'lucide-react';
 
 export const KnowledgeGymView: React.FC = () => {
   const [sources, setSources] = useState<AuthoritativeSourceDefinition[]>([]);
@@ -10,11 +10,13 @@ export const KnowledgeGymView: React.FC = () => {
   const [assertions, setAssertions] = useState<KnowledgeAssertion[]>([]);
   const [auditTraces, setAuditTraces] = useState<AgentAuditTrace[]>([]);
   const [reviews, setReviews] = useState<ManagerReviewRecord[]>([]);
-  const [testResults, setTestResults] = useState<CompetencyTestResult[]>([]);
+  const [activities, setActivities] = useState<LiveLearningActivity[]>([]);
+  const [executions, setExecutions] = useState<AgentExecutionRecord[]>([]);
   const [selectedChunk, setSelectedChunk] = useState<KnowledgeChunk | null>(null);
+  const [selectedExecution, setSelectedExecution] = useState<AgentExecutionRecord | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isIngesting, setIsIngesting] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'traces' | 'retraining' | 'fetches' | 'chunks' | 'assertions' | 'reviews'>('traces');
+  const [activeTab, setActiveTab] = useState<'activities' | 'traces' | 'retraining' | 'fetches' | 'chunks' | 'assertions' | 'reviews'>('activities');
 
   useEffect(() => {
     fetchData();
@@ -23,7 +25,7 @@ export const KnowledgeGymView: React.FC = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [sourcesRes, docsRes, fetchesRes, chunksRes, assertionsRes, tracesRes, reviewsRes, resultsRes] = await Promise.all([
+      const [sourcesRes, docsRes, fetchesRes, chunksRes, assertionsRes, tracesRes, reviewsRes, actRes, execRes] = await Promise.all([
         fetch('/api/knowledge/sources'),
         fetch('/api/knowledge/documents'),
         fetch('/api/knowledge/fetches'),
@@ -31,26 +33,19 @@ export const KnowledgeGymView: React.FC = () => {
         fetch('/api/knowledge/assertions'),
         fetch('/api/knowledge/audit-traces'),
         fetch('/api/knowledge/manager-reviews'),
-        fetch('/api/knowledge/test-results')
+        fetch('/api/knowledge/activities'),
+        fetch('/api/knowledge/executions')
       ]);
 
-      const sourcesData = await sourcesRes.json();
-      const docsData = await docsRes.json();
-      const fetchesData = await fetchesRes.json();
-      const chunksData = await chunksRes.json();
-      const assertionsData = await assertionsRes.json();
-      const tracesData = await tracesRes.json();
-      const reviewsData = await reviewsRes.json();
-      const resultsData = await resultsRes.json();
-
-      setSources(sourcesData || []);
-      setDocuments(docsData || []);
-      setFetches(fetchesData || []);
-      setChunks(chunksData || []);
-      setAssertions(assertionsData || []);
-      setAuditTraces(tracesData || []);
-      setReviews(reviewsData || []);
-      setTestResults(resultsData || []);
+      setSources((await sourcesRes.json()) || []);
+      setDocuments((await docsRes.json()) || []);
+      setFetches((await fetchesRes.json()) || []);
+      setChunks((await chunksRes.json()) || []);
+      setAssertions((await assertionsRes.json()) || []);
+      setAuditTraces((await tracesRes.json()) || []);
+      setReviews((await reviewsRes.json()) || []);
+      setActivities((await actRes.json()) || []);
+      setExecutions((await execRes.json()) || []);
     } catch (e) {
       console.error('Failed to load Knowledge Gym data:', e);
     } finally {
@@ -78,12 +73,12 @@ export const KnowledgeGymView: React.FC = () => {
     return (
       <div className="p-8 text-center text-slate-400 flex flex-col items-center justify-center gap-3">
         <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-        <span>Connecting to HERMES Phase 3.17 Real Source & Competency Engine...</span>
+        <span>Connecting to HERMES Phase 3.17.2 Genuine Agent Reasoning & Evaluation Engine...</span>
       </div>
     );
   }
 
-  const retrainedTrace = auditTraces.find(t => t.retrainingTriggered);
+  const retrainedTrace = auditTraces.find((t) => t.retrainingTriggered);
 
   return (
     <div className="space-y-6">
@@ -96,10 +91,10 @@ export const KnowledgeGymView: React.FC = () => {
               <div className="p-2 bg-blue-950 border border-blue-800 rounded-xl text-blue-400">
                 <BookOpen className="w-6 h-6" />
               </div>
-              <h2 className="text-xl font-extrabold text-white tracking-tight">Phase 3.17 — Real Source Retrieval & Competency Engine</h2>
+              <h2 className="text-xl font-extrabold text-white tracking-tight">Phase 3.17.2 — Genuine Agent Reasoning & Independent Evaluation Engine</h2>
             </div>
             <p className="text-xs text-slate-400 mt-1 max-w-3xl">
-              Auditable source-grounded training pipeline: Real HTTP retrieval $\rightarrow$ SHA-256 byte hashing $\rightarrow$ Document parsing $\rightarrow$ Chunk provenance $\rightarrow$ Deterministic competency testing $\rightarrow$ Retraining loop $\rightarrow$ Manager review $\rightarrow$ Shadow mode.
+              Auditable pipeline: Authoritative retrieval $\rightarrow$ LLM Reasoning execution $\rightarrow$ Independent deterministic validation $\rightarrow$ Critical failure detection $\rightarrow$ Retraining loop $\rightarrow$ Manager sign-off $\rightarrow$ Real shadow mode.
             </p>
           </div>
 
@@ -110,7 +105,7 @@ export const KnowledgeGymView: React.FC = () => {
               className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 disabled:opacity-50"
             >
               <Play className={`w-4 h-4 ${isIngesting ? 'animate-spin' : ''}`} />
-              <span>{isIngesting ? 'Executing Cycle...' : 'Trigger Retraining Cycle'}</span>
+              <span>{isIngesting ? 'Executing Cycle...' : 'Trigger Autonomous Retraining Cycle'}</span>
             </button>
             <button
               onClick={fetchData}
@@ -129,8 +124,8 @@ export const KnowledgeGymView: React.FC = () => {
             <div className="text-lg font-bold text-white mt-0.5">{sources.length}</div>
           </div>
           <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-            <div className="text-[10px] text-slate-400 font-medium uppercase">HTTP Fetches</div>
-            <div className="text-lg font-bold text-cyan-400 mt-0.5">{fetches.length}</div>
+            <div className="text-[10px] text-slate-400 font-medium uppercase">LLM Executions</div>
+            <div className="text-lg font-bold text-cyan-400 mt-0.5">{executions.length}</div>
           </div>
           <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
             <div className="text-[10px] text-slate-400 font-medium uppercase">Parsed Chunks</div>
@@ -154,6 +149,15 @@ export const KnowledgeGymView: React.FC = () => {
       {/* Tabs */}
       <div className="flex border-b border-slate-800 space-x-2">
         <button
+          onClick={() => setActiveTab('activities')}
+          className={`pb-3 px-4 font-semibold text-xs border-b-2 transition flex items-center gap-1.5 ${
+            activeTab === 'activities' ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Activity className="w-3.5 h-3.5" />
+          <span>Live Activity Feed ({activities.length})</span>
+        </button>
+        <button
           onClick={() => setActiveTab('traces')}
           className={`pb-3 px-4 font-semibold text-xs border-b-2 transition flex items-center gap-1.5 ${
             activeTab === 'traces' ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -169,7 +173,7 @@ export const KnowledgeGymView: React.FC = () => {
           }`}
         >
           <Zap className="w-3.5 h-3.5" />
-          <span>Failed Test & Retraining Loop</span>
+          <span>Test Failure & Retraining Loop</span>
         </button>
         <button
           onClick={() => setActiveTab('fetches')}
@@ -178,7 +182,7 @@ export const KnowledgeGymView: React.FC = () => {
           }`}
         >
           <Database className="w-3.5 h-3.5" />
-          <span>HTTP Source Fetches & Checksums ({fetches.length})</span>
+          <span>HTTP Source Fetches ({fetches.length})</span>
         </button>
         <button
           onClick={() => setActiveTab('chunks')}
@@ -187,7 +191,7 @@ export const KnowledgeGymView: React.FC = () => {
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
-          <span>Chunk Provenance Explorer ({chunks.length})</span>
+          <span>Chunk Provenance ({chunks.length})</span>
         </button>
         <button
           onClick={() => setActiveTab('assertions')}
@@ -205,14 +209,54 @@ export const KnowledgeGymView: React.FC = () => {
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Manager Sign-Offs ({reviews.length})</span>
+          <span>Manager Reviews ({reviews.length})</span>
         </button>
       </div>
 
       {/* Tab Contents */}
+      {activeTab === 'activities' && (
+        <div className="space-y-3">
+          {activities.map((act) => (
+            <div key={act.activityId} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="space-y-1 max-w-3xl">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-cyan-400">{act.agentRoleId}</span>
+                  <span className="text-xs font-bold text-white">{act.title}</span>
+                </div>
+                <p className="text-xs text-slate-300">{act.details}</p>
+                <div className="text-[10px] text-slate-500">{act.timestamp}</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`px-2.5 py-1 text-[10px] font-bold rounded-lg border ${
+                  act.realityTag === 'FAILED'
+                    ? 'bg-red-950 text-red-400 border-red-800'
+                    : act.realityTag === 'RETRAINING'
+                    ? 'bg-amber-950 text-amber-400 border-amber-800'
+                    : 'bg-emerald-950 text-emerald-400 border-emerald-800'
+                }`}>
+                  {act.realityTag}
+                </span>
+                {act.executionId && (
+                  <button
+                    onClick={() => {
+                      const ex = executions.find((e) => e.executionId === act.executionId);
+                      if (ex) setSelectedExecution(ex);
+                    }}
+                    className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs flex items-center gap-1 border border-slate-700"
+                    title="View Execution Details"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {activeTab === 'traces' && (
         <div className="space-y-6">
-          {auditTraces.map(trace => (
+          {auditTraces.map((trace) => (
             <div key={trace.agentRoleId} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
                 <div>
@@ -237,14 +281,14 @@ export const KnowledgeGymView: React.FC = () => {
                 {/* 1. Source & Document */}
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                   <div className="font-bold text-cyan-400 flex items-center gap-1">
-                    <span>1. Source & Document</span>
+                    <span>1. Authoritative Source</span>
                   </div>
                   <div className="text-slate-300 font-semibold">{trace.documentId}</div>
                   <div className="font-mono text-[10px] text-slate-400 truncate">
                     SHA-256: {trace.documentChecksum}
                   </div>
                   <a href={trace.sourceUrl} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline flex items-center gap-1 text-[11px] pt-1">
-                    <span>Official URL</span>
+                    <span>Official Source URL</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </a>
                 </div>
@@ -252,7 +296,7 @@ export const KnowledgeGymView: React.FC = () => {
                 {/* 2. Knowledge Chunk & Assertion */}
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                   <div className="font-bold text-indigo-400 flex items-center gap-1">
-                    <span>2. Ingested Chunk & Assertion</span>
+                    <span>2. Retrieved Chunk & Assertion</span>
                   </div>
                   <div className="font-mono text-cyan-400">{trace.chunkId} (Page {trace.pageNumber})</div>
                   <div className="text-slate-300 line-clamp-2 italic">"{trace.chunkText}"</div>
@@ -262,20 +306,20 @@ export const KnowledgeGymView: React.FC = () => {
                 {/* 3. Knowledge Pack & Score */}
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                   <div className="font-bold text-purple-400 flex items-center gap-1">
-                    <span>3. Knowledge Pack & Test</span>
+                    <span>3. Pack & Evaluation</span>
                   </div>
                   <div className="font-mono text-slate-300">Pack: {trace.knowledgePackVersion}</div>
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-400">Final Score:</span>
+                    <span className="text-slate-400">Score:</span>
                     <span className="text-emerald-400 font-bold text-sm">{trace.finalTestScorePct}% (PASS)</span>
                   </div>
                   <div className="text-slate-400">Manager: {trace.managerRoleId} ({trace.managerReviewDecision})</div>
                 </div>
               </div>
 
-              {/* Agent Output Response */}
+              {/* Agent Response */}
               <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800 text-xs font-mono text-slate-300 space-y-1">
-                <div className="text-slate-400 font-sans text-[11px] font-bold uppercase">Actual Agent Response:</div>
+                <div className="text-slate-400 font-sans text-[11px] font-bold uppercase">Actual Agent Model Proposal Output:</div>
                 <div className="whitespace-pre-wrap">{trace.finalAgentResponse}</div>
               </div>
             </div>
@@ -293,7 +337,7 @@ export const KnowledgeGymView: React.FC = () => {
             <div>
               <h3 className="text-base font-extrabold text-white">Demonstrated Test Failure & Retraining Loop</h3>
               <p className="text-xs text-slate-400">
-                Agent <strong className="text-amber-400">{retrainedTrace.agentRoleId}</strong> failed its initial competency test, triggered a knowledge gap, ingested new DOE sources, updated its Knowledge Pack to v2.0.0, and passed its re-test.
+                Agent <strong className="text-amber-400">{retrainedTrace.agentRoleId}</strong> failed its initial competency test due to a neck velocity quiet zone constraint violation, created a knowledge gap, ingested DOE Building America guide, upgraded to Knowledge Pack v2.0.0, and passed its re-test.
               </p>
             </div>
           </div>
@@ -341,7 +385,7 @@ export const KnowledgeGymView: React.FC = () => {
       {/* HTTP Fetches Tab */}
       {activeTab === 'fetches' && (
         <div className="space-y-4">
-          {fetches.map(fetchRec => (
+          {fetches.map((fetchRec) => (
             <div key={fetchRec.fetchId} className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-mono font-bold text-cyan-400">{fetchRec.documentId}</span>
@@ -353,9 +397,6 @@ export const KnowledgeGymView: React.FC = () => {
               <div className="text-[11px] text-slate-400 font-mono">
                 SHA-256 Checksum: <span className="text-cyan-300">{fetchRec.checksumSha256}</span>
               </div>
-              <div className="text-[10px] text-slate-500">
-                Retrieved At: {fetchRec.retrievedAt} • Rights: {fetchRec.rightsStatus}
-              </div>
             </div>
           ))}
         </div>
@@ -364,7 +405,7 @@ export const KnowledgeGymView: React.FC = () => {
       {/* Chunks Tab */}
       {activeTab === 'chunks' && (
         <div className="space-y-3">
-          {chunks.map(chk => (
+          {chunks.map((chk) => (
             <div
               key={chk.chunkId}
               onClick={() => setSelectedChunk(chk)}
@@ -375,10 +416,6 @@ export const KnowledgeGymView: React.FC = () => {
                 <span className="text-slate-400">{chk.pageOrSection}</span>
               </div>
               <p className="text-xs text-slate-300 line-clamp-2">{chk.rawText}</p>
-              <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1">
-                <span>{chk.rightsStatus}</span>
-                <span className="text-cyan-400 font-medium">Click for Provenance Audit</span>
-              </div>
             </div>
           ))}
         </div>
@@ -387,15 +424,12 @@ export const KnowledgeGymView: React.FC = () => {
       {/* Assertions Tab */}
       {activeTab === 'assertions' && (
         <div className="space-y-3">
-          {assertions.map(ast => (
+          {assertions.map((ast) => (
             <div key={ast.assertionId} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
               <div>
                 <span className="font-mono text-xs text-indigo-400 font-bold">{ast.subject}</span>
                 <div className="text-xs text-white font-medium mt-0.5">
                   {ast.predicate} = <span className="text-cyan-400 font-bold">{ast.objectValue} {ast.units || ''}</span>
-                </div>
-                <div className="text-[10px] text-slate-400 mt-1">
-                  Section: {ast.sectionTitle} (Confidence: {(ast.confidence * 100).toFixed(0)}%)
                 </div>
               </div>
               <span className="px-2 py-0.5 bg-emerald-950 text-emerald-400 text-[10px] font-bold rounded border border-emerald-800">
@@ -409,7 +443,7 @@ export const KnowledgeGymView: React.FC = () => {
       {/* Reviews Tab */}
       {activeTab === 'reviews' && (
         <div className="space-y-4">
-          {reviews.map(rev => (
+          {reviews.map((rev) => (
             <div key={rev.reviewId} className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
@@ -423,13 +457,57 @@ export const KnowledgeGymView: React.FC = () => {
               <div className="text-xs text-slate-300">
                 <strong>Reasons:</strong> {rev.reasons.join(' ')}
               </div>
-              {rev.limitations && (
-                <div className="text-xs text-amber-300">
-                  <strong>Scope Limitations:</strong> {rev.limitations.join(' ')}
-                </div>
-              )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Execution Inspection Modal */}
+      {selectedExecution && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-3xl w-full space-y-4 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2">
+                <Cpu className="w-5 h-5 text-cyan-400" />
+                <h3 className="font-bold text-white text-sm">Execution & Reasoning Inspection Details</h3>
+              </div>
+              <button onClick={() => setSelectedExecution(null)} className="text-slate-400 hover:text-white text-xs font-bold">
+                Close [X]
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs font-mono text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+              <div><strong className="text-cyan-400">Execution ID:</strong> {selectedExecution.executionId}</div>
+              <div><strong className="text-cyan-400">Agent Role:</strong> {selectedExecution.agentRoleId}</div>
+              <div><strong className="text-cyan-400">Model Provider:</strong> {selectedExecution.modelProvider}</div>
+              <div><strong className="text-cyan-400">Model Name:</strong> {selectedExecution.modelName}</div>
+              <div><strong className="text-cyan-400">Prompt Hash:</strong> {selectedExecution.promptHash}</div>
+              <div><strong className="text-cyan-400">Status:</strong> {selectedExecution.executionStatus}</div>
+            </div>
+
+            <div className="space-y-1">
+              <div className="text-xs font-bold text-cyan-400 flex items-center gap-1">
+                <FileJson className="w-4 h-4" />
+                <span>Structured Proposal Output:</span>
+              </div>
+              <pre className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] font-mono text-emerald-300 overflow-x-auto">
+                {JSON.stringify(selectedExecution.structuredProposal, null, 2)}
+              </pre>
+            </div>
+
+            <div className="space-y-1">
+              <div className="text-xs font-bold text-indigo-400">Raw Model Response:</div>
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] font-mono text-slate-300 whitespace-pre-wrap max-h-48 overflow-y-auto">
+                {selectedExecution.rawResponse}
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button onClick={() => setSelectedExecution(null)} className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold">
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -447,8 +525,6 @@ export const KnowledgeGymView: React.FC = () => {
               <div><strong className="text-cyan-400">Chunk ID:</strong> {selectedChunk.chunkId}</div>
               <div><strong className="text-cyan-400">Source ID:</strong> {selectedChunk.sourceId}</div>
               <div><strong className="text-cyan-400">Page / Section:</strong> {selectedChunk.pageOrSection}</div>
-              <div><strong className="text-cyan-400">Rights Status:</strong> {selectedChunk.rightsStatus}</div>
-              <div><strong className="text-cyan-400">Source URL:</strong> {selectedChunk.sourceURL}</div>
             </div>
             <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono text-slate-200 whitespace-pre-wrap max-h-60 overflow-y-auto">
               {selectedChunk.rawText}
