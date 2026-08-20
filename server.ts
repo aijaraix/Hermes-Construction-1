@@ -196,7 +196,7 @@ async function startServer() {
     }
   });
 
-  // Phase 3.15 Autonomous Organization & Knowledge API Endpoints
+  // Phase 3.15 & 3.16 Autonomous Organization & Knowledge API Endpoints
   app.get('/api/organization/contracts', (req, res) => {
     res.json(AgentRegistry.getAllContracts());
   });
@@ -206,19 +206,47 @@ async function startServer() {
   });
 
   app.get('/api/organization/readiness', (req, res) => {
-    res.json(OrganizationEngine.getCoreReadinessGate());
+    res.json(primeOrchestrator.getCoreReadinessGate());
+  });
+
+  app.get('/api/readiness-gate', (req, res) => {
+    res.json(primeOrchestrator.getCoreReadinessGate());
   });
 
   app.get('/api/knowledge/sources', (req, res) => {
     res.json(SourceRegistry.getAllSources());
   });
 
+  app.get('/api/knowledge/documents', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getDocuments());
+  });
+
   app.get('/api/knowledge/chunks', (req, res) => {
     res.json(KnowledgeIngestionEngine.getChunks());
   });
 
-  app.get('/api/knowledge/entities', (req, res) => {
-    res.json(KnowledgeIngestionEngine.getEntities());
+  app.get('/api/knowledge/assertions', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getAssertions());
+  });
+
+  app.get('/api/knowledge/curriculum/:agentRoleId', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getCurriculum(req.params.agentRoleId) || null);
+  });
+
+  app.get('/api/knowledge/curricula', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getAllCurricula());
+  });
+
+  app.get('/api/knowledge/pack/:agentRoleId', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getKnowledgePack(req.params.agentRoleId) || null);
+  });
+
+  app.get('/api/knowledge/test-results', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getTestResults());
+  });
+
+  app.get('/api/knowledge/contradictions', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getContradictions());
   });
 
   app.get('/api/knowledge/reports', (req, res) => {
@@ -231,8 +259,18 @@ async function startServer() {
 
   app.post('/api/knowledge/ingest', (req, res) => {
     try {
-      const { agentRoleId } = req.body || { agentRoleId: 'HVAC-DUCT-ROUTING-AGENT' };
-      const report = KnowledgeIngestionEngine.triggerIngestionWorker(agentRoleId);
+      const { agentRoleId } = req.body || {};
+      const report = KnowledgeIngestionEngine.triggerAutonomousLearningStep(agentRoleId);
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  app.post('/api/knowledge/learn-step', (req, res) => {
+    try {
+      const { agentRoleId } = req.body || {};
+      const report = KnowledgeIngestionEngine.triggerAutonomousLearningStep(agentRoleId);
       res.json(report);
     } catch (e: any) {
       res.status(500).json({ error: e.message });

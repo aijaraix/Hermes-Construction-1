@@ -22,7 +22,7 @@ import { INITIAL_SEED_PROJECTS, INITIAL_KNOWLEDGE_ENTITIES, INITIAL_LEARNED_LESS
 import { generateBOMFromComponents, evaluateProposedRevision } from './deterministicGeometryEngine';
 import { reason, researchConstructionTopic } from './geminiService';
 import { loadDurableStore, saveDurableStore, HermesDurableStoreData } from './persistence/persistenceStore';
-import { FULL_SWARM_AGENTS } from './agentRegistry';
+import { FULL_SWARM_AGENTS, AgentRegistry } from './agentRegistry';
 import { createDefaultTaskGraphForProject, createProjectSnapshotFromTask } from './taskGraphEngine';
 import { sqliteAdapter } from './persistence/sqliteAdapter';
 import { AUTHORITATIVE_CORPUS_SOURCES, PROCESS_GRAPHS } from './constructionCorpus';
@@ -779,6 +779,43 @@ class HermesPrimeOrchestrator {
 
   public getLearnedLessons(): LearnedLesson[] {
     return this.learnedLessons;
+  }
+
+  public getCoreReadinessGate() {
+    const contracts = AgentRegistry.getAllContracts();
+    const coreContracts = contracts.filter((c) => c.isCoreHouse1Role);
+
+    const totalDefinedRoles = contracts.length;
+    const totalCoreHouse1Roles = coreContracts.length;
+
+    const curriculumAssignedCount = coreContracts.filter((c) => c.readinessStatus === 'CURRICULUM_ASSIGNED').length;
+    const initialIngestionCompleteCount = coreContracts.filter((c) => c.knowledgeCoveragePct >= 20.0).length;
+    const managerReviewedCount = coreContracts.filter((c) => c.knowledgeCoveragePct >= 50.0).length;
+    const shadowTestedCount = coreContracts.filter((c) => c.knowledgeCoveragePct >= 75.0).length;
+    const certifiedCount = coreContracts.filter((c) => c.readinessStatus === 'READY_FOR_CONSTRUCTION_WORK' || c.knowledgeCoveragePct >= 85.0).length;
+
+    const coreConstructionReadinessPct = totalCoreHouse1Roles > 0
+      ? Number(((certifiedCount / totalCoreHouse1Roles) * 100).toFixed(1))
+      : 0.0;
+
+    const isGymBlocked = coreConstructionReadinessPct < 85.0;
+    const gymBlockReason = isGymBlocked
+      ? `Construction Gym is currently BLOCKED. Core House #1 Trade Agent Readiness (${coreConstructionReadinessPct}%) is below mandatory threshold (85.0%). Execute autonomous learning steps to certify trade specialists.`
+      : 'All Core House #1 Trade Specialists certified. Construction Gym is UNBLOCKED for active site generation.';
+
+    return {
+      totalDefinedRoles,
+      totalCoreHouse1Roles,
+      curriculumAssignedCount,
+      initialIngestionCompleteCount,
+      managerReviewedCount,
+      shadowTestedCount,
+      certifiedCount,
+      requiredCertificationThreshold: 85.0,
+      coreConstructionReadinessPct,
+      isGymBlocked,
+      gymBlockReason
+    };
   }
 }
 

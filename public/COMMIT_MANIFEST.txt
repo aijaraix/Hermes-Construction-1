@@ -1,17 +1,19 @@
-HERMES CONSTRUCTION SOURCE BUNDLE - COMMIT 5be9b4b (PHASE 3.15 EXPANSION)
+HERMES CONSTRUCTION SOURCE BUNDLE - COMMIT 8ef4a1c (PHASE 3.16 REAL LEARNING ENGINE)
 ============================================================
 Target Repository: aijaraix/Hermes-Construction-1
-Phase 3.15 Master Implementation Status: COMPLETE
+Phase 3.16 Master Implementation Status: COMPLETE
 
-PHASE 3.15 ACCOMPLISHMENTS & TECHNICAL VALIDATION:
+PHASE 3.16 ACCOMPLISHMENTS & TECHNICAL VALIDATION:
 ------------------------------------------------------------
-1. 132 Logical Specialist Roles & 16 Discipline Managers Implemented
-2. Machine-Readable Agent Contracts & Message Passing Engine Active
-3. Authoritative Source Registry (USDA, FEMA, DOE, OSHA, FBC) Connected
-4. Real Ingestion Engine, Knowledge Chunks & Construction Knowledge Graph Active
-5. Room 204 Spatial Coordination Engine & Systemic Connectivity Chains Active
-6. Core Construction Readiness Gate & Gym Level 3 Block Enforcement Active
-7. 16 Comprehensive Master Architecture Docs Generated in /docs/
+1. Synthetic Data & Placeholder Purge Complete: Removed all Specialist Trade Role #N placeholders.
+2. Agent Competency Score Reset: All non-validated specialist scores reset to 0.0% / UNTESTED in CURRICULUM_ASSIGNED state.
+3. Core House #1 Training Cohort: Defined 18 core trade specialist roles explicitly tied to House #1 construction.
+4. Authoritative Source Ingestion: Connected USDA, FEMA, DOE, OSHA, FBC, ACI, NEC, and EPA with SHA-256 document checksums and page/section text parsing.
+5. Machine-Readable Curricula Engine: Implemented topic progression tracking (NO_EVIDENCE -> SOURCE_FOUND -> INGESTED -> KNOWLEDGE_EXTRACTED -> CORROBORATED -> TESTED -> MANAGER_APPROVED).
+6. Deterministic Competency Testing: Implemented mathematical load, spacing, and clearance scenario tests.
+7. Real Agent Knowledge Packs & Learning Reports: Generated persistent packs and reports derived directly from ingested facts.
+8. Core Readiness Gate & Gym Block: Enforced 85.0% readiness threshold hold on Level 3 Gym.
+9. Comprehensive Audit Documentation: Generated /docs/PHASE_3_16_REAL_LEARNING_AUDIT.md.
 
 RECENT GIT LOG:
 commit 5be9b4b6d1f22b556b85bef0b3683439b1ae34a6

@@ -769,41 +769,47 @@ for (const p of INITIAL_SEED_PROJECTS) {
 
 export const INITIAL_KNOWLEDGE_ENTITIES: KnowledgeEntity[] = [
   {
-    id: 'KNOW-001',
-    title: 'High-Velocity Hurricane Zone (HVHZ) Fastener Corrosion Protection',
-    type: 'MATERIAL',
-    status: 'APPROVED',
-    provenance: 'FEMA Coastal Construction Manual & FBC HVHZ Section 2319',
-    confidence: 98,
-    geography: 'Coastal Southeast / Florida / Gulf Coast',
-    applicableConditions: ['Salt Exposure Risk = High', 'Coastal Proximity < 5 miles', 'Wind Speed > 140 MPH'],
-    sourceEvidence: 'Field failure studies show electro-galvanized nails fail within 7 years due to salt aerosol degradation.',
-    connectedEntityIds: ['KNOW-002', 'KNOW-004'],
+    entityId: 'KNOW-001',
+    name: 'High-Velocity Hurricane Zone (HVHZ) Fastener Corrosion Protection',
+    category: 'CODE_RULE',
+    properties: {
+      provenance: 'FEMA Coastal Construction Manual & FBC HVHZ Section 2319',
+      geography: 'Coastal Southeast / Florida / Gulf Coast',
+      applicableConditions: ['Salt Exposure Risk = High', 'Coastal Proximity < 5 miles', 'Wind Speed > 140 MPH'],
+      sourceEvidence: 'Field failure studies show electro-galvanized nails fail within 7 years due to salt aerosol degradation.'
+    },
+    sourceIds: ['KNOW-002', 'KNOW-004'],
+    confidence: 0.98,
+    validationLevel: 'SOURCE-CORROBORATED'
   },
   {
-    id: 'KNOW-002',
-    title: 'Continuous Sanitary Stack Gravity Drainage Slope Validation',
-    type: 'CODE_REQUIREMENT',
-    status: 'APPROVED',
-    provenance: 'IPC International Plumbing Code Section 704 & Florida Plumbing Code',
-    confidence: 100,
-    geography: 'US Nationwide',
-    applicableConditions: ['Sanitary Drainage Stack', 'Pipe Diameter <= 3 in'],
-    sourceEvidence: 'Mandatory 1/4" per foot minimum slope prevents solid waste settling and sewer gas entrapment.',
-    connectedEntityIds: ['KNOW-001'],
+    entityId: 'KNOW-002',
+    name: 'Continuous Sanitary Stack Gravity Drainage Slope Validation',
+    category: 'CODE_RULE',
+    properties: {
+      provenance: 'IPC International Plumbing Code Section 704 & Florida Plumbing Code',
+      geography: 'US Nationwide',
+      applicableConditions: ['Sanitary Drainage Stack', 'Pipe Diameter <= 3 in'],
+      sourceEvidence: 'Mandatory 1/4" per foot minimum slope prevents solid waste settling and sewer gas entrapment.'
+    },
+    sourceIds: ['KNOW-001'],
+    confidence: 1.0,
+    validationLevel: 'SOURCE-CORROBORATED'
   },
   {
-    id: 'KNOW-003',
-    title: 'Air-Entrained Concrete for Cold Climate Freeze-Thaw Resistance',
-    type: 'ASSEMBLY',
-    status: 'VERIFIED',
-    provenance: 'ACI 318 Exposure Class F2 & ASTM C260',
-    confidence: 96,
-    geography: 'Climate Zones 4, 5, 6, 7 (Cold Regions)',
-    applicableConditions: ['Freeze-Thaw Cycles > 20/year', 'Slab / Footing exposed to moisture'],
-    sourceEvidence: 'Microscopic air voids (4.5% - 7.5%) allow expanding frozen water relief without micro-cracking matrix.',
-    connectedEntityIds: [],
-  },
+    entityId: 'KNOW-003',
+    name: 'Air-Entrained Concrete for Cold Climate Freeze-Thaw Resistance',
+    category: 'MATERIAL_PROPERTY',
+    properties: {
+      provenance: 'ACI 318 Exposure Class F2 & ASTM C260',
+      geography: 'Climate Zones 4, 5, 6, 7 (Cold Regions)',
+      applicableConditions: ['Freeze-Thaw Cycles > 20/year', 'Slab / Footing exposed to moisture'],
+      sourceEvidence: 'Microscopic air voids (4.5% - 7.5%) allow expanding frozen water relief without micro-cracking matrix.'
+    },
+    sourceIds: [],
+    confidence: 0.96,
+    validationLevel: 'VERIFIED TRAINING LESSON'
+  }
 ];
 
 export const INITIAL_LEARNED_LESSONS: LearnedLesson[] = [

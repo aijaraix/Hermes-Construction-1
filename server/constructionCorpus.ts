@@ -216,39 +216,45 @@ export const PROCESS_GRAPHS: Record<string, ConstructionProcessGraph> = {
 
 export const MATERIAL_KNOWLEDGE_BASE: KnowledgeEntity[] = [
   {
-    id: 'MAT-CONCRETE-4000',
-    title: '4,000 PSI Ready-Mix Concrete with Silica Fume Admixture',
-    type: 'MATERIAL',
-    status: 'APPROVED',
-    provenance: 'ACI 318-19 Chapter 19 & FBC 2023 Section 1905',
-    confidence: 99.5,
-    geography: 'Coastal & High Exposure Regions',
-    applicableConditions: ['Exposure Class C2 (Chloride Exposure)', 'HVHZ Foundation Slabs'],
-    sourceEvidence: 'High durability blend preventing saltwater intrusion and rebar corrosion.',
-    connectedEntityIds: ['FBC-2023-HVHZ', 'ACI-318-20'],
+    entityId: 'MAT-CONCRETE-4000',
+    name: '4,000 PSI Ready-Mix Concrete with Silica Fume Admixture',
+    category: 'MATERIAL_PROPERTY',
+    properties: {
+      provenance: 'ACI 318-19 Chapter 19 & FBC 2023 Section 1905',
+      geography: 'Coastal & High Exposure Regions',
+      applicableConditions: ['Exposure Class C2 (Chloride Exposure)', 'HVHZ Foundation Slabs'],
+      sourceEvidence: 'High durability blend preventing saltwater intrusion and rebar corrosion.'
+    },
+    sourceIds: ['FBC-2023-HVHZ', 'ACI-318-20'],
+    confidence: 0.995,
+    validationLevel: 'SOURCE-CORROBORATED'
   },
   {
-    id: 'MAT-SIMPSON-HDU4',
-    title: 'Simpson Strong-Tie HDU4 Heavy Hold-Down Anchor',
-    type: 'PRODUCT',
-    status: 'APPROVED',
-    provenance: 'FBC Product Approval FL-14298',
-    confidence: 99.8,
-    geography: 'Florida HVHZ (160+ MPH Wind Zones)',
-    applicableConditions: ['Wood-to-Concrete Continuous Tension Load Path'],
-    sourceEvidence: '4,565 lbs allowable tension uplift capacity.',
-    connectedEntityIds: ['FBC-2023-HVHZ', 'ENV-WIND-04'],
+    entityId: 'MAT-SIMPSON-HDU4',
+    name: 'Simpson Strong-Tie HDU4 Heavy Hold-Down Anchor',
+    category: 'MANUFACTURER_PRODUCT_DATA',
+    properties: {
+      provenance: 'FBC Product Approval FL-14298',
+      geography: 'Florida HVHZ (160+ MPH Wind Zones)',
+      applicableConditions: ['Wood-to-Concrete Continuous Tension Load Path'],
+      sourceEvidence: '4,565 lbs allowable tension uplift capacity.'
+    },
+    sourceIds: ['FBC-2023-HVHZ', 'ENV-WIND-04'],
+    confidence: 0.998,
+    validationLevel: 'SOURCE-CORROBORATED'
   },
   {
-    id: 'MAT-STEGO-VAPOR-15',
-    title: 'Stego Wrap 15-Mil Class A Below-Slab Vapor Retarder',
-    type: 'MATERIAL',
-    status: 'APPROVED',
-    provenance: 'ASTM E1745 Class A Standard',
-    confidence: 99.0,
-    geography: 'High Water Table & Coastal Regions',
-    applicableConditions: ['Below Concrete Slab-on-Grade'],
-    sourceEvidence: '0.0086 perms water vapor permeance.',
-    connectedEntityIds: ['DOE-BUILDING-AMERICA'],
-  },
+    entityId: 'MAT-STEGO-VAPOR-15',
+    name: 'Stego Wrap 15-Mil Class A Below-Slab Vapor Retarder',
+    category: 'MATERIAL_PROPERTY',
+    properties: {
+      provenance: 'ASTM E1745 Class A Standard',
+      geography: 'High Water Table & Coastal Regions',
+      applicableConditions: ['Below Concrete Slab-on-Grade'],
+      sourceEvidence: '0.0086 perms water vapor permeance.'
+    },
+    sourceIds: ['DOE-BUILDING-AMERICA'],
+    confidence: 0.99,
+    validationLevel: 'SOURCE-CORROBORATED'
+  }
 ];

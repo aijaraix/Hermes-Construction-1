@@ -6,7 +6,7 @@ export const FULL_SWARM_AGENTS: SwarmAgentEntity[] = [
     name: 'HERMES Prime Orchestrator Swarm',
     type: 'ORCHESTRATOR',
     specialty: 'Master Construction Governance & Gym Control',
-    status: 'ACTIVE',
+    status: 'RUNNING',
     activeTaskId: 'TASK-SYS-01',
     decisionsCount: 142,
     revisionsCount: 12,
@@ -17,7 +17,7 @@ export const FULL_SWARM_AGENTS: SwarmAgentEntity[] = [
     name: 'Structural Engineering Swarm',
     type: 'SPECIALIST',
     specialty: 'ACI 318 Concrete & ASCE 7 Wind Uplift Analysis',
-    status: 'ACTIVE',
+    status: 'RUNNING',
     activeTaskId: 'TASK-STRUCT-01',
     decisionsCount: 98,
     revisionsCount: 4,
@@ -32,7 +32,7 @@ export class AgentRegistry {
   public static initialize(): void {
     if (this.initialized) return;
 
-    // 1. Leadership & Governance Roles
+    // 1. Leadership & Governance Roles (Certified Management Infrastructure)
     this.registerContract({
       roleId: 'HERMES-PRIME-ORCHESTRATOR',
       roleName: 'HERMES Construction Prime Leader',
@@ -102,9 +102,9 @@ export class AgentRegistry {
       validationRequirements: ['Constructability score >= 90%'],
       escalationRules: ['Escalate trade sequence deadlock to Executive'],
       knowledgeCurriculum: ['Field Superintendent Practices', 'OSHA 1926'],
-      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
-      competencyScore: 96.0,
-      knowledgeCoveragePct: 94.0,
+      readinessStatus: 'CURRICULUM_ASSIGNED',
+      competencyScore: 0.0,
+      knowledgeCoveragePct: 0.0,
       isCoreHouse1Role: true
     });
 
@@ -169,9 +169,9 @@ export class AgentRegistry {
         validationRequirements: ['100% code rule compliance'],
         escalationRules: ['Escalate unresolvable clashes to Superintendent'],
         knowledgeCurriculum: [`${dm.name} Master Curriculum`],
-        readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
-        competencyScore: 95.0,
-        knowledgeCoveragePct: 92.0,
+        readinessStatus: 'CURRICULUM_ASSIGNED',
+        competencyScore: 0.0,
+        knowledgeCoveragePct: 0.0,
         isCoreHouse1Role: true
       });
     });
@@ -192,9 +192,9 @@ export class AgentRegistry {
       validationRequirements: ['Zero corridor/shaft spatial collisions'],
       escalationRules: ['Escalate riser conflict to Spatial Superintendent'],
       knowledgeCurriculum: ['Floor Coordination Practices'],
-      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
-      competencyScore: 94.0,
-      knowledgeCoveragePct: 90.0,
+      readinessStatus: 'CURRICULUM_ASSIGNED',
+      competencyScore: 0.0,
+      knowledgeCoveragePct: 0.0,
       isCoreHouse1Role: true
     });
 
@@ -213,9 +213,9 @@ export class AgentRegistry {
       validationRequirements: ['Zero corridor/shaft spatial collisions'],
       escalationRules: ['Escalate riser conflict to Spatial Superintendent'],
       knowledgeCurriculum: ['Floor Coordination Practices'],
-      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
-      competencyScore: 94.0,
-      knowledgeCoveragePct: 90.0,
+      readinessStatus: 'CURRICULUM_ASSIGNED',
+      competencyScore: 0.0,
+      knowledgeCoveragePct: 0.0,
       isCoreHouse1Role: true
     });
 
@@ -233,121 +233,107 @@ export class AgentRegistry {
       outputs: ['Room 204 Coordinated Layout', 'Trade Consultation Records'],
       tools: ['evaluateDeviceErgonomics()', 'issueConsultation()', 'checkRoomClash()'],
       knowledgeDomains: ['Room Ergonomics', 'ADA Accessibility', 'NEC Device Placement'],
-      canConsult: ['ELECTRICAL-BRANCH-CIRCUIT-AGENT', 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT'],
+      canConsult: ['BRANCH-CIRCUIT-RECEPTACLE-AGENT', 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT'],
       cannotDo: ['Cannot move structural load bearing walls without Structural Manager approval'],
       validationRequirements: ['100% device usability and clash prevention'],
       escalationRules: ['Escalate multi-trade grid deadlock to Floor Manager L02'],
       knowledgeCurriculum: ['Room Spatial Management'],
-      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
-      competencyScore: 95.0,
-      knowledgeCoveragePct: 91.0,
+      readinessStatus: 'CURRICULUM_ASSIGNED',
+      competencyScore: 0.0,
+      knowledgeCoveragePct: 0.0,
       isCoreHouse1Role: true
     });
 
-    // 4. Register Representative Trade Specialist Agents (Populating up to 125+ Roles)
-    const tradeSpecialistTemplates: Array<{
+    // 4. Core House #1 Trade Specialist Training Cohort (18 Core Specialist Roles)
+    const coreTradeCohort: Array<{
       id: string;
       name: string;
       manager: string;
       disc: SystemCategory | 'Civil' | 'Controls' | 'Quality' | 'Procurement';
-      isCore: boolean;
-      status: AgentOnboardingState;
-      comp: number;
-      cov: number;
     }> = [
-      // Site & Civil
-      { id: 'PARCEL-SURVEY-ANALYSIS-AGENT', name: 'Parcel & Survey Analysis Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 92 },
-      { id: 'TOPOGRAPHY-GRADING-AGENT', name: 'Topography & Grading Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 90 },
-      { id: 'SOILS-GEOTECHNICAL-AGENT', name: 'Soils & Geotechnical Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
-      { id: 'STORMWATER-DRAINAGE-AGENT', name: 'Stormwater & Drainage Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 91, cov: 89 },
-      { id: 'UTILITY-CONNECTION-AGENT', name: 'Utility Connection Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 91 },
-
-      // Structural
-      { id: 'SHALLOW-FOOTING-DESIGN-AGENT', name: 'Shallow Footing Design Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 94 },
-      { id: 'CONCRETE-SLAB-STRUCTURAL-AGENT', name: 'Concrete Slab Structural Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 92 },
-      { id: 'WOOD-FRAMING-TRUSS-AGENT', name: 'Wood Framing & Truss Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 91 },
-      { id: 'MASONRY-CMU-STRUCTURAL-AGENT', name: 'Masonry CMU Structural Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 90 },
-      { id: 'FASTENER-UPLIFT-AGENT', name: 'Fastener & Uplift Anchor Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 97, cov: 95 },
-
-      // Envelope
-      { id: 'WATERPROOFING-FLASHING-AGENT', name: 'Waterproofing & Flashing Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 91 },
-      { id: 'THERMAL-INSULATION-AGENT', name: 'Thermal Insulation Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 89 },
-      { id: 'STANDING-SEAM-ROOFING-AGENT', name: 'Standing Seam Roofing Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
-
-      // Plumbing
-      { id: 'DOMESTIC-WATER-PIPING-AGENT', name: 'Domestic Water Piping Specialist', manager: 'PLUMBING-SYSTEMS-MANAGER', disc: 'Plumbing', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 90 },
-      { id: 'SANITARY-DRAIN-VENT-AGENT', name: 'Sanitary Drain & Vent Specialist', manager: 'PLUMBING-SYSTEMS-MANAGER', disc: 'Plumbing', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 92 },
-
-      // Electrical
-      { id: 'MAIN-SERVICE-PANEL-AGENT', name: 'Main Service & Panel Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 93 },
-      { id: 'BRANCH-CIRCUIT-RECEPTACLE-AGENT', name: 'Branch Circuit & Receptacle Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 92 },
-      { id: 'LIGHTING-SWITCHING-AGENT', name: 'Lighting & Switching Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 93, cov: 91 },
-
-      // HVAC
-      { id: 'HEATING-COOLING-LOAD-AGENT', name: 'Heating & Cooling Load Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
-      { id: 'HVAC-DUCT-ROUTING-AGENT', name: 'Duct Routing & Friction Loss Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 91 },
-      { id: 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT', name: 'Supply & Return Diffuser Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 92, cov: 90 },
-
-      // Fire
-      { id: 'FIRE-SPRINKLER-EGRESS-AGENT', name: 'Fire Sprinkler & Egress Specialist', manager: 'FIRE-LIFE-SAFETY-MANAGER', disc: 'Fire Protection', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 94 },
-
-      // Inspection
-      { id: 'INDEPENDENT-STRUCTURAL-INSPECTOR', name: 'Independent Structural Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 98, cov: 96 },
-      { id: 'INDEPENDENT-MEP-INSPECTOR', name: 'Independent MEP Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 97, cov: 95 },
-      { id: 'INDEPENDENT-ENVELOPE-INSPECTOR', name: 'Independent Envelope Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 96, cov: 94 },
-
-      // Sourcing & Quantities
-      { id: 'QUANTITY-TAKEOFF-AGENT', name: 'Quantity Takeoff Estimator', manager: 'QUANTITY-ESTIMATING-MANAGER', disc: 'Procurement', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 95, cov: 93 },
-      { id: 'SUPPLIER-PRICING-AGENT', name: 'Supplier Pricing Specialist', manager: 'PROCUREMENT-LOGISTICS-MANAGER', disc: 'Procurement', isCore: true, status: 'READY_FOR_CONSTRUCTION_WORK', comp: 94, cov: 91 }
+      { id: 'TOPOGRAPHY-GRADING-AGENT', name: 'Site Grading & Drainage Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
+      { id: 'SOILS-GEOTECHNICAL-AGENT', name: 'Soils & Geotechnical Foundation Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
+      { id: 'SHALLOW-FOOTING-DESIGN-AGENT', name: 'Shallow Footing & Foundation Design Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
+      { id: 'CONCRETE-SLAB-STRUCTURAL-AGENT', name: 'Structural Concrete Slab Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
+      { id: 'WOOD-FRAMING-TRUSS-AGENT', name: 'Wood Framing & Truss Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
+      { id: 'FASTENER-UPLIFT-AGENT', name: 'Fastener & Uplift Anchor Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
+      { id: 'WATERPROOFING-FLASHING-AGENT', name: 'Waterproofing & Envelope Flashing Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope' },
+      { id: 'THERMAL-INSULATION-AGENT', name: 'Thermal Insulation & Air Barrier Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope' },
+      { id: 'STANDING-SEAM-ROOFING-AGENT', name: 'Standing Seam Roof Assembly Specialist', manager: 'BUILDING-ENVELOPE-MANAGER', disc: 'Envelope' },
+      { id: 'DOMESTIC-WATER-PIPING-AGENT', name: 'Domestic Water & Sanitary Piping Specialist', manager: 'PLUMBING-SYSTEMS-MANAGER', disc: 'Plumbing' },
+      { id: 'SANITARY-DRAIN-VENT-AGENT', name: 'Sanitary Drain & Vent Layout Specialist', manager: 'PLUMBING-SYSTEMS-MANAGER', disc: 'Plumbing' },
+      { id: 'MAIN-SERVICE-PANEL-AGENT', name: 'Main Electrical Service & Panel Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical' },
+      { id: 'BRANCH-CIRCUIT-RECEPTACLE-AGENT', name: 'Branch Circuit & Device Placement Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical' },
+      { id: 'HEATING-COOLING-LOAD-AGENT', name: 'HVAC Heating & Cooling Load Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC' },
+      { id: 'HVAC-DUCT-ROUTING-AGENT', name: 'Duct Routing & Air Distribution Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC' },
+      { id: 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT', name: 'Supply & Return Diffuser Placement Specialist', manager: 'MECHANICAL-HVAC-MANAGER', disc: 'HVAC' },
+      { id: 'INDEPENDENT-STRUCTURAL-INSPECTOR', name: 'Independent Structural Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality' },
+      { id: 'QUANTITY-TAKEOFF-AGENT', name: 'Quantity Takeoff & BOM Estimator', manager: 'QUANTITY-ESTIMATING-MANAGER', disc: 'Procurement' }
     ];
 
-    tradeSpecialistTemplates.forEach(t => {
+    coreTradeCohort.forEach(t => {
       this.registerContract({
         roleId: t.id,
         roleName: t.name,
         managerRoleId: t.manager,
         discipline: t.disc,
-        responsibilities: [`Execute domain analysis and 3D placement for ${t.name}`],
-        inputs: ['Project specification', 'BIM model'],
-        outputs: ['Trade components', 'Calculation proof'],
+        responsibilities: [`Execute domain analysis and verified engineering calculations for ${t.name}`],
+        inputs: ['Project specification', 'Authoritative knowledge packs'],
+        outputs: ['Trade components', 'Calculation proof', 'Source-cited rationale'],
         tools: ['calculateDomainMath()', 'queryKnowledgePack()'],
         knowledgeDomains: [t.name, 'FBC 2023'],
         canConsult: [t.manager],
-        cannotDo: ['Cannot violate building code minimums'],
-        validationRequirements: ['100% calculation compliance'],
+        cannotDo: ['Cannot violate building code minimums without manager signoff'],
+        validationRequirements: ['100% calculation compliance and competency certification'],
         escalationRules: ['Escalate code failure to Discipline Manager'],
-        knowledgeCurriculum: [`${t.name} Curriculum`],
-        readinessStatus: t.status,
-        competencyScore: t.comp,
-        knowledgeCoveragePct: t.cov,
-        isCoreHouse1Role: t.isCore
+        knowledgeCurriculum: [`${t.name} Core Curriculum`],
+        readinessStatus: 'CURRICULUM_ASSIGNED',
+        competencyScore: 0.0,
+        knowledgeCoveragePct: 0.0,
+        isCoreHouse1Role: true
       });
     });
 
-    // Dynamically expand to 132 total defined roles
-    for (let i = 1; i <= 84; i++) {
-      const id = `SPECIALIST-TRADE-ROLE-${String(i).padStart(3, '0')}`;
+    // 5. Additional Authentic Trade Specialist Roles (Clean Roster — No generic placeholders)
+    const secondarySpecialistCohort: Array<{
+      id: string;
+      name: string;
+      manager: string;
+      disc: SystemCategory | 'Civil' | 'Controls' | 'Quality' | 'Procurement';
+    }> = [
+      { id: 'PARCEL-SURVEY-ANALYSIS-AGENT', name: 'Parcel Boundary & Survey Analysis Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
+      { id: 'STORMWATER-DRAINAGE-AGENT', name: 'Civil Stormwater Retention Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
+      { id: 'UTILITY-CONNECTION-AGENT', name: 'Underground Utility Trenching Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
+      { id: 'MASONRY-CMU-STRUCTURAL-AGENT', name: 'Masonry CMU Bond Beam Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
+      { id: 'LIGHTING-SWITCHING-AGENT', name: 'Interior Lighting & Switching Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical' },
+      { id: 'FIRE-SPRINKLER-EGRESS-AGENT', name: 'Fire Sprinkler & Egress Specialist', manager: 'FIRE-LIFE-SAFETY-MANAGER', disc: 'Fire Protection' },
+      { id: 'INDEPENDENT-MEP-INSPECTOR', name: 'Independent MEP Quality Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality' },
+      { id: 'INDEPENDENT-ENVELOPE-INSPECTOR', name: 'Independent Envelope Air Infiltration Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality' },
+      { id: 'SUPPLIER-PRICING-AGENT', name: 'Supplier Regional Price Intelligence Specialist', manager: 'PROCUREMENT-LOGISTICS-MANAGER', disc: 'Procurement' }
+    ];
+
+    secondarySpecialistCohort.forEach(t => {
       this.registerContract({
-        roleId: id,
-        roleName: `Specialist Trade Role #${i}`,
-        managerRoleId: 'MEANS-METHODS-MANAGER',
-        discipline: 'Architecture',
-        responsibilities: [`Perform specialized construction calculations for trade domain #${i}`],
-        inputs: ['Subsystem requirements'],
-        outputs: ['Trade submittal'],
-        tools: ['runTradeAnalysis()'],
-        knowledgeDomains: [`Trade Domain #${i}`],
-        canConsult: ['MEANS-METHODS-MANAGER'],
-        cannotDo: ['Cannot execute without manager signoff'],
-        validationRequirements: ['Competency score >= 85%'],
-        escalationRules: ['Escalate knowledge gaps to Knowledge Director'],
-        knowledgeCurriculum: [`Specialist Curriculum #${i}`],
-        readinessStatus: i <= 20 ? 'READY_FOR_CONSTRUCTION_WORK' : 'RESEARCHING',
-        competencyScore: i <= 20 ? 90.0 : 65.0,
-        knowledgeCoveragePct: i <= 20 ? 88.0 : 55.0,
-        isCoreHouse1Role: i <= 10
+        roleId: t.id,
+        roleName: t.name,
+        managerRoleId: t.manager,
+        discipline: t.disc,
+        responsibilities: [`Execute trade domain analysis for ${t.name}`],
+        inputs: ['Project specifications'],
+        outputs: ['Trade submittals'],
+        tools: ['calculateDomainMath()'],
+        knowledgeDomains: [t.name],
+        canConsult: [t.manager],
+        cannotDo: ['Cannot execute without manager review'],
+        validationRequirements: ['Competency certification required'],
+        escalationRules: ['Escalate to manager'],
+        knowledgeCurriculum: [`${t.name} Curriculum`],
+        readinessStatus: 'CURRICULUM_ASSIGNED',
+        competencyScore: 0.0,
+        knowledgeCoveragePct: 0.0,
+        isCoreHouse1Role: false
       });
-    }
+    });
 
     this.initialized = true;
   }

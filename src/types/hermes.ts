@@ -130,14 +130,21 @@ export type PriceSourceType =
   | 'QUOTE REQUIRED';
 
 export type KnowledgeValidationLevel = 
+  | 'UNVALIDATED'
   | 'DISCOVERED'
   | 'EXPERIMENTAL'
+  | 'EXTRACTED'
   | 'RULE-CHECKED'
   | 'ENGINEERING-CALCULATED'
+  | 'CORROBORATED'
   | 'SOURCE-CORROBORATED'
   | 'SOURCE-VERIFIED'
+  | 'TESTED'
+  | 'MANAGER_APPROVED'
   | 'PROFESSIONAL-REVIEW-REQUIRED'
   | 'VERIFIED TRAINING LESSON'
+  | 'CONTRADICTED'
+  | 'REJECTED'
   | 'DEPRECATED'
   | 'INVALID';
 
@@ -293,16 +300,34 @@ export type PromotionStatus =
   | 'DEPRECATED';
 
 export interface KnowledgeEntity {
-  id: string;
-  title: string;
-  type: 'MATERIAL' | 'ASSEMBLY' | 'ENVIRONMENT' | 'METHOD' | 'HAZARD' | 'FAILURE_MODE' | 'CODE_REQUIREMENT' | 'PRODUCT' | 'SUPPLIER';
-  status: PromotionStatus;
-  provenance: string;
+  id?: string;
+  title?: string;
+  type?: 'MATERIAL' | 'ASSEMBLY' | 'ENVIRONMENT' | 'METHOD' | 'HAZARD' | 'FAILURE_MODE' | 'CODE_REQUIREMENT' | 'PRODUCT' | 'SUPPLIER';
+  status?: PromotionStatus;
+  provenance?: string;
   confidence: number;
-  geography: string;
-  applicableConditions: string[];
-  sourceEvidence: string;
-  connectedEntityIds: string[];
+  geography?: string;
+  applicableConditions?: string[];
+  sourceEvidence?: string;
+  connectedEntityIds?: string[];
+  entityId?: string;
+  name?: string;
+  category?: 
+    | 'MATERIAL_PROPERTY'
+    | 'PHYSICAL_FACT'
+    | 'ENGINEERING_PROPERTY'
+    | 'CODE_RULE'
+    | 'MANUFACTURER_PRODUCT_DATA'
+    | 'INSTALLATION_REQUIREMENT'
+    | 'CONSTRUCTION_PRACTICE'
+    | 'FAILURE_HISTORY'
+    | 'REGIONAL_PRACTICE'
+    | 'PRICE_DATA'
+    | 'SUPPLY_DATA'
+    | string;
+  properties?: Record<string, any>;
+  sourceIds?: string[];
+  validationLevel?: KnowledgeValidationLevel;
 }
 
 export interface LearnedLesson {
@@ -384,15 +409,20 @@ export interface TaskGraphNode {
 export interface SwarmAgentEntity {
   id: string;
   name: string;
-  swarmGroup: string;
+  type?: string;
+  swarmGroup?: string;
   specialty: string;
-  status: 'IDLE' | 'RUNNING' | 'WAITING' | 'FAILED' | 'COMPLETED';
+  status: 'IDLE' | 'RUNNING' | 'WAITING' | 'FAILED' | 'COMPLETED' | 'ACTIVE';
+  activeTaskId?: string;
+  decisionsCount?: number;
+  revisionsCount?: number;
+  accuracy?: number;
   currentTaskId?: string;
   projectId?: string;
-  confidence: number;
-  lastAction: string;
-  lastActionTime: string;
-  retryCount: number;
+  confidence?: number;
+  lastAction?: string;
+  lastActionTime?: string;
+  retryCount?: number;
   errorLog?: string;
 }
 
@@ -786,26 +816,7 @@ export interface KnowledgeChunk {
   rightsStatus: string;
 }
 
-export interface KnowledgeEntity {
-  entityId: string;
-  name: string;
-  category: 
-    | 'MATERIAL_PROPERTY'
-    | 'PHYSICAL_FACT'
-    | 'ENGINEERING_PROPERTY'
-    | 'CODE_RULE'
-    | 'MANUFACTURER_PRODUCT_DATA'
-    | 'INSTALLATION_REQUIREMENT'
-    | 'CONSTRUCTION_PRACTICE'
-    | 'FAILURE_HISTORY'
-    | 'REGIONAL_PRACTICE'
-    | 'PRICE_DATA'
-    | 'SUPPLY_DATA';
-  properties: Record<string, any>;
-  sourceIds: string[];
-  confidence: number;
-  validationLevel: KnowledgeValidationLevel;
-}
+
 
 export interface KnowledgeGapItem {
   gapId: string;
@@ -864,5 +875,163 @@ export interface CoreReadinessGate {
   isGymBlocked: boolean;
   gymBlockReason: string;
 }
+
+// ======================================================================
+// PHASE 3.16 REAL KNOWLEDGE & COMPETENCY EXTENSIONS
+// ======================================================================
+
+export type CurriculumTopicStatus = 
+  | 'NO_EVIDENCE'
+  | 'SOURCE_FOUND'
+  | 'INGESTED'
+  | 'KNOWLEDGE_EXTRACTED'
+  | 'CORROBORATED'
+  | 'TESTED'
+  | 'MANAGER_APPROVED';
+
+export interface AgentCurriculumTopic {
+  topicId: string;
+  topicName: string;
+  importance: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'ELECTIVE';
+  requiredDepth: 'FUNDAMENTAL' | 'PRACTITIONER' | 'EXPERT' | 'AUTHORITATIVE';
+  requiredSourceAuthority: string;
+  minimumIndependentSources: number;
+  requiresCalculationTest: boolean;
+  requiresScenarioTest: boolean;
+  requiresShadowTest: boolean;
+  status: CurriculumTopicStatus;
+  evidenceSourceChunkIds: string[];
+  evidenceAssertionIds: string[];
+}
+
+export interface AgentCurriculum {
+  curriculumId: string;
+  agentRoleId: string;
+  roleTitle: string;
+  discipline: SystemCategory | 'Management' | 'Civil' | 'Controls' | 'Quality' | 'Procurement' | 'Closeout';
+  topics: AgentCurriculumTopic[];
+  overallCoverageScorePct: number;
+  lastUpdated: string;
+}
+
+export interface FetchedDocument {
+  documentId: string;
+  sourceId: string;
+  originalUrl: string;
+  retrievedUrl: string;
+  retrievalTime: string;
+  mimeType: string;
+  sizeBytes: number;
+  checksumSha256: string;
+  filePathOrKey: string;
+  licenseStatus: 'PUBLIC_DOMAIN' | 'PERMITTED_OPEN' | 'COPYRIGHT_METADATA_ONLY' | 'RESTRICTED';
+  rightsStatus: string;
+  sourceAuthority: string;
+  pageCount?: number;
+  parsedText: string;
+}
+
+export interface KnowledgeAssertion {
+  assertionId: string;
+  subject: string;
+  predicate: string;
+  objectValue: string;
+  units?: string;
+  sourceChunkId: string;
+  sourceDocumentId: string;
+  sourceUrl: string;
+  pageNumber?: number;
+  sectionTitle?: string;
+  confidence: number;
+  agentExtractorId: string;
+  validationStatus: 'DISCOVERED' | 'EXTRACTED' | 'CORROBORATED' | 'MANAGER_APPROVED' | 'CONTRADICTED' | 'REJECTED';
+  geographicScope: string;
+  buildingTypeScope: string;
+  materialScope: string;
+  effectiveDate: string;
+  version: string;
+}
+
+export interface KnowledgeContradiction {
+  contradictionId: string;
+  subject: string;
+  assertionAId: string;
+  assertionBId: string;
+  assertionAText: string;
+  assertionBText: string;
+  sourceAId: string;
+  sourceBId: string;
+  assignedManagerRoleId: string;
+  status: 'OPEN' | 'UNDER_REVIEW' | 'RESOLVED_BY_MANAGER';
+  resolutionDetails?: string;
+  createdAt: string;
+  resolvedAt?: string;
+}
+
+export interface AgentKnowledgePack {
+  packId: string;
+  agentRoleId: string;
+  versionTag: string; // e.g. "KP-v1.0.0"
+  approvedChunkIds: string[];
+  approvedAssertionIds: string[];
+  approvedRules: string[];
+  approvedCalculations: string[];
+  approvedFailureModes: string[];
+  managerRoleId: string;
+  approvalStatus: 'DRAFT' | 'MANAGER_APPROVED' | 'ACTIVE_CONSTRUCTION';
+  createdAt: string;
+}
+
+export interface CompetencyTestScenario {
+  testId: string;
+  agentRoleId: string;
+  category: 'KNOWLEDGE_RETRIEVAL' | 'MATERIAL_SELECTION' | 'CALCULATION_SETUP' | 'FAILURE_RECOGNITION' | 'COORDINATION' | 'SOURCE_CITATION' | 'SCOPE_BOUNDARIES';
+  scenarioTitle: string;
+  scenarioDescription: string;
+  inputData: Record<string, any>;
+  expectedConstraints: string[];
+  passingScoreThreshold: number;
+}
+
+export interface CompetencyTestResult {
+  resultId: string;
+  testId: string;
+  agentRoleId: string;
+  timestamp: string;
+  passed: boolean;
+  scorePct: number;
+  reasoningOutput: string;
+  citedChunkIds: string[];
+  feedbackNotes: string;
+  evaluatedByManagerId: string;
+}
+
+export interface ShadowWorkProposal {
+  proposalId: string;
+  agentRoleId: string;
+  taskStage: TaskStage;
+  scope: string;
+  proposedAction: string;
+  proposedBimComponentIds: string[];
+  benchmarkComparison: string;
+  managerReviewStatus: 'PENDING' | 'PASSED_SHADOW' | 'FAILED_SHADOW';
+  evalNotes: string;
+  timestamp: string;
+}
+
+export interface ResearchRecord {
+  researchId: string;
+  agentRoleId: string;
+  query: string;
+  searchProvider: string;
+  resultsCount: number;
+  selectedUrl: string;
+  publisher: string;
+  retrievalStatus: 'SUCCESS' | 'FAILED' | 'RIGHTS_RESTRICTED';
+  rightsStatus: string;
+  decision: string;
+  timestamp: string;
+}
+
 
 
