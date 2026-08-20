@@ -7,14 +7,14 @@
     "overall_training_score": 88.4,
     "total_projects_started": 10,
     "total_projects_completed": 7,
-    "total_heartbeat_count": 719,
+    "total_heartbeat_count": 804,
     "total_failures_detected": 28,
     "total_failures_repaired": 25,
     "total_components_created": 14,
     "total_materials_learned": 85,
     "total_knowledge_entities": 3,
-    "last_heartbeat_at": "2026-08-20T20:38:40.397Z",
-    "next_heartbeat_at": "2026-08-20T20:38:50.397Z",
+    "last_heartbeat_at": "2026-08-20T20:52:59.751Z",
+    "next_heartbeat_at": "2026-08-20T20:53:09.751Z",
     "model_quota_state": "HEALTHY",
     "compute_quota_state": "OPTIMAL",
     "pause_controls": {
@@ -851,7 +851,7 @@
         "changeOrderRisk": 75
       },
       "createdAt": "2026-08-18T10:00:00Z",
-      "updatedAt": "2026-08-20T20:38:40.397Z",
+      "updatedAt": "2026-08-20T20:52:59.751Z",
       "snapshots": [
         {
           "id": "SNAP-HOTEL-FL-00127-V001",
@@ -22753,6 +22753,13 @@
   "assemblyPatterns": [],
   "activityLogs": [
     {
+      "id": "LOG-1787258409159-337",
+      "timestamp": "2026-08-20T20:40:09.159Z",
+      "swarm": "HERMES PERSISTENCE",
+      "message": "Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: 727",
+      "type": "success"
+    },
+    {
       "id": "LOG-1787257739821-2139",
       "timestamp": "2026-08-20T20:28:59.821Z",
       "swarm": "HERMES PERSISTENCE",
@@ -23304,13 +23311,6 @@
       "swarm": "INSPECTOR SWARM",
       "message": "Inspection sweep clear for Gym Level 7: Commercial Core & Shell. Zero active code failures.",
       "type": "success"
-    },
-    {
-      "id": "LOG-1787249536532-2959",
-      "timestamp": "2026-08-20T18:12:16.532Z",
-      "swarm": "TASK GRAPH",
-      "message": "Unlocked & Started Stage: [CHANGE_ORDER_PREVENTION] assigned to PRIME-ORCHESTRATOR-01",
-      "type": "info"
     }
   ]
 }

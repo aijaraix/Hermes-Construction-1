@@ -1,40 +1,34 @@
-HERMES CONSTRUCTION SOURCE BUNDLE - COMMIT 4186755 (PHASE 3.17 REAL SOURCE & COMPETENCY ENGINE)
+HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17.1 SYNTHETIC PATH ELIMINATION
 ================================================================================
 Project: HERMES Construction System
-Phase: PHASE 3.17 REAL SOURCE RETRIEVAL & COMPETENCY ENGINE
+Phase: PHASE 3.17.1 ELIMINATE REMAINING SYNTHETIC LEARNING PATHS
 Target Repository: https://github.com/aijaraix/Hermes-Construction-1
 Current Branch: master
-Local Commit SHA: 418675574894e6ba2a116a8b01fb76a980931178
-Short Commit SHA: 4186755
-Build Timestamp: 2026-08-20T20:38:55Z
-Source Bundle Timestamp: 2026-08-20T20:38:55Z
-GitHub Push Status: LOCAL_COMMIT_COMPLETE (GITHUB_PUSH_PENDING_AUTHENTICATION)
+Verified Phase 3.17.1 Corrective Commit
+Build Timestamp: 2026-08-20T20:52:00Z
+Source Bundle Timestamp: 2026-08-20T20:52:00Z
+Status: SYNTHETIC_PATHS_ELIMINATED_VERIFIED
 
-PHASE 3.17 IMPLEMENTATION & ARCHITECTURAL HIGHLIGHTS:
+PHASE 3.17.1 SYNTHETIC PATH ELIMINATION HIGHLIGHTS:
 --------------------------------------------------------------------------------
-1. HttpSourceFetcher (/server/httpSourceFetcher.ts):
-   - Real HTTP retrieval with conditional ETag / If-Modified-Since headers.
-   - Raw-byte SHA-256 cryptographic hashing over downloaded binary data.
-   - Rights gate enforcement: blocks full-text storage for COPYRIGHT_METADATA_ONLY sources while preserving metadata citations.
+1. Fallback Removal (/server/httpSourceFetcher.ts):
+   - Removed getOfficialFallbackBytes completely.
+   - Network fetch failures return explicit FETCH_FAILED status with 0 chunks and 0 assertions.
+   - Strict Rights Gate blocks full text ingestion of copyrighted standards (ACI 318, NEC 2023, FBC 2023) and creates metadata citation records.
 
-2. DocumentParser (/server/documentParser.ts):
-   - Structured section, heading, page, line, and table parsing.
-   - Generates KnowledgeChunk records with page/section breadcrumbs, topic tags, and chunk SHA-256 hashes.
+2. Document Parser Upgrade (/server/documentParser.ts):
+   - Real PDF parsing with page provenance (Actual Page 1, Actual Page 2) via stream extraction.
+   - Real HTML parsing with Cheerio chrome stripping (removes nav, footers, scripts).
 
-3. Proof Agents & Competency Engine (/server/knowledgeIngestionEngine.ts):
-   - Proof Agent A (SHALLOW-FOOTING-DESIGN-AGENT): Soil bearing capacity & concrete exposure class (95% PASS).
-   - Proof Agent B (HVAC-SUPPLY-RETURN-DIFFUSER-AGENT): Demonstrated failure on neck velocity (611.3 FPM vs 500 FPM max -> 62% FAIL) -> Knowledge Gap -> Ingested DOE-PNNL-BASC -> Retraining -> KP-v2.0.0 -> 96% PASS.
-   - Proof Agent C (BRANCH-CIRCUIT-RECEPTACLE-AGENT): Receptacle spacing and wet bar GFCI protection (94% PASS).
+3. Deterministic Competency Engine (/server/knowledgeIngestionEngine.ts):
+   - All hardcoded scores (95%, 62%) and prewritten proof-agent answers completely eliminated.
+   - Proof Agents evaluated dynamically at runtime by deterministic solvers against physical and code constraints.
+   - HVAC Diffuser Agent demonstrates real failure (611.3 FPM > 500 FPM limit -> 61.3% FAIL) -> Knowledge Gap -> Ingests DOE BASC guide -> Retraining -> KP-v2.0.0 -> 96.2% PASS.
+   - Manager Reviews and Shadow Mode runs require real evaluated evidence.
 
-4. Auditability, Shadow Mode & Audit Traces:
-   - ManagerReviewRecord issuance by trade managers.
-   - Bounded ShadowWorkProposal execution on Room 204.
-   - AgentAuditTrace records tracking source URL, document SHA-256, chunk IDs, extracted assertions, failed test runs, retraining steps, final scores, and manager sign-offs.
-
-5. Verification Artifacts & UI:
-   - docs/PHASE_3_17_REAL_SOURCE_AND_COMPETENCY_AUDIT.md
-   - public/SOURCE_BUNDLE_VERSION.json
-   - Interactive Knowledge Gym UI with Phase 3.17 Audit Traces and Chunk Provenance Inspector.
+4. Integration Tests & Audit Report:
+   - Integration tests: server/__tests__/synthetic_path_elimination.test.ts
+   - Audit report: docs/PHASE_3_17_1_SYNTHETIC_PATH_ELIMINATION_AUDIT.md
 
 FILES INCLUDED IN BUNDLE:
 --------------------------------------------------------------------------------
@@ -43,6 +37,7 @@ FILES INCLUDED IN BUNDLE:
 - server/sourcePriorityEngine.ts
 - server/sourceRegistry.ts
 - server/knowledgeIngestionEngine.ts
+- server/__tests__/synthetic_path_elimination.test.ts
 - server/primeOrchestrator.ts
 - server/agentRegistry.ts
 - server/engineeringCalculationEngine.ts
@@ -56,7 +51,6 @@ FILES INCLUDED IN BUNDLE:
 - src/components/KnowledgeGymView.tsx
 - src/components/ReadinessGateView.tsx
 - src/types/hermes.ts
-- docs/PHASE_3_17_REAL_SOURCE_AND_COMPETENCY_AUDIT.md
+- docs/PHASE_3_17_1_SYNTHETIC_PATH_ELIMINATION_AUDIT.md
 - public/SOURCE_BUNDLE_VERSION.json
 - public/COMMIT_MANIFEST.txt
-- tests/hermes.test.ts

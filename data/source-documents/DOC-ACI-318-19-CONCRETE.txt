@@ -1,0 +1,9 @@
+[METADATA ONLY - CITATION RECORD FOR COPYRIGHTED STANDARD]
+Source ID: ACI-318-19-CONCRETE
+Title: ACI 318-19 Building Code Requirements for Structural Concrete
+Publisher: American Concrete Institute
+Official URL: https://www.concrete.org/standards
+Copyright License Status: COPYRIGHT_METADATA_ONLY
+Access Type: RIGHTS_RESTRICTED
+Citation Requirement: American Concrete Institute. 2019. ACI 318-19 Building Code Requirements for Structural Concrete (Copyrighted Consensus Standard).
+Full-text storage and bulk ingestion BLOCKED by HERMES Rights Gate.
