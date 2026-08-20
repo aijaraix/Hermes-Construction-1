@@ -177,8 +177,8 @@ async function startServer() {
 
   // Source Bundle & Remote Audit Endpoints
   app.get('/api/download-source-bundle', (req, res) => {
-    const bundlePath = path.join(process.cwd(), 'public', 'hermes-construction-source.zip');
-    res.download(bundlePath, 'hermes-construction-source-4186755.zip');
+    const bundlePath = path.join(process.cwd(), 'public', 'HERMES_SOURCE_BUNDLE.zip');
+    res.download(bundlePath, 'HERMES_SOURCE_BUNDLE.zip');
   });
 
   app.get('/api/commit-manifest', (req, res) => {

@@ -4,9 +4,10 @@ Project: HERMES Construction System
 Phase: PHASE 3.17.1 ELIMINATE REMAINING SYNTHETIC LEARNING PATHS
 Target Repository: https://github.com/aijaraix/Hermes-Construction-1
 Current Branch: master
+Commit SHA: 2428c2fc71da1564716d98538fae5b6de7a816ca (short: 2428c2f)
 Verified Phase 3.17.1 Corrective Commit
-Build Timestamp: 2026-08-20T20:52:00Z
-Source Bundle Timestamp: 2026-08-20T20:52:00Z
+Build Timestamp: 2026-08-20T20:57:42Z
+Source Bundle Timestamp: 2026-08-20T20:57:42Z
 Status: SYNTHETIC_PATHS_ELIMINATED_VERIFIED
 
 PHASE 3.17.1 SYNTHETIC PATH ELIMINATION HIGHLIGHTS:
@@ -29,28 +30,3 @@ PHASE 3.17.1 SYNTHETIC PATH ELIMINATION HIGHLIGHTS:
 4. Integration Tests & Audit Report:
    - Integration tests: server/__tests__/synthetic_path_elimination.test.ts
    - Audit report: docs/PHASE_3_17_1_SYNTHETIC_PATH_ELIMINATION_AUDIT.md
-
-FILES INCLUDED IN BUNDLE:
---------------------------------------------------------------------------------
-- server/httpSourceFetcher.ts
-- server/documentParser.ts
-- server/sourcePriorityEngine.ts
-- server/sourceRegistry.ts
-- server/knowledgeIngestionEngine.ts
-- server/__tests__/synthetic_path_elimination.test.ts
-- server/primeOrchestrator.ts
-- server/agentRegistry.ts
-- server/engineeringCalculationEngine.ts
-- server/repairJustificationEngine.ts
-- server/bomProvenanceEngine.ts
-- server/closeoutEngine.ts
-- server/roomCoordinationEngine.ts
-- server/taskGraphEngine.ts
-- server.ts
-- src/App.tsx
-- src/components/KnowledgeGymView.tsx
-- src/components/ReadinessGateView.tsx
-- src/types/hermes.ts
-- docs/PHASE_3_17_1_SYNTHETIC_PATH_ELIMINATION_AUDIT.md
-- public/SOURCE_BUNDLE_VERSION.json
-- public/COMMIT_MANIFEST.txt
