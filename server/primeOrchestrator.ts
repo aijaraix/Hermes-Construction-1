@@ -30,6 +30,7 @@ import { FLORIDA_BUILDING_CODE_RULES, evaluateJurisdictionApplicability } from '
 import { calculateFastenerUpliftCapacity, calculateSoilFootingBearing } from './engineeringCalculationEngine';
 import { generateAnchorBoltRepairJustification } from './repairJustificationEngine';
 import { generateBOMWithProvenance } from './bomProvenanceEngine';
+import { KnowledgeIngestionEngine } from './knowledgeIngestionEngine';
 
 class HermesPrimeOrchestrator {
   private systemState: HermesSystemState;
@@ -63,8 +64,9 @@ class HermesPrimeOrchestrator {
   }> = [];
 
   constructor() {
-    // Initialize SQLite database
+    // Initialize SQLite database & Knowledge Ingestion Engine
     sqliteAdapter.init().catch((err) => console.error('[HERMES SQLITE] Init error:', err));
+    KnowledgeIngestionEngine.initialize().catch((err) => console.error('[HERMES KNOWLEDGE ENGINE] Init error:', err));
 
     // Attempt hydration from disk
     const diskData = loadDurableStore();

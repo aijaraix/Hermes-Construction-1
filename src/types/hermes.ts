@@ -1019,6 +1019,90 @@ export interface ShadowWorkProposal {
   timestamp: string;
 }
 
+export interface HttpSourceFetchRecord {
+  fetchId: string;
+  sourceId: string;
+  documentId: string;
+  requestedUrl: string;
+  finalUrl: string;
+  retrievedAt: string;
+  httpStatus: number;
+  contentType: string;
+  contentLength: number;
+  checksumSha256: string;
+  rightsStatus: string;
+  storagePath: string;
+  fetchStatus: 'SUCCESS' | 'FAILED' | 'RIGHTS_RESTRICTED';
+  etag?: string;
+  lastModified?: string;
+}
+
+export interface DocumentParseRecord {
+  parseId: string;
+  documentId: string;
+  parserType: 'PDF' | 'HTML' | 'TXT' | 'WEB_STRUCTURED';
+  pageCount: number;
+  characterCount: number;
+  sectionsDetected: number;
+  tablesDetected: number;
+  parseWarnings: string[];
+  parseErrors: string[];
+  status: 'PARSED_SUCCESS' | 'PARSE_FAILED';
+  parsedAt: string;
+}
+
+export interface ManagerReviewRecord {
+  reviewId: string;
+  managerRoleId: string;
+  agentRoleId: string;
+  evidenceReviewed: {
+    curriculumCoveragePct: number;
+    studiedSourceIds: string[];
+    knowledgePackVersion: string;
+    latestTestScorePct: number;
+    citedChunkIds: string[];
+    shadowWorkPassed: boolean;
+  };
+  decision: 'APPROVED' | 'APPROVED_WITH_LIMITS' | 'RETRAINING_REQUIRED' | 'MORE_EVIDENCE_REQUIRED' | 'REJECTED' | 'PROFESSIONAL_REVIEW_REQUIRED';
+  reasons: string[];
+  limitations?: string[];
+  reviewedAt: string;
+}
+
+export interface AgentAuditTrace {
+  agentRoleId: string;
+  roleTitle: string;
+  discipline: string;
+  managerRoleId: string;
+  sourceUrl: string;
+  documentId: string;
+  documentChecksum: string;
+  pageNumber: number;
+  chunkId: string;
+  chunkText: string;
+  assertionId: string;
+  assertionText: string;
+  knowledgePackVersion: string;
+  testId: string;
+  testScenarioTitle: string;
+  initialTestScorePct: number;
+  initialTestPassed: boolean;
+  initialAgentResponse: string;
+  retrainingTriggered: boolean;
+  retrainingGapNote?: string;
+  retrainingSourcesStudied?: string[];
+  retrainKnowledgePackVersion?: string;
+  finalTestScorePct: number;
+  finalTestPassed: boolean;
+  finalAgentResponse: string;
+  managerReviewDecision: string;
+  managerReviewNotes: string;
+  shadowRunScorePct: number;
+  shadowRunPassed: boolean;
+  shadowRunOutput: string;
+  certificationStatus: 'UNTESTED' | 'RETRAINING_REQUIRED' | 'READY_FOR_SHADOW_WORK' | 'READY_FOR_CONSTRUCTION_WORK';
+}
+
 export interface ResearchRecord {
   researchId: string;
   agentRoleId: string;

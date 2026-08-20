@@ -217,12 +217,26 @@ async function startServer() {
     res.json(SourceRegistry.getAllSources());
   });
 
+  app.get('/api/knowledge/fetches', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getFetchRecords());
+  });
+
+  app.get('/api/knowledge/parses', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getParseRecords());
+  });
+
   app.get('/api/knowledge/documents', (req, res) => {
     res.json(KnowledgeIngestionEngine.getDocuments());
   });
 
   app.get('/api/knowledge/chunks', (req, res) => {
     res.json(KnowledgeIngestionEngine.getChunks());
+  });
+
+  app.get('/api/knowledge/chunk/:chunkId', (req, res) => {
+    const chunk = KnowledgeIngestionEngine.getChunk(req.params.chunkId);
+    if (!chunk) return res.status(404).json({ error: 'Chunk not found' });
+    res.json(chunk);
   });
 
   app.get('/api/knowledge/assertions', (req, res) => {
@@ -234,23 +248,33 @@ async function startServer() {
   });
 
   app.get('/api/knowledge/curricula', (req, res) => {
-    res.json(KnowledgeIngestionEngine.getAllCurricula());
+    res.json(KnowledgeIngestionEngine.getCurricula());
   });
 
-  app.get('/api/knowledge/pack/:agentRoleId', (req, res) => {
-    res.json(KnowledgeIngestionEngine.getKnowledgePack(req.params.agentRoleId) || null);
+  app.get('/api/knowledge/packs', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getKnowledgePacks());
   });
 
   app.get('/api/knowledge/test-results', (req, res) => {
     res.json(KnowledgeIngestionEngine.getTestResults());
   });
 
-  app.get('/api/knowledge/contradictions', (req, res) => {
-    res.json(KnowledgeIngestionEngine.getContradictions());
+  app.get('/api/knowledge/manager-reviews', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getManagerReviews());
   });
 
-  app.get('/api/knowledge/reports', (req, res) => {
-    res.json(KnowledgeIngestionEngine.getLearningReports());
+  app.get('/api/knowledge/shadow-proposals', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getShadowProposals());
+  });
+
+  app.get('/api/knowledge/audit-traces', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getAllAuditTraces());
+  });
+
+  app.get('/api/knowledge/audit-trace/:agentRoleId', (req, res) => {
+    const trace = KnowledgeIngestionEngine.getAuditTrace(req.params.agentRoleId);
+    if (!trace) return res.status(404).json({ error: 'Audit trace not found' });
+    res.json(trace);
   });
 
   app.get('/api/knowledge/gaps', (req, res) => {
