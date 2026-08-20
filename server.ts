@@ -42,6 +42,21 @@ async function startServer() {
     res.json(primeOrchestrator.getHeartbeatState());
   });
 
+  // PART 4 Durable Scheduler Internal Endpoint
+  app.post('/internal/hermes/heartbeat', async (req, res) => {
+    try {
+      const { projectId } = req.body || {};
+      const state = await primeOrchestrator.triggerHeartbeat(projectId);
+      res.json({
+        success: true,
+        heartbeat_id: `HB-${Date.now()}`,
+        status: state,
+      });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Internal Heartbeat execution error' });
+    }
+  });
+
   app.post('/api/heartbeat/tick', async (req, res) => {
     try {
       const { projectId } = req.body || {};
@@ -50,6 +65,44 @@ async function startServer() {
     } catch (e: any) {
       res.status(500).json({ error: e.message || 'Heartbeat execution error' });
     }
+  });
+
+  // Auditable Record Endpoints (PART 3)
+  app.get('/api/records/heartbeats', (req, res) => {
+    res.json(primeOrchestrator.getHeartbeatRecords());
+  });
+
+  app.get('/api/records/tasks', (req, res) => {
+    const { projectId } = req.query;
+    res.json(primeOrchestrator.getTaskExecutionRecords(projectId as string));
+  });
+
+  app.get('/api/records/revisions', (req, res) => {
+    const { projectId } = req.query;
+    res.json(primeOrchestrator.getModelRevisionRecords(projectId as string));
+  });
+
+  app.get('/api/records/inspections', (req, res) => {
+    const { projectId } = req.query;
+    res.json(primeOrchestrator.getInspectionAuditRecords(projectId as string));
+  });
+
+  app.get('/api/records/bom-revisions', (req, res) => {
+    const { projectId } = req.query;
+    res.json(primeOrchestrator.getBOMRevisionRecords(projectId as string));
+  });
+
+  app.get('/api/records/decisions', (req, res) => {
+    const { projectId } = req.query;
+    res.json(primeOrchestrator.getDecisionLogs(projectId as string));
+  });
+
+  app.get('/api/records/competency', (req, res) => {
+    res.json(primeOrchestrator.getCompetencyMatrix());
+  });
+
+  app.get('/api/records/corpus', (req, res) => {
+    res.json(primeOrchestrator.getCorpusSources());
   });
 
   app.get('/api/projects', (req, res) => {

@@ -399,3 +399,152 @@ export interface ProposedRevision {
   procurementImpact: string;
   codeImpact: string;
 }
+
+export interface HeartbeatRecord {
+  heartbeat_id: string;
+  timestamp: string;
+  project: string;
+  reason_for_execution: string;
+  prime_state_before: string;
+  decisions_made: string[];
+  tasks_dispatched: string[];
+  results_received: string[];
+  prime_state_after: string;
+  errors: string[];
+  next_planned_actions: string[];
+}
+
+export interface TaskExecutionRecord {
+  task_id: string;
+  project: string;
+  trade: string;
+  scope: string;
+  agent_role: string;
+  input_state: string;
+  dependencies: string[];
+  operation: string;
+  reasoning_provider: string;
+  deterministic_functions_called: string[];
+  result: string;
+  validation: string;
+  downstream_tasks: string[];
+  created_at: string;
+  completed_at: string;
+}
+
+export interface ModelRevisionRecord {
+  revision: string; // e.g. "REV-V001"
+  timestamp: string;
+  project: string;
+  triggering_task: string;
+  components_added: number;
+  components_modified: number;
+  components_removed: number;
+  quantity_delta: string;
+  cost_delta: number;
+  inspection_delta: string;
+  model_asset_location: string;
+}
+
+export interface InspectionAuditRecord {
+  inspection_id: string;
+  inspector: string;
+  project: string;
+  scope: string;
+  rules_evaluated: string[];
+  mathematical_checks: Array<{
+    check_name: string;
+    formula: string;
+    calculated_value: number;
+    threshold: string;
+    passed: boolean;
+  }>;
+  failures: string[];
+  evidence: string;
+  repair_ticket_id?: string;
+  reinspection_status: string;
+  final_status: 'PASSED' | 'PENDING' | 'FAILED';
+}
+
+export interface BOMRevisionRecord {
+  bom_revision_id: string;
+  project: string;
+  timestamp: string;
+  triggering_model_revision: string;
+  added_quantities: Array<{ item: string; qty: number; unit: string }>;
+  removed_quantities: Array<{ item: string; qty: number; unit: string }>;
+  changed_quantities: Array<{ item: string; oldQty: number; newQty: number; unit: string }>;
+  pricing_changes: Array<{ item: string; oldPrice: number; newPrice: number }>;
+  sourcing_changes: Array<{ item: string; supplier: string }>;
+}
+
+export interface DecisionLogRecord {
+  id: string;
+  projectId: string;
+  timestamp: string;
+  title: string;
+  reason: string;
+  environmentalFactors: string;
+  sourceEvidence: string;
+  selectedByAgent: string;
+  validatedByInspector: string;
+  affectedTaskIds: string[];
+}
+
+export interface RoomScope {
+  id: string; // e.g. "ROOM-204"
+  name: string;
+  floor: number;
+  areaSqFt: number;
+  ceilingHeightFt: number;
+  requiredTrades: SystemCategory[];
+  componentsAssigned: string[];
+  electricalChain: {
+    receptacleIds: string[];
+    circuitId: string;
+    panelId: string;
+    feederId: string;
+    serviceId: string;
+  };
+  plumbingChain?: {
+    fixtureIds: string[];
+    branchId: string;
+    stackId: string;
+    drainId: string;
+    sewerId: string;
+  };
+  hvacChain: {
+    diffuserIds: string[];
+    branchDuctId: string;
+    trunkDuctId: string;
+    equipmentId: string;
+  };
+}
+
+export interface CompetencyMatrix {
+  siteGrading: number; // 0-100
+  concrete: number;
+  woodFraming: number;
+  plumbing: number;
+  electrical: number;
+  hvac: number;
+  envelope: number;
+  roofing: number;
+  procurement: number;
+  bom: number;
+  lastUpdated: string;
+}
+
+export interface CorpusSourceItem {
+  id: string;
+  title: string;
+  authority: string; // e.g. "FEMA", "USDA FPL", "DOE Building America", "NIST", "FBC", "IPC", "NEC", "ACI 318"
+  rightsCheckPassed: boolean;
+  docUrl: string;
+  parsedAt: string;
+  extractedEntitiesCount: number;
+  extractedRulesCount: number;
+  extractedAssembliesCount: number;
+  confidenceScore: number;
+}
+

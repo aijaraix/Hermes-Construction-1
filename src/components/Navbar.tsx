@@ -1,6 +1,6 @@
 import React from 'react';
 import { PrimeHeartbeatState } from '../types/hermes';
-import { Activity, ShieldAlert, Cpu, Layers, DollarSign, Calendar, Wrench, MapPin, RefreshCw, Sparkles } from 'lucide-react';
+import { Activity, ShieldAlert, Cpu, Layers, DollarSign, Calendar, Wrench, MapPin, RefreshCw, Sparkles, ShieldCheck } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -20,6 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const tabs = [
     { id: '3d-twin', label: '3D Digital Twin', icon: Layers },
     { id: 'dashboard', label: 'HERMES Prime', icon: Cpu },
+    { id: 'audit', label: 'Reality Audit Log', icon: ShieldCheck },
     { id: 'bom', label: 'BOM & Quantities', icon: DollarSign },
     { id: 'inspector', label: 'Inspectors & Repairs', icon: Wrench },
     { id: 'sourcing', label: 'Local Supply Chain', icon: MapPin },

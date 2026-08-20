@@ -10,6 +10,7 @@ import { ScheduleView } from './components/ScheduleView';
 import { ChangeOrderView } from './components/ChangeOrderView';
 import { GymView } from './components/GymView';
 import { CustomizerView } from './components/CustomizerView';
+import { AuditTrailView } from './components/AuditTrailView';
 import { X, Info, CheckCircle2, AlertTriangle, ShieldCheck, DollarSign, Layers } from 'lucide-react';
 
 export default function App() {
@@ -278,6 +279,9 @@ export default function App() {
             onTriggerHeartbeat={handleTriggerHeartbeat}
           />
         )}
+
+        {/* Tab 2.5: Reality Audit Log */}
+        {activeTab === 'audit' && <AuditTrailView />}
 
         {/* Tab 3: BOM */}
         {activeTab === 'bom' && (
