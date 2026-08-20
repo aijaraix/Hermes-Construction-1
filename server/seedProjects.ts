@@ -90,9 +90,9 @@ export const INITIAL_SEED_PROJECTS: DigitalTwinProject[] = [
         installationStageDay: 8,
         inspectionState: 'passed',
         whySelected: {
-          reason: 'Grouted CMU masonry delivers wind resistance against 160 MPH hurricane projectiles.',
+          reason: 'Grouted CMU masonry delivers wind resistance against 160 MPH hurricane projectiles in Tampa Bay.',
           environmentalFactor: 'Salt spray & high humidity destroy unprotected wood exterior framing at ground level.',
-          codeRule: 'HVHZ High Velocity Hurricane Zone wall mass requirement.',
+          codeRule: 'Florida Building Code 2023 Section 1609 Wind Load (Non-HVHZ Risk Category II).',
           alternativesConsidered: ['2x6 Wood Frame Wall', 'Insulated Concrete Forms (ICF)'],
           costImpact: 'Optimal local labor availability in Florida mason market.',
           lifecycleNotes: '50+ year structural lifespan with zero rot risk.',

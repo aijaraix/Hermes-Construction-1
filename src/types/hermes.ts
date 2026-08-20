@@ -121,12 +121,93 @@ export interface InspectionTicket {
 }
 
 export type PriceSourceType = 
-  | 'VERIFIED CURRENT PRICE'
-  | 'PUBLISHED PRICE'
+  | 'VERIFIED CURRENT QUOTE'
+  | 'PUBLISHED CURRENT PRICE'
   | 'SUPPLIER ESTIMATE'
+  | 'REGIONAL MARKET ESTIMATE'
   | 'HISTORICAL ESTIMATE'
   | 'MODEL ESTIMATE'
   | 'QUOTE REQUIRED';
+
+export type KnowledgeValidationLevel = 
+  | 'DISCOVERED'
+  | 'EXPERIMENTAL'
+  | 'RULE-CHECKED'
+  | 'ENGINEERING-CALCULATED'
+  | 'SOURCE-CORROBORATED'
+  | 'SOURCE-VERIFIED'
+  | 'PROFESSIONAL-REVIEW-REQUIRED'
+  | 'VERIFIED TRAINING LESSON'
+  | 'DEPRECATED'
+  | 'INVALID';
+
+export interface CodeRuleApplicability {
+  ruleId: string;
+  ruleTitle: string;
+  codeEdition: string; // e.g. "FBC 2023 (8th Edition)"
+  section: string; // e.g. "1609.1.1"
+  jurisdictionScope: 'Florida State-Wide' | 'HVHZ (Miami-Dade/Broward)' | 'Non-HVHZ Coastal' | 'Local Municipal';
+  appliesToProject: boolean;
+  justification: string;
+  sourceDocUrl?: string;
+  confidence: number;
+}
+
+export interface EngineeringCalculation {
+  calculationId: string;
+  projectId: string;
+  componentId: string;
+  calculationType: string; // e.g. "Fastener Uplift Shear & Tension Capacity"
+  rawInputs: Record<string, number | string>;
+  inputUnits: Record<string, string>;
+  equations: string[];
+  assumptions: string[];
+  intermediateCalculations: Record<string, number | string>;
+  designDemand: number;
+  capacity: number;
+  demandCapacityUnit: string; // e.g. "LBF" or "PSF"
+  utilizationRatio: number;
+  governingCondition: string;
+  applicableRuleSection: string;
+  validationState: 'VALIDATED' | 'PARTIAL' | 'INVALID' | 'PROFESSIONAL_REVIEW_REQUIRED';
+}
+
+export interface DetailedRepairJustification {
+  ticketId: string;
+  problem: string;
+  rootCause: string;
+  proposedRepair: string;
+  alternativesConsidered: string[];
+  selectedSolution: string;
+  engineeringCalculation?: EngineeringCalculation;
+  materialSpecification: {
+    grade: string;
+    dimensions: string;
+    corrosionProtection: string;
+    fastenerSpacing: string;
+  };
+  environmentalJustification: string;
+  applicableCodeRule: string;
+  sourceEvidence: string;
+  affectedBimComponentIds: string[];
+  bomImpact: {
+    addedMaterials: string[];
+    costDelta: number;
+  };
+  scheduleImpactDays: number;
+}
+
+export interface QuantityProvenance {
+  componentId: string;
+  componentName: string;
+  formulaUsed: string; // e.g. "Length * Width * Depth / 27"
+  modeledQuantity: number;
+  modeledUnit: string;
+  wasteFactorPercent: number;
+  procurementQuantity: number;
+  procurementUnit: string;
+  contributingComponentIds: string[];
+}
 
 export interface BOMItem {
   id: string;
