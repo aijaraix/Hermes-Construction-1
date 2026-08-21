@@ -1041,6 +1041,10 @@ export interface DocumentParseRecord {
   parseId: string;
   documentId: string;
   parserType: 'PDF' | 'HTML' | 'TXT' | 'WEB_STRUCTURED';
+  parserName?: string;
+  parserVersion?: string;
+  parserMode?: 'PRIMARY_PDF_PARSER' | 'FALLBACK_PDF_PARSER' | 'OCR_LAST_RESORT' | 'HTML_PARSER';
+  parseConfidence?: number;
   pageCount: number;
   characterCount: number;
   sectionsDetected: number;
@@ -1051,10 +1055,17 @@ export interface DocumentParseRecord {
   parsedAt: string;
 }
 
+export type ReviewMode =
+  | 'LLM_REASONED_MANAGER_REVIEW'
+  | 'DETERMINISTIC_GOVERNANCE_REVIEW'
+  | 'HUMAN_REVIEW'
+  | 'PROFESSIONAL_REVIEW';
+
 export interface ManagerReviewRecord {
   reviewId: string;
   managerRoleId: string;
   agentRoleId: string;
+  reviewMode?: ReviewMode;
   evidenceReviewed: {
     curriculumCoveragePct: number;
     studiedSourceIds: string[];
@@ -1062,6 +1073,7 @@ export interface ManagerReviewRecord {
     latestTestScorePct: number;
     citedChunkIds: string[];
     shadowWorkPassed: boolean;
+    executionMode?: ExecutionMode;
   };
   decision: 'APPROVED' | 'APPROVED_WITH_LIMITS' | 'RETRAINING_REQUIRED' | 'MORE_EVIDENCE_REQUIRED' | 'REJECTED' | 'PROFESSIONAL_REVIEW_REQUIRED';
   reasons: string[];
@@ -1142,11 +1154,20 @@ export interface CompetencyScenario {
   version: string;
 }
 
+export type ExecutionMode =
+  | 'LLM_REASONED'
+  | 'DETERMINISTIC_TOOL'
+  | 'SIMULATION_ONLY'
+  | 'NOT_EXECUTED'
+  | 'EXECUTION_DEFERRED_NO_PROVIDER'
+  | 'EXECUTION_FAILED';
+
 export interface AgentExecutionRecord {
   executionId: string;
   agentRoleId: string;
-  modelProvider: string; // e.g. "GoogleGemini" or "LocalReasoningEngine"
-  modelName: string; // e.g. "gemini-2.5-flash"
+  executionMode: ExecutionMode;
+  modelProvider: string; // e.g. "GoogleGemini" or "DeterministicProposalSimulator"
+  modelName: string; // e.g. "gemini-3.7-flash"
   scenarioId: string;
   knowledgePackId: string;
   retrievedChunkIds: string[];
@@ -1158,6 +1179,8 @@ export interface AgentExecutionRecord {
   startedAt: string;
   completedAt: string;
   usageMetadata?: any;
+  providerRequestId?: string;
+  responseStatus: string;
   executionStatus: 'EXECUTED' | 'NOT_EXECUTED' | 'FAILED';
 }
 
@@ -1166,12 +1189,15 @@ export interface ValidationResult {
   executionId: string;
   scenarioId: string;
   agentRoleId: string;
-  mathScorePct: number;
-  codeCompliancePct: number;
+  reasoningScorePct: number;
+  calculationScorePct: number;
   sourceGroundingPct: number;
+  constraintCompliancePct: number;
+  uncertaintyHandlingPct: number;
   completenessPct: number;
   assumptionQualityPct: number;
-  uncertaintyHandlingPct: number;
+  mathScorePct: number;
+  codeCompliancePct: number;
   overallScorePct: number;
   passed: boolean;
   criticalFailure: boolean;
@@ -1200,6 +1226,8 @@ export interface CertificationScope {
   certifiedAt: string;
 }
 
+export type EventOrigin = 'REAL_RUNTIME' | 'DETERMINISTIC_ENGINE' | 'SIMULATION' | 'SYSTEM_ADMIN';
+
 export interface LiveLearningActivity {
   activityId: string;
   timestamp: string;
@@ -1209,6 +1237,7 @@ export interface LiveLearningActivity {
   title: string;
   details: string;
   realityTag: 'REAL_EXECUTION' | 'DETERMINISTIC_VALIDATION' | 'MODEL_GENERATED' | 'SOURCE_GROUNDED' | 'FAILED' | 'RETRAINING' | 'MANAGER_APPROVED' | 'SHADOW_ONLY';
+  origin?: EventOrigin;
   executionId?: string;
 }
 

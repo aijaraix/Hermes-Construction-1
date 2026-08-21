@@ -17,12 +17,13 @@ describe('Phase 3.17.2 Genuine Agent Reasoning & Independent Evaluation Test Sui
   beforeAll(async () => {
     // Initialize Knowledge Ingestion Engine
     await KnowledgeIngestionEngine.initialize();
-  });
+  }, 90000);
 
   it('1. MANDATORY RULE: Skipping or failing model execution results in NOT_EXECUTED and NO competency score', async () => {
     const unexecutedRecord: AgentExecutionRecord = {
       executionId: 'EXEC-TEST-NONE',
       agentRoleId: 'SHALLOW-FOOTING-DESIGN-AGENT',
+      executionMode: 'EXECUTION_DEFERRED_NO_PROVIDER',
       modelProvider: 'None',
       modelName: 'None',
       scenarioId: 'SCENARIO-UNEXECUTED',
@@ -35,6 +36,7 @@ describe('Phase 3.17.2 Genuine Agent Reasoning & Independent Evaluation Test Sui
       toolCalls: [],
       startedAt: new Date().toISOString(),
       completedAt: new Date().toISOString(),
+      responseStatus: 'NO_API_KEY',
       executionStatus: 'NOT_EXECUTED'
     };
 
@@ -104,6 +106,7 @@ describe('Phase 3.17.2 Genuine Agent Reasoning & Independent Evaluation Test Sui
     const badExecution: AgentExecutionRecord = {
       executionId: 'EXEC-BAD-FOOTING',
       agentRoleId: 'SHALLOW-FOOTING-DESIGN-AGENT',
+      executionMode: 'SIMULATION_ONLY',
       modelProvider: 'LocalReasoningEngine',
       modelName: 'hermes-local-solver-v1',
       scenarioId: 'SCENARIO-OVERLOAD',
@@ -122,6 +125,7 @@ describe('Phase 3.17.2 Genuine Agent Reasoning & Independent Evaluation Test Sui
       toolCalls: [],
       startedAt: new Date().toISOString(),
       completedAt: new Date().toISOString(),
+      responseStatus: 'SIMULATION_MODE',
       executionStatus: 'EXECUTED'
     };
 
@@ -225,7 +229,7 @@ describe('Phase 3.17.2 Genuine Agent Reasoning & Independent Evaluation Test Sui
   it('10. Knowledge Extraction, Candidate Assertion & Quarantine Logic', () => {
     const assertions = KnowledgeExtractionService.getAllAssertions();
     expect(assertions.length).toBeGreaterThan(0);
-    const valid = assertions.filter((a) => a.validationStatus === 'EXTRACTED' || a.validationStatus === 'CANDIDATE_ASSERTION');
+    const valid = assertions.filter((a) => a.validationStatus === 'EXTRACTED' || a.validationStatus === 'DISCOVERED');
     expect(valid.length).toBeGreaterThan(0);
   });
 

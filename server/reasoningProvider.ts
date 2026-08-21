@@ -4,6 +4,7 @@ import {
   AgentContract,
   AgentKnowledgePack,
   CompetencyScenario,
+  ExecutionMode,
   KnowledgeChunk
 } from '../src/types/hermes';
 
@@ -13,6 +14,7 @@ export interface ReasoningExecutionParams {
   knowledgePack: AgentKnowledgePack;
   retrievedChunks: KnowledgeChunk[];
   promptOverride?: string;
+  allowSimulationFallback?: boolean;
 }
 
 export interface ReasoningExecutionResult {
@@ -21,6 +23,9 @@ export interface ReasoningExecutionResult {
   citations: string[];
   providerName: string;
   modelName: string;
+  executionMode: ExecutionMode;
+  responseStatus: string;
+  providerRequestId?: string;
   usageMetadata?: any;
   executed: boolean;
   promptHash: string;
@@ -34,7 +39,7 @@ export interface ConstructionReasoningProvider {
 
 export class GeminiReasoningProvider implements ConstructionReasoningProvider {
   public providerName = 'GoogleGemini';
-  public modelName = 'gemini-2.5-flash';
+  public modelName = 'gemini-3.7-flash';
 
   public async generateReasoning(params: ReasoningExecutionParams): Promise<ReasoningExecutionResult> {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -58,10 +63,11 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
         try {
           structured = JSON.parse(rawText);
         } catch (e) {
-          // Extract JSON block if surrounded by markdown
           const match = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/\{[\s\S]*\}/);
           if (match) {
-            structured = JSON.parse(match[1] || match[0]);
+            try {
+              structured = JSON.parse(match[1] || match[0]);
+            } catch (pErr) {}
           }
         }
 
@@ -73,108 +79,51 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
           citations,
           providerName: this.providerName,
           modelName: this.modelName,
+          executionMode: 'LLM_REASONED',
+          responseStatus: '200_OK',
           usageMetadata: response.usageMetadata || { promptTokens: prompt.length / 4, candidateTokens: rawText.length / 4 },
           executed: true,
           promptHash
         };
       } catch (err: any) {
         console.warn('[REASONING PROVIDER] Gemini API call failed or timed out:', err?.message);
-        // Fall back to local reasoning solver when offline / API error
-        return this.generateLocalReasoning(params, promptHash, `Gemini API fallback (${err?.message})`);
+
+        if (params.allowSimulationFallback) {
+          console.warn('[REASONING PROVIDER] Simulation fallback explicitly requested for dev/test runner.');
+          return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, `Gemini API error fallback (${err?.message})`);
+        }
+
+        // STRICT GATING: Do NOT silently return synthetic simulation as LLM reasoning!
+        return {
+          rawResponse: `[EXECUTION_FAILED] Gemini API call failed: ${err?.message || String(err)}`,
+          structuredProposal: {},
+          citations: [],
+          providerName: this.providerName,
+          modelName: this.modelName,
+          executionMode: 'EXECUTION_FAILED',
+          responseStatus: 'API_ERROR',
+          executed: false,
+          promptHash
+        };
       }
     } else {
-      // Local reasoning solver execution when GEMINI_API_KEY is not set
-      return this.generateLocalReasoning(params, promptHash, 'Local reasoning engine execution');
-    }
-  }
+      if (params.allowSimulationFallback) {
+        return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'GEMINI_API_KEY missing - Simulation fallback');
+      }
 
-  private generateLocalReasoning(params: ReasoningExecutionParams, promptHash: string, note: string): ReasoningExecutionResult {
-    const { agentRole, scenario, retrievedChunks } = params;
-    let proposal: Record<string, any> = {};
-
-    // Dynamic reasoning solver based on agent role & scenario inputs
-    if (agentRole.roleId === 'SHALLOW-FOOTING-DESIGN-AGENT') {
-      const loadP = params.scenario.inputs.loadPoundsPerFt || 1800;
-      const soilBearing = params.scenario.inputs.soilBearingPsf || 1500;
-      const reqWidthInches = (loadP / soilBearing) * 12;
-
-      // Agent dynamic reasoning decision
-      const proposedWidth = params.scenario.inputs.agentDecisionWidth || (scenario.difficulty === 'HARD_BOUNDARY' ? 12 : 18);
-      const embedment = params.scenario.inputs.agentDecisionEmbedment || 12;
-
-      proposal = {
-        proposedFootingWidth: proposedWidth,
-        proposedFootingDepth: 12,
-        embedmentDepth: embedment,
-        concreteStrength: 4000,
-        reinforcement: '#4 rebar @ 12 in. O.C.',
-        exposureClass: 'F1',
-        waterCementRatio: 0.45,
-        assumptions: [`Allowable soil bearing capacity assumed at ${soilBearing} psf per site investigation`],
-        calculations: {
-          appliedLoadP: loadP,
-          soilBearingPsf: soilBearing,
-          minRequiredWidthInches: reqWidthInches,
-          proposedWidthInches: proposedWidth,
-          utilizationRatio: reqWidthInches / proposedWidth
-        },
-        sourceCitations: retrievedChunks.map((c) => c.chunkId),
-        uncertainties: ['Soil moisture fluctuation seasonal variance']
-      };
-    } else if (agentRole.roleId === 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT') {
-      const cfm = params.scenario.inputs.airflowCFM || 120;
-      // Agent dynamic decision: If initial run (difficulty HARD_BOUNDARY), agent selects 6 in. If retrained, selects 8 in.
-      const neckDiameter = params.scenario.inputs.agentDecisionNeckDiameter || (scenario.difficulty === 'HARD_BOUNDARY' ? 6 : 8);
-      const count = params.scenario.inputs.diffuserCount || 1;
-      const areaSqFt = count * Math.PI * Math.pow(neckDiameter / 2 / 12, 2);
-      const calcVel = cfm / areaSqFt;
-
-      proposal = {
-        airflowCFM: cfm,
-        diffuserType: 'Round Ceiling Diffuser',
-        diffuserCount: count,
-        neckDiameter,
-        calculatedVelocity: Math.round(calcVel * 10) / 10,
-        ductConnection: `${neckDiameter}-inch flex duct R-6`,
-        placement: 'Center room ceiling grid',
-        noiseConsiderations: 'Office quiet zone NC-25 requirement',
-        sourceCitations: retrievedChunks.map((c) => c.chunkId),
-        assumptions: ['Static pressure 0.1 in. w.g.'],
-        uncertainties: ['Flex duct sag airflow reduction']
-      };
-    } else if (agentRole.roleId === 'BRANCH-CIRCUIT-RECEPTACLE-AGENT') {
-      const spacing = params.scenario.inputs.agentDecisionSpacingFt || (scenario.difficulty === 'HARD_BOUNDARY' ? 14 : 10);
-      const gfci = params.scenario.inputs.agentDecisionGfci !== undefined ? params.scenario.inputs.agentDecisionGfci : (scenario.inputs.nearWater ? true : false);
-
-      proposal = {
-        receptacleSpacingFt: spacing,
-        circuitVoltage: 120,
-        gfciSpecified: gfci,
-        wireGauge: '12 AWG Copper',
-        breakerAmps: 20,
-        conduitSize: '1/2 in. EMT',
-        sourceCitations: retrievedChunks.map((c) => c.chunkId),
-        assumptions: ['Standard residential 120V 20A branch circuit'],
-        uncertainties: ['Future appliances load growth']
-      };
-    } else {
-      proposal = {
-        genericDecision: 'Standard engineering specification proposed',
-        sourceCitations: retrievedChunks.map((c) => c.chunkId)
+      // STRICT GATING: No provider configured
+      return {
+        rawResponse: '[EXECUTION_DEFERRED_NO_PROVIDER] No approved reasoning provider available (GEMINI_API_KEY is not set). Specialist reasoning execution deferred.',
+        structuredProposal: {},
+        citations: [],
+        providerName: 'None',
+        modelName: 'None',
+        executionMode: 'EXECUTION_DEFERRED_NO_PROVIDER',
+        responseStatus: 'NO_API_KEY',
+        executed: false,
+        promptHash
       };
     }
-
-    const rawResponse = JSON.stringify({ note, scenarioId: scenario.scenarioId, proposal }, null, 2);
-
-    return {
-      rawResponse,
-      structuredProposal: proposal,
-      citations: retrievedChunks.map((c) => c.chunkId),
-      providerName: 'LocalReasoningEngine',
-      modelName: 'hermes-local-solver-v1',
-      executed: true,
-      promptHash
-    };
   }
 
   private buildPrompt(params: ReasoningExecutionParams): string {
@@ -216,5 +165,106 @@ INSTRUCTIONS:
       }
     });
     return Array.from(citations);
+  }
+}
+
+/**
+ * DeterministicProposalSimulator (formerly LocalReasoningEngine)
+ * Produces test proposals for dev/test harness or UI fixtures.
+ * CRITICAL RULE: All outputs from this simulator are strictly tagged 'SIMULATION_ONLY'
+ * and CANNOT grant competency or certification credit.
+ */
+export class DeterministicProposalSimulator {
+  public static generateSimulationProposal(params: ReasoningExecutionParams, promptHash: string, note: string): ReasoningExecutionResult {
+    const { agentRole, scenario, retrievedChunks } = params;
+    let proposal: Record<string, any> = {};
+
+    if (agentRole.roleId === 'SHALLOW-FOOTING-DESIGN-AGENT') {
+      const loadP = params.scenario.inputs.loadPoundsPerFt || 1800;
+      const soilBearing = params.scenario.inputs.soilBearingPsf || 1500;
+      const reqWidthInches = (loadP / soilBearing) * 12;
+
+      // Calculate width dynamically based on load/soil bearing
+      const proposedWidth = Math.max(18, Math.ceil(reqWidthInches / 2) * 2);
+      const embedment = 12;
+
+      proposal = {
+        proposedFootingWidth: proposedWidth,
+        proposedFootingDepth: 12,
+        embedmentDepth: embedment,
+        concreteStrength: 4000,
+        reinforcement: '#4 rebar @ 12 in. O.C.',
+        exposureClass: 'F1',
+        waterCementRatio: 0.45,
+        assumptions: [`Allowable soil bearing capacity assumed at ${soilBearing} psf per site investigation`],
+        calculations: {
+          appliedLoadP: loadP,
+          soilBearingPsf: soilBearing,
+          minRequiredWidthInches: reqWidthInches,
+          proposedWidthInches: proposedWidth,
+          utilizationRatio: reqWidthInches / proposedWidth
+        },
+        sourceCitations: retrievedChunks.map((c) => c.chunkId),
+        uncertainties: ['Soil moisture fluctuation seasonal variance']
+      };
+    } else if (agentRole.roleId === 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT') {
+      const cfm = params.scenario.inputs.airflowCFM || 120;
+      const count = params.scenario.inputs.diffuserCount || 1;
+      // Calculate neck size dynamically for velocity < 500 FPM
+      let neckDiameter = 8;
+      if (cfm / (count * Math.PI * Math.pow(6 / 2 / 12, 2)) <= 500) {
+        neckDiameter = 6;
+      }
+      const areaSqFt = count * Math.PI * Math.pow(neckDiameter / 2 / 12, 2);
+      const calcVel = cfm / areaSqFt;
+
+      proposal = {
+        airflowCFM: cfm,
+        diffuserType: 'Round Ceiling Diffuser',
+        diffuserCount: count,
+        neckDiameter,
+        calculatedVelocity: Math.round(calcVel * 10) / 10,
+        ductConnection: `${neckDiameter}-inch flex duct R-6`,
+        placement: 'Center room ceiling grid',
+        noiseConsiderations: 'Office quiet zone NC-25 requirement',
+        sourceCitations: retrievedChunks.map((c) => c.chunkId),
+        assumptions: ['Static pressure 0.1 in. w.g.'],
+        uncertainties: ['Flex duct sag airflow reduction']
+      };
+    } else if (agentRole.roleId === 'BRANCH-CIRCUIT-RECEPTACLE-AGENT') {
+      const spacing = 10;
+      const gfci = params.scenario.inputs.nearWater ? true : true;
+
+      proposal = {
+        receptacleSpacingFt: spacing,
+        circuitVoltage: 120,
+        gfciSpecified: gfci,
+        wireGauge: '12 AWG Copper',
+        breakerAmps: 20,
+        conduitSize: '1/2 in. EMT',
+        sourceCitations: retrievedChunks.map((c) => c.chunkId),
+        assumptions: ['Standard residential 120V 20A branch circuit'],
+        uncertainties: ['Future appliances load growth']
+      };
+    } else {
+      proposal = {
+        genericDecision: 'Standard engineering specification proposed',
+        sourceCitations: retrievedChunks.map((c) => c.chunkId)
+      };
+    }
+
+    const rawResponse = JSON.stringify({ note, scenarioId: scenario.scenarioId, proposal }, null, 2);
+
+    return {
+      rawResponse,
+      structuredProposal: proposal,
+      citations: retrievedChunks.map((c) => c.chunkId),
+      providerName: 'DeterministicProposalSimulator',
+      modelName: 'hermes-simulator-v1',
+      executionMode: 'SIMULATION_ONLY',
+      responseStatus: 'SIMULATION_MODE',
+      executed: true,
+      promptHash
+    };
   }
 }

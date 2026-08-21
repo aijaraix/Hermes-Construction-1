@@ -2,6 +2,7 @@ import fs from 'fs';
 import zlib from 'zlib';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
+import PDFParser from 'pdf2json';
 import { DocumentParseRecord, FetchedDocument, KnowledgeChunk } from '../src/types/hermes';
 
 export class DocumentParser {
@@ -20,6 +21,10 @@ export class DocumentParser {
         parseId,
         documentId: doc.documentId,
         parserType: doc.mimeType.includes('pdf') ? 'PDF' : doc.mimeType.includes('html') ? 'HTML' : 'TXT',
+        parserName: 'DocumentStatusChecker',
+        parserVersion: '3.17.3',
+        parserMode: doc.mimeType.includes('pdf') ? 'PRIMARY_PDF_PARSER' : 'HTML_PARSER',
+        parseConfidence: 0.0,
         pageCount: 0,
         characterCount: 0,
         sectionsDetected: 0,
@@ -54,11 +59,27 @@ export class DocumentParser {
     let characterCount = 0;
     let sectionsDetected = 0;
     let tablesDetected = 0;
+    let parserName = 'StandardTextParser';
+    let parserVersion = '3.17.3';
+    let parserMode: 'PRIMARY_PDF_PARSER' | 'FALLBACK_PDF_PARSER' | 'OCR_LAST_RESORT' | 'HTML_PARSER' = 'HTML_PARSER';
+    let parseConfidence = 0.95;
 
     if (parserType === 'PDF' && buffer && buffer.length > 0) {
-      // REAL PDF PARSING with page provenance
+      parserName = 'pdf2json';
+      parserVersion = '4.0.3';
+      parserMode = 'PRIMARY_PDF_PARSER';
+
       try {
-        const pagesText = this.extractPdfPageTexts(buffer);
+        let pagesText: { pageNum: number; text: string }[] = [];
+        try {
+          pagesText = await this.extractPdfWithPdf2Json(buffer);
+        } catch (pErr: any) {
+          warnings.push(`Primary pdf2json parser error (${pErr?.message}), switching to fallback stream parser.`);
+          parserMode = 'FALLBACK_PDF_PARSER';
+          parseConfidence = 0.80;
+          pagesText = this.extractPdfPageTextsFallback(buffer);
+        }
+
         pageCount = Math.max(1, pagesText.length);
 
         if (pagesText.length > 0) {
@@ -86,27 +107,30 @@ export class DocumentParser {
                 processTags: [],
                 locationTags: ['Coastal'],
                 jurisdictionTags: ['USA'],
-                version: '3.17.1',
+                version: '3.17.3',
                 sourceURL: doc.retrievedUrl,
                 retrievalTimestamp: doc.retrievalTime,
-                rightsStatus: `${doc.rightsStatus} (PDF Page ${p.pageNum}; SHA-256 Checksum: ${chunkChecksum})`
+                rightsStatus: `${doc.rightsStatus} (PDF Page ${p.pageNum}; Checksum: ${chunkChecksum})`
               });
             }
           });
         } else {
           warnings.push('PDF parsed, but no text streams matched standard font encoding patterns.');
+          parseConfidence = 0.50;
         }
       } catch (pdfErr: any) {
         errors.push(`PDF parsing error: ${pdfErr?.message || String(pdfErr)}`);
       }
     } else if (parserType === 'HTML') {
-      // REAL HTML PARSING via cheerio
+      parserName = 'cheerio';
+      parserVersion = '1.0.0';
+      parserMode = 'HTML_PARSER';
+
       try {
         const htmlContent = doc.parsedText || (buffer ? buffer.toString('utf-8') : '');
         characterCount = htmlContent.length;
 
         const $ = cheerio.load(htmlContent);
-        // Strip page chrome and non-content elements
         $('script, style, nav, footer, header, iframe, noscript, .cookie-banner, .advertisement, .navigation, .menu').remove();
 
         const docTitle = $('title').text().trim() || $('h1').first().text().trim() || doc.sourceId;
@@ -140,7 +164,7 @@ export class DocumentParser {
                 processTags: [],
                 locationTags: [],
                 jurisdictionTags: [],
-                version: '3.17.1',
+                version: '3.17.3',
                 sourceURL: doc.retrievedUrl,
                 retrievalTimestamp: doc.retrievalTime,
                 rightsStatus: `${doc.rightsStatus} (Checksum: ${chunkChecksum})`
@@ -148,7 +172,6 @@ export class DocumentParser {
             }
           });
         } else {
-          // Body text fallback
           const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
           if (bodyText.length > 0) {
             sectionsDetected = 1;
@@ -166,7 +189,7 @@ export class DocumentParser {
               processTags: [],
               locationTags: [],
               jurisdictionTags: [],
-              version: '3.17.1',
+              version: '3.17.3',
               sourceURL: doc.retrievedUrl,
               retrievalTimestamp: doc.retrievalTime,
               rightsStatus: doc.rightsStatus
@@ -178,6 +201,7 @@ export class DocumentParser {
       }
     } else {
       // Plain text parsing
+      parserName = 'PlainTextParser';
       const text = doc.parsedText || (buffer ? buffer.toString('utf-8') : '');
       characterCount = text.length;
 
@@ -208,7 +232,7 @@ export class DocumentParser {
                   processTags: [],
                   locationTags: [],
                   jurisdictionTags: [],
-                  version: '3.17.1',
+                  version: '3.17.3',
                   sourceURL: doc.retrievedUrl,
                   retrievalTimestamp: doc.retrievalTime,
                   rightsStatus: doc.rightsStatus
@@ -240,7 +264,7 @@ export class DocumentParser {
               processTags: [],
               locationTags: [],
               jurisdictionTags: [],
-              version: '3.17.1',
+              version: '3.17.3',
               sourceURL: doc.retrievedUrl,
               retrievalTimestamp: doc.retrievalTime,
               rightsStatus: doc.rightsStatus
@@ -254,6 +278,10 @@ export class DocumentParser {
       parseId,
       documentId: doc.documentId,
       parserType,
+      parserName,
+      parserVersion,
+      parserMode,
+      parseConfidence,
       pageCount: Math.max(1, pageCount),
       characterCount,
       sectionsDetected,
@@ -267,8 +295,33 @@ export class DocumentParser {
     return { parseRecord, chunks };
   }
 
-  // Real PDF page text stream extraction
-  public static extractPdfPageTexts(buffer: Buffer): { pageNum: number; text: string }[] {
+  public static async extractPdfWithPdf2Json(buffer: Buffer): Promise<{ pageNum: number; text: string }[]> {
+    return new Promise((resolve, reject) => {
+      const pdfParser = new PDFParser(null, true);
+      pdfParser.on('pdfParser_dataError', (errData: any) => {
+        reject(errData.parserError || errData);
+      });
+      pdfParser.on('pdfParser_dataReady', () => {
+        try {
+          const pages: { pageNum: number; text: string }[] = [];
+          const rawText = pdfParser.getRawTextContent() || '';
+          const pageBlocks = rawText.split(/----------------Page \(\d+\) Break----------------/);
+          pageBlocks.forEach((block, idx) => {
+            const trimmed = block.trim();
+            if (trimmed.length > 0) {
+              pages.push({ pageNum: idx + 1, text: trimmed });
+            }
+          });
+          resolve(pages);
+        } catch (e) {
+          reject(e);
+        }
+      });
+      pdfParser.parseBuffer(buffer);
+    });
+  }
+
+  public static extractPdfPageTextsFallback(buffer: Buffer): { pageNum: number; text: string }[] {
     const pages: { pageNum: number; text: string }[] = [];
     const rawStr = buffer.toString('latin1');
     const streamRegex = /stream\r?\n([\s\S]*?)\r?\nendstream/g;
@@ -277,17 +330,13 @@ export class DocumentParser {
 
     while ((match = streamRegex.exec(rawStr)) !== null) {
       let content = match[1];
-      // Check if flate compressed
       try {
         const decompressed = zlib.inflateSync(Buffer.from(content, 'latin1')).toString('utf-8');
         content = decompressed;
-      } catch (e) {
-        // uncompressed
-      }
+      } catch (e) {}
 
       if (content.includes('Tj') || content.includes('TJ')) {
         const pageStrings: string[] = [];
-        // Match hex Tj: <46454D41...> Tj
         const hexTjRegex = /<([0-9A-Fa-f]+)>\s*Tj/g;
         let hMatch;
         while ((hMatch = hexTjRegex.exec(content)) !== null) {
@@ -297,7 +346,6 @@ export class DocumentParser {
           } catch (e) {}
         }
 
-        // Match literal Tj: (text) Tj
         const litTjRegex = /\(([^)]+)\)\s*Tj/g;
         let lMatch;
         while ((lMatch = litTjRegex.exec(content)) !== null) {
@@ -313,7 +361,6 @@ export class DocumentParser {
     return pages;
   }
 
-  // Synchronous fallback
   public static parseDocument(doc: FetchedDocument): {
     parseRecord: DocumentParseRecord;
     chunks: KnowledgeChunk[];
@@ -327,6 +374,10 @@ export class DocumentParser {
           parseId,
           documentId: doc.documentId,
           parserType: 'TXT',
+          parserName: 'SyncDocumentParser',
+          parserVersion: '3.17.3',
+          parserMode: 'HTML_PARSER',
+          parseConfidence: 0.0,
           pageCount: 0,
           characterCount: 0,
           sectionsDetected: 0,
@@ -358,7 +409,7 @@ export class DocumentParser {
       processTags: [],
       locationTags: [],
       jurisdictionTags: [],
-      version: '3.17.1',
+      version: '3.17.3',
       sourceURL: doc.retrievedUrl,
       retrievalTimestamp: doc.retrievalTime,
       rightsStatus: `${doc.rightsStatus} (Checksum: ${chunkChecksum})`
@@ -369,6 +420,10 @@ export class DocumentParser {
         parseId,
         documentId: doc.documentId,
         parserType: 'TXT',
+        parserName: 'SyncDocumentParser',
+        parserVersion: '3.17.3',
+        parserMode: 'HTML_PARSER',
+        parseConfidence: 0.90,
         pageCount: 1,
         characterCount: text.length,
         sectionsDetected: 1,

@@ -64,7 +64,7 @@ export class KnowledgeIngestionEngine {
     }
 
     // 1. Ingest local approved open-access documents (FEMA P-55 PDF, DOE guide)
-    this.ingestLocalApprovedDocuments();
+    await this.ingestLocalApprovedDocuments();
 
     // 2. HTTP Source Ingestion
     const sources = SourceRegistry.getAllSources();
@@ -119,7 +119,7 @@ export class KnowledgeIngestionEngine {
   }
 
   // Local approved documents loader
-  private static ingestLocalApprovedDocuments(): void {
+  private static async ingestLocalApprovedDocuments(): Promise<void> {
     const femaPdfPath = path.join(process.cwd(), 'data', 'source-documents', 'DOC-FEMA-P55.pdf');
     if (fs.existsSync(femaPdfPath)) {
       const src = SourceRegistry.getSource('FEMA-P55') || {
@@ -153,12 +153,11 @@ export class KnowledgeIngestionEngine {
         this.documents.set(document.documentId, document);
 
         const rawBuf = fs.readFileSync(femaPdfPath);
-        DocumentParser.parseDocumentAsync(document, rawBuf).then(({ parseRecord, chunks }) => {
-          this.parseRecords.set(parseRecord.parseId, parseRecord);
-          chunks.forEach((chk) => {
-            this.chunks.set(chk.chunkId, chk);
-            KnowledgeExtractionService.extractAndValidateAssertions(chk, document.documentId);
-          });
+        const { parseRecord, chunks } = await DocumentParser.parseDocumentAsync(document, rawBuf);
+        this.parseRecords.set(parseRecord.parseId, parseRecord);
+        chunks.forEach((chk) => {
+          this.chunks.set(chk.chunkId, chk);
+          KnowledgeExtractionService.extractAndValidateAssertions(chk, document.documentId);
         });
       } catch (e) {
         console.warn('[KNOWLEDGE ENGINE] Local approved PDF ingestion warning:', e);
@@ -344,7 +343,8 @@ export class KnowledgeIngestionEngine {
       agentRole: contract,
       scenario: initialScenario,
       knowledgePack: packV1,
-      retrievedChunks: [primaryChunk]
+      retrievedChunks: [primaryChunk],
+      allowSimulationFallback: true
     });
 
     const initialVal = initialResult.validation;
@@ -441,7 +441,8 @@ export class KnowledgeIngestionEngine {
         agentRole: contract,
         scenario: retrainedScenario,
         knowledgePack: packV2,
-        retrievedChunks: [primaryChunk, ...(doeChunk ? [doeChunk] : [])]
+        retrievedChunks: [primaryChunk, ...(doeChunk ? [doeChunk] : [])],
+        allowSimulationFallback: true
       });
 
       finalVal = freshResult.validation;
@@ -492,7 +493,8 @@ export class KnowledgeIngestionEngine {
       agentRole: contract,
       knowledgePack: activePack,
       availableChunks: [primaryChunk],
-      baseScenario: initialScenario
+      baseScenario: initialScenario,
+      allowSimulationFallback: true
     });
 
     this.logActivity({
@@ -558,9 +560,7 @@ export class KnowledgeIngestionEngine {
         scenarioDescription: 'Calculate required footing width and embedment for Room 101 load 1800 lbs/ft on 1500 psf soil.',
         inputs: {
           loadPoundsPerFt: 1800,
-          soilBearingPsf: 1500,
-          agentDecisionWidth: 18,
-          agentDecisionEmbedment: 12
+          soilBearingPsf: 1500
         },
         constraints: { minEmbedmentInches: 12, minFcPsi: 3000, maxWcm: 0.45 },
         availableEvidence: [],
@@ -579,7 +579,7 @@ export class KnowledgeIngestionEngine {
       return {
         scenarioId: `SCENARIO-${agentRoleId}-204`,
         agentRoleId,
-        discipline: 'Mechanical',
+        discipline: 'HVAC',
         difficulty: 'HARD_BOUNDARY', // Boundary difficulty causes initial 6-in diffuser selection -> FAIL
         jurisdiction: 'Florida USA',
         buildingType: 'Residential Office',
@@ -589,7 +589,6 @@ export class KnowledgeIngestionEngine {
         scenarioDescription: 'Select diffuser neck size for Room 204 (120 CFM airflow) under quiet zone NC-25 requirement.',
         inputs: {
           airflowCFM: 120,
-          agentDecisionNeckDiameter: 6, // 6 in neck -> 611.3 FPM > 500 FPM limit -> FAILS!
           diffuserCount: 1
         },
         constraints: { maxNeckVelocityFpm: 500 },
@@ -618,9 +617,7 @@ export class KnowledgeIngestionEngine {
         scenarioDescription: 'Specify outlet spacing along 10 ft unbroken wall near wet bar sink.',
         inputs: {
           wallLengthFt: 10,
-          distanceToWaterSinkFt: 2,
-          agentDecisionSpacingFt: 10,
-          agentDecisionGfci: true
+          distanceToWaterSinkFt: 2
         },
         constraints: { maxSpacingFt: 12 },
         availableEvidence: [],
@@ -640,7 +637,7 @@ export class KnowledgeIngestionEngine {
     return {
       scenarioId: `SCENARIO-${agentRoleId}-204-RETRAINED`,
       agentRoleId,
-      discipline: 'Mechanical',
+      discipline: 'HVAC',
       difficulty: 'PRACTITIONER',
       jurisdiction: 'Florida USA',
       buildingType: 'Residential Office',
@@ -650,7 +647,6 @@ export class KnowledgeIngestionEngine {
       scenarioDescription: 'Retrained execution selecting 8 in. diffuser for 120 CFM under quiet zone NC-25.',
       inputs: {
         airflowCFM: 120,
-        agentDecisionNeckDiameter: 8, // 8 in neck -> 343.8 FPM <= 500 FPM -> PASS!
         diffuserCount: 1
       },
       constraints: { maxNeckVelocityFpm: 500 },

@@ -7,6 +7,7 @@ import { AgentRegistry } from './server/agentRegistry';
 import { OrganizationEngine } from './server/organizationEngine';
 import { SourceRegistry } from './server/sourceRegistry';
 import { KnowledgeIngestionEngine } from './server/knowledgeIngestionEngine';
+import { AgentExecutionService } from './server/agentExecutionService';
 import { RoomCoordinationEngine } from './server/roomCoordinationEngine';
 import { CloseoutEngine } from './server/closeoutEngine';
 
