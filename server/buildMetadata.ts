@@ -19,7 +19,7 @@ export class BuildMetadata {
   public static get(): BuildMetadataObject {
     if (this.cachedMetadata) return this.cachedMetadata;
 
-    let commitSha = '4a079e561bf962b4464ea4dfc7c9086c0c90e925'; // Default current commit SHA
+    let commitSha = '1204e0663df625cf554d23f3c33bfd67e0f0bf1d'; // Default current commit SHA
     let phase = 'Phase 3.17B.1';
     let buildTime = new Date().toISOString();
 

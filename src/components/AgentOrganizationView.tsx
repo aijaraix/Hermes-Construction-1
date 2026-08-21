@@ -60,7 +60,7 @@ export const AgentOrganizationView: React.FC = () => {
     return (
       <div className="p-8 text-center text-slate-400 flex flex-col items-center justify-center gap-3">
         <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-        <span>Loading HERMES Construction Organization Roster (132 Agent Roles)...</span>
+        <span>Loading HERMES Construction Organization Roster...</span>
       </div>
     );
   }
@@ -79,7 +79,7 @@ export const AgentOrganizationView: React.FC = () => {
               <h2 className="text-xl font-extrabold text-white tracking-tight">HERMES Construction Agent Roster & Contracts</h2>
             </div>
             <p className="text-xs text-slate-400 mt-1 max-w-3xl">
-              132 Logical Specialist Roles across 16 Core Discipline Managers, Floor & Room Managers, Superintendents, and Independent Inspection Swarms. Operating under explicit Agent Contracts and machine-readable boundaries.
+              {contracts.length} Logical Specialist Roles across 16 Core Discipline Managers, Floor & Room Managers, Superintendents, and Independent Inspection Swarms. Operating under explicit Agent Contracts and machine-readable boundaries.
             </p>
           </div>
 
@@ -108,7 +108,7 @@ export const AgentOrganizationView: React.FC = () => {
               onChange={(e) => setFilterDiscipline(e.target.value)}
               className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
             >
-              <option value="ALL">All Disciplines (132 Roles)</option>
+              <option value="ALL">All Disciplines ({contracts.length} Roles)</option>
               <option value="Management">Management & Leadership</option>
               <option value="Structure">Structural Engineering</option>
               <option value="Site">Site & Civil</option>
