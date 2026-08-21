@@ -31,7 +31,7 @@ export const ProjectOverviewView: React.FC<ProjectOverviewViewProps> = ({
   // Calculate building stats dynamically from project components
   const floorCount = Math.max(...project.components.map((c) => c.floor || 1), 1);
   const roomsList = Array.from(new Set(project.components.map((c) => c.room).filter(Boolean)));
-  const totalCost = project.bom.totalCost || 0;
+  const totalCost = (project.bom || []).reduce((acc, item) => acc + (item.estimatedTotalCost || 0), 0);
   const verifiedCost = Math.round(totalCost * 0.82);
   const unverifiedCost = totalCost - verifiedCost;
 

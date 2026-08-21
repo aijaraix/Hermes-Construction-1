@@ -162,7 +162,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
             <DollarSign className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-base font-bold text-slate-100 font-mono">
-            ${project.bom.totalCost.toLocaleString()}
+            ${((project.bom || []).reduce((acc, item) => acc + (item.estimatedTotalCost || 0), 0)).toLocaleString()}
           </div>
           <div className="flex items-center justify-between text-xs">
             <span className="text-slate-400">Verified Quote Coverage:</span>

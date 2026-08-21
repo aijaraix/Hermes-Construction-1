@@ -125,7 +125,7 @@ export const CustomizerView: React.FC<CustomizerViewProps> = ({
 
             <div className="flex items-center gap-3 font-mono text-xs">
               <span className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold">
-                Cost: {proposedRevision.costDelta >= 0 ? `+$${proposedRevision.costDelta.toLocaleString()}` : `-$${Math.abs(proposedRevision.costDelta).toLocaleString()}`}
+                Cost: {(proposedRevision.costDelta ?? 0) >= 0 ? `+$${(proposedRevision.costDelta ?? 0).toLocaleString()}` : `-$${Math.abs(proposedRevision.costDelta ?? 0).toLocaleString()}`}
               </span>
               <span className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-cyan-400 font-bold">
                 Schedule: +{proposedRevision.scheduleDeltaDays} Days

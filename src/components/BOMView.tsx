@@ -39,7 +39,7 @@ export const BOMView: React.FC<BOMViewProps> = ({ bom, onHighlightComponents }) 
           <div className="flex items-center gap-4 bg-slate-950 px-4 py-2.5 rounded-xl border border-slate-800">
             <div>
               <span className="text-[10px] uppercase text-slate-400 block">Total Estimated Material Cost</span>
-              <span className="text-2xl font-black text-emerald-400">${totalCost.toLocaleString()}</span>
+              <span className="text-2xl font-black text-emerald-400">${(totalCost ?? 0).toLocaleString()}</span>
             </div>
             <div className="h-6 w-px bg-slate-800 mx-1" />
             <div>
@@ -123,7 +123,7 @@ export const BOMView: React.FC<BOMViewProps> = ({ bom, onHighlightComponents }) 
                     <div className="text-slate-200">{item.supplierName}</div>
                     <div className="text-[10px] text-slate-400">{item.supplierDistanceMiles} mi • Lead: {item.leadTimeWeeks}w</div>
                   </td>
-                  <td className="p-3.5 font-bold text-emerald-400">${item.estimatedTotalCost.toLocaleString()}</td>
+                  <td className="p-3.5 font-bold text-emerald-400">${(item.estimatedTotalCost ?? 0).toLocaleString()}</td>
                   <td className="p-3.5 text-right font-sans">
                     <button
                       onClick={() => onHighlightComponents && onHighlightComponents(item.sourceComponentIds, item.item)}

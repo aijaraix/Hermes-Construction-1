@@ -376,7 +376,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                   Unit Price: ${selectedComponent.unitCost} / {selectedComponent.quantity.unit}
                 </p>
                 <p className="text-emerald-400 font-bold text-xs mt-1">
-                  Total Cost: ${selectedComponent.totalCost.toLocaleString()}
+                  Total Cost: ${(selectedComponent.totalCost ?? 0).toLocaleString()}
                 </p>
               </div>
 

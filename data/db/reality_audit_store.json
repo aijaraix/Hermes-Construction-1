@@ -1,0 +1,497 @@
+{
+  "truthRecords": [
+    {
+      "truthRecordId": "REC-AGENT-COUNT-001",
+      "page": "Agent Organization",
+      "component": "AgentCountBadge",
+      "field": "totalAgentRoles",
+      "displayedValue": 50,
+      "canonicalValue": 50,
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "AgentRegistry"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 1,
+      "detectedAt": "2026-08-21T14:05:19.071Z",
+      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Agent Structure"
+    },
+    {
+      "truthRecordId": "REC-AGENT-CORE-001",
+      "page": "Agent Organization",
+      "component": "AgentCountBadge",
+      "field": "coreHouse1Roles",
+      "displayedValue": 18,
+      "canonicalValue": 18,
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "AgentRegistry.coreHouse1Roles"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 1,
+      "detectedAt": "2026-08-21T14:05:19.071Z",
+      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Agent Structure"
+    },
+    {
+      "truthRecordId": "REC-PRICE-SUPPLIER-001",
+      "page": "Procurement",
+      "component": "SupplierPriceCard",
+      "field": "concretePricePerYd",
+      "displayedValue": "$145 / cu yd",
+      "canonicalValue": "$145 / cu yd",
+      "provenance": "EXTERNAL_VERIFIED",
+      "sourceRecordIds": [
+        "QUOTE-2026-TMP-8841.pdf"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.95,
+      "detectedAt": "2026-08-21T14:05:19.071Z",
+      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Procurement"
+    },
+    {
+      "truthRecordId": "REC-BUILD-VERSION-001",
+      "page": "App Shell",
+      "component": "AppShellHeader",
+      "field": "headerBuildVersion",
+      "displayedValue": "Phase 3.17B.1 • 5be9b4b",
+      "canonicalValue": "Phase 3.17B.1 • 5be9b4b",
+      "provenance": "CONFIGURATION",
+      "sourceRecordIds": [
+        "COMMIT_MANIFEST.txt"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 1,
+      "detectedAt": "2026-08-21T14:05:19.071Z",
+      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "System Governance"
+    },
+    {
+      "truthRecordId": "REC-UI-ORG-AGENT-COUNT",
+      "page": "/agent-org",
+      "component": "AgentCountBadge",
+      "field": "totalAgentRoles",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "AGENT_ROLE_COUNT"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Agent Structure"
+    },
+    {
+      "truthRecordId": "REC-UI-ORG-CERTIFIED-COUNT",
+      "page": "/agent-org",
+      "component": "AgentCertificationCard",
+      "field": "certifiedAgents",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "CERTIFIED_AGENT_COUNT"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Agent Structure"
+    },
+    {
+      "truthRecordId": "REC-UI-CMD-PROJECT-COUNT",
+      "page": "/",
+      "component": "CommandCenterHUD",
+      "field": "activeProjects",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "PROJECT_COUNT"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Project Management"
+    },
+    {
+      "truthRecordId": "REC-UI-OVERVIEW-BOM-TOTAL",
+      "page": "/overview",
+      "component": "ProjectOverviewView",
+      "field": "totalCost",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "BOM_TOTAL"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Procurement / Cost"
+    },
+    {
+      "truthRecordId": "REC-UI-BOM-SUM-TOTAL",
+      "page": "/bom",
+      "component": "BOMView",
+      "field": "totalEstimatedMaterialCost",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "BOM_TOTAL"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Procurement / Cost"
+    },
+    {
+      "truthRecordId": "REC-UI-PROC-CONCRETE-PRICE",
+      "page": "/procurement",
+      "component": "SupplierPriceCard",
+      "field": "concretePricePerYd",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "EXTERNAL_VERIFIED",
+      "sourceRecordIds": [
+        "PRICE"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Procurement Evidence"
+    },
+    {
+      "truthRecordId": "REC-UI-APP-BUILD-VERSION",
+      "page": "*",
+      "component": "AppShellHeader",
+      "field": "headerBuildVersion",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "CONFIGURATION",
+      "sourceRecordIds": [
+        "BUILD_METADATA"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "System Governance"
+    },
+    {
+      "truthRecordId": "REC-UI-ROOMS-COUNT",
+      "page": "/rooms",
+      "component": "RoomsSpacesView",
+      "field": "totalRoomCount",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "ROOM_COUNT"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Spatial Coordination"
+    },
+    {
+      "truthRecordId": "REC-UI-INSPECTION-OPEN-COUNT",
+      "page": "/inspections",
+      "component": "InspectionsView",
+      "field": "openTickets",
+      "displayedValue": "ACTIVE_AUDITED",
+      "canonicalValue": "ACTIVE_AUDITED",
+      "provenance": "RUNTIME_CALCULATED",
+      "sourceRecordIds": [
+        "INSPECTION_COUNT"
+      ],
+      "validationStatus": "VERIFIED",
+      "confidence": 0.98,
+      "detectedAt": "2026-08-21T14:04:27.139Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.139Z",
+      "repairStatus": "NONE",
+      "responsibleDomain": "Quality Inspection"
+    },
+    {
+      "truthRecordId": "REC-CONFLICT-CONF-1787321067144-79",
+      "page": "3D Digital Twin",
+      "component": "Footing-F01",
+      "field": "concreteCompressivePsi",
+      "displayedValue": 3000,
+      "canonicalValue": 4000,
+      "provenance": "SIMULATED",
+      "sourceRecordIds": [
+        "CONF-1787321067144-79"
+      ],
+      "validationStatus": "CONFLICT",
+      "confidence": 0.5,
+      "detectedAt": "2026-08-21T14:04:27.144Z",
+      "lastVerifiedAt": "2026-08-21T14:04:27.144Z",
+      "repairStatus": "AWAITING_DOMAIN_REVIEW",
+      "repairAction": "Escalated to REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL ENGINEERING_MANAGER. Reality Swarm WILL NOT overwrite engineering value.",
+      "responsibleDomain": "Structural Engineering"
+    },
+    {
+      "truthRecordId": "REC-CONFLICT-CONF-1787321082019-668",
+      "page": "Rooms & Spaces",
+      "component": "Room 204 Slab",
+      "field": "slabThicknessInches",
+      "displayedValue": 6,
+      "canonicalValue": 5.5,
+      "provenance": "SIMULATED",
+      "sourceRecordIds": [
+        "CONF-1787321082019-668"
+      ],
+      "validationStatus": "CONFLICT",
+      "confidence": 0.5,
+      "detectedAt": "2026-08-21T14:04:42.019Z",
+      "lastVerifiedAt": "2026-08-21T14:04:42.019Z",
+      "repairStatus": "AWAITING_DOMAIN_REVIEW",
+      "repairAction": "Escalated to REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL_MANAGER. Reality Swarm WILL NOT overwrite engineering value.",
+      "responsibleDomain": "Structural"
+    },
+    {
+      "truthRecordId": "REC-CONFLICT-CONF-1787321119072-440",
+      "page": "Rooms & Spaces",
+      "component": "Room 204 Slab",
+      "field": "slabThicknessInches",
+      "displayedValue": 6,
+      "canonicalValue": 5.5,
+      "provenance": "SIMULATED",
+      "sourceRecordIds": [
+        "CONF-1787321119072-440"
+      ],
+      "validationStatus": "CONFLICT",
+      "confidence": 0.5,
+      "detectedAt": "2026-08-21T14:05:19.072Z",
+      "lastVerifiedAt": "2026-08-21T14:05:19.072Z",
+      "repairStatus": "AWAITING_DOMAIN_REVIEW",
+      "repairAction": "Escalated to REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL_MANAGER. Reality Swarm WILL NOT overwrite engineering value.",
+      "responsibleDomain": "Structural"
+    }
+  ],
+  "repairLogs": [
+    {
+      "repairId": "REP-1787321067141-AGENT-COUNT",
+      "field": "totalAgentRoles",
+      "page": "Agent Organization",
+      "beforeValue": 49,
+      "afterValue": 50,
+      "reason": "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+      "canonicalSource": "AgentRegistry.getAllContracts().length",
+      "repairAgent": "COUNT-CONSISTENCY-INSPECTOR",
+      "timestamp": "2026-08-21T14:04:27.141Z",
+      "rollbackInfo": "Restore UI displayed value to 49"
+    },
+    {
+      "repairId": "REP-1787321082010-AGENT-COUNT",
+      "field": "totalAgentRoles",
+      "page": "Agent Organization",
+      "beforeValue": 132,
+      "afterValue": 50,
+      "reason": "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+      "canonicalSource": "AgentRegistry.getAllContracts().length",
+      "repairAgent": "COUNT-CONSISTENCY-INSPECTOR",
+      "timestamp": "2026-08-21T14:04:42.010Z",
+      "rollbackInfo": "Restore UI displayed value to 132"
+    },
+    {
+      "repairId": "REP-1787321119068-AGENT-COUNT",
+      "field": "totalAgentRoles",
+      "page": "Agent Organization",
+      "beforeValue": 132,
+      "afterValue": 50,
+      "reason": "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+      "canonicalSource": "AgentRegistry.getAllContracts().length",
+      "repairAgent": "COUNT-CONSISTENCY-INSPECTOR",
+      "timestamp": "2026-08-21T14:05:19.067Z",
+      "rollbackInfo": "Restore UI displayed value to 132"
+    }
+  ],
+  "domainConflicts": [
+    {
+      "conflictId": "CONF-1787321067144-79",
+      "page": "3D Digital Twin",
+      "component": "Footing-F01",
+      "field": "concreteCompressivePsi",
+      "uiValue": 3000,
+      "engineeringValue": 4000,
+      "responsibleDomain": "Structural Engineering",
+      "status": "OPEN",
+      "createdAt": "2026-08-21T14:04:27.144Z",
+      "escalatedTo": "REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL ENGINEERING_MANAGER"
+    },
+    {
+      "conflictId": "CONF-1787321082019-668",
+      "page": "Rooms & Spaces",
+      "component": "Room 204 Slab",
+      "field": "slabThicknessInches",
+      "uiValue": 6,
+      "engineeringValue": 5.5,
+      "responsibleDomain": "Structural",
+      "status": "OPEN",
+      "createdAt": "2026-08-21T14:04:42.019Z",
+      "escalatedTo": "REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL_MANAGER"
+    },
+    {
+      "conflictId": "CONF-1787321119072-440",
+      "page": "Rooms & Spaces",
+      "component": "Room 204 Slab",
+      "field": "slabThicknessInches",
+      "uiValue": 6,
+      "engineeringValue": 5.5,
+      "responsibleDomain": "Structural",
+      "status": "OPEN",
+      "createdAt": "2026-08-21T14:05:19.072Z",
+      "escalatedTo": "REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL_MANAGER"
+    }
+  ],
+  "securityExposures": {
+    "timestamp": "2026-08-21T14:05:19.071Z",
+    "clean": true,
+    "exposuresFound": 0,
+    "items": []
+  },
+  "pageAudits": [],
+  "auditExecutions": [
+    {
+      "auditExecutionId": "EXEC-1787321067139",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 13,
+      "findingsCount": 0,
+      "actionsTaken": [],
+      "startedAt": "2026-08-21T14:04:27.139Z",
+      "completedAt": "2026-08-21T14:04:27.140Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321067141",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 13,
+      "findingsCount": 0,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:04:27.141Z",
+      "completedAt": "2026-08-21T14:04:27.141Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321067145",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 14,
+      "findingsCount": 1,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:04:27.145Z",
+      "completedAt": "2026-08-21T14:04:27.145Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321067146",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 14,
+      "findingsCount": 1,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:04:27.146Z",
+      "completedAt": "2026-08-21T14:04:27.146Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321082010",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 14,
+      "findingsCount": 1,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:04:42.010Z",
+      "completedAt": "2026-08-21T14:04:42.012Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321082013",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 14,
+      "findingsCount": 1,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:04:42.013Z",
+      "completedAt": "2026-08-21T14:04:42.013Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321119068",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 15,
+      "findingsCount": 2,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:05:19.067Z",
+      "completedAt": "2026-08-21T14:05:19.069Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321119071",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 15,
+      "findingsCount": 2,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:05:19.071Z",
+      "completedAt": "2026-08-21T14:05:19.071Z",
+      "status": "COMPLETED"
+    }
+  ],
+  "lastSavedAt": "2026-08-21T14:05:19.072Z"
+}

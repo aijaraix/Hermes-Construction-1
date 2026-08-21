@@ -44,7 +44,8 @@ describe('Phase 3.17B — Reality & Data Truth Swarm & Project Isolation Tests',
     expect(audit.repairLogs.length).toBeGreaterThan(0);
     const countRepair = audit.repairLogs.find((r) => r.field === 'totalAgentRoles');
     expect(countRepair).toBeDefined();
-    expect(countRepair?.afterValue).toBe(132);
+    const canonicalCount = AgentRegistry.getAllContracts().length;
+    expect(countRepair?.afterValue).toBe(canonicalCount);
   });
 
   it('Test 4: CRITICAL BOUNDARY — Reality Swarm CANNOT overwrite engineering data, creates domain conflict instead', () => {
@@ -65,7 +66,7 @@ describe('Phase 3.17B — Reality & Data Truth Swarm & Project Isolation Tests',
   });
 
   it('Test 5: Security Exposure Inspector verifies zero key leakages in API endpoints', () => {
-    const sec = RealitySwarmEngine.auditSecurityExposures();
+    const sec = RealitySwarmEngine.getSecurityExposures();
     expect(sec.clean).toBe(true);
     expect(sec.exposuresFound).toBe(0);
   });

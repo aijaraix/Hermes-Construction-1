@@ -173,7 +173,7 @@ export const RoomsSpacesView: React.FC<RoomsSpacesViewProps> = ({ project, onSel
 
                   <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                     <span>Qty: {comp.quantity.value} {comp.quantity.unit}</span>
-                    <span className="text-emerald-400 font-bold">${comp.totalCost.toLocaleString()}</span>
+                    <span className="text-emerald-400 font-bold">${(comp.totalCost ?? 0).toLocaleString()}</span>
                   </div>
                 </div>
               ))}

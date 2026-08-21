@@ -26,7 +26,7 @@ export const ChangeOrderView: React.FC<ChangeOrderViewProps> = ({ risks }) => {
 
           <div className="bg-slate-950 px-4 py-2.5 rounded-xl border border-slate-800">
             <span className="text-[10px] uppercase text-slate-400 block">Prevented Cost Exposure</span>
-            <span className="text-2xl font-black text-rose-400">${totalPotentialCost.toLocaleString()}</span>
+            <span className="text-2xl font-black text-rose-400">${(totalPotentialCost ?? 0).toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@ export const ChangeOrderView: React.FC<ChangeOrderViewProps> = ({ risks }) => {
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
                 <span className="text-slate-400 text-[10px] uppercase font-bold block">Cost & Schedule Exposure</span>
                 <p className="text-slate-200 font-bold mt-0.5">
-                  ${risk.potentialCost.toLocaleString()} • {risk.scheduleImpactDays} Days Schedule Delay
+                  ${(risk.potentialCost ?? 0).toLocaleString()} • {risk.scheduleImpactDays} Days Schedule Delay
                 </p>
               </div>
 
