@@ -22,11 +22,13 @@ export const RealityDataTruthView: React.FC = () => {
   const fetchAudit = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/reality/audit');
-      const data = await res.json();
-      setAuditData(data);
-    } catch (e) {
-      console.error('Error fetching Reality Swarm audit:', e);
+      const res = await fetch('/api/reality/audit').catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data) setAuditData(data);
+      }
+    } catch {
+      // Handle gracefully
     } finally {
       setIsLoading(false);
     }

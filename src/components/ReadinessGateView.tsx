@@ -13,11 +13,13 @@ export const ReadinessGateView: React.FC = () => {
   const fetchGateData = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/organization/readiness');
-      const data = await res.json();
-      setGate(data);
-    } catch (e) {
-      console.error('Failed to load Readiness Gate metrics:', e);
+      const res = await fetch('/api/organization/readiness').catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data) setGate(data);
+      }
+    } catch {
+      // Handle gracefully
     } finally {
       setLoading(false);
     }

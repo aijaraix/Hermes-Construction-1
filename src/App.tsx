@@ -44,23 +44,28 @@ export default function App() {
   const fetchData = async () => {
     try {
       const [hbRes, projRes, lessonsRes] = await Promise.all([
-        fetch('/api/heartbeat'),
-        fetch('/api/projects'),
-        fetch('/api/learned-lessons'),
+        fetch('/api/heartbeat').catch(() => null),
+        fetch('/api/projects').catch(() => null),
+        fetch('/api/learned-lessons').catch(() => null),
       ]);
 
-      const hbData: PrimeHeartbeatState = await hbRes.json();
-      const projData: DigitalTwinProject[] = await projRes.json();
-      const lessonsData: LearnedLesson[] = await lessonsRes.json();
-
-      setHeartbeatState(hbData);
-      setAllProjects(projData);
-      setLearnedLessons(lessonsData);
-
-      const active = projData.find((p) => p.id === hbData.activeProjectId) || projData[0];
-      setCurrentProject(active || null);
-    } catch (e) {
-      console.error('Error fetching initial HERMES state:', e);
+      if (hbRes && hbRes.ok) {
+        const hbData = await hbRes.json().catch(() => null);
+        if (hbData) setHeartbeatState(hbData);
+      }
+      if (projRes && projRes.ok) {
+        const projData: DigitalTwinProject[] = await projRes.json().catch(() => []);
+        if (projData && projData.length > 0) {
+          setAllProjects(projData);
+          setCurrentProject((prev) => prev || projData[0]);
+        }
+      }
+      if (lessonsRes && lessonsRes.ok) {
+        const lessonsData = await lessonsRes.json().catch(() => []);
+        if (lessonsData) setLearnedLessons(lessonsData);
+      }
+    } catch {
+      // Handle initial state fetch gracefully
     }
   };
 
