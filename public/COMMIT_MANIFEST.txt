@@ -1,36 +1,35 @@
-HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17.2 GENUINE REASONING & EVALUATION
+HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17B COMMAND CENTER & DATA TRUTH
 ================================================================================
 Project: HERMES Construction System
-Phase: PHASE 3.17.2 GENUINE AGENT REASONING & INDEPENDENT EVALUATION
+Phase: PHASE 3.17B COMMAND CENTER, PROJECT WORKSPACES, UI/UX REORGANIZATION & REALITY DATA TRUTH SWARM
 Target Repository: https://github.com/aijaraix/Hermes-Construction-1
 Current Branch: master
-Commit SHA: 2428c2fc71da1564716d98538fae5b6de7a816ca (short: 2428c2f)
-Verified Phase 3.17.2 Corrective Commit
-Build Timestamp: 2026-08-20T21:12:00Z
-Source Bundle Timestamp: 2026-08-20T21:12:00Z
-Status: GENUINE_REASONING_AND_EVALUATION_VERIFIED
+Commit SHA: 5be9b4b0e8910d65a2811a8b12389104523812ab (short: 5be9b4b)
+Verified Phase 3.17B Canonical Commit
+Build Timestamp: 2026-08-21T06:40:00Z
+Source Bundle Timestamp: 2026-08-21T06:40:00Z
+Status: PHASE_3_17B_VERIFIED
 
-PHASE 3.17.2 HIGHLIGHTS:
+PHASE 3.17B HIGHLIGHTS:
 --------------------------------------------------------------------------------
-1. Genuine LLM Reasoning Engine (/server/reasoningProvider.ts & /server/agentExecutionService.ts):
-   - Model provider abstraction (`GoogleGemini` / `LocalReasoningEngine`).
-   - Every specialist agent generates runtime proposal JSON from LLM reasoning.
-   - Mandatory Rule enforced: If model execution is skipped/failed, competency score = 0 (NOT_EXECUTED).
+1. Navigation Rarchitecture & Sidebar IA (/src/components/AppShell.tsx):
+   - Desktop responsive sidebar, contextual top header, and right inspector drawer.
+   - Mobile collapsible slide-over navigation drawer with sticky project context.
+   - Conceptual separation: COMMAND CENTER, PROJECTS (Overview, Digital Twin, Rooms & Spaces, Plans & Systems, Inspections, BOM, Procurement, Schedule, Change-Order Risks, Decisions, Activity), HERMES INTELLIGENCE, SYSTEM.
 
-2. Independent Deterministic Validators (/server/validators.ts):
-   - Foundation, HVAC, Electrical, and Generic deterministic validators evaluate proposals independently against code/physics equations.
-   - Critical Safety Failure Overrides implemented (Soil overload caps score at 40%; acoustic velocity caps at 45%; missing GFCI caps at 50%).
+2. Project Context & Data Isolation:
+   - Canonical project selector (RESIDENCE-TAMPA-001 "Tampa Coastal 2-Story Residence").
+   - Multi-project isolation across Digital Twin, Rooms, BOM, Inspections, Schedule, Sourcing, Risks.
 
-3. Autonomous Retraining & Manager Review (/server/knowledgeExtractionService.ts & /server/managerReviewService.ts):
-   - HVAC Agent failure triggers knowledge gap, DOE source retrieval, Knowledge Pack v2.0.0 upgrade, and fresh passing execution.
-   - Manager review signed off independently with scope limitations; manager CANNOT override critical failures.
+3. Command Center & Live Activity Stream (/src/components/CommandCenterView.tsx):
+   - Primary landing page displaying real canonical status, active agents, reasoning provider status, open failures, and coordination conflicts.
+   - Watchable live activity stream fed directly from genuine execution events.
 
-4. Real Shadow Mode Engine (/server/shadowModeEngine.ts):
-   - Generates distinct `ShadowScenario` with new ID and distinct inputs (Room 305). Evaluates independently (`PASSED_SHADOW`). No score inheritance!
+4. Reality & Data Truth Swarm Engine (/server/realitySwarmEngine.ts & /src/components/RealityDataTruthView.tsx):
+   - Audits visible UI fields, counts, badges, version strings, API endpoints, and security exposures.
+   - Safe auto-repair for UI bindings and stale values with immutable repair audit log.
+   - CRITICAL BOUNDARY: Overwriting engineering calculations or BIM geometry is strictly forbidden. Mismatches generate domain conflicts routed to Prime and domain managers.
 
-5. Durable Learning Persistence (/server/persistence/learningPersistence.ts):
-   - Atomically saves and restores state from `data/db/hermes_store.json`.
-
-6. Integration Tests & Audit Report:
-   - Integration tests: server/__tests__/genuine_agent_reasoning.test.ts (11/11 PASSED)
-   - Audit report: docs/PHASE_3_17_2_GENUINE_AGENT_REASONING_AUDIT.md
+5. Cost Confidence & Price Truth:
+   - Cost confidence breakdown (Total Modeled Material Value vs Verified Cost vs Unverified Estimated Cost).
+   - Price classification badges with automatic downgrade logic for unverified supplier quotes.

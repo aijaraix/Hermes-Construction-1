@@ -1,34 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { DigitalTwinProject, PrimeHeartbeatState, BIMComponent, ProposedRevision, LearnedLesson } from './types/hermes';
-import { Navbar } from './components/Navbar';
+import {
+  DigitalTwinProject,
+  PrimeHeartbeatState,
+  BIMComponent,
+  ProposedRevision,
+  LearnedLesson,
+} from './types/hermes';
+import { AppShell, NavTab, UserExperienceLevel } from './components/AppShell';
+import { CommandCenterView } from './components/CommandCenterView';
+import { ProjectOverviewView } from './components/ProjectOverviewView';
 import { ThreeBIMViewer } from './components/ThreeBIMViewer';
-import { DashboardView } from './components/DashboardView';
-import { BOMView } from './components/BOMView';
+import { RoomsSpacesView } from './components/RoomsSpacesView';
+import { PlansSystemsView } from './components/PlansSystemsView';
 import { InspectorView } from './components/InspectorView';
-import { SourcingView } from './components/SourcingView';
+import { BOMView } from './components/BOMView';
+import { ProcurementView } from './components/ProcurementView';
 import { ScheduleView } from './components/ScheduleView';
 import { ChangeOrderView } from './components/ChangeOrderView';
-import { GymView } from './components/GymView';
 import { CustomizerView } from './components/CustomizerView';
-import { AuditTrailView } from './components/AuditTrailView';
+import { DashboardView } from './components/DashboardView';
 import { AgentOrganizationView } from './components/AgentOrganizationView';
+import { KnowledgeCenterView } from './components/KnowledgeCenterView';
 import { KnowledgeGymView } from './components/KnowledgeGymView';
-import { RoomCoordinationView } from './components/RoomCoordinationView';
 import { ReadinessGateView } from './components/ReadinessGateView';
-import { X, Info, CheckCircle2, AlertTriangle, ShieldCheck, DollarSign, Layers } from 'lucide-react';
+import { GymView } from './components/GymView';
+import { RealityDataTruthView } from './components/RealityDataTruthView';
+import { AuditTrailView } from './components/AuditTrailView';
+import { SystemHealthView } from './components/SystemHealthView';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('3d-twin');
+  const [activeTab, setActiveTab] = useState<NavTab>('command-center');
   const [heartbeatState, setHeartbeatState] = useState<PrimeHeartbeatState | null>(null);
   const [currentProject, setCurrentProject] = useState<DigitalTwinProject | null>(null);
   const [allProjects, setAllProjects] = useState<DigitalTwinProject[]>([]);
   const [learnedLessons, setLearnedLessons] = useState<LearnedLesson[]>([]);
-  
+  const [uxLevel, setUxLevel] = useState<UserExperienceLevel>('TECHNICAL');
+
   const [selectedComponent, setSelectedComponent] = useState<BIMComponent | null>(null);
   const [highlightCategory, setHighlightCategory] = useState<string | null>(null);
   const [isTriggering, setIsTriggering] = useState<boolean>(false);
 
-  // Fetch initial data
+  // Fetch initial system state
   const fetchData = async () => {
     try {
       const [hbRes, projRes, lessonsRes] = await Promise.all([
@@ -56,6 +68,24 @@ export default function App() {
     fetchData();
   }, []);
 
+  const handleSelectProject = async (projectId: string) => {
+    try {
+      const res = await fetch('/api/projects/set-active', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: projectId }),
+      });
+      const newHb = await res.json();
+      setHeartbeatState(newHb);
+
+      const pRes = await fetch(`/api/projects/${projectId}`);
+      const updatedProject = await pRes.json();
+      setCurrentProject(updatedProject);
+    } catch (e) {
+      console.error('Error switching project:', e);
+    }
+  };
+
   const handleTriggerHeartbeat = async () => {
     setIsTriggering(true);
     try {
@@ -67,7 +97,6 @@ export default function App() {
       const newHbState: PrimeHeartbeatState = await res.json();
       setHeartbeatState(newHbState);
 
-      // Refresh active project data
       if (currentProject) {
         const pRes = await fetch(`/api/projects/${currentProject.id}`);
         const updatedProject = await pRes.json();
@@ -91,7 +120,6 @@ export default function App() {
       const updated = await res.json();
       setCurrentProject(updated);
 
-      // Refresh heartbeat state
       const hbRes = await fetch('/api/heartbeat');
       setHeartbeatState(await hbRes.json());
     } catch (e) {
@@ -153,196 +181,142 @@ export default function App() {
           <div className="w-12 h-12 rounded-2xl bg-cyan-600 animate-spin mx-auto flex items-center justify-center font-bold text-lg text-white">
             H
           </div>
-          <h2 className="text-lg font-bold text-slate-200">Initializing HERMES Construction Intelligence...</h2>
-          <p className="text-xs text-slate-400">Loading persistent 3D BIM digital twin models & multi-agent swarms</p>
+          <h2 className="text-lg font-bold text-slate-200">Initializing HERMES Construction OS...</h2>
+          <p className="text-xs text-slate-400">Loading persistent 3D BIM digital twin models & Reality Swarm</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col selection:bg-cyan-500 selection:text-slate-950">
-      {/* Header Navbar */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        heartbeatState={heartbeatState}
-        onTriggerHeartbeat={handleTriggerHeartbeat}
-        isTriggering={isTriggering}
-      />
+    <AppShell
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      currentProject={currentProject}
+      allProjects={allProjects}
+      onSelectProject={handleSelectProject}
+      heartbeatState={heartbeatState}
+      onTriggerHeartbeat={handleTriggerHeartbeat}
+      isTriggering={isTriggering}
+      selectedComponent={selectedComponent}
+      onCloseInspector={() => setSelectedComponent(null)}
+      uxLevel={uxLevel}
+      setUxLevel={setUxLevel}
+    >
+      {/* 1. Command Center */}
+      {activeTab === 'command-center' && (
+        <CommandCenterView
+          project={currentProject}
+          heartbeatState={heartbeatState}
+          onTriggerHeartbeat={handleTriggerHeartbeat}
+          onNavigateTab={setActiveTab}
+        />
+      )}
 
-      {/* Main Content Area */}
-      <main className="max-w-7xl w-full mx-auto p-4 md:p-6 flex-1 space-y-6">
-        {/* Tab 1: 3D Digital Twin Viewer */}
-        {activeTab === '3d-twin' && (
-          <div className="space-y-6">
-            <ThreeBIMViewer
-              components={currentProject.components}
-              selectedComponentId={selectedComponent?.id}
-              onSelectComponent={setSelectedComponent}
-              highlightCategory={highlightCategory}
-            />
+      {/* 2. Project Overview */}
+      {activeTab === 'project-overview' && (
+        <ProjectOverviewView
+          project={currentProject}
+          heartbeatState={heartbeatState}
+          onNavigateTab={setActiveTab}
+        />
+      )}
 
-            {/* Click Anything - Selected Component Technical Spec Drawer */}
-            {selectedComponent && (
-              <div className="p-6 bg-slate-900 rounded-2xl border border-cyan-500/50 shadow-2xl space-y-4 animate-fadeIn">
-                <div className="flex items-start justify-between gap-4 pb-3 border-b border-slate-800">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-xs text-cyan-400 bg-slate-950 px-2.5 py-0.5 rounded border border-slate-800">
-                        {selectedComponent.id}
-                      </span>
-                      <span className="text-xs font-semibold text-slate-400">{selectedComponent.system} System</span>
-                    </div>
-                    <h3 className="text-base font-bold text-slate-100 mt-1">{selectedComponent.assembly}</h3>
-                    <p className="text-xs text-slate-400 font-mono mt-0.5">Floor {selectedComponent.floor} • Room: {selectedComponent.room}</p>
-                  </div>
+      {/* 3. 3D Digital Twin Workspace */}
+      {activeTab === '3d-twin' && (
+        <ThreeBIMViewer
+          components={currentProject.components}
+          selectedComponentId={selectedComponent?.id}
+          onSelectComponent={setSelectedComponent}
+          highlightCategory={highlightCategory}
+        />
+      )}
 
-                  <button
-                    onClick={() => setSelectedComponent(null)}
-                    className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded-lg transition"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+      {/* 4. Rooms & Spaces Workspace */}
+      {activeTab === 'rooms-spaces' && (
+        <RoomsSpacesView project={currentProject} onSelectComponent={setSelectedComponent} />
+      )}
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
-                  <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 font-sans">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Calculated Quantities</span>
-                    <p className="font-mono text-cyan-300 font-bold text-sm">
-                      {selectedComponent.quantity.value} {selectedComponent.quantity.unit}
-                    </p>
-                    <p className="text-slate-400 text-[11px]">Unit Price: ${selectedComponent.unitCost} / {selectedComponent.quantity.unit}</p>
-                    <p className="text-emerald-400 font-bold text-xs mt-1">Total Cost: ${selectedComponent.totalCost.toLocaleString()}</p>
-                  </div>
+      {/* 5. Plans & Systems Workspace */}
+      {activeTab === 'plans-systems' && <PlansSystemsView project={currentProject} />}
 
-                  <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 font-sans">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Inspection Status</span>
-                    <span
-                      className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase ${
-                        selectedComponent.inspectionState === 'passed'
-                          ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
-                          : selectedComponent.inspectionState === 'repaired'
-                          ? 'bg-blue-950 text-blue-400 border border-blue-800'
-                          : 'bg-red-950 text-red-400 border border-red-800'
-                      }`}
-                    >
-                      {selectedComponent.inspectionState}
-                    </span>
-                    {selectedComponent.inspectionNotes && (
-                      <p className="text-slate-300 text-[11px] mt-1">{selectedComponent.inspectionNotes}</p>
-                    )}
-                  </div>
+      {/* 6. Inspections Workspace */}
+      {activeTab === 'inspections' && (
+        <InspectorView
+          tickets={currentProject.inspectionTickets}
+          onRepairTicket={handleRepairTicket}
+          onTriggerHeartbeat={handleTriggerHeartbeat}
+        />
+      )}
 
-                  <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 font-sans">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Materials Breakdown</span>
-                    <ul className="list-disc list-inside text-slate-300 text-[11px] space-y-0.5">
-                      {selectedComponent.materials.map((m, i) => (
-                        <li key={i}>
-                          {m.name} ({m.quantity} {m.unit})
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+      {/* 7. BOM & Quantities */}
+      {activeTab === 'bom' && (
+        <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
+      )}
 
-                {/* WHY WAS THIS SELECTED? Explainability Panel */}
-                <div className="p-4 bg-slate-950/90 rounded-xl border border-cyan-800/40 space-y-2 text-xs">
-                  <h4 className="font-bold text-cyan-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                    <Info className="w-4 h-4" /> WHY WAS THIS SELECTED? (Explainability Engine)
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300 leading-relaxed">
-                    <div>
-                      <strong className="text-slate-100 block font-semibold">Design Reason:</strong>
-                      {selectedComponent.whySelected.reason}
-                    </div>
-                    <div>
-                      <strong className="text-slate-100 block font-semibold">Environmental Factor:</strong>
-                      {selectedComponent.whySelected.environmentalFactor}
-                    </div>
-                    <div>
-                      <strong className="text-slate-100 block font-semibold">Building Code Rule:</strong>
-                      {selectedComponent.whySelected.codeRule}
-                    </div>
-                    <div>
-                      <strong className="text-slate-100 block font-semibold">Alternatives Considered:</strong>
-                      {selectedComponent.whySelected.alternativesConsidered.join(', ')}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+      {/* 8. Procurement & Price Truth */}
+      {activeTab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
 
-        {/* Phase 3.15 Autonomous Organization & Knowledge Tabs */}
-        {activeTab === 'org' && <AgentOrganizationView />}
-        {activeTab === 'knowledge-gym' && <KnowledgeGymView />}
-        {activeTab === 'room-coord' && <RoomCoordinationView />}
-        {activeTab === 'readiness-gate' && <ReadinessGateView />}
+      {/* 9. 4D Schedule */}
+      {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
 
-        {/* Tab 2: Dashboard */}
-        {activeTab === 'dashboard' && (
-          <DashboardView
-            project={currentProject}
-            heartbeatState={heartbeatState}
-            onTriggerHeartbeat={handleTriggerHeartbeat}
-          />
-        )}
+      {/* 10. Change-Order Risks */}
+      {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
 
-        {/* Tab 2.5: Reality Audit Log */}
-        {activeTab === 'audit' && <AuditTrailView />}
+      {/* 11. Customizer & Revisions */}
+      {activeTab === 'customizer' && (
+        <CustomizerView
+          projectId={currentProject.id}
+          onProposeRevision={handleProposeRevision}
+          onApplyRevision={handleApplyRevision}
+        />
+      )}
 
-        {/* Tab 3: BOM */}
-        {activeTab === 'bom' && (
-          <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
-        )}
+      {/* 12. HERMES Prime */}
+      {activeTab === 'prime' && (
+        <DashboardView
+          project={currentProject}
+          heartbeatState={heartbeatState}
+          onTriggerHeartbeat={handleTriggerHeartbeat}
+        />
+      )}
 
-        {/* Tab 4: Inspector */}
-        {activeTab === 'inspector' && (
-          <InspectorView
-            tickets={currentProject.inspectionTickets}
-            onRepairTicket={handleRepairTicket}
-            onTriggerHeartbeat={handleTriggerHeartbeat}
-          />
-        )}
+      {/* 13. Agent Organization */}
+      {activeTab === 'agent-org' && <AgentOrganizationView />}
 
-        {/* Tab 5: Local Sourcing */}
-        {activeTab === 'sourcing' && <SourcingView suppliers={currentProject.suppliers} />}
+      {/* 14. Knowledge Center */}
+      {activeTab === 'knowledge-center' && <KnowledgeCenterView />}
 
-        {/* Tab 6: 4D Schedule */}
-        {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
+      {/* 15. Knowledge Gym */}
+      {activeTab === 'knowledge-gym' && <KnowledgeGymView />}
 
-        {/* Tab 7: Change-Order Risks */}
-        {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
+      {/* 16. Core Readiness Gate */}
+      {activeTab === 'readiness-gate' && <ReadinessGateView />}
 
-        {/* Tab 8: Gym & Lab */}
-        {activeTab === 'gym' && (
-          <GymView
-            projects={allProjects}
-            lessons={learnedLessons}
-            onSelectProject={(id) => {
-              const p = allProjects.find((x) => x.id === id);
-              if (p) setCurrentProject(p);
-            }}
-            onCreateGymProject={handleCreateGymProject}
-          />
-        )}
+      {/* 17. Autonomous Gym */}
+      {activeTab === 'gym' && (
+        <GymView
+          projects={allProjects}
+          lessons={learnedLessons}
+          onSelectProject={(id) => {
+            const p = allProjects.find((x) => x.id === id);
+            if (p) setCurrentProject(p);
+          }}
+          onCreateGymProject={handleCreateGymProject}
+        />
+      )}
 
-        {/* Tab 9: Customizer & Revisions */}
-        {activeTab === 'customizer' && (
-          <CustomizerView
-            projectId={currentProject.id}
-            onProposeRevision={handleProposeRevision}
-            onApplyRevision={handleApplyRevision}
-          />
-        )}
-      </main>
+      {/* 18. Reality & Data Truth */}
+      {activeTab === 'reality-truth' && <RealityDataTruthView />}
 
-      {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        HERMES Construction System • Autonomous Building Intelligence & Digital Twin Framework • FBC 2023 / IBC 2024 Grounded
-      </footer>
-    </div>
+      {/* 19. System Audit Trail */}
+      {activeTab === 'audit' && <AuditTrailView />}
+
+      {/* 20. System Health */}
+      {activeTab === 'system-health' && <SystemHealthView />}
+
+      {/* 21. Source Registry */}
+      {activeTab === 'source-registry' && <KnowledgeCenterView />}
+    </AppShell>
   );
 }
