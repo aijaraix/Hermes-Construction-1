@@ -13,8 +13,8 @@
       ],
       "validationStatus": "VERIFIED",
       "confidence": 1,
-      "detectedAt": "2026-08-21T14:05:19.071Z",
-      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "detectedAt": "2026-08-21T14:14:22.391Z",
+      "lastVerifiedAt": "2026-08-21T14:14:22.391Z",
       "repairStatus": "NONE",
       "responsibleDomain": "Agent Structure"
     },
@@ -31,8 +31,8 @@
       ],
       "validationStatus": "VERIFIED",
       "confidence": 1,
-      "detectedAt": "2026-08-21T14:05:19.071Z",
-      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "detectedAt": "2026-08-21T14:14:22.391Z",
+      "lastVerifiedAt": "2026-08-21T14:14:22.391Z",
       "repairStatus": "NONE",
       "responsibleDomain": "Agent Structure"
     },
@@ -49,8 +49,8 @@
       ],
       "validationStatus": "VERIFIED",
       "confidence": 0.95,
-      "detectedAt": "2026-08-21T14:05:19.071Z",
-      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "detectedAt": "2026-08-21T14:14:22.391Z",
+      "lastVerifiedAt": "2026-08-21T14:14:22.391Z",
       "repairStatus": "NONE",
       "responsibleDomain": "Procurement"
     },
@@ -59,16 +59,16 @@
       "page": "App Shell",
       "component": "AppShellHeader",
       "field": "headerBuildVersion",
-      "displayedValue": "Phase 3.17B.1 • 5be9b4b",
-      "canonicalValue": "Phase 3.17B.1 • 5be9b4b",
+      "displayedValue": "Phase 3.17B.1 • 12925b3",
+      "canonicalValue": "Phase 3.17B.1 • 12925b3",
       "provenance": "CONFIGURATION",
       "sourceRecordIds": [
         "COMMIT_MANIFEST.txt"
       ],
       "validationStatus": "VERIFIED",
       "confidence": 1,
-      "detectedAt": "2026-08-21T14:05:19.071Z",
-      "lastVerifiedAt": "2026-08-21T14:05:19.071Z",
+      "detectedAt": "2026-08-21T14:14:22.391Z",
+      "lastVerifiedAt": "2026-08-21T14:14:22.391Z",
       "repairStatus": "NONE",
       "responsibleDomain": "System Governance"
     },
@@ -290,6 +290,25 @@
       "repairStatus": "AWAITING_DOMAIN_REVIEW",
       "repairAction": "Escalated to REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL_MANAGER. Reality Swarm WILL NOT overwrite engineering value.",
       "responsibleDomain": "Structural"
+    },
+    {
+      "truthRecordId": "REC-CONFLICT-CONF-1787321662387-683",
+      "page": "3D Digital Twin",
+      "component": "Footing-F01",
+      "field": "concreteCompressivePsi",
+      "displayedValue": 3000,
+      "canonicalValue": 4000,
+      "provenance": "SIMULATED",
+      "sourceRecordIds": [
+        "CONF-1787321662387-683"
+      ],
+      "validationStatus": "CONFLICT",
+      "confidence": 0.5,
+      "detectedAt": "2026-08-21T14:14:22.387Z",
+      "lastVerifiedAt": "2026-08-21T14:14:22.387Z",
+      "repairStatus": "AWAITING_DOMAIN_REVIEW",
+      "repairAction": "Escalated to REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL ENGINEERING_MANAGER. Reality Swarm WILL NOT overwrite engineering value.",
+      "responsibleDomain": "Structural Engineering"
     }
   ],
   "repairLogs": [
@@ -328,6 +347,18 @@
       "repairAgent": "COUNT-CONSISTENCY-INSPECTOR",
       "timestamp": "2026-08-21T14:05:19.067Z",
       "rollbackInfo": "Restore UI displayed value to 132"
+    },
+    {
+      "repairId": "REP-1787321662384-AGENT-COUNT",
+      "field": "totalAgentRoles",
+      "page": "Agent Organization",
+      "beforeValue": 49,
+      "afterValue": 50,
+      "reason": "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+      "canonicalSource": "AgentRegistry.getAllContracts().length",
+      "repairAgent": "COUNT-CONSISTENCY-INSPECTOR",
+      "timestamp": "2026-08-21T14:14:22.384Z",
+      "rollbackInfo": "Restore UI displayed value to 49"
     }
   ],
   "domainConflicts": [
@@ -366,15 +397,171 @@
       "status": "OPEN",
       "createdAt": "2026-08-21T14:05:19.072Z",
       "escalatedTo": "REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL_MANAGER"
+    },
+    {
+      "conflictId": "CONF-1787321662387-683",
+      "page": "3D Digital Twin",
+      "component": "Footing-F01",
+      "field": "concreteCompressivePsi",
+      "uiValue": 3000,
+      "engineeringValue": 4000,
+      "responsibleDomain": "Structural Engineering",
+      "status": "OPEN",
+      "createdAt": "2026-08-21T14:14:22.387Z",
+      "escalatedTo": "REALITY_PRIME -> HERMES_PRIME -> STRUCTURAL ENGINEERING_MANAGER"
     }
   ],
   "securityExposures": {
-    "timestamp": "2026-08-21T14:05:19.071Z",
+    "timestamp": "2026-08-21T14:14:22.391Z",
     "clean": true,
     "exposuresFound": 0,
     "items": []
   },
-  "pageAudits": [],
+  "pageAudits": [
+    {
+      "pageName": "Agent Organization",
+      "fieldsInspected": 2,
+      "verified": 2,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "Procurement",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "App Shell",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/agent-org",
+      "fieldsInspected": 2,
+      "verified": 2,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/overview",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/bom",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/procurement",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "*",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/rooms",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "/inspections",
+      "fieldsInspected": 1,
+      "verified": 1,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 0,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "3D Digital Twin",
+      "fieldsInspected": 2,
+      "verified": 0,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 2,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    },
+    {
+      "pageName": "Rooms & Spaces",
+      "fieldsInspected": 2,
+      "verified": 0,
+      "calculated": 0,
+      "estimated": 0,
+      "unverified": 0,
+      "conflict": 2,
+      "seeded": 0,
+      "lastAudit": "2026-08-21T14:14:22.391Z"
+    }
+  ],
   "auditExecutions": [
     {
       "auditExecutionId": "EXEC-1787321067139",
@@ -491,7 +678,106 @@
       "startedAt": "2026-08-21T14:05:19.071Z",
       "completedAt": "2026-08-21T14:05:19.071Z",
       "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321459072",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 16,
+      "findingsCount": 3,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:10:59.072Z",
+      "completedAt": "2026-08-21T14:10:59.073Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321459171",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 16,
+      "findingsCount": 3,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:10:59.171Z",
+      "completedAt": "2026-08-21T14:10:59.171Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321662381",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 16,
+      "findingsCount": 3,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:14:22.381Z",
+      "completedAt": "2026-08-21T14:14:22.382Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321662384",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 16,
+      "findingsCount": 3,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:14:22.384Z",
+      "completedAt": "2026-08-21T14:14:22.384Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321662390",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 17,
+      "findingsCount": 4,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:14:22.390Z",
+      "completedAt": "2026-08-21T14:14:22.390Z",
+      "status": "COMPLETED"
+    },
+    {
+      "auditExecutionId": "EXEC-1787321662391",
+      "agentId": "REALITY_PRIME",
+      "auditType": "FULL_SYSTEM_INTEGRITY_SWARM_SWEEP",
+      "target": "HERMES_FULL_APPLICATION_SURFACE",
+      "recordsInspected": 17,
+      "findingsCount": 4,
+      "actionsTaken": [
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (132) to match canonical AgentRegistry contract total (50)",
+        "Realigned UI displayed agent role count (49) to match canonical AgentRegistry contract total (50)"
+      ],
+      "startedAt": "2026-08-21T14:14:22.391Z",
+      "completedAt": "2026-08-21T14:14:22.391Z",
+      "status": "COMPLETED"
     }
   ],
-  "lastSavedAt": "2026-08-21T14:05:19.072Z"
+  "lastSavedAt": "2026-08-21T14:14:22.391Z"
 }

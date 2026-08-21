@@ -1,14 +1,14 @@
-HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17B COMMAND CENTER & DATA TRUTH
+HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17B.1 REALITY SWARM HARDENING
 ================================================================================
 Project: HERMES Construction System
-Phase: PHASE 3.17B COMMAND CENTER, PROJECT WORKSPACES, UI/UX REORGANIZATION & REALITY DATA TRUTH SWARM
+Phase: PHASE 3.17B.1 REALITY SWARM HARDENING, LIVE DATA AUDIT, TRUE PROVENANCE & REAL SELF-HEALING
 Target Repository: https://github.com/aijaraix/Hermes-Construction-1
-Current Branch: master
-Commit SHA: 5be9b4b0e8910d65a2811a8b12389104523812ab (short: 5be9b4b)
-Verified Phase 3.17B Canonical Commit
-Build Timestamp: 2026-08-21T06:40:00Z
-Source Bundle Timestamp: 2026-08-21T06:40:00Z
-Status: PHASE_3_17B_VERIFIED
+Current Branch: main
+Commit SHA: 4a079e561bf962b4464ea4dfc7c9086c0c90e925 (short: 4a079e5)
+Verified Phase 3.17B.1 Canonical Commit
+Build Timestamp: 2026-08-21T07:11:00Z
+Source Bundle Timestamp: 2026-08-21T07:11:00Z
+Status: PHASE_3_17B_1_VERIFIED
 
 PHASE 3.17B HIGHLIGHTS:
 --------------------------------------------------------------------------------
