@@ -29,24 +29,24 @@ export function AuditTrailView() {
     setIsLoading(true);
     try {
       const [hbRes, tRes, revRes, inspRes, bomRes, compRes, corpRes] = await Promise.all([
-        fetch('/api/records/heartbeats').catch(() => null),
-        fetch('/api/records/tasks').catch(() => null),
-        fetch('/api/records/revisions').catch(() => null),
-        fetch('/api/records/inspections').catch(() => null),
-        fetch('/api/records/bom-revisions').catch(() => null),
-        fetch('/api/records/competency').catch(() => null),
-        fetch('/api/records/corpus').catch(() => null),
+        fetch('/api/records/heartbeats'),
+        fetch('/api/records/tasks'),
+        fetch('/api/records/revisions'),
+        fetch('/api/records/inspections'),
+        fetch('/api/records/bom-revisions'),
+        fetch('/api/records/competency'),
+        fetch('/api/records/corpus'),
       ]);
 
-      if (hbRes && hbRes.ok) setHeartbeats((await hbRes.json().catch(() => [])) || []);
-      if (tRes && tRes.ok) setTasks((await tRes.json().catch(() => [])) || []);
-      if (revRes && revRes.ok) setRevisions((await revRes.json().catch(() => [])) || []);
-      if (inspRes && inspRes.ok) setInspections((await inspRes.json().catch(() => [])) || []);
-      if (bomRes && bomRes.ok) setBomRevisions((await bomRes.json().catch(() => [])) || []);
-      if (compRes && compRes.ok) setCompetency(await compRes.json().catch(() => null));
-      if (corpRes && corpRes.ok) setCorpusSources((await corpRes.json().catch(() => [])) || []);
-    } catch {
-      // Handle fetch failure gracefully
+      setHeartbeats(await hbRes.json());
+      setTasks(await tRes.json());
+      setRevisions(await revRes.json());
+      setInspections(await inspRes.json());
+      setBomRevisions(await bomRes.json());
+      setCompetency(await compRes.json());
+      setCorpusSources(await corpRes.json());
+    } catch (e) {
+      console.error('Error fetching audit records:', e);
     } finally {
       setIsLoading(false);
     }

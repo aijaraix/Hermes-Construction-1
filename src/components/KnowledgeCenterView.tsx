@@ -13,20 +13,20 @@ export const KnowledgeCenterView: React.FC = () => {
     const fetchKnowledgeData = async () => {
       try {
         const [srcRes, docRes, chkRes, assRes, gapRes] = await Promise.all([
-          fetch('/api/knowledge/sources').catch(() => null),
-          fetch('/api/knowledge/documents').catch(() => null),
-          fetch('/api/knowledge/chunks').catch(() => null),
-          fetch('/api/knowledge/assertions').catch(() => null),
-          fetch('/api/knowledge/gaps').catch(() => null),
+          fetch('/api/knowledge/sources'),
+          fetch('/api/knowledge/documents'),
+          fetch('/api/knowledge/chunks'),
+          fetch('/api/knowledge/assertions'),
+          fetch('/api/knowledge/gaps'),
         ]);
 
-        if (srcRes && srcRes.ok) setSources((await srcRes.json().catch(() => [])) || []);
-        if (docRes && docRes.ok) setDocuments((await docRes.json().catch(() => [])) || []);
-        if (chkRes && chkRes.ok) setChunks((await chkRes.json().catch(() => [])) || []);
-        if (assRes && assRes.ok) setAssertions((await assRes.json().catch(() => [])) || []);
-        if (gapRes && gapRes.ok) setGaps((await gapRes.json().catch(() => [])) || []);
-      } catch {
-        // Handle gracefully
+        setSources(await srcRes.json());
+        setDocuments(await docRes.json());
+        setChunks(await chkRes.json());
+        setAssertions(await assRes.json());
+        setGaps(await gapRes.json());
+      } catch (e) {
+        console.error('Error fetching Knowledge Center data:', e);
       }
     };
 

@@ -26,28 +26,28 @@ export const KnowledgeGymView: React.FC = () => {
     try {
       setLoading(true);
       const [sourcesRes, docsRes, fetchesRes, chunksRes, assertionsRes, tracesRes, reviewsRes, actRes, execRes] = await Promise.all([
-        fetch('/api/knowledge/sources').catch(() => null),
-        fetch('/api/knowledge/documents').catch(() => null),
-        fetch('/api/knowledge/fetches').catch(() => null),
-        fetch('/api/knowledge/chunks').catch(() => null),
-        fetch('/api/knowledge/assertions').catch(() => null),
-        fetch('/api/knowledge/audit-traces').catch(() => null),
-        fetch('/api/knowledge/manager-reviews').catch(() => null),
-        fetch('/api/knowledge/activities').catch(() => null),
-        fetch('/api/knowledge/executions').catch(() => null)
+        fetch('/api/knowledge/sources'),
+        fetch('/api/knowledge/documents'),
+        fetch('/api/knowledge/fetches'),
+        fetch('/api/knowledge/chunks'),
+        fetch('/api/knowledge/assertions'),
+        fetch('/api/knowledge/audit-traces'),
+        fetch('/api/knowledge/manager-reviews'),
+        fetch('/api/knowledge/activities'),
+        fetch('/api/knowledge/executions')
       ]);
 
-      if (sourcesRes && sourcesRes.ok) setSources((await sourcesRes.json().catch(() => [])) || []);
-      if (docsRes && docsRes.ok) setDocuments((await docsRes.json().catch(() => [])) || []);
-      if (fetchesRes && fetchesRes.ok) setFetches((await fetchesRes.json().catch(() => [])) || []);
-      if (chunksRes && chunksRes.ok) setChunks((await chunksRes.json().catch(() => [])) || []);
-      if (assertionsRes && assertionsRes.ok) setAssertions((await assertionsRes.json().catch(() => [])) || []);
-      if (tracesRes && tracesRes.ok) setAuditTraces((await tracesRes.json().catch(() => [])) || []);
-      if (reviewsRes && reviewsRes.ok) setReviews((await reviewsRes.json().catch(() => [])) || []);
-      if (actRes && actRes.ok) setActivities((await actRes.json().catch(() => [])) || []);
-      if (execRes && execRes.ok) setExecutions((await execRes.json().catch(() => [])) || []);
-    } catch {
-      // Handle gracefully
+      setSources((await sourcesRes.json()) || []);
+      setDocuments((await docsRes.json()) || []);
+      setFetches((await fetchesRes.json()) || []);
+      setChunks((await chunksRes.json()) || []);
+      setAssertions((await assertionsRes.json()) || []);
+      setAuditTraces((await tracesRes.json()) || []);
+      setReviews((await reviewsRes.json()) || []);
+      setActivities((await actRes.json()) || []);
+      setExecutions((await execRes.json()) || []);
+    } catch (e) {
+      console.error('Failed to load Knowledge Gym data:', e);
     } finally {
       setLoading(false);
     }

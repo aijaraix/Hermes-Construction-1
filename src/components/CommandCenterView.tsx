@@ -35,34 +35,24 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
   const [healthData, setHealthData] = useState<any>(null);
 
   useEffect(() => {
-    let isMounted = true;
     const fetchActivities = async () => {
       try {
         const [actRes, healthRes] = await Promise.all([
-          fetch('/api/knowledge/activities').catch(() => null),
-          fetch('/api/system/health').catch(() => null),
+          fetch('/api/knowledge/activities'),
+          fetch('/api/system/health'),
         ]);
-        if (!isMounted) return;
-
-        if (actRes && actRes.ok) {
-          const actData = await actRes.json().catch(() => null);
-          if (actData && isMounted) setActivities(actData);
-        }
-        if (healthRes && healthRes.ok) {
-          const hData = await healthRes.json().catch(() => null);
-          if (hData && isMounted) setHealthData(hData);
-        }
-      } catch {
-        // Ignore transient fetch failures during dev server reload/polls
+        const actData = await actRes.json();
+        const hData = await healthRes.json();
+        setActivities(actData || []);
+        setHealthData(hData || null);
+      } catch (e) {
+        console.error('Error fetching command center streams:', e);
       }
     };
 
     fetchActivities();
     const timer = setInterval(fetchActivities, 5000);
-    return () => {
-      isMounted = false;
-      clearInterval(timer);
-    };
+    return () => clearInterval(timer);
   }, []);
 
   return (
