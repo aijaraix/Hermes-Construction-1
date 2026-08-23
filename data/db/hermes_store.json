@@ -31,7 +31,7 @@
         "concreteStrength": "number",
         "waterCementRatio": "number"
       },
-      "createdAt": "2026-08-23T01:46:50.645Z",
+      "createdAt": "2026-08-23T01:55:03.880Z",
       "version": "v1.0"
     },
     {
@@ -62,7 +62,7 @@
         "neckDiameter": "number",
         "calculatedVelocity": "number"
       },
-      "createdAt": "2026-08-23T01:46:51.002Z",
+      "createdAt": "2026-08-23T01:55:04.094Z",
       "version": "v2.0"
     },
     {
@@ -93,7 +93,7 @@
         "neckDiameter": "number",
         "calculatedVelocity": "number"
       },
-      "createdAt": "2026-08-23T01:46:51.211Z",
+      "createdAt": "2026-08-23T01:55:04.347Z",
       "version": "v1.0"
     },
     {
@@ -124,7 +124,7 @@
         "neckDiameter": "number",
         "calculatedVelocity": "number"
       },
-      "createdAt": "2026-08-23T01:46:51.492Z",
+      "createdAt": "2026-08-23T01:55:04.520Z",
       "version": "v2.0"
     },
     {
@@ -154,7 +154,7 @@
         "receptacleSpacingFt": "number",
         "gfciSpecified": "boolean"
       },
-      "createdAt": "2026-08-23T01:46:51.718Z",
+      "createdAt": "2026-08-23T01:55:04.747Z",
       "version": "v1.0"
     },
     {
@@ -185,13 +185,13 @@
         "neckDiameter": "number",
         "calculatedVelocity": "number"
       },
-      "createdAt": "2026-08-23T01:46:51.904Z",
+      "createdAt": "2026-08-23T01:55:04.942Z",
       "version": "v2.0"
     }
   ],
   "executions": [
     {
-      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787449610645",
+      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787450103880",
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
@@ -202,7 +202,7 @@
         "KC-USDA-FPL-GTR282-H1"
       ],
       "promptHash": "bfb2288dfcbb06d7",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 9.263344882s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"9s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-101\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 56.049501994s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"56s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-101\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
       "structuredProposal": {
         "proposedFootingWidth": 18,
         "proposedFootingDepth": 12,
@@ -232,13 +232,13 @@
         "KC-USDA-FPL-GTR282-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:50.645Z",
-      "completedAt": "2026-08-23T01:46:50.765Z",
+      "startedAt": "2026-08-23T01:55:03.880Z",
+      "completedAt": "2026-08-23T01:55:03.971Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787449611002",
+      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787450104094",
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
@@ -250,7 +250,7 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "promptHash": "f44542b27a8bca2f",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.945935196s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.842019135s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
       "structuredProposal": {
         "proposedFootingWidth": 18,
         "proposedFootingDepth": 12,
@@ -282,24 +282,24 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.002Z",
-      "completedAt": "2026-08-23T01:46:51.080Z",
+      "startedAt": "2026-08-23T01:55:04.094Z",
+      "completedAt": "2026-08-23T01:55:04.178Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787449611082",
+      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787450104179",
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
       "modelName": "hermes-simulator-v1",
-      "scenarioId": "SCENARIO-SHADOW-SHALLOW-FOOTING-DESIGN-AGENT-1787449611081",
+      "scenarioId": "SCENARIO-SHADOW-SHALLOW-FOOTING-DESIGN-AGENT-1787450104179",
       "knowledgePackId": "KP-SHALLOW-FOOTING-DESIGN-AGENT-v2.0.0",
       "retrievedChunkIds": [
         "KC-USDA-FPL-GTR282-H1"
       ],
-      "promptHash": "eb32544a3ace0d6a",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.809079707s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHADOW-SHALLOW-FOOTING-DESIGN-AGENT-1787449611081\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 2200,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 17.599999999999998,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.9777777777777776\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
+      "promptHash": "304419ce139a4364",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.680804356s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHADOW-SHALLOW-FOOTING-DESIGN-AGENT-1787450104179\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 2200,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 17.599999999999998,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.9777777777777776\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
       "structuredProposal": {
         "proposedFootingWidth": 18,
         "proposedFootingDepth": 12,
@@ -329,13 +329,13 @@
         "KC-USDA-FPL-GTR282-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.082Z",
-      "completedAt": "2026-08-23T01:46:51.211Z",
+      "startedAt": "2026-08-23T01:55:04.179Z",
+      "completedAt": "2026-08-23T01:55:04.346Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611211",
+      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104347",
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
@@ -346,7 +346,7 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "promptHash": "d7a26d0e2133a5ca",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.682501828s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 6,\n    \"calculatedVelocity\": 611.2,\n    \"ductConnection\": \"6-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.609760733s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 6,\n    \"calculatedVelocity\": 611.2,\n    \"ductConnection\": \"6-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
       "structuredProposal": {
         "airflowCFM": 120,
         "diffuserType": "Round Ceiling Diffuser",
@@ -370,13 +370,13 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.211Z",
-      "completedAt": "2026-08-23T01:46:51.346Z",
+      "startedAt": "2026-08-23T01:55:04.347Z",
+      "completedAt": "2026-08-23T01:55:04.411Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611492",
+      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104520",
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
@@ -388,7 +388,7 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "promptHash": "84062132a7a06739",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.470624936s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 8,\n    \"calculatedVelocity\": 343.8,\n    \"ductConnection\": \"8-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.43591585s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 8,\n    \"calculatedVelocity\": 343.8,\n    \"ductConnection\": \"8-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
       "structuredProposal": {
         "airflowCFM": 120,
         "diffuserType": "Round Ceiling Diffuser",
@@ -414,24 +414,24 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.492Z",
-      "completedAt": "2026-08-23T01:46:51.546Z",
+      "startedAt": "2026-08-23T01:55:04.520Z",
+      "completedAt": "2026-08-23T01:55:04.589Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611546",
+      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104589",
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
       "modelName": "hermes-simulator-v1",
-      "scenarioId": "SCENARIO-SHADOW-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611546",
+      "scenarioId": "SCENARIO-SHADOW-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104589",
       "knowledgePackId": "KP-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-v2.0.0",
       "retrievedChunkIds": [
         "KC-DOE-PNNL-BASC-H1"
       ],
-      "promptHash": "c20fb33a9a688ad4",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.308113982s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"model\\\":\\\"gemini-3.7-flash\\\",\\\"location\\\":\\\"global\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHADOW-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611546\",\n  \"proposal\": {\n    \"airflowCFM\": 160,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 6,\n    \"calculatedVelocity\": 814.9,\n    \"ductConnection\": \"6-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
+      "promptHash": "6139f5383ae1a7f5",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.278686486s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHADOW-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104589\",\n  \"proposal\": {\n    \"airflowCFM\": 160,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 6,\n    \"calculatedVelocity\": 814.9,\n    \"ductConnection\": \"6-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
       "structuredProposal": {
         "airflowCFM": 160,
         "diffuserType": "Round Ceiling Diffuser",
@@ -455,13 +455,13 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.546Z",
-      "completedAt": "2026-08-23T01:46:51.718Z",
+      "startedAt": "2026-08-23T01:55:04.589Z",
+      "completedAt": "2026-08-23T01:55:04.747Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611718",
+      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450104748",
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
@@ -472,7 +472,7 @@
         "KC-USDA-FPL-GTR282-H1"
       ],
       "promptHash": "b2d90ee90702d067",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.229265382s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"model\\\":\\\"gemini-3.7-flash\\\",\\\"location\\\":\\\"global\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.192009492s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
       "structuredProposal": {
         "receptacleSpacingFt": 10,
         "circuitVoltage": 120,
@@ -494,13 +494,13 @@
         "KC-USDA-FPL-GTR282-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.718Z",
-      "completedAt": "2026-08-23T01:46:51.789Z",
+      "startedAt": "2026-08-23T01:55:04.748Z",
+      "completedAt": "2026-08-23T01:55:04.833Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611904",
+      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450104942",
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
@@ -512,7 +512,7 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "promptHash": "13ad0d32929a14a4",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.029569538s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"model\\\":\\\"gemini-3.7-flash\\\",\\\"location\\\":\\\"global\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.00300885s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
       "structuredProposal": {
         "receptacleSpacingFt": 10,
         "circuitVoltage": 120,
@@ -536,24 +536,24 @@
         "KC-DOE-PNNL-BASC-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.904Z",
-      "completedAt": "2026-08-23T01:46:51.996Z",
+      "startedAt": "2026-08-23T01:55:04.942Z",
+      "completedAt": "2026-08-23T01:55:05.013Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611996",
+      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450105013",
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
       "executionMode": "SIMULATION_ONLY",
       "modelProvider": "DeterministicProposalSimulator",
       "modelName": "hermes-simulator-v1",
-      "scenarioId": "SCENARIO-SHADOW-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611996",
+      "scenarioId": "SCENARIO-SHADOW-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450105013",
       "knowledgePackId": "KP-BRANCH-CIRCUIT-RECEPTACLE-AGENT-v2.0.0",
       "retrievedChunkIds": [
         "KC-USDA-FPL-GTR282-H1"
       ],
-      "promptHash": "76a9056aca64c261",
-      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 7.880558353s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"model\\\":\\\"gemini-3.7-flash\\\",\\\"location\\\":\\\"global\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"7s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHADOW-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611996\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
+      "promptHash": "602c07ca8440a5e5",
+      "rawResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 54.839221249s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"54s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHADOW-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450105013\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
       "structuredProposal": {
         "receptacleSpacingFt": 10,
         "circuitVoltage": 120,
@@ -575,8 +575,8 @@
         "KC-USDA-FPL-GTR282-H1"
       ],
       "toolCalls": [],
-      "startedAt": "2026-08-23T01:46:51.996Z",
-      "completedAt": "2026-08-23T01:46:52.145Z",
+      "startedAt": "2026-08-23T01:55:05.013Z",
+      "completedAt": "2026-08-23T01:55:05.186Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     }
@@ -584,42 +584,42 @@
   "validations": [],
   "knowledgeGaps": [
     {
-      "gapId": "GAP-SHALLOW-FOOTING-DESIGN-AGENT-1787449610765",
+      "gapId": "GAP-SHALLOW-FOOTING-DESIGN-AGENT-1787450103972",
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
       "topic": "Quiet Zone Ceiling Diffuser Neck Velocity Limits",
       "question": "What is the maximum neck velocity allowed for 120 CFM diffusers in a home office to remain under NC-25?",
       "impactedDecision": "Room 204 Air Distribution Sizing",
       "status": "RESOLVED",
-      "createdAt": "2026-08-23T01:46:50.765Z",
-      "resolvedAt": "2026-08-23T01:46:50.765Z",
+      "createdAt": "2026-08-23T01:55:03.972Z",
+      "resolvedAt": "2026-08-23T01:55:03.972Z",
       "resolutionNote": "Resolved via DOE Building America Guide Section 2: Max 500 FPM neck velocity required."
     },
     {
-      "gapId": "GAP-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611347",
+      "gapId": "GAP-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104412",
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
       "topic": "Quiet Zone Ceiling Diffuser Neck Velocity Limits",
       "question": "What is the maximum neck velocity allowed for 120 CFM diffusers in a home office to remain under NC-25?",
       "impactedDecision": "Room 204 Air Distribution Sizing",
       "status": "RESOLVED",
-      "createdAt": "2026-08-23T01:46:51.347Z",
-      "resolvedAt": "2026-08-23T01:46:51.347Z",
+      "createdAt": "2026-08-23T01:55:04.412Z",
+      "resolvedAt": "2026-08-23T01:55:04.412Z",
       "resolutionNote": "Resolved via DOE Building America Guide Section 2: Max 500 FPM neck velocity required."
     },
     {
-      "gapId": "GAP-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611789",
+      "gapId": "GAP-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450104833",
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
       "topic": "Quiet Zone Ceiling Diffuser Neck Velocity Limits",
       "question": "What is the maximum neck velocity allowed for 120 CFM diffusers in a home office to remain under NC-25?",
       "impactedDecision": "Room 204 Air Distribution Sizing",
       "status": "RESOLVED",
-      "createdAt": "2026-08-23T01:46:51.789Z",
-      "resolvedAt": "2026-08-23T01:46:51.789Z",
+      "createdAt": "2026-08-23T01:55:04.833Z",
+      "resolvedAt": "2026-08-23T01:55:04.833Z",
       "resolutionNote": "Resolved via DOE Building America Guide Section 2: Max 500 FPM neck velocity required."
     }
   ],
   "managerReviews": [
     {
-      "reviewId": "REV-SHALLOW-FOOTING-DESIGN-AGENT-1787449611081",
+      "reviewId": "REV-SHALLOW-FOOTING-DESIGN-AGENT-1787450104179",
       "managerRoleId": "STRUCTURAL-ENGINEERING-MANAGER",
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
       "reviewMode": "DETERMINISTIC_GOVERNANCE_REVIEW",
@@ -642,10 +642,10 @@
       "reasons": [
         "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution."
       ],
-      "reviewedAt": "2026-08-23T01:46:51.081Z"
+      "reviewedAt": "2026-08-23T01:55:04.179Z"
     },
     {
-      "reviewId": "REV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611546",
+      "reviewId": "REV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104589",
       "managerRoleId": "MECHANICAL-HVAC-MANAGER",
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
       "reviewMode": "DETERMINISTIC_GOVERNANCE_REVIEW",
@@ -668,10 +668,10 @@
       "reasons": [
         "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution."
       ],
-      "reviewedAt": "2026-08-23T01:46:51.546Z"
+      "reviewedAt": "2026-08-23T01:55:04.589Z"
     },
     {
-      "reviewId": "REV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611996",
+      "reviewId": "REV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450105013",
       "managerRoleId": "ELECTRICAL-SYSTEMS-MANAGER",
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
       "reviewMode": "DETERMINISTIC_GOVERNANCE_REVIEW",
@@ -694,12 +694,12 @@
       "reasons": [
         "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution."
       ],
-      "reviewedAt": "2026-08-23T01:46:51.996Z"
+      "reviewedAt": "2026-08-23T01:55:05.013Z"
     }
   ],
   "shadowProposals": [
     {
-      "proposalId": "SHADOW-SHALLOW-FOOTING-DESIGN-AGENT-1787449611211",
+      "proposalId": "SHADOW-SHALLOW-FOOTING-DESIGN-AGENT-1787450104346",
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
       "taskStage": "EXCAVATION_FOOTINGS",
       "scope": "Room 305 Shadow Evaluation - Shallow Footing & Foundation Design Specialist",
@@ -710,10 +710,10 @@
       "benchmarkComparison": "Independent validator score: 99%. Mode: SIMULATION_ONLY. Status: FAILED_SHADOW.",
       "managerReviewStatus": "FAILED_SHADOW",
       "evalNotes": "Shadow run notes [SIMULATION_ONLY]: SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.",
-      "timestamp": "2026-08-23T01:46:51.211Z"
+      "timestamp": "2026-08-23T01:55:04.346Z"
     },
     {
-      "proposalId": "SHADOW-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611718",
+      "proposalId": "SHADOW-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104747",
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
       "taskStage": "EXCAVATION_FOOTINGS",
       "scope": "Room 305 Shadow Evaluation - Supply & Return Diffuser Placement Specialist",
@@ -724,10 +724,10 @@
       "benchmarkComparison": "Independent validator score: 45%. Mode: SIMULATION_ONLY. Status: FAILED_SHADOW.",
       "managerReviewStatus": "FAILED_SHADOW",
       "evalNotes": "Shadow run notes [SIMULATION_ONLY]: SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.; CRITICAL NOISE VIOLATION: Calculated diffuser neck velocity (814.9 FPM) exceeds maximum quiet zone threshold (500 FPM) by over 20%. NC-25 acoustic criteria violated!",
-      "timestamp": "2026-08-23T01:46:51.718Z"
+      "timestamp": "2026-08-23T01:55:04.747Z"
     },
     {
-      "proposalId": "SHADOW-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449612145",
+      "proposalId": "SHADOW-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450105186",
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
       "taskStage": "EXCAVATION_FOOTINGS",
       "scope": "Room 305 Shadow Evaluation - Branch Circuit & Device Placement Specialist",
@@ -738,7 +738,7 @@
       "benchmarkComparison": "Independent validator score: 99%. Mode: SIMULATION_ONLY. Status: FAILED_SHADOW.",
       "managerReviewStatus": "FAILED_SHADOW",
       "evalNotes": "Shadow run notes [SIMULATION_ONLY]: SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.",
-      "timestamp": "2026-08-23T01:46:52.145Z"
+      "timestamp": "2026-08-23T01:55:05.186Z"
     }
   ],
   "knowledgePacks": [
@@ -764,7 +764,7 @@
       ],
       "managerRoleId": "STRUCTURAL-ENGINEERING-MANAGER",
       "approvalStatus": "DRAFT",
-      "createdAt": "2026-08-23T01:46:50.645Z"
+      "createdAt": "2026-08-23T01:55:03.880Z"
     },
     {
       "packId": "KP-SHALLOW-FOOTING-DESIGN-AGENT-v2.0.0",
@@ -787,7 +787,7 @@
       ],
       "managerRoleId": "STRUCTURAL-ENGINEERING-MANAGER",
       "approvalStatus": "DRAFT",
-      "createdAt": "2026-08-23T01:46:51.002Z"
+      "createdAt": "2026-08-23T01:55:04.094Z"
     },
     {
       "packId": "KP-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-v1.0.0",
@@ -811,7 +811,7 @@
       ],
       "managerRoleId": "MECHANICAL-HVAC-MANAGER",
       "approvalStatus": "DRAFT",
-      "createdAt": "2026-08-23T01:46:51.211Z"
+      "createdAt": "2026-08-23T01:55:04.347Z"
     },
     {
       "packId": "KP-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-v2.0.0",
@@ -834,7 +834,7 @@
       ],
       "managerRoleId": "MECHANICAL-HVAC-MANAGER",
       "approvalStatus": "DRAFT",
-      "createdAt": "2026-08-23T01:46:51.492Z"
+      "createdAt": "2026-08-23T01:55:04.520Z"
     },
     {
       "packId": "KP-BRANCH-CIRCUIT-RECEPTACLE-AGENT-v1.0.0",
@@ -858,7 +858,7 @@
       ],
       "managerRoleId": "ELECTRICAL-SYSTEMS-MANAGER",
       "approvalStatus": "DRAFT",
-      "createdAt": "2026-08-23T01:46:51.718Z"
+      "createdAt": "2026-08-23T01:55:04.747Z"
     },
     {
       "packId": "KP-BRANCH-CIRCUIT-RECEPTACLE-AGENT-v2.0.0",
@@ -881,7 +881,7 @@
       ],
       "managerRoleId": "ELECTRICAL-SYSTEMS-MANAGER",
       "approvalStatus": "DRAFT",
-      "createdAt": "2026-08-23T01:46:51.904Z"
+      "createdAt": "2026-08-23T01:55:04.942Z"
     }
   ],
   "auditTraces": [
@@ -903,7 +903,7 @@
       "testScenarioTitle": "Room 101 Shallow Footing Bearing Capacity Sizing",
       "initialTestScorePct": 99,
       "initialTestPassed": false,
-      "initialAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 9.263344882s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"9s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-101\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
+      "initialAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 56.049501994s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"56s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-101\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
       "retrainingTriggered": true,
       "retrainingGapNote": "SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.",
       "retrainingSourcesStudied": [
@@ -912,7 +912,7 @@
       "retrainKnowledgePackVersion": "KP-v2.0.0",
       "finalTestScorePct": 99,
       "finalTestPassed": false,
-      "finalAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.945935196s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
+      "finalAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.842019135s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"proposedFootingWidth\": 18,\n    \"proposedFootingDepth\": 12,\n    \"embedmentDepth\": 12,\n    \"concreteStrength\": 4000,\n    \"reinforcement\": \"#4 rebar @ 12 in. O.C.\",\n    \"exposureClass\": \"F1\",\n    \"waterCementRatio\": 0.45,\n    \"assumptions\": [\n      \"Allowable soil bearing capacity assumed at 1500 psf per site investigation\"\n    ],\n    \"calculations\": {\n      \"appliedLoadP\": 1800,\n      \"soilBearingPsf\": 1500,\n      \"minRequiredWidthInches\": 14.399999999999999,\n      \"proposedWidthInches\": 18,\n      \"utilizationRatio\": 0.7999999999999999\n    },\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"uncertainties\": [\n      \"Soil moisture fluctuation seasonal variance\"\n    ]\n  }\n}",
       "managerReviewDecision": "MORE_EVIDENCE_REQUIRED",
       "managerReviewNotes": "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution.",
       "shadowRunScorePct": 99,
@@ -938,7 +938,7 @@
       "testScenarioTitle": "Room 204 Air Distribution Diffuser Neck Velocity Sizing",
       "initialTestScorePct": 45,
       "initialTestPassed": false,
-      "initialAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.682501828s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 6,\n    \"calculatedVelocity\": 611.2,\n    \"ductConnection\": \"6-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
+      "initialAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.609760733s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 6,\n    \"calculatedVelocity\": 611.2,\n    \"ductConnection\": \"6-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
       "retrainingTriggered": true,
       "retrainingGapNote": "CRITICAL NOISE VIOLATION: Calculated diffuser neck velocity (611.2 FPM) exceeds maximum quiet zone threshold (500 FPM) by over 20%. NC-25 acoustic criteria violated!",
       "retrainingSourcesStudied": [
@@ -947,7 +947,7 @@
       "retrainKnowledgePackVersion": "KP-v2.0.0",
       "finalTestScorePct": 99,
       "finalTestPassed": false,
-      "finalAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.470624936s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 8,\n    \"calculatedVelocity\": 343.8,\n    \"ductConnection\": \"8-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
+      "finalAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.43591585s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"airflowCFM\": 120,\n    \"diffuserType\": \"Round Ceiling Diffuser\",\n    \"diffuserCount\": 1,\n    \"neckDiameter\": 8,\n    \"calculatedVelocity\": 343.8,\n    \"ductConnection\": \"8-inch flex duct R-6\",\n    \"placement\": \"Center room ceiling grid\",\n    \"noiseConsiderations\": \"Office quiet zone NC-25 requirement\",\n    \"sourceCitations\": [\n      \"KC-DOE-PNNL-BASC-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Static pressure 0.1 in. w.g.\"\n    ],\n    \"uncertainties\": [\n      \"Flex duct sag airflow reduction\"\n    ]\n  }\n}",
       "managerReviewDecision": "MORE_EVIDENCE_REQUIRED",
       "managerReviewNotes": "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution.",
       "shadowRunScorePct": 45,
@@ -973,7 +973,7 @@
       "testScenarioTitle": "Room 204 Branch Circuit Outlet Spacing & Wet Location Protection",
       "initialTestScorePct": 99,
       "initialTestPassed": false,
-      "initialAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.229265382s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"model\\\":\\\"gemini-3.7-flash\\\",\\\"location\\\":\\\"global\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
+      "initialAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.192009492s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
       "retrainingTriggered": true,
       "retrainingGapNote": "SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.",
       "retrainingSourcesStudied": [
@@ -982,7 +982,7 @@
       "retrainKnowledgePackVersion": "KP-v2.0.0",
       "finalTestScorePct": 99,
       "finalTestPassed": false,
-      "finalAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 8.029569538s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"model\\\":\\\"gemini-3.7-flash\\\",\\\"location\\\":\\\"global\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"8s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
+      "finalAgentResponse": "{\n  \"note\": \"Gemini API error fallback ({\\\"error\\\":{\\\"code\\\":429,\\\"message\\\":\\\"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\\\\nPlease retry in 55.00300885s.\\\",\\\"status\\\":\\\"RESOURCE_EXHAUSTED\\\",\\\"details\\\":[{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.Help\\\",\\\"links\\\":[{\\\"description\\\":\\\"Learn more about Gemini API quotas\\\",\\\"url\\\":\\\"https://ai.google.dev/gemini-api/docs/rate-limits\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.QuotaFailure\\\",\\\"violations\\\":[{\\\"quotaMetric\\\":\\\"generativelanguage.googleapis.com/generate_content_free_tier_requests\\\",\\\"quotaId\\\":\\\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\\\",\\\"quotaDimensions\\\":{\\\"location\\\":\\\"global\\\",\\\"model\\\":\\\"gemini-3.7-flash\\\"},\\\"quotaValue\\\":\\\"20\\\"}]},{\\\"@type\\\":\\\"type.googleapis.com/google.rpc.RetryInfo\\\",\\\"retryDelay\\\":\\\"55s\\\"}]}})\",\n  \"scenarioId\": \"SCENARIO-BRANCH-CIRCUIT-RECEPTACLE-AGENT-204-RETRAINED\",\n  \"proposal\": {\n    \"receptacleSpacingFt\": 10,\n    \"circuitVoltage\": 120,\n    \"gfciSpecified\": true,\n    \"wireGauge\": \"12 AWG Copper\",\n    \"breakerAmps\": 20,\n    \"conduitSize\": \"1/2 in. EMT\",\n    \"sourceCitations\": [\n      \"KC-USDA-FPL-GTR282-H1\",\n      \"KC-DOE-PNNL-BASC-H1\"\n    ],\n    \"assumptions\": [\n      \"Standard residential 120V 20A branch circuit\"\n    ],\n    \"uncertainties\": [\n      \"Future appliances load growth\"\n    ]\n  }\n}",
       "managerReviewDecision": "MORE_EVIDENCE_REQUIRED",
       "managerReviewNotes": "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution.",
       "shadowRunScorePct": 99,
@@ -999,8 +999,8 @@
       "title": "Shadow Evaluation: FAILED_SHADOW",
       "details": "Independent validator score: 99%. Mode: SIMULATION_ONLY. Status: FAILED_SHADOW.",
       "realityTag": "SHADOW_ONLY",
-      "activityId": "ACT-1787449612145-s7lj",
-      "timestamp": "2026-08-23T01:46:52.145Z"
+      "activityId": "ACT-1787450105186-j77c",
+      "timestamp": "2026-08-23T01:55:05.186Z"
     },
     {
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
@@ -1009,8 +1009,8 @@
       "title": "Manager Review: MORE_EVIDENCE_REQUIRED",
       "details": "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution.",
       "realityTag": "MANAGER_APPROVED",
-      "activityId": "ACT-1787449611996-1jjj",
-      "timestamp": "2026-08-23T01:46:51.996Z"
+      "activityId": "ACT-1787450105013-ouvc",
+      "timestamp": "2026-08-23T01:55:05.013Z"
     },
     {
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
@@ -1019,9 +1019,9 @@
       "title": "Retrained Agent Reasoned (99%)",
       "details": "Fresh execution passed with 99% score. Neck velocity satisfied quiet zone NC-25.",
       "realityTag": "MODEL_GENERATED",
-      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611904",
-      "activityId": "ACT-1787449611996-bdvo",
-      "timestamp": "2026-08-23T01:46:51.996Z"
+      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450104942",
+      "activityId": "ACT-1787450105013-kcua",
+      "timestamp": "2026-08-23T01:55:05.013Z"
     },
     {
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
@@ -1030,8 +1030,8 @@
       "title": "Retraining & Knowledge Pack Upgrade",
       "details": "Studied DOE Building America guide. Upgraded Knowledge Pack to KP-v2.0.0.",
       "realityTag": "RETRAINING",
-      "activityId": "ACT-1787449611904-sqgf",
-      "timestamp": "2026-08-23T01:46:51.904Z"
+      "activityId": "ACT-1787450104942-xz0f",
+      "timestamp": "2026-08-23T01:55:04.942Z"
     },
     {
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
@@ -1040,8 +1040,8 @@
       "title": "Knowledge Gap & Failure Detected",
       "details": "SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.",
       "realityTag": "RETRAINING",
-      "activityId": "ACT-1787449611789-pduy",
-      "timestamp": "2026-08-23T01:46:51.789Z"
+      "activityId": "ACT-1787450104833-s3jj",
+      "timestamp": "2026-08-23T01:55:04.833Z"
     },
     {
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
@@ -1050,9 +1050,9 @@
       "title": "Independent Evaluation Complete (99%)",
       "details": "Validation failed (99%). Critical Failure: false.",
       "realityTag": "FAILED",
-      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787449611718",
-      "activityId": "ACT-1787449611789-6a9n",
-      "timestamp": "2026-08-23T01:46:51.789Z"
+      "executionId": "EXEC-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787450104748",
+      "activityId": "ACT-1787450104833-6vde",
+      "timestamp": "2026-08-23T01:55:04.833Z"
     },
     {
       "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
@@ -1061,8 +1061,8 @@
       "title": "Scenario Dispatched to Branch Circuit & Device Placement Specialist",
       "details": "Dispatched competency scenario with Knowledge Pack KP-v1.0.0.",
       "realityTag": "REAL_EXECUTION",
-      "activityId": "ACT-1787449611718-rgs1",
-      "timestamp": "2026-08-23T01:46:51.718Z"
+      "activityId": "ACT-1787450104747-zo2m",
+      "timestamp": "2026-08-23T01:55:04.747Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1071,8 +1071,8 @@
       "title": "Shadow Evaluation: FAILED_SHADOW",
       "details": "Independent validator score: 45%. Mode: SIMULATION_ONLY. Status: FAILED_SHADOW.",
       "realityTag": "SHADOW_ONLY",
-      "activityId": "ACT-1787449611718-euam",
-      "timestamp": "2026-08-23T01:46:51.718Z"
+      "activityId": "ACT-1787450104747-6rx5",
+      "timestamp": "2026-08-23T01:55:04.747Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1081,8 +1081,8 @@
       "title": "Manager Review: MORE_EVIDENCE_REQUIRED",
       "details": "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution.",
       "realityTag": "MANAGER_APPROVED",
-      "activityId": "ACT-1787449611546-wo19",
-      "timestamp": "2026-08-23T01:46:51.546Z"
+      "activityId": "ACT-1787450104589-297l",
+      "timestamp": "2026-08-23T01:55:04.589Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1091,9 +1091,9 @@
       "title": "Retrained Agent Reasoned (99%)",
       "details": "Fresh execution passed with 99% score. Neck velocity satisfied quiet zone NC-25.",
       "realityTag": "MODEL_GENERATED",
-      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611492",
-      "activityId": "ACT-1787449611546-0uil",
-      "timestamp": "2026-08-23T01:46:51.546Z"
+      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104520",
+      "activityId": "ACT-1787450104589-xoun",
+      "timestamp": "2026-08-23T01:55:04.589Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1102,8 +1102,8 @@
       "title": "Retraining & Knowledge Pack Upgrade",
       "details": "Studied DOE Building America guide. Upgraded Knowledge Pack to KP-v2.0.0.",
       "realityTag": "RETRAINING",
-      "activityId": "ACT-1787449611492-wlbv",
-      "timestamp": "2026-08-23T01:46:51.492Z"
+      "activityId": "ACT-1787450104520-fq8j",
+      "timestamp": "2026-08-23T01:55:04.520Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1112,8 +1112,8 @@
       "title": "Knowledge Gap & Failure Detected",
       "details": "CRITICAL NOISE VIOLATION: Calculated diffuser neck velocity (611.2 FPM) exceeds maximum quiet zone threshold (500 FPM) by over 20%. NC-25 acoustic criteria violated!",
       "realityTag": "RETRAINING",
-      "activityId": "ACT-1787449611347-9nfz",
-      "timestamp": "2026-08-23T01:46:51.347Z"
+      "activityId": "ACT-1787450104411-xwuw",
+      "timestamp": "2026-08-23T01:55:04.411Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1122,9 +1122,9 @@
       "title": "Independent Evaluation Complete (45%)",
       "details": "Validation failed (45%). Critical Failure: true.",
       "realityTag": "FAILED",
-      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787449611211",
-      "activityId": "ACT-1787449611346-250x",
-      "timestamp": "2026-08-23T01:46:51.346Z"
+      "executionId": "EXEC-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787450104347",
+      "activityId": "ACT-1787450104411-5sw0",
+      "timestamp": "2026-08-23T01:55:04.411Z"
     },
     {
       "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
@@ -1133,8 +1133,8 @@
       "title": "Scenario Dispatched to Supply & Return Diffuser Placement Specialist",
       "details": "Dispatched competency scenario with Knowledge Pack KP-v1.0.0.",
       "realityTag": "REAL_EXECUTION",
-      "activityId": "ACT-1787449611211-0wg1",
-      "timestamp": "2026-08-23T01:46:51.211Z"
+      "activityId": "ACT-1787450104347-e6w0",
+      "timestamp": "2026-08-23T01:55:04.347Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1143,8 +1143,8 @@
       "title": "Shadow Evaluation: FAILED_SHADOW",
       "details": "Independent validator score: 99%. Mode: SIMULATION_ONLY. Status: FAILED_SHADOW.",
       "realityTag": "SHADOW_ONLY",
-      "activityId": "ACT-1787449611211-uh4t",
-      "timestamp": "2026-08-23T01:46:51.211Z"
+      "activityId": "ACT-1787450104346-kavr",
+      "timestamp": "2026-08-23T01:55:04.346Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1153,8 +1153,8 @@
       "title": "Manager Review: MORE_EVIDENCE_REQUIRED",
       "details": "REASONING PROVIDER GATING REJECTION: Execution mode was 'SIMULATION_ONLY' (DeterministicProposalSimulator). Specialist agents cannot be certified or approved for construction work without genuine reasoning provider execution.",
       "realityTag": "MANAGER_APPROVED",
-      "activityId": "ACT-1787449611081-gxhk",
-      "timestamp": "2026-08-23T01:46:51.081Z"
+      "activityId": "ACT-1787450104179-13sr",
+      "timestamp": "2026-08-23T01:55:04.179Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1163,9 +1163,9 @@
       "title": "Retrained Agent Reasoned (99%)",
       "details": "Fresh execution passed with 99% score. Neck velocity satisfied quiet zone NC-25.",
       "realityTag": "MODEL_GENERATED",
-      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787449611002",
-      "activityId": "ACT-1787449611081-zboa",
-      "timestamp": "2026-08-23T01:46:51.081Z"
+      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787450104094",
+      "activityId": "ACT-1787450104179-kypx",
+      "timestamp": "2026-08-23T01:55:04.179Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1174,8 +1174,8 @@
       "title": "Retraining & Knowledge Pack Upgrade",
       "details": "Studied DOE Building America guide. Upgraded Knowledge Pack to KP-v2.0.0.",
       "realityTag": "RETRAINING",
-      "activityId": "ACT-1787449611002-nfms",
-      "timestamp": "2026-08-23T01:46:51.002Z"
+      "activityId": "ACT-1787450104094-u19b",
+      "timestamp": "2026-08-23T01:55:04.094Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1184,8 +1184,8 @@
       "title": "Knowledge Gap & Failure Detected",
       "details": "SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.",
       "realityTag": "RETRAINING",
-      "activityId": "ACT-1787449610765-oxet",
-      "timestamp": "2026-08-23T01:46:50.765Z"
+      "activityId": "ACT-1787450103972-35ty",
+      "timestamp": "2026-08-23T01:55:03.972Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1194,9 +1194,9 @@
       "title": "Independent Evaluation Complete (99%)",
       "details": "Validation failed (99%). Critical Failure: false.",
       "realityTag": "FAILED",
-      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787449610645",
-      "activityId": "ACT-1787449610765-393v",
-      "timestamp": "2026-08-23T01:46:50.765Z"
+      "executionId": "EXEC-SHALLOW-FOOTING-DESIGN-AGENT-1787450103880",
+      "activityId": "ACT-1787450103972-n1qw",
+      "timestamp": "2026-08-23T01:55:03.972Z"
     },
     {
       "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
@@ -1205,9 +1205,9 @@
       "title": "Scenario Dispatched to Shallow Footing & Foundation Design Specialist",
       "details": "Dispatched competency scenario with Knowledge Pack KP-v1.0.0.",
       "realityTag": "REAL_EXECUTION",
-      "activityId": "ACT-1787449610645-9r8z",
-      "timestamp": "2026-08-23T01:46:50.645Z"
+      "activityId": "ACT-1787450103880-tcq5",
+      "timestamp": "2026-08-23T01:55:03.880Z"
     }
   ],
-  "savedAt": "2026-08-23T01:46:52.167Z"
+  "savedAt": "2026-08-23T01:55:05.209Z"
 }

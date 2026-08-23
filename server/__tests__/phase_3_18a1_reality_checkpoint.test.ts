@@ -20,9 +20,9 @@ describe('Phase 3.18A.1 — SME Academy Reality Checkpoint & Learning Proof Test
     const inspectors = roster.filter((r) => r.role_type === 'INSPECTOR_LEARNING');
     const orchestration = roster.filter((r) => r.role_type === 'SYSTEM_ORCHESTRATION');
 
-    expect(specialists.length).toBeGreaterThanOrEqual(24);
-    expect(inspectors.length).toBeGreaterThanOrEqual(2);
-    expect(managers.length).toBeGreaterThanOrEqual(18);
+    expect(specialists.length).toBe(25);
+    expect(managers.length).toBe(19);
+    expect(inspectors.length).toBe(2);
     expect(orchestration.length).toBe(4);
 
     for (const record of roster) {
@@ -65,8 +65,9 @@ describe('Phase 3.18A.1 — SME Academy Reality Checkpoint & Learning Proof Test
     const fetched = sources.filter((s) => s.retrieval_status === 'FETCHED' || s.retrieval_status === 'VALIDATED');
     expect(fetched.length).toBeGreaterThanOrEqual(5);
     for (const f of fetched) {
-      expect(f.http_status).toBe(200);
-      expect(f.chunks_created).toBeGreaterThanOrEqual(0);
+      expect(f.pages_parsed).toBeGreaterThan(0);
+      expect(f.chunks_created).toBeGreaterThan(0);
+      expect(f.document_sha256).toBeTruthy();
     }
   });
 
@@ -120,8 +121,10 @@ describe('Phase 3.18A.1 — SME Academy Reality Checkpoint & Learning Proof Test
     const report = KnowledgeIngestionEngine.getPhase318A1Report();
     expect(report.reportTimestamp).toBeTruthy();
     expect(report.canonicalRoles.totalCount).toBe(50);
-    expect(report.canonicalRoles.specialistsCount).toBeGreaterThanOrEqual(24);
-    expect(report.canonicalRoles.managersCount).toBeGreaterThanOrEqual(18);
+    expect(report.canonicalRoles.specialistsCount).toBe(25);
+    expect(report.canonicalRoles.managersCount).toBe(19);
+    expect(report.canonicalRoles.inspectorsCount).toBe(2);
+    expect(report.canonicalRoles.orchestrationCount).toBe(4);
 
     expect(report.curriculaStats.assigned).toBe(50);
     expect(report.curriculaStats.orphan).toBe(0);

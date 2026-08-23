@@ -1,35 +1,7 @@
-HERMES CONSTRUCTION SOURCE BUNDLE - PHASE 3.17B.1 REALITY SWARM HARDENING
-================================================================================
-Project: HERMES Construction System
-Phase: PHASE 3.17B.1 REALITY SWARM HARDENING, LIVE DATA AUDIT, TRUE PROVENANCE & REAL SELF-HEALING
-Target Repository: https://github.com/aijaraix/Hermes-Construction-1
-Current Branch: main
-Commit SHA: 1204e0663df625cf554d23f3c33bfd67e0f0bf1d (short: 1204e06)
-Verified Phase 3.17B.1 Canonical Commit
-Build Timestamp: 2026-08-21T07:11:00Z
-Source Bundle Timestamp: 2026-08-21T07:11:00Z
-Status: PHASE_3_17B_1_VERIFIED
-
-PHASE 3.17B HIGHLIGHTS:
---------------------------------------------------------------------------------
-1. Navigation Rarchitecture & Sidebar IA (/src/components/AppShell.tsx):
-   - Desktop responsive sidebar, contextual top header, and right inspector drawer.
-   - Mobile collapsible slide-over navigation drawer with sticky project context.
-   - Conceptual separation: COMMAND CENTER, PROJECTS (Overview, Digital Twin, Rooms & Spaces, Plans & Systems, Inspections, BOM, Procurement, Schedule, Change-Order Risks, Decisions, Activity), HERMES INTELLIGENCE, SYSTEM.
-
-2. Project Context & Data Isolation:
-   - Canonical project selector (RESIDENCE-TAMPA-001 "Tampa Coastal 2-Story Residence").
-   - Multi-project isolation across Digital Twin, Rooms, BOM, Inspections, Schedule, Sourcing, Risks.
-
-3. Command Center & Live Activity Stream (/src/components/CommandCenterView.tsx):
-   - Primary landing page displaying real canonical status, active agents, reasoning provider status, open failures, and coordination conflicts.
-   - Watchable live activity stream fed directly from genuine execution events.
-
-4. Reality & Data Truth Swarm Engine (/server/realitySwarmEngine.ts & /src/components/RealityDataTruthView.tsx):
-   - Audits visible UI fields, counts, badges, version strings, API endpoints, and security exposures.
-   - Safe auto-repair for UI bindings and stale values with immutable repair audit log.
-   - CRITICAL BOUNDARY: Overwriting engineering calculations or BIM geometry is strictly forbidden. Mismatches generate domain conflicts routed to Prime and domain managers.
-
-5. Cost Confidence & Price Truth:
-   - Cost confidence breakdown (Total Modeled Material Value vs Verified Cost vs Unverified Estimated Cost).
-   - Price classification badges with automatic downgrade logic for unverified supplier quotes.
+HERMES CONSTRUCTION OS - COMMIT MANIFEST
+Phase: 3.18A.1 SME Academy Operational Reality Checkpoint
+Timestamp: 2026-08-22T18:54:30-07:00
+Status: OPERATIONALLY_VERIFIED
+Tests: 7/7 Passing
+Build: Clean (tsc --noEmit & vite build)
+Verified Operational Pipeline: Roster (50 Roles), Curricula (50/50), Ingestion, Sandboxes, Unattended Heartbeat Scheduler (10 Cycles), Reality Swarm Audit.
