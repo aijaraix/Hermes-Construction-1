@@ -1,29 +1,64 @@
 {
-  "scenarios": [],
+  "scenarios": [
+    {
+      "scenarioId": "SCENARIO-SHALLOW-FOOTING-DESIGN-AGENT-101",
+      "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
+      "discipline": "Civil",
+      "difficulty": "PRACTITIONER",
+      "jurisdiction": "Florida USA",
+      "buildingType": "Residential",
+      "location": "Room 101 Ground Floor",
+      "roomId": "ROOM-101",
+      "scenarioTitle": "Room 101 Shallow Footing Bearing Capacity Sizing",
+      "scenarioDescription": "Calculate required footing width and embedment for Room 101 load 1800 lbs/ft on 1500 psf soil.",
+      "inputs": {
+        "loadPoundsPerFt": 1800,
+        "soilBearingPsf": 1500
+      },
+      "constraints": {
+        "minEmbedmentInches": 12,
+        "minFcPsi": 3000,
+        "maxWcm": 0.45
+      },
+      "availableEvidence": [],
+      "knowledgePackId": "KP-SHALLOW-FOOTING-DESIGN-AGENT-v1.0.0",
+      "hiddenValidationRules": {
+        "requiredWidthInches": 14.4
+      },
+      "expectedOutputSchema": {
+        "proposedFootingWidth": "number",
+        "embedmentDepth": "number",
+        "concreteStrength": "number",
+        "waterCementRatio": "number"
+      },
+      "createdAt": "2026-08-23T13:07:47.391Z",
+      "version": "v1.0"
+    }
+  ],
   "executions": [
     {
-      "executionId": "EXEC-HERMES-PRIME-ORCHESTRATOR-1787458830354",
+      "executionId": "EXEC-HERMES-PRIME-ORCHESTRATOR-1787490465764",
       "agentRoleId": "HERMES-PRIME-ORCHESTRATOR",
       "executionMode": "LLM_REASONED",
       "modelProvider": "GoogleGemini",
       "modelName": "gemini-3.1-flash-lite",
-      "scenarioId": "SCENARIO-PROOF-A-1787458830354",
+      "scenarioId": "SCENARIO-PROOF-A-1787490465764",
       "knowledgePackId": "KP-HERMES-PRIME-ORCHESTRATOR",
       "retrievedChunkIds": [],
-      "promptHash": "2563f69ce50dd3da",
-      "rawResponse": "{\n  \"waterCementRatio\": 0.45,\n  \"airEntrainmentPct\": 6.0\n}",
+      "promptHash": "f56aceaae29b9320",
+      "rawResponse": "{\n  \"waterCementRatio\": 0.45,\n  \"airEntrainmentPct\": 0\n}",
       "structuredProposal": {
         "waterCementRatio": 0.45,
-        "airEntrainmentPct": 6
+        "airEntrainmentPct": 0
       },
       "citations": [],
       "toolCalls": [],
-      "startedAt": "2026-08-23T04:20:30.354Z",
-      "completedAt": "2026-08-23T04:20:31.157Z",
+      "startedAt": "2026-08-23T13:07:45.764Z",
+      "completedAt": "2026-08-23T13:07:49.570Z",
       "usageMetadata": {
         "promptTokenCount": 247,
-        "candidatesTokenCount": 28,
-        "totalTokenCount": 275,
+        "candidatesTokenCount": 26,
+        "totalTokenCount": 273,
         "promptTokensDetails": [
           {
             "modality": "TEXT",
@@ -36,43 +71,43 @@
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-HERMES-LEARNING-EXECUTIVE-1787458831157",
+      "executionId": "EXEC-HERMES-LEARNING-EXECUTIVE-1787490469571",
       "agentRoleId": "HERMES-LEARNING-EXECUTIVE",
       "executionMode": "DETERMINISTIC_SIMULATION",
       "modelProvider": "DeterministicProposalSimulator",
       "modelName": "hermes-simulator-v1",
-      "scenarioId": "SCENARIO-PROOF-B-1787458831157",
+      "scenarioId": "SCENARIO-PROOF-B-1787490469571",
       "knowledgePackId": "KP-HERMES-LEARNING-EXECUTIVE",
       "retrievedChunkIds": [],
-      "promptHash": "98535740cd4d7c52",
-      "rawResponse": "{\n  \"note\": \"Deterministic Simulation Fallback Mode\",\n  \"scenarioId\": \"SCENARIO-PROOF-B-1787458831157\",\n  \"proposal\": {\n    \"genericDecision\": \"Standard engineering specification proposed\",\n    \"sourceCitations\": []\n  }\n}",
+      "promptHash": "d877f7516532f7c9",
+      "rawResponse": "{\n  \"note\": \"Deterministic Simulation Fallback Mode\",\n  \"scenarioId\": \"SCENARIO-PROOF-B-1787490469571\",\n  \"proposal\": {\n    \"genericDecision\": \"Standard engineering specification proposed\",\n    \"sourceCitations\": []\n  }\n}",
       "structuredProposal": {
         "genericDecision": "Standard engineering specification proposed",
         "sourceCitations": []
       },
       "citations": [],
       "toolCalls": [],
-      "startedAt": "2026-08-23T04:20:31.157Z",
-      "completedAt": "2026-08-23T04:20:31.157Z",
+      "startedAt": "2026-08-23T13:07:49.571Z",
+      "completedAt": "2026-08-23T13:07:49.571Z",
       "responseStatus": "SIMULATION_MODE",
       "executionStatus": "EXECUTED"
     },
     {
-      "executionId": "EXEC-PROJECT-EXECUTIVE-01-1787458831158",
+      "executionId": "EXEC-PROJECT-EXECUTIVE-01-1787490469571",
       "agentRoleId": "PROJECT-EXECUTIVE-01",
       "executionMode": "DEFERRED_QUOTA",
       "modelProvider": "GoogleGemini",
       "modelName": "gemini-3.7-flash",
-      "scenarioId": "SCENARIO-PROOF-C-1787458831158",
+      "scenarioId": "SCENARIO-PROOF-C-1787490469571",
       "knowledgePackId": "KP-PROJECT-EXECUTIVE-01",
       "retrievedChunkIds": [],
-      "promptHash": "8cb1d9d0c38f7572",
+      "promptHash": "0b8e13b66dc385cc",
       "rawResponse": "[EXECUTION_DEFERRED_QUOTA] Controlled Quota Test: 429 RESOURCE_EXHAUSTED. Reasoning job queued for automatic replay.",
       "structuredProposal": {},
       "citations": [],
       "toolCalls": [],
-      "startedAt": "2026-08-23T04:20:31.158Z",
-      "completedAt": "2026-08-23T04:20:31.158Z",
+      "startedAt": "2026-08-23T13:07:49.571Z",
+      "completedAt": "2026-08-23T13:07:49.572Z",
       "responseStatus": "RESOURCE_EXHAUSTED",
       "executionStatus": "NOT_EXECUTED"
     }
@@ -81,8 +116,44 @@
   "knowledgeGaps": [],
   "managerReviews": [],
   "shadowProposals": [],
-  "knowledgePacks": [],
+  "knowledgePacks": [
+    {
+      "packId": "KP-SHALLOW-FOOTING-DESIGN-AGENT-v1.0.0",
+      "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
+      "versionTag": "KP-v1.0.0",
+      "approvedChunkIds": [
+        "KC-USDA-FPL-GTR282-H1"
+      ],
+      "approvedAssertionIds": [],
+      "approvedRules": [
+        "Florida Building Code 8th Ed",
+        "FEMA-P55"
+      ],
+      "approvedCalculations": [
+        "Standard Engineering Formulae"
+      ],
+      "approvedFailureModes": [
+        "Structural Overload",
+        "Acoustic Noise Limit Exceeded",
+        "Code Non-compliance"
+      ],
+      "managerRoleId": "STRUCTURAL-ENGINEERING-MANAGER",
+      "approvalStatus": "DRAFT",
+      "createdAt": "2026-08-23T13:07:47.391Z"
+    }
+  ],
   "auditTraces": [],
-  "liveActivities": [],
-  "savedAt": "2026-08-23T04:20:31.168Z"
+  "liveActivities": [
+    {
+      "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
+      "agentName": "Shallow Footing & Foundation Design Specialist",
+      "activityType": "SCENARIO_DISPATCHED",
+      "title": "Scenario Dispatched to Shallow Footing & Foundation Design Specialist",
+      "details": "Dispatched competency scenario with Knowledge Pack KP-v1.0.0.",
+      "realityTag": "REAL_EXECUTION",
+      "activityId": "ACT-1787490467391-skhu",
+      "timestamp": "2026-08-23T13:07:47.391Z"
+    }
+  ],
+  "savedAt": "2026-08-23T13:07:49.585Z"
 }

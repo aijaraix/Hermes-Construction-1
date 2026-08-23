@@ -1905,6 +1905,249 @@ export interface Phase318B1Report {
   exitGates: ExitGateRecord[];
 }
 
+// ======================================================================
+// PHASE 3.18B.2 LIVE LEARNING PROOF, SME MASTERY & KNOWLEDGE CONVERGENCE TYPES
+// ======================================================================
+
+export type SmeDomainMasteryStatus =
+  | 'NOT_STARTED'
+  | 'IN_PROGRESS'
+  | 'PROFICIENT'
+  | 'ADVANCED'
+  | 'MASTERED';
+
+export type SmeKnowledgeNodeStatus =
+  | 'KNOWN'
+  | 'PARTIALLY_KNOWN'
+  | 'UNKNOWN'
+  | 'RIGHTS_RESTRICTED'
+  | 'SOURCE_REQUIRED'
+  | 'VERIFICATION_REQUIRED';
+
+export interface SmeKnowledgeTreeNode {
+  nodeId: string;
+  topic: string;
+  category: string;
+  description: string;
+  status: SmeKnowledgeNodeStatus;
+  masteryLevel: SmeDomainMasteryStatus;
+  requiredSources: string[];
+  groundedAssertionsCount: number;
+  corroboratedAssertionsCount: number;
+  lastUpdated?: string;
+  unresolvedGaps: string[];
+}
+
+export interface SmeKnowledgeTree {
+  specialistId: string;
+  specialistRole: string;
+  discipline: string;
+  nodes: SmeKnowledgeTreeNode[];
+  totalNodesCount: number;
+  coveredNodesCount: number;
+  partialNodesCount: number;
+  unknownNodesCount: number;
+  coveragePct: number;
+}
+
+export interface AgentBaselineCompetencyDimensions {
+  factualKnowledge: number | 'UNKNOWN' | 'NOT_TESTED';
+  codeStandardsKnowledge: number | 'UNKNOWN' | 'NOT_TESTED';
+  materialsKnowledge: number | 'UNKNOWN' | 'NOT_TESTED';
+  calculationAbility: number | 'UNKNOWN' | 'NOT_TESTED';
+  installationMethodKnowledge: number | 'UNKNOWN' | 'NOT_TESTED';
+  diagnosticAbility: number | 'UNKNOWN' | 'NOT_TESTED';
+  designReasoning: number | 'UNKNOWN' | 'NOT_TESTED';
+  constraintRecognition: number | 'UNKNOWN' | 'NOT_TESTED';
+  uncertaintyHandling: number | 'UNKNOWN' | 'NOT_TESTED';
+  sourceGrounding: number | 'UNKNOWN' | 'NOT_TESTED';
+  crossTradeCoordination: number | 'UNKNOWN' | 'NOT_TESTED';
+  fieldPracticalReasoning: number | 'UNKNOWN' | 'NOT_TESTED';
+}
+
+export interface AgentBaselineSnapshot {
+  agentId: string;
+  role: string;
+  scope: string;
+  curriculumId: string;
+  curriculumDomains: string[];
+  authoritativeSourcesAssigned: string[];
+  sourcesSuccessfullyRetrieved: number;
+  documentsSuccessfullyParsed: number;
+  pagesAvailable: number;
+  knowledgeChunks: number;
+  groundedAssertions: number;
+  corroboratedAssertions: number;
+  knowledgePackVersion: string;
+  unresolvedKnowledgeGaps: number;
+  competencyDimensions: AgentBaselineCompetencyDimensions;
+  snapshotTimestamp: string;
+}
+
+export interface LiveLearningCounters {
+  realDocumentsRetrieved: number;
+  realBytesRetrieved: number;
+  realPagesParsed: number;
+  realChunksCreated: number;
+  groundedAssertionsCreated: number;
+  corroboratedAssertions: number;
+  knowledgeTreeNodesCovered: number;
+  knowledgeTreeNodesPartial: number;
+  knowledgeTreeNodesUnknown: number;
+  knowledgePackUpdates: number;
+  knowledgeGapsCreated: number;
+  knowledgeGapsResolved: number;
+  windowLastHour: Record<string, number>;
+  windowLast24Hours: Record<string, number>;
+  windowLifetime: Record<string, number>;
+}
+
+export interface SourceProvenanceChain {
+  chainId: string;
+  agentRoleId: string;
+  sourceId: string;
+  sourceTitle: string;
+  publisher: string;
+  documentId: string;
+  sha256Hash: string;
+  pageOrSection: string;
+  chunkId: string;
+  assertionId: string;
+  assertionText: string;
+  knowledgeTreeNodeId: string;
+  knowledgePackId: string;
+  testOrSandboxDecision: string;
+  verifiedAt: string;
+}
+
+export interface SpecialistLearningProofResult {
+  specialistId: string;
+  specialistRole: string;
+  discipline: string;
+  baselineKnowledgeState: {
+    knowledgePackVersion: string;
+    coveragePct: number;
+    assertionsCount: number;
+  };
+  unseenPretrainScore: number;
+  pretrainErrors: string[];
+  sourcesIngested: {
+    sourceId: string;
+    title: string;
+    url: string;
+    sha256: string;
+    bytes: number;
+    pagesParsed: number;
+  }[];
+  groundedAssertionsExtracted: number;
+  updatedKnowledgePackVersion: string;
+  unseenPosttrainScore: number;
+  learningDelta: number;
+  sandboxExerciseResult: {
+    exerciseName: string;
+    status: 'PASSED' | 'FAILED';
+    physicsScore: number;
+    defectsIdentified: number;
+  };
+  inspectorAdversarialResult: {
+    inspectorRoleId: string;
+    defectsInjected: number;
+    defectsDetected: number;
+    defectsCorrected: number;
+    status: 'PASSED' | 'FAILED';
+  };
+  managerReviewResult: {
+    managerRoleId: string;
+    submittalApproved: boolean;
+    decisionNotes: string;
+  };
+  retentionTestResult: 'RETENTION_TEST_PASS' | 'RETENTION_TEST_FAIL';
+  domainMastery: Record<string, SmeDomainMasteryStatus>;
+  provenanceChains: SourceProvenanceChain[];
+}
+
+export interface AgentMasteryProfile {
+  agentId: string;
+  agentRole: string;
+  discipline: string;
+  whatItKnows: string[];
+  whatItDoesNotKnow: string[];
+  whatItIsStudying: string;
+  realSourcesUsed: string[];
+  documentsConsumed: number;
+  pagesParsed: number;
+  knowledgeCoveragePct: number;
+  currentMasteryByDomain: Record<string, SmeDomainMasteryStatus>;
+  recentFailures: string[];
+  knowledgeGaps: string[];
+  retrainingHistory: { timestamp: string; topic: string; resolved: boolean }[];
+  sandboxPerformance: { totalRuns: number; passRatePct: number; score: number };
+  inspectorPerformance: { totalSweeps: number; defectsCaughtPct: number };
+  managerAssessment: { status: 'APPROVED' | 'REJECTED' | 'PENDING'; notes: string };
+  latestUnseenTest: { preScore: number; postScore: number; delta: number };
+  learningRatePctPerCycle: number;
+  diminishingReturnFlagged: boolean;
+  estimatedCyclesToMastery: number;
+}
+
+export interface Phase318B2Report {
+  generatedAt: string;
+  observationWindow: {
+    startTime: string;
+    endTime: string;
+    realElapsedMinutes: number;
+  };
+  operationalMetrics: {
+    heartbeats: number;
+    realSourcesDiscovered: number;
+    realDocumentsRetrieved: number;
+    realBytesRetrieved: number;
+    realPagesParsed: number;
+    realChunksCreated: number;
+    newGroundedAssertions: number;
+    newCorroboratedAssertions: number;
+    knowledgePackUpdates: number;
+    realLlmReasoningCalls: number;
+    deterministicOperations: number;
+    knowledgeReuseRatePct: number;
+    competencyTests: number;
+    sandboxExercises: number;
+    managerReviews: number;
+    inspectorSweeps: number;
+    failuresObserved: number;
+    knowledgeGapsCreated: number;
+    knowledgeGapsResolved: number;
+  };
+  specialistProofResults: {
+    woodFraming: SpecialistLearningProofResult;
+    electrical: SpecialistLearningProofResult;
+    hvac: SpecialistLearningProofResult;
+  };
+  liveCounters: LiveLearningCounters;
+  declarations: {
+    REAL_WALL_CLOCK_LEARNING_VERIFIED: 'YES' | 'NO';
+    REAL_EXTERNAL_INFORMATION_CONSUMED: 'YES' | 'NO';
+    KNOWLEDGE_PACKS_CHANGED_FROM_REAL_INFORMATION: 'YES' | 'NO';
+    UNSEEN_PERFORMANCE_IMPROVEMENT_VERIFIED: 'YES' | 'NO';
+    PRACTICAL_SANDBOX_MASTERY_TESTED: 'YES' | 'NO';
+    INDEPENDENT_INSPECTION_VERIFIED: 'YES' | 'NO';
+    MANAGER_REVIEW_VERIFIED: 'YES' | 'NO';
+    FAKE_LEARNING_COUNTERS_DETECTED: 'YES' | 'NO';
+    SIMULATED_TIME_USED_AS_OPERATIONAL_PROOF: 'YES' | 'NO';
+    HOUSE_1_CANONICAL_BUILD_STARTED: 'YES' | 'NO';
+  };
+  ownerQuestionsAnswers: {
+    whatGenuinelyLearned: string;
+    agentsMeasurablyBetter: string[];
+    evidenceSummary: string;
+    agentsClosestToMastery: string[];
+    whatPreventsRemainingMastery: string;
+    estimatedAdditionalTrainingRequired: string;
+  };
+  exitGates: ExitGateRecord[];
+}
+
+
 
 
 

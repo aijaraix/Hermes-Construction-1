@@ -18,6 +18,7 @@ import { Phase318A2LiveProofRunner } from './server/phase318a2LiveProofRunner';
 import { ContinuousAcademyEngine } from './server/continuousAcademyEngine';
 import { ReasoningBudgetManager } from './server/reasoningBudgetManager';
 import { AcademyRuntimeHardeningEngine } from './server/academyRuntimeHardening';
+import { LiveLearningProofEngine } from './server/liveLearningProofEngine';
 
 async function startServer() {
   const app = express();
@@ -590,6 +591,42 @@ async function startServer() {
       return ContinuousAcademyEngine.executeSingleHeartbeat();
     });
     res.json(result);
+  });
+
+  // Phase 3.18B.2 Live Learning Proof & Owner SME Academy Endpoints
+  app.get('/api/academy/report-318b2', async (req, res) => {
+    try {
+      const report = await LiveLearningProofEngine.runPhase318B2Proof();
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18B.2 report' });
+    }
+  });
+
+  app.post('/api/academy/run-phase-318b2-proof', async (req, res) => {
+    try {
+      const report = await LiveLearningProofEngine.runPhase318B2Proof();
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to execute Phase 3.18B.2 proof' });
+    }
+  });
+
+  app.get('/api/academy/baselines', (req, res) => {
+    res.json(LiveLearningProofEngine.generateBaselineSnapshots());
+  });
+
+  app.get('/api/academy/knowledge-trees', (req, res) => {
+    res.json(LiveLearningProofEngine.getAllKnowledgeTrees());
+  });
+
+  app.get('/api/academy/counters', (req, res) => {
+    res.json(LiveLearningProofEngine.getLiveCounters());
+  });
+
+  app.get('/api/academy/agent-mastery/:agentId', (req, res) => {
+    const profile = LiveLearningProofEngine.getAgentMasteryProfile(req.params.agentId);
+    res.json(profile);
   });
 
 

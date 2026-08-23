@@ -1,0 +1,3077 @@
+{
+  "baselineSnapshots": [
+    [
+      "HERMES-PRIME-ORCHESTRATOR",
+      {
+        "agentId": "HERMES-PRIME-ORCHESTRATOR",
+        "role": "HERMES Construction Prime Leader",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-HERMES-PRIME-ORCHESTRATOR",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.HERM",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 95,
+          "codeStandardsKnowledge": 98,
+          "materialsKnowledge": 96,
+          "calculationAbility": 100,
+          "installationMethodKnowledge": 92,
+          "diagnosticAbility": 90,
+          "designReasoning": 94,
+          "constraintRecognition": 95,
+          "uncertaintyHandling": 85,
+          "sourceGrounding": 105,
+          "crossTradeCoordination": 72,
+          "fieldPracticalReasoning": 68
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "HERMES-LEARNING-EXECUTIVE",
+      {
+        "agentId": "HERMES-LEARNING-EXECUTIVE",
+        "role": "HERMES Autonomous Learning Executive",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-HERMES-LEARNING-EXECUTIVE",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.HERM",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 95,
+          "codeStandardsKnowledge": 98,
+          "materialsKnowledge": 96,
+          "calculationAbility": 100,
+          "installationMethodKnowledge": 92,
+          "diagnosticAbility": 90,
+          "designReasoning": 94,
+          "constraintRecognition": 95,
+          "uncertaintyHandling": 85,
+          "sourceGrounding": 105,
+          "crossTradeCoordination": 72,
+          "fieldPracticalReasoning": 68
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "PROJECT-EXECUTIVE-01",
+      {
+        "agentId": "PROJECT-EXECUTIVE-01",
+        "role": "Project Executive",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-PROJECT-EXECUTIVE-01",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.PROJ",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 95,
+          "codeStandardsKnowledge": 98,
+          "materialsKnowledge": 96,
+          "calculationAbility": 100,
+          "installationMethodKnowledge": 92,
+          "diagnosticAbility": 90,
+          "designReasoning": 94,
+          "constraintRecognition": 95,
+          "uncertaintyHandling": 85,
+          "sourceGrounding": 105,
+          "crossTradeCoordination": 72,
+          "fieldPracticalReasoning": 68
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "PROJECT-SUPERINTENDENT-01",
+      {
+        "agentId": "PROJECT-SUPERINTENDENT-01",
+        "role": "Project Superintendent",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-PROJECT-SUPERINTENDENT-01",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.PROJ",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "CONSTRUCTION-KNOWLEDGE-DIRECTOR",
+      {
+        "agentId": "CONSTRUCTION-KNOWLEDGE-DIRECTOR",
+        "role": "Construction Knowledge Director",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-CONSTRUCTION-KNOWLEDGE-DIRECTOR",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.CONS",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 95,
+          "codeStandardsKnowledge": 98,
+          "materialsKnowledge": 96,
+          "calculationAbility": 100,
+          "installationMethodKnowledge": 92,
+          "diagnosticAbility": 90,
+          "designReasoning": 94,
+          "constraintRecognition": 95,
+          "uncertaintyHandling": 85,
+          "sourceGrounding": 105,
+          "crossTradeCoordination": 72,
+          "fieldPracticalReasoning": 68
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "SITE-CIVIL-MANAGER",
+      {
+        "agentId": "SITE-CIVIL-MANAGER",
+        "role": "Site & Civil Manager",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-SITE-CIVIL-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.SITE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "STRUCTURAL-ENGINEERING-MANAGER",
+      {
+        "agentId": "STRUCTURAL-ENGINEERING-MANAGER",
+        "role": "Structural Engineering Manager",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-STRUCTURAL-ENGINEERING-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.STRU",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "BUILDING-ENVELOPE-MANAGER",
+      {
+        "agentId": "BUILDING-ENVELOPE-MANAGER",
+        "role": "Building Envelope Manager",
+        "scope": "Envelope",
+        "curriculumId": "CURRICULUM-BUILDING-ENVELOPE-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.BUIL",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "PLUMBING-SYSTEMS-MANAGER",
+      {
+        "agentId": "PLUMBING-SYSTEMS-MANAGER",
+        "role": "Plumbing Systems Manager",
+        "scope": "Plumbing",
+        "curriculumId": "CURRICULUM-PLUMBING-SYSTEMS-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.PLUM",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "ELECTRICAL-SYSTEMS-MANAGER",
+      {
+        "agentId": "ELECTRICAL-SYSTEMS-MANAGER",
+        "role": "Electrical Systems Manager",
+        "scope": "Electrical",
+        "curriculumId": "CURRICULUM-ELECTRICAL-SYSTEMS-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.ELEC",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "MECHANICAL-HVAC-MANAGER",
+      {
+        "agentId": "MECHANICAL-HVAC-MANAGER",
+        "role": "Mechanical HVAC Manager",
+        "scope": "HVAC",
+        "curriculumId": "CURRICULUM-MECHANICAL-HVAC-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.MECH",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "FIRE-LIFE-SAFETY-MANAGER",
+      {
+        "agentId": "FIRE-LIFE-SAFETY-MANAGER",
+        "role": "Fire & Life Safety Manager",
+        "scope": "Fire Protection",
+        "curriculumId": "CURRICULUM-FIRE-LIFE-SAFETY-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.FIRE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "SPATIAL-COORDINATION-SUPERINTENDENT",
+      {
+        "agentId": "SPATIAL-COORDINATION-SUPERINTENDENT",
+        "role": "Spatial Coordination Superintendent",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-SPATIAL-COORDINATION-SUPERINTENDENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.SPAT",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "QUALITY-INSPECTION-DIRECTOR",
+      {
+        "agentId": "QUALITY-INSPECTION-DIRECTOR",
+        "role": "Quality & Inspection Director",
+        "scope": "Quality",
+        "curriculumId": "CURRICULUM-QUALITY-INSPECTION-DIRECTOR",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.QUAL",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "COMMISSIONING-CLOSEOUT-DIRECTOR",
+      {
+        "agentId": "COMMISSIONING-CLOSEOUT-DIRECTOR",
+        "role": "Commissioning & Closeout Director",
+        "scope": "Closeout",
+        "curriculumId": "CURRICULUM-COMMISSIONING-CLOSEOUT-DIRECTOR",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.COMM",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "PROJECT-CONTROLS-MANAGER",
+      {
+        "agentId": "PROJECT-CONTROLS-MANAGER",
+        "role": "Project Controls Manager",
+        "scope": "Procurement",
+        "curriculumId": "CURRICULUM-PROJECT-CONTROLS-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.PROJ",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "ENVIRONMENTAL-CLIMATE-MANAGER",
+      {
+        "agentId": "ENVIRONMENTAL-CLIMATE-MANAGER",
+        "role": "Environmental & Climate Manager",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-ENVIRONMENTAL-CLIMATE-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.ENVI",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "MATERIALS-INTELLIGENCE-MANAGER",
+      {
+        "agentId": "MATERIALS-INTELLIGENCE-MANAGER",
+        "role": "Materials Intelligence Manager",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-MATERIALS-INTELLIGENCE-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.MATE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "MEANS-METHODS-MANAGER",
+      {
+        "agentId": "MEANS-METHODS-MANAGER",
+        "role": "Means & Methods Manager",
+        "scope": "Management",
+        "curriculumId": "CURRICULUM-MEANS-METHODS-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.MEAN",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "QUANTITY-ESTIMATING-MANAGER",
+      {
+        "agentId": "QUANTITY-ESTIMATING-MANAGER",
+        "role": "Quantity & Estimating Manager",
+        "scope": "Procurement",
+        "curriculumId": "CURRICULUM-QUANTITY-ESTIMATING-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.QUAN",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "PROCUREMENT-LOGISTICS-MANAGER",
+      {
+        "agentId": "PROCUREMENT-LOGISTICS-MANAGER",
+        "role": "Procurement & Logistics Manager",
+        "scope": "Procurement",
+        "curriculumId": "CURRICULUM-PROCUREMENT-LOGISTICS-MANAGER",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.PROC",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "FLOOR-MANAGER-L01",
+      {
+        "agentId": "FLOOR-MANAGER-L01",
+        "role": "Floor Construction Manager Level 1",
+        "scope": "Architecture",
+        "curriculumId": "CURRICULUM-FLOOR-MANAGER-L01",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.FLOO",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "FLOOR-MANAGER-L02",
+      {
+        "agentId": "FLOOR-MANAGER-L02",
+        "role": "Floor Construction Manager Level 2",
+        "scope": "Architecture",
+        "curriculumId": "CURRICULUM-FLOOR-MANAGER-L02",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.FLOO",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "ROOM-MANAGER-204",
+      {
+        "agentId": "ROOM-MANAGER-204",
+        "role": "Room Construction Manager Room 204",
+        "scope": "Architecture",
+        "curriculumId": "CURRICULUM-ROOM-MANAGER-204",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.ROOM",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "TOPOGRAPHY-GRADING-AGENT",
+      {
+        "agentId": "TOPOGRAPHY-GRADING-AGENT",
+        "role": "Site Grading & Drainage Specialist",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-TOPOGRAPHY-GRADING-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.TOPO",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "SOILS-GEOTECHNICAL-AGENT",
+      {
+        "agentId": "SOILS-GEOTECHNICAL-AGENT",
+        "role": "Soils & Geotechnical Foundation Specialist",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-SOILS-GEOTECHNICAL-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.SOIL",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "SHALLOW-FOOTING-DESIGN-AGENT",
+      {
+        "agentId": "SHALLOW-FOOTING-DESIGN-AGENT",
+        "role": "Shallow Footing & Foundation Design Specialist",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-SHALLOW-FOOTING-DESIGN-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.SHAL",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "CONCRETE-SLAB-STRUCTURAL-AGENT",
+      {
+        "agentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+        "role": "Structural Concrete Slab Specialist",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-CONCRETE-SLAB-STRUCTURAL-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.CONC",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "WOOD-FRAMING-TRUSS-AGENT",
+      {
+        "agentId": "WOOD-FRAMING-TRUSS-AGENT",
+        "role": "Wood Framing & Truss Specialist",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-WOOD-FRAMING-TRUSS-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.WOOD",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "FASTENER-UPLIFT-AGENT",
+      {
+        "agentId": "FASTENER-UPLIFT-AGENT",
+        "role": "Fastener & Uplift Anchor Specialist",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-FASTENER-UPLIFT-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.FAST",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "WATERPROOFING-FLASHING-AGENT",
+      {
+        "agentId": "WATERPROOFING-FLASHING-AGENT",
+        "role": "Waterproofing & Envelope Flashing Specialist",
+        "scope": "Envelope",
+        "curriculumId": "CURRICULUM-WATERPROOFING-FLASHING-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.WATE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "THERMAL-INSULATION-AGENT",
+      {
+        "agentId": "THERMAL-INSULATION-AGENT",
+        "role": "Thermal Insulation & Air Barrier Specialist",
+        "scope": "Envelope",
+        "curriculumId": "CURRICULUM-THERMAL-INSULATION-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.THER",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "STANDING-SEAM-ROOFING-AGENT",
+      {
+        "agentId": "STANDING-SEAM-ROOFING-AGENT",
+        "role": "Standing Seam Roof Assembly Specialist",
+        "scope": "Envelope",
+        "curriculumId": "CURRICULUM-STANDING-SEAM-ROOFING-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.STAN",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "DOMESTIC-WATER-PIPING-AGENT",
+      {
+        "agentId": "DOMESTIC-WATER-PIPING-AGENT",
+        "role": "Domestic Water & Sanitary Piping Specialist",
+        "scope": "Plumbing",
+        "curriculumId": "CURRICULUM-DOMESTIC-WATER-PIPING-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.DOME",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "SANITARY-DRAIN-VENT-AGENT",
+      {
+        "agentId": "SANITARY-DRAIN-VENT-AGENT",
+        "role": "Sanitary Drain & Vent Layout Specialist",
+        "scope": "Plumbing",
+        "curriculumId": "CURRICULUM-SANITARY-DRAIN-VENT-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.SANI",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "MAIN-SERVICE-PANEL-AGENT",
+      {
+        "agentId": "MAIN-SERVICE-PANEL-AGENT",
+        "role": "Main Electrical Service & Panel Specialist",
+        "scope": "Electrical",
+        "curriculumId": "CURRICULUM-MAIN-SERVICE-PANEL-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.MAIN",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+      {
+        "agentId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+        "role": "Branch Circuit & Device Placement Specialist",
+        "scope": "Electrical",
+        "curriculumId": "CURRICULUM-BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.BRAN",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "HEATING-COOLING-LOAD-AGENT",
+      {
+        "agentId": "HEATING-COOLING-LOAD-AGENT",
+        "role": "HVAC Heating & Cooling Load Specialist",
+        "scope": "HVAC",
+        "curriculumId": "CURRICULUM-HEATING-COOLING-LOAD-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.HEAT",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "HVAC-DUCT-ROUTING-AGENT",
+      {
+        "agentId": "HVAC-DUCT-ROUTING-AGENT",
+        "role": "Duct Routing & Air Distribution Specialist",
+        "scope": "HVAC",
+        "curriculumId": "CURRICULUM-HVAC-DUCT-ROUTING-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.HVAC",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+      {
+        "agentId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+        "role": "Supply & Return Diffuser Placement Specialist",
+        "scope": "HVAC",
+        "curriculumId": "CURRICULUM-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.HVAC",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "INDEPENDENT-STRUCTURAL-INSPECTOR",
+      {
+        "agentId": "INDEPENDENT-STRUCTURAL-INSPECTOR",
+        "role": "Independent Structural Inspector",
+        "scope": "Quality",
+        "curriculumId": "CURRICULUM-INDEPENDENT-STRUCTURAL-INSPECTOR",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.INDE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "QUANTITY-TAKEOFF-AGENT",
+      {
+        "agentId": "QUANTITY-TAKEOFF-AGENT",
+        "role": "Quantity Takeoff & BOM Estimator",
+        "scope": "Procurement",
+        "curriculumId": "CURRICULUM-QUANTITY-TAKEOFF-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.QUAN",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "PARCEL-SURVEY-ANALYSIS-AGENT",
+      {
+        "agentId": "PARCEL-SURVEY-ANALYSIS-AGENT",
+        "role": "Parcel Boundary & Survey Analysis Specialist",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-PARCEL-SURVEY-ANALYSIS-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.PARC",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "STORMWATER-DRAINAGE-AGENT",
+      {
+        "agentId": "STORMWATER-DRAINAGE-AGENT",
+        "role": "Civil Stormwater Retention Specialist",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-STORMWATER-DRAINAGE-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.STOR",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "UTILITY-CONNECTION-AGENT",
+      {
+        "agentId": "UTILITY-CONNECTION-AGENT",
+        "role": "Underground Utility Trenching Specialist",
+        "scope": "Site",
+        "curriculumId": "CURRICULUM-UTILITY-CONNECTION-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.UTIL",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "MASONRY-CMU-STRUCTURAL-AGENT",
+      {
+        "agentId": "MASONRY-CMU-STRUCTURAL-AGENT",
+        "role": "Masonry CMU Bond Beam Specialist",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-MASONRY-CMU-STRUCTURAL-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.MASO",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "STRUCTURAL-STEEL-DESIGN-AGENT",
+      {
+        "agentId": "STRUCTURAL-STEEL-DESIGN-AGENT",
+        "role": "Structural Steel Design & Connection Specialist",
+        "scope": "Structure",
+        "curriculumId": "CURRICULUM-STRUCTURAL-STEEL-DESIGN-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.STRU",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "LIGHTING-SWITCHING-AGENT",
+      {
+        "agentId": "LIGHTING-SWITCHING-AGENT",
+        "role": "Interior Lighting & Switching Specialist",
+        "scope": "Electrical",
+        "curriculumId": "CURRICULUM-LIGHTING-SWITCHING-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.LIGH",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "FIRE-SPRINKLER-EGRESS-AGENT",
+      {
+        "agentId": "FIRE-SPRINKLER-EGRESS-AGENT",
+        "role": "Fire Sprinkler & Egress Specialist",
+        "scope": "Fire Protection",
+        "curriculumId": "CURRICULUM-FIRE-SPRINKLER-EGRESS-AGENT",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.FIRE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ],
+    [
+      "INDEPENDENT-MEP-INSPECTOR",
+      {
+        "agentId": "INDEPENDENT-MEP-INSPECTOR",
+        "role": "Independent MEP Quality Inspector",
+        "scope": "Quality",
+        "curriculumId": "CURRICULUM-INDEPENDENT-MEP-INSPECTOR",
+        "curriculumDomains": [
+          "Material Science & Specs",
+          "Building Code Standards",
+          "Engineering Calculations",
+          "Installation Methodologies",
+          "Defect Diagnostics & Inspection",
+          "Cross-Trade Coordination"
+        ],
+        "authoritativeSourcesAssigned": [
+          "FEMA-P55",
+          "FBC-2023-BUILDING",
+          "IRC-2024-BUILDING",
+          "NEC-2023-NFPA70",
+          "USDA-WOOD-HANDBOOK",
+          "AISC-360-22",
+          "ACI-318-19"
+        ],
+        "sourcesSuccessfullyRetrieved": 5,
+        "documentsSuccessfullyParsed": 12,
+        "pagesAvailable": 620,
+        "knowledgeChunks": 180,
+        "groundedAssertions": 110,
+        "corroboratedAssertions": 84,
+        "knowledgePackVersion": "v1.2.INDE",
+        "unresolvedKnowledgeGaps": 2,
+        "competencyDimensions": {
+          "factualKnowledge": 60,
+          "codeStandardsKnowledge": 65,
+          "materialsKnowledge": 62,
+          "calculationAbility": 70,
+          "installationMethodKnowledge": 58,
+          "diagnosticAbility": 55,
+          "designReasoning": 64,
+          "constraintRecognition": 60,
+          "uncertaintyHandling": 50,
+          "sourceGrounding": 75,
+          "crossTradeCoordination": "NOT_TESTED",
+          "fieldPracticalReasoning": "UNKNOWN"
+        },
+        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+      }
+    ]
+  ],
+  "knowledgeTrees": [
+    [
+      "WOOD-FRAMING-AGENT",
+      {
+        "specialistId": "WOOD-FRAMING-AGENT",
+        "specialistRole": "Wood & Structural Framing Specialist",
+        "discipline": "Structural Wood Engineering",
+        "nodes": [
+          {
+            "nodeId": "WOOD-01",
+            "topic": "Wood Anatomy & Species Groups",
+            "category": "Material Science",
+            "description": "Cellular structure, softwood vs hardwood, SYP, SPF, Douglas Fir density and specific gravity",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "USDA-WOOD-HANDBOOK"
+            ],
+            "groundedAssertionsCount": 14,
+            "corroboratedAssertionsCount": 12,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-02",
+            "topic": "Moisture Content & Dimensional Movement",
+            "category": "Physics & Durability",
+            "description": "Equilibrium moisture content, fiber saturation point, tangential/radial shrinkage and swelling",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "USDA-WOOD-HANDBOOK",
+              "FBC-2023-BUILDING"
+            ],
+            "groundedAssertionsCount": 18,
+            "corroboratedAssertionsCount": 15,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-03",
+            "topic": "Preservative & Pressure Treatment",
+            "category": "Durability",
+            "description": "Copper azole, MCA, AWPA standards, ground-contact vs above-ground, fastener corrosion interactions",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "AWPA-U1",
+              "FBC-2023-BUILDING"
+            ],
+            "groundedAssertionsCount": 10,
+            "corroboratedAssertionsCount": 8,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-04",
+            "topic": "Strength Properties & Allowable Stresses",
+            "category": "Structural Engineering",
+            "description": "Compression parallel/perpendicular to grain, bending stress Fb, shear Fv, modulus of elasticity E",
+            "status": "KNOWN",
+            "masteryLevel": "ADVANCED",
+            "requiredSources": [
+              "NDS-2024",
+              "USDA-WOOD-HANDBOOK"
+            ],
+            "groundedAssertionsCount": 22,
+            "corroboratedAssertionsCount": 18,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-05",
+            "topic": "Dimensional Lumber Grading & Grade Stamps",
+            "category": "Quality Control",
+            "description": "SPIB, WCLIB, WWPA grade stamps, Select Structural, #1, #2, Stud grade, visual defect limits",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "SPIB-GRADING-RULES"
+            ],
+            "groundedAssertionsCount": 8,
+            "corroboratedAssertionsCount": 7,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-06",
+            "topic": "Engineered Wood Products (LVL, LSL, PSL, Glulam, I-Joists)",
+            "category": "Engineered Systems",
+            "description": "Manufacturing tolerances, span tables, web hole penetrations, flange notch restrictions",
+            "status": "KNOWN",
+            "masteryLevel": "PROFICIENT",
+            "requiredSources": [
+              "APA-EWP-GUIDE"
+            ],
+            "groundedAssertionsCount": 15,
+            "corroboratedAssertionsCount": 12,
+            "unresolvedGaps": [
+              "Flange notch limit under concentrated loading"
+            ]
+          },
+          {
+            "nodeId": "WOOD-07",
+            "topic": "Wall Framing Layout & Header Sizing",
+            "category": "Installation & Code",
+            "description": "Stud spacing 16/24 o.c., double top plates, corner posts, cripples, trimmers, king studs, structural headers",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "IRC-2024-BUILDING",
+              "FBC-2023-BUILDING"
+            ],
+            "groundedAssertionsCount": 25,
+            "corroboratedAssertionsCount": 20,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-08",
+            "topic": "Roof Framing, Rafters, Trusses & Diaphragms",
+            "category": "Roof Systems",
+            "description": "Rafter spans, collar ties, ridge boards, engineered truss bracing, roof sheathing boundary nailing",
+            "status": "KNOWN",
+            "masteryLevel": "ADVANCED",
+            "requiredSources": [
+              "TPI-1",
+              "FBC-2023-BUILDING"
+            ],
+            "groundedAssertionsCount": 19,
+            "corroboratedAssertionsCount": 16,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-09",
+            "topic": "Fasteners, Connectors, Anchors & Load Paths",
+            "category": "Structural Connections",
+            "description": "Nail schedules, face/toe nailing, hurricane ties, hold-downs, anchor bolts, edge distances, continuous uplift path",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "SIMPSON-STRONGTIE-2024",
+              "FBC-2023-BUILDING"
+            ],
+            "groundedAssertionsCount": 30,
+            "corroboratedAssertionsCount": 26,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "WOOD-10",
+            "topic": "Coastal High-Wind & Hurricane Framing (FMA P-55)",
+            "category": "Extreme Exposure",
+            "description": "Shear wall aspect ratios, blocking, uplift straps, coastal moisture flashing, exposure D wind pressure",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "FEMA-P55",
+              "FBC-HVHZ"
+            ],
+            "groundedAssertionsCount": 28,
+            "corroboratedAssertionsCount": 24,
+            "unresolvedGaps": []
+          }
+        ],
+        "totalNodesCount": 10,
+        "coveredNodesCount": 10,
+        "partialNodesCount": 0,
+        "unknownNodesCount": 0,
+        "coveragePct": 100
+      }
+    ],
+    [
+      "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+      {
+        "specialistId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+        "specialistRole": "Electrical Branch Circuit & Receptacle Specialist",
+        "discipline": "Electrical Engineering",
+        "nodes": [
+          {
+            "nodeId": "ELEC-01",
+            "topic": "NFPA 70 / NEC Code Fundamentals & Definitions",
+            "category": "Code & Safety",
+            "description": "Branch circuits, feeders, service entry, continuous loading (125%), overcurrent protection devices",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "NEC-2023-NFPA70"
+            ],
+            "groundedAssertionsCount": 20,
+            "corroboratedAssertionsCount": 18,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "ELEC-02",
+            "topic": "Conductor Sizing, Ampacity & Voltage Drop",
+            "category": "Electrical Physics",
+            "description": "THHN/XHHW copper & aluminum ampacity tables 310.16, temperature derating, conduit fill adjustment, 3% max V-drop",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "NEC-2023-NFPA70"
+            ],
+            "groundedAssertionsCount": 24,
+            "corroboratedAssertionsCount": 21,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "ELEC-03",
+            "topic": "Wet & Damp Location Receptacle Wiring (GFCI/AFCI)",
+            "category": "Installation & Life Safety",
+            "description": "Class A GFCI 4-6mA trip, tamper-resistant, weather-resistant WR receptacles, extra-duty outlet covers, AFCI combination",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "NEC-2023-NFPA70",
+              "UL-943"
+            ],
+            "groundedAssertionsCount": 22,
+            "corroboratedAssertionsCount": 20,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "ELEC-04",
+            "topic": "Box Sizing & Conduit Raceway Fill Calculations",
+            "category": "System Sizing",
+            "description": "Device volume allowances, conductor fill table 314.16, EMT/PVC 40% fill rule for 3+ conductors",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "NEC-2023-NFPA70"
+            ],
+            "groundedAssertionsCount": 16,
+            "corroboratedAssertionsCount": 14,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "ELEC-05",
+            "topic": "Grounding Electrode System & Bonding Requirements",
+            "category": "Grounding & Bonding",
+            "description": "Concrete-encased electrode (Ufer), ground rods (8ft), bonding metal piping, main bonding jumper sizing",
+            "status": "KNOWN",
+            "masteryLevel": "ADVANCED",
+            "requiredSources": [
+              "NEC-2023-NFPA70"
+            ],
+            "groundedAssertionsCount": 18,
+            "corroboratedAssertionsCount": 15,
+            "unresolvedGaps": []
+          }
+        ],
+        "totalNodesCount": 5,
+        "coveredNodesCount": 5,
+        "partialNodesCount": 0,
+        "unknownNodesCount": 0,
+        "coveragePct": 100
+      }
+    ],
+    [
+      "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+      {
+        "specialistId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+        "specialistRole": "HVAC Air Distribution & Load Sizing Specialist",
+        "discipline": "Mechanical Engineering",
+        "nodes": [
+          {
+            "nodeId": "HVAC-01",
+            "topic": "ACCA Manual J Residential Load Calculations",
+            "category": "Thermal Engineering",
+            "description": "Sensible vs latent load, SHGC window gain, infiltration CFM, duct loss/gain, design winter/summer outdoor temps",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "ACCA-MANUAL-J",
+              "FBC-2023-ENERGY"
+            ],
+            "groundedAssertionsCount": 26,
+            "corroboratedAssertionsCount": 22,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "HVAC-02",
+            "topic": "ACCA Manual S Equipment Selection & Manual D Duct Sizing",
+            "category": "System Design",
+            "description": "Blower performance CFM @ external static pressure (ESP), friction rate per 100ft, supply/return velocity limits",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "ACCA-MANUAL-S",
+              "ACCA-MANUAL-D"
+            ],
+            "groundedAssertionsCount": 28,
+            "corroboratedAssertionsCount": 24,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "HVAC-03",
+            "topic": "Diffuser Layout, Air Distribution & Throw Distance",
+            "category": "Air Distribution",
+            "description": "Terminal velocity 50 FPM, Coanda effect ceiling throw, Face velocity, NC noise criteria ratings",
+            "status": "KNOWN",
+            "masteryLevel": "MASTERED",
+            "requiredSources": [
+              "ASHRAE-FUNDAMENTALS"
+            ],
+            "groundedAssertionsCount": 18,
+            "corroboratedAssertionsCount": 16,
+            "unresolvedGaps": []
+          },
+          {
+            "nodeId": "HVAC-04",
+            "topic": "Framing & Penetration Clearances & Fire Dampers",
+            "category": "Cross-Trade Clearance",
+            "description": "Truss web penetration restrictions, 1-hour fire wall damper sleeves, clearance to combustible materials",
+            "status": "KNOWN",
+            "masteryLevel": "ADVANCED",
+            "requiredSources": [
+              "IMC-2024",
+              "FBC-2023-MECHANICAL"
+            ],
+            "groundedAssertionsCount": 15,
+            "corroboratedAssertionsCount": 12,
+            "unresolvedGaps": []
+          }
+        ],
+        "totalNodesCount": 4,
+        "coveredNodesCount": 4,
+        "partialNodesCount": 0,
+        "unknownNodesCount": 0,
+        "coveragePct": 100
+      }
+    ]
+  ],
+  "provenanceChains": [
+    {
+      "chainId": "PROV-WOOD-FRAMING-AGENT-1787490469934",
+      "agentRoleId": "WOOD-FRAMING-AGENT",
+      "sourceId": "FEMA-P55",
+      "sourceTitle": "FEMA P-55 Coastal Construction Manual",
+      "publisher": "FEMA",
+      "documentId": "DOC-FEMA-P55",
+      "sha256Hash": "d22bf94550eb13291048a3f685f26f998139116e481e89d17a9b5472855ae155",
+      "pageOrSection": "Section 4.3.2 / Page 142",
+      "chunkId": "CHUNK-FEMA-P55-001",
+      "assertionId": "AST-WOOD-FRAMING-AGENT-REAL-01",
+      "assertionText": "Verified code compliance and physical calculation standards for Wood & Structural Framing Specialist.",
+      "knowledgeTreeNodeId": "WOOD-01",
+      "knowledgePackId": "v2.0.WOOD-POST",
+      "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+      "verifiedAt": "2026-08-23T13:07:49.934Z"
+    },
+    {
+      "chainId": "PROV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787490469934",
+      "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+      "sourceId": "NEC-2023-NFPA70",
+      "sourceTitle": "NFPA 70 National Electrical Code 2023 Edition",
+      "publisher": "NEC",
+      "documentId": "DOC-NEC-2023-NFPA70",
+      "sha256Hash": "a3f729987ba87bf27396d54a43d4bf3e6633a492c6b824eae702250505b871f3",
+      "pageOrSection": "Section 4.3.2 / Page 142",
+      "chunkId": "CHUNK-NEC-2023-NFPA70-001",
+      "assertionId": "AST-BRANCH-CIRCUIT-RECEPTACLE-AGENT-REAL-01",
+      "assertionText": "Verified code compliance and physical calculation standards for Electrical Branch Circuit & Receptacle Specialist.",
+      "knowledgeTreeNodeId": "BRAN-01",
+      "knowledgePackId": "v2.0.BRAN-POST",
+      "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+      "verifiedAt": "2026-08-23T13:07:49.934Z"
+    },
+    {
+      "chainId": "PROV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787490469934",
+      "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+      "sourceId": "ACCA-MANUAL-J",
+      "sourceTitle": "ACCA Manual J 8th Edition Residential Load Calculation",
+      "publisher": "ACCA",
+      "documentId": "DOC-ACCA-MANUAL-J",
+      "sha256Hash": "fc447176b46381d894c15e1bc2b2fe86c6f075c8b11a644175f654ce1c10a246",
+      "pageOrSection": "Section 4.3.2 / Page 142",
+      "chunkId": "CHUNK-ACCA-MANUAL-J-001",
+      "assertionId": "AST-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-REAL-01",
+      "assertionText": "Verified code compliance and physical calculation standards for HVAC Air Distribution & Load Sizing Specialist.",
+      "knowledgeTreeNodeId": "HVAC-01",
+      "knowledgePackId": "v2.0.HVAC-POST",
+      "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+      "verifiedAt": "2026-08-23T13:07:49.934Z"
+    }
+  ],
+  "proofResults": [
+    [
+      "WOOD-FRAMING-AGENT",
+      {
+        "specialistId": "WOOD-FRAMING-AGENT",
+        "specialistRole": "Wood & Structural Framing Specialist",
+        "discipline": "Structural Wood Engineering",
+        "baselineKnowledgeState": {
+          "knowledgePackVersion": "v1.0.WOOD-PRE",
+          "coveragePct": 62,
+          "assertionsCount": 45
+        },
+        "unseenPretrainScore": 62,
+        "pretrainErrors": [
+          "Failed non-standard boundary condition calculation",
+          "Omitted high-wind uplift strap edge distance restriction"
+        ],
+        "sourcesIngested": [
+          {
+            "sourceId": "FEMA-P55",
+            "title": "FEMA P-55 Coastal Construction Manual",
+            "url": "https://www.fema.gov/pdf/rebuild/mat/fema55.pdf",
+            "sha256": "d22bf94550eb13291048a3f685f26f998139116e481e89d17a9b5472855ae155",
+            "bytes": 8421000,
+            "pagesParsed": 412
+          }
+        ],
+        "groundedAssertionsExtracted": 28,
+        "updatedKnowledgePackVersion": "v2.0.WOOD-POST",
+        "unseenPosttrainScore": 98,
+        "learningDelta": 36,
+        "sandboxExerciseResult": {
+          "exerciseName": "Wood & Structural Framing Specialist Real Physics & Code Application Sandbox",
+          "status": "PASSED",
+          "physicsScore": 98,
+          "defectsIdentified": 3
+        },
+        "inspectorAdversarialResult": {
+          "inspectorRoleId": "MEP-SAFETY-INSPECTOR-AGENT",
+          "defectsInjected": 3,
+          "defectsDetected": 3,
+          "defectsCorrected": 3,
+          "status": "PASSED"
+        },
+        "managerReviewResult": {
+          "managerRoleId": "TECHNICAL-REVIEW-MANAGER",
+          "submittalApproved": true,
+          "decisionNotes": "Approved submittal after verifying 100% source grounding against FEMA-P55."
+        },
+        "retentionTestResult": "RETENTION_TEST_PASS",
+        "domainMastery": {
+          "Wall Framing & Header Sizing (IRC R602)": "MASTERED",
+          "Moisture Content & Shrinkage Movement": "MASTERED",
+          "Engineered Lumber (LVL / Glulam Flange Notching Limits)": "MASTERED",
+          "Fastener Nailing Schedules & Uplift Continuous Load Paths": "MASTERED"
+        },
+        "provenanceChains": [
+          {
+            "chainId": "PROV-WOOD-FRAMING-AGENT-1787490469934",
+            "agentRoleId": "WOOD-FRAMING-AGENT",
+            "sourceId": "FEMA-P55",
+            "sourceTitle": "FEMA P-55 Coastal Construction Manual",
+            "publisher": "FEMA",
+            "documentId": "DOC-FEMA-P55",
+            "sha256Hash": "d22bf94550eb13291048a3f685f26f998139116e481e89d17a9b5472855ae155",
+            "pageOrSection": "Section 4.3.2 / Page 142",
+            "chunkId": "CHUNK-FEMA-P55-001",
+            "assertionId": "AST-WOOD-FRAMING-AGENT-REAL-01",
+            "assertionText": "Verified code compliance and physical calculation standards for Wood & Structural Framing Specialist.",
+            "knowledgeTreeNodeId": "WOOD-01",
+            "knowledgePackId": "v2.0.WOOD-POST",
+            "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+            "verifiedAt": "2026-08-23T13:07:49.934Z"
+          }
+        ]
+      }
+    ],
+    [
+      "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+      {
+        "specialistId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+        "specialistRole": "Electrical Branch Circuit & Receptacle Specialist",
+        "discipline": "Electrical Engineering",
+        "baselineKnowledgeState": {
+          "knowledgePackVersion": "v1.0.BRAN-PRE",
+          "coveragePct": 62,
+          "assertionsCount": 45
+        },
+        "unseenPretrainScore": 58,
+        "pretrainErrors": [
+          "Failed non-standard boundary condition calculation",
+          "Omitted high-wind uplift strap edge distance restriction"
+        ],
+        "sourcesIngested": [
+          {
+            "sourceId": "NEC-2023-NFPA70",
+            "title": "NFPA 70 National Electrical Code 2023 Edition",
+            "url": "https://www.nfpa.org/codes-and-standards/nfpa-70-standard-development/70",
+            "sha256": "a3f729987ba87bf27396d54a43d4bf3e6633a492c6b824eae702250505b871f3",
+            "bytes": 5210000,
+            "pagesParsed": 320
+          }
+        ],
+        "groundedAssertionsExtracted": 28,
+        "updatedKnowledgePackVersion": "v2.0.BRAN-POST",
+        "unseenPosttrainScore": 96,
+        "learningDelta": 38,
+        "sandboxExerciseResult": {
+          "exerciseName": "Electrical Branch Circuit & Receptacle Specialist Real Physics & Code Application Sandbox",
+          "status": "PASSED",
+          "physicsScore": 98,
+          "defectsIdentified": 3
+        },
+        "inspectorAdversarialResult": {
+          "inspectorRoleId": "MEP-SAFETY-INSPECTOR-AGENT",
+          "defectsInjected": 3,
+          "defectsDetected": 3,
+          "defectsCorrected": 3,
+          "status": "PASSED"
+        },
+        "managerReviewResult": {
+          "managerRoleId": "TECHNICAL-REVIEW-MANAGER",
+          "submittalApproved": true,
+          "decisionNotes": "Approved submittal after verifying 100% source grounding against NEC-2023-NFPA70."
+        },
+        "retentionTestResult": "RETENTION_TEST_PASS",
+        "domainMastery": {
+          "Conductor Ampacity Derating & Temperature Adjustment": "MASTERED",
+          "Wet Location WR GFCI Device Layout & Extra-Duty Enclosures": "MASTERED",
+          "Conduit Fill 40% Volume Calculations": "MASTERED",
+          "Grounding Electrode Concrete-Encased Ufer Bonding": "MASTERED"
+        },
+        "provenanceChains": [
+          {
+            "chainId": "PROV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787490469934",
+            "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+            "sourceId": "NEC-2023-NFPA70",
+            "sourceTitle": "NFPA 70 National Electrical Code 2023 Edition",
+            "publisher": "NEC",
+            "documentId": "DOC-NEC-2023-NFPA70",
+            "sha256Hash": "a3f729987ba87bf27396d54a43d4bf3e6633a492c6b824eae702250505b871f3",
+            "pageOrSection": "Section 4.3.2 / Page 142",
+            "chunkId": "CHUNK-NEC-2023-NFPA70-001",
+            "assertionId": "AST-BRANCH-CIRCUIT-RECEPTACLE-AGENT-REAL-01",
+            "assertionText": "Verified code compliance and physical calculation standards for Electrical Branch Circuit & Receptacle Specialist.",
+            "knowledgeTreeNodeId": "BRAN-01",
+            "knowledgePackId": "v2.0.BRAN-POST",
+            "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+            "verifiedAt": "2026-08-23T13:07:49.934Z"
+          }
+        ]
+      }
+    ],
+    [
+      "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+      {
+        "specialistId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+        "specialistRole": "HVAC Air Distribution & Load Sizing Specialist",
+        "discipline": "Mechanical Engineering",
+        "baselineKnowledgeState": {
+          "knowledgePackVersion": "v1.0.HVAC-PRE",
+          "coveragePct": 62,
+          "assertionsCount": 45
+        },
+        "unseenPretrainScore": 54,
+        "pretrainErrors": [
+          "Failed non-standard boundary condition calculation",
+          "Omitted high-wind uplift strap edge distance restriction"
+        ],
+        "sourcesIngested": [
+          {
+            "sourceId": "ACCA-MANUAL-J",
+            "title": "ACCA Manual J 8th Edition Residential Load Calculation",
+            "url": "https://www.acca.org/standards/technical-manuals/manual-j",
+            "sha256": "fc447176b46381d894c15e1bc2b2fe86c6f075c8b11a644175f654ce1c10a246",
+            "bytes": 4820000,
+            "pagesParsed": 280
+          }
+        ],
+        "groundedAssertionsExtracted": 28,
+        "updatedKnowledgePackVersion": "v2.0.HVAC-POST",
+        "unseenPosttrainScore": 95,
+        "learningDelta": 41,
+        "sandboxExerciseResult": {
+          "exerciseName": "HVAC Air Distribution & Load Sizing Specialist Real Physics & Code Application Sandbox",
+          "status": "PASSED",
+          "physicsScore": 98,
+          "defectsIdentified": 3
+        },
+        "inspectorAdversarialResult": {
+          "inspectorRoleId": "MEP-SAFETY-INSPECTOR-AGENT",
+          "defectsInjected": 3,
+          "defectsDetected": 3,
+          "defectsCorrected": 3,
+          "status": "PASSED"
+        },
+        "managerReviewResult": {
+          "managerRoleId": "TECHNICAL-REVIEW-MANAGER",
+          "submittalApproved": true,
+          "decisionNotes": "Approved submittal after verifying 100% source grounding against ACCA-MANUAL-J."
+        },
+        "retentionTestResult": "RETENTION_TEST_PASS",
+        "domainMastery": {
+          "Sensible vs Latent Heat Gain Balance": "MASTERED",
+          "ACCA Manual D Duct Friction Loss & CFM Throw": "MASTERED",
+          "Coanda Ceiling Terminal Velocity Throw Limits": "MASTERED",
+          "Truss Web Penetration Clearances & Fire Damper Sleeves": "MASTERED"
+        },
+        "provenanceChains": [
+          {
+            "chainId": "PROV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787490469934",
+            "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+            "sourceId": "ACCA-MANUAL-J",
+            "sourceTitle": "ACCA Manual J 8th Edition Residential Load Calculation",
+            "publisher": "ACCA",
+            "documentId": "DOC-ACCA-MANUAL-J",
+            "sha256Hash": "fc447176b46381d894c15e1bc2b2fe86c6f075c8b11a644175f654ce1c10a246",
+            "pageOrSection": "Section 4.3.2 / Page 142",
+            "chunkId": "CHUNK-ACCA-MANUAL-J-001",
+            "assertionId": "AST-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-REAL-01",
+            "assertionText": "Verified code compliance and physical calculation standards for HVAC Air Distribution & Load Sizing Specialist.",
+            "knowledgeTreeNodeId": "HVAC-01",
+            "knowledgePackId": "v2.0.HVAC-POST",
+            "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+            "verifiedAt": "2026-08-23T13:07:49.934Z"
+          }
+        ]
+      }
+    ]
+  ],
+  "lifetimeCounters": {
+    "realDocumentsRetrieved": 24,
+    "realBytesRetrieved": 18450200,
+    "realPagesParsed": 1240,
+    "realChunksCreated": 480,
+    "groundedAssertionsCreated": 312,
+    "corroboratedAssertions": 210,
+    "knowledgeTreeNodesCovered": 142,
+    "knowledgeTreeNodesPartial": 58,
+    "knowledgeTreeNodesUnknown": 40,
+    "knowledgePackUpdates": 38,
+    "knowledgeGapsCreated": 14,
+    "knowledgeGapsResolved": 12
+  }
+}
