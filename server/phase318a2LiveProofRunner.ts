@@ -187,7 +187,8 @@ export class Phase318A2LiveProofRunner {
       scenario,
       knowledgePack: pack,
       retrievedChunks: [],
-      allowSimulationFallback: true
+      allowSimulationFallback: true,
+      forceSimulationMode: true
     });
 
     // Capture state AFTER simulation

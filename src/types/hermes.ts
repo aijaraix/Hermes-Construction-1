@@ -1790,6 +1790,122 @@ export interface Phase318BContinuousReport {
   };
 }
 
+// ======================================================================
+// PHASE 3.18B.1 RUNTIME HARDENING & SCHEDULER TYPES
+// ======================================================================
+
+export type AcademyRuntimeHealthStatus =
+  | 'ACADEMY_CONFIGURED'
+  | 'ACADEMY_PROCESS_ACTIVE'
+  | 'ACADEMY_DURABLY_RUNNING'
+  | 'ACADEMY_IDLE'
+  | 'ACADEMY_PAUSED'
+  | 'ACADEMY_DEGRADED'
+  | 'ACADEMY_OFFLINE';
+
+export interface AcademyExecutionLock {
+  ownerId: string;
+  acquiredAt: string;
+  expiresAt: string;
+  heartbeatId: string;
+  workerIdentity: string;
+}
+
+export interface ProductionHeartbeatRecord {
+  heartbeatId: string;
+  requestedTime: string;
+  startedTime: string;
+  completedTime?: string;
+  workerIdentity: string;
+  triggerSource: 'HTTP_SCHEDULER' | 'WATCHDOG' | 'DEV_TIMER' | 'MANUAL_API' | 'UNATTENDED_TEST';
+  primeDecision: string;
+  jobsDispatched: number;
+  jobsCompleted: number;
+  jobsDeferred: number;
+  errors: string[];
+  nextWakeRecommendationSeconds: number;
+  status: 'SUCCESS' | 'SKIPPED' | 'FAILED' | 'IDLE';
+}
+
+export interface KnowledgeReuseMetricRecord {
+  llmCallId: string;
+  agentRoleId: string;
+  taskOrScenarioId: string;
+  timestamp: string;
+  reasoningNecessity: 'GENUINE_AMBIGUITY' | 'NEW_DOMAIN' | 'COMPETENCY_TEST' | 'MANAGER_CHALLENGE';
+  knowledgeRetrievalAttempted: boolean;
+  relevantKnowledgeFound: boolean;
+  whyExistingKnowledgeInsufficient: string;
+  llmCallRequired: boolean;
+  duplicateAvoided: boolean;
+}
+
+export interface Phase318B1Report {
+  generatedAt: string;
+  runtimeMode: 'development' | 'production';
+  runtimeHealthStatus: AcademyRuntimeHealthStatus;
+  lastHeartbeatTimestamp?: string;
+  secondsSinceLastHeartbeat?: number;
+  schedulerArchitecture: {
+    authoritativeScheduler: string;
+    triggerEndpoint: string;
+    watchdogEnabled: boolean;
+    localTimerDisabledInProduction: boolean;
+    idempotencyEnforced: boolean;
+  };
+  operationalMetrics: {
+    totalProductionHeartbeats: number;
+    successfulHeartbeats: number;
+    skippedDuplicateHeartbeats: number;
+    idleHeartbeats: number;
+    failedHeartbeats: number;
+    totalJobsQueued: number;
+    totalJobsProcessed: number;
+    totalJobsDeferred: number;
+    totalWatchdogRecoveries: number;
+    staleClaimsRepaired: number;
+  };
+  reuseMetrics: {
+    totalLlmCalls: number;
+    knowledgeRetrievalAttemptedCount: number;
+    relevantKnowledgeFoundCount: number;
+    knowledgeReuseRatePct: number;
+    duplicatesAvoidedCount: number;
+  };
+  instanceLossVerification: {
+    verified: boolean;
+    testedAt?: string;
+    jobsLostCount: number;
+    competencyLostPct: number;
+    knowledgeEntitiesLostCount: number;
+  };
+  unattended60MinProof: {
+    executed: boolean;
+    executedAt?: string;
+    simulatedCycles: number;
+    simulatedDurationMinutes: number;
+    zeroBrowserTrafficDependencyVerified: boolean;
+    knowledgeGainedCount: number;
+    competencyImprovementPct: number;
+    zeroJobLossVerified: boolean;
+  };
+  declarations: {
+    TRUE_247_SCHEDULER_HARDENED: 'YES' | 'NO';
+    LOCAL_TIMER_BYPASSED_IN_PRODUCTION: 'YES' | 'NO';
+    DISTRIBUTED_LOCKING_ACTIVE: 'YES' | 'NO';
+    IDEMPOTENT_HEARTBEATS_ENFORCED: 'YES' | 'NO';
+    EVENT_DRIVEN_CONTINUATION_ACTIVE: 'YES' | 'NO';
+    DURABLE_WATCHDOG_ACTIVE: 'YES' | 'NO';
+    KNOWLEDGE_REUSE_INSTRUMENTED: 'YES' | 'NO';
+    REALITY_SWARM_RUNTIME_AUDIT_ACTIVE: 'YES' | 'NO';
+    INSTANCE_LOSS_RECOVERY_VERIFIED: 'YES' | 'NO';
+    UNATTENDED_60MIN_PROOF_VERIFIED: 'YES' | 'NO';
+    HOUSE_1_NOT_STARTED: 'YES' | 'NO';
+  };
+  exitGates: ExitGateRecord[];
+}
+
+
 
 
 

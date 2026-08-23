@@ -25,8 +25,9 @@ export class AgentExecutionService {
     knowledgePack: AgentKnowledgePack;
     retrievedChunks: KnowledgeChunk[];
     allowSimulationFallback?: boolean;
+    forceSimulationMode?: boolean;
   }): Promise<{ executionRecord: AgentExecutionRecord; validation: ValidationResult }> {
-    const { agentRole, scenario, knowledgePack, retrievedChunks, allowSimulationFallback } = params;
+    const { agentRole, scenario, knowledgePack, retrievedChunks, allowSimulationFallback, forceSimulationMode } = params;
     const startedAt = new Date().toISOString();
     const executionId = `EXEC-${agentRole.roleId}-${Date.now()}`;
 
@@ -36,7 +37,8 @@ export class AgentExecutionService {
       scenario,
       knowledgePack,
       retrievedChunks,
-      allowSimulationFallback
+      allowSimulationFallback,
+      forceSimulationMode
     });
 
     const completedAt = new Date().toISOString();

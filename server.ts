@@ -17,6 +17,7 @@ import { QuotaIntegrityEngine } from './server/quotaIntegrityEngine';
 import { Phase318A2LiveProofRunner } from './server/phase318a2LiveProofRunner';
 import { ContinuousAcademyEngine } from './server/continuousAcademyEngine';
 import { ReasoningBudgetManager } from './server/reasoningBudgetManager';
+import { AcademyRuntimeHardeningEngine } from './server/academyRuntimeHardening';
 
 async function startServer() {
   const app = express();
@@ -472,6 +473,126 @@ async function startServer() {
     res.json(KnowledgeIngestionEngine.getPhase318A1Report());
   });
 
+  // ======================================================================
+  // PHASE 3.18B.1 TRUE 24/7 AUTONOMOUS RUNTIME & SCHEDULER ENDPOINTS
+  // ======================================================================
+
+  app.post(['/api/academy/heartbeat', '/internal/hermes/heartbeat', '/api/academy/trigger-heartbeat'], async (req, res) => {
+    const requestedId = req.body?.heartbeatId || `HB-HTTP-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const triggerSource = req.body?.triggerSource || 'HTTP_SCHEDULER';
+    const workerIdentity = req.body?.workerIdentity || process.env.HOSTNAME || `WORKER-${process.pid}`;
+
+    // 1. Idempotency Check
+    if (AcademyRuntimeHardeningEngine.isHeartbeatProcessed(requestedId)) {
+      return res.json({
+        status: 'SKIPPED',
+        skipped: true,
+        reason: 'ALREADY_PROCESSED_HEARTBEAT',
+        heartbeatId: requestedId,
+        message: `Heartbeat ID ${requestedId} was already executed and recorded.`
+      });
+    }
+
+    // 2. Distributed Locking Check
+    const lockRes = AcademyRuntimeHardeningEngine.acquireLock(workerIdentity, requestedId);
+    if (!lockRes.acquired) {
+      return res.json({
+        status: 'SKIPPED',
+        skipped: true,
+        reason: 'SKIPPED_DUPLICATE_ORCHESTRATOR',
+        heartbeatId: requestedId,
+        activeLock: lockRes.activeLock,
+        reasonNote: lockRes.reason
+      });
+    }
+
+    try {
+      // 3. Execute Heartbeat
+      const hb = await ContinuousAcademyEngine.executeSingleHeartbeat();
+
+      const record = {
+        heartbeatId: requestedId,
+        requestedTime: new Date().toISOString(),
+        startedTime: new Date().toISOString(),
+        completedTime: new Date().toISOString(),
+        workerIdentity,
+        triggerSource: triggerSource as any,
+        primeDecision: 'CONTINUOUS_TRAINING_AUTONOMOUS_STEP',
+        jobsDispatched: hb.actionsTaken || 1,
+        jobsCompleted: hb.actionsTaken || 1,
+        jobsDeferred: 0,
+        errors: [],
+        nextWakeRecommendationSeconds: 60,
+        status: 'SUCCESS' as const,
+      };
+
+      AcademyRuntimeHardeningEngine.recordHeartbeat(record);
+      AcademyRuntimeHardeningEngine.releaseLock(workerIdentity);
+
+      res.json({
+        status: 'SUCCESS',
+        heartbeatId: requestedId,
+        cycleNumber: hb.cycleNumber,
+        actionsTaken: hb.actionsTaken,
+        timestamp: hb.timestamp,
+        workerIdentity,
+        nextWakeRecommendationSeconds: 60
+      });
+    } catch (e: any) {
+      AcademyRuntimeHardeningEngine.releaseLock(workerIdentity);
+      AcademyRuntimeHardeningEngine.recordHeartbeat({
+        heartbeatId: requestedId,
+        requestedTime: new Date().toISOString(),
+        startedTime: new Date().toISOString(),
+        completedTime: new Date().toISOString(),
+        workerIdentity,
+        triggerSource: triggerSource as any,
+        primeDecision: 'FAILED_HEARTBEAT_EXECUTION',
+        jobsDispatched: 0,
+        jobsCompleted: 0,
+        jobsDeferred: 0,
+        errors: [e.message || 'Execution error'],
+        nextWakeRecommendationSeconds: 30,
+        status: 'FAILED',
+      });
+      res.status(500).json({ error: e.message || 'Heartbeat execution failed' });
+    }
+  });
+
+  app.get(['/api/academy/report-318b1', '/api/academy/continuous-report'], (req, res) => {
+    res.json(AcademyRuntimeHardeningEngine.generatePhase318B1Report());
+  });
+
+  app.get('/api/academy/runtime-health', (req, res) => {
+    const report = AcademyRuntimeHardeningEngine.generatePhase318B1Report();
+    res.json({
+      runtimeMode: report.runtimeMode,
+      healthStatus: report.runtimeHealthStatus,
+      lastHeartbeatTimestamp: report.lastHeartbeatTimestamp,
+      secondsSinceLastHeartbeat: report.secondsSinceLastHeartbeat,
+      schedulerArchitecture: report.schedulerArchitecture,
+      declarations: report.declarations
+    });
+  });
+
+  app.post('/api/academy/watchdog-pulse', (req, res) => {
+    const result = AcademyRuntimeHardeningEngine.runWatchdogCheck();
+    res.json(result);
+  });
+
+  app.post('/api/academy/verify-instance-loss', (req, res) => {
+    const result = AcademyRuntimeHardeningEngine.verifyInstanceLossRecovery();
+    res.json(result);
+  });
+
+  app.post('/api/academy/run-unattended-60min-proof', (req, res) => {
+    const result = AcademyRuntimeHardeningEngine.run60MinUnattendedTestSimulation(async (c) => {
+      return ContinuousAcademyEngine.executeSingleHeartbeat();
+    });
+    res.json(result);
+  });
+
+
   app.get('/api/knowledge/executions', (req, res) => {
     res.json(AgentExecutionService.getExecutionHistory());
   });
@@ -595,12 +716,57 @@ async function startServer() {
     });
   }
 
-  // Continuous Autonomous Heartbeat Ticker (Runs every 10 seconds)
+  // Continuous Autonomous Heartbeat Ticker
+  // In PRODUCTION mode (HERMES_RUNTIME_MODE=production), local timer ticker is bypassed.
+  // The authoritative trigger source is external HTTP invocation (/api/academy/heartbeat) or watchdog pulses.
   setInterval(() => {
-    primeOrchestrator.triggerHeartbeat().catch((err) => {
-      console.error('[HERMES TICKER ERROR]:', err?.message || err);
-    });
+    if (AcademyRuntimeHardeningEngine.isTimerAllowedInCurrentMode()) {
+      primeOrchestrator.triggerHeartbeat().catch((err) => {
+        console.error('[HERMES TICKER ERROR]:', err?.message || err);
+      });
+      if (ContinuousAcademyEngine.isAcademyRunning()) {
+        const hbId = `HB-TIMER-${Date.now()}`;
+        const lockRes = AcademyRuntimeHardeningEngine.acquireLock('DEV_TIMER_WORKER', hbId);
+        if (lockRes.acquired) {
+          ContinuousAcademyEngine.executeSingleHeartbeat()
+            .then((hb) => {
+              AcademyRuntimeHardeningEngine.recordHeartbeat({
+                heartbeatId: hbId,
+                requestedTime: new Date().toISOString(),
+                startedTime: new Date().toISOString(),
+                completedTime: new Date().toISOString(),
+                workerIdentity: 'DEV_TIMER_WORKER',
+                triggerSource: 'DEV_TIMER',
+                primeDecision: 'DEV_TIMER_CONTINUOUS_STEP',
+                jobsDispatched: hb.actionsTaken || 1,
+                jobsCompleted: hb.actionsTaken || 1,
+                jobsDeferred: 0,
+                errors: [],
+                nextWakeRecommendationSeconds: 10,
+                status: 'SUCCESS',
+              });
+              AcademyRuntimeHardeningEngine.releaseLock('DEV_TIMER_WORKER');
+            })
+            .catch((err) => {
+              AcademyRuntimeHardeningEngine.releaseLock('DEV_TIMER_WORKER');
+              console.error('[CONTINUOUS ACADEMY TICKER ERROR]:', err?.message || err);
+            });
+        }
+      }
+    }
   }, 10000);
+
+  // Initialize Continuous SME Academy Engine & run Phase 3.18A.2 proof + initial 20 heartbeats on startup
+  ContinuousAcademyEngine.initializeAndUnlock()
+    .then(async ({ unlocked }) => {
+      if (unlocked) {
+        console.log('[SERVER BOOT] Phase 3.18B Continuous Academy Unlocked! Running initial 20 autonomous heartbeats...');
+        await ContinuousAcademyEngine.run20HeartbeatCycles();
+      }
+    })
+    .catch((err) => {
+      console.error('[SERVER BOOT CONTINUOUS ACADEMY INIT ERROR]:', err?.message || err);
+    });
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`HERMES Construction System running on http://0.0.0.0:${PORT}`);

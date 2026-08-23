@@ -71,7 +71,10 @@ export class ContinuousAcademyEngine {
     // 1. Initialize seed knowledge graph memory
     KnowledgeGraphEngine.initializeSeedGraph();
 
-    // 2. Execute Phase 3.18A.2 Live Proofs
+    // 2. Load persistent state if available
+    this.loadPersistentState();
+
+    // 3. Execute Phase 3.18A.2 Live Proofs
     const proofResults = await Phase318A2LiveProofRunner.executeAllProofs();
 
     if (proofResults.phase318a2Verified && proofResults.phase318bUnlocked) {
@@ -86,7 +89,6 @@ export class ContinuousAcademyEngine {
       console.warn('[CONTINUOUS ACADEMY] Phase 3.18A.2 Verification Failed. Phase 3.18B remains LOCKED.');
     }
 
-    this.loadPersistentState();
     return { proofResults, unlocked: this.phase318bUnlocked };
   }
 

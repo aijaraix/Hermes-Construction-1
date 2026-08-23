@@ -17,6 +17,7 @@ export interface ReasoningExecutionParams {
   retrievedChunks: KnowledgeChunk[];
   promptOverride?: string;
   allowSimulationFallback?: boolean;
+  forceSimulationMode?: boolean;
 }
 
 export interface ReasoningExecutionResult {
@@ -44,11 +45,20 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
   public modelName = 'gemini-3.7-flash';
   private fallbackModels = ['gemini-3.1-flash-lite', 'gemini-flash-latest'];
 
+  private generateDeterministicSimulationResponse(params: ReasoningExecutionParams, promptHash: string): ReasoningExecutionResult {
+    return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'Deterministic Simulation Fallback Mode');
+  }
+
   public async generateReasoning(params: ReasoningExecutionParams): Promise<ReasoningExecutionResult> {
     const apiKey = process.env.GEMINI_API_KEY;
     const prompt = this.buildPrompt(params);
     const promptHash = crypto.createHash('sha256').update(prompt).digest('hex').substring(0, 16);
     const executionId = `EXEC-${params.agentRole.roleId}-${Date.now()}`;
+
+    // Check if force simulation mode is requested (e.g. Proof B simulation isolation test)
+    if (params.forceSimulationMode) {
+      return this.generateDeterministicSimulationResponse(params, promptHash);
+    }
 
     // Check if mock quota exhaustion is active for testing
     if (QuotaIntegrityEngine.isMockQuotaExhausted()) {

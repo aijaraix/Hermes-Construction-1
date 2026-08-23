@@ -58,3 +58,28 @@ export function loadDurableStore(): HermesDurableStoreData | null {
     return null;
   }
 }
+
+export class PersistenceStore {
+  public static getJSON<T>(filename: string): T | null {
+    try {
+      ensureDataDirectoryExists();
+      const filePath = path.join(DATA_DIR, filename);
+      if (!fs.existsSync(filePath)) return null;
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(raw) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  public static setJSON<T>(filename: string, data: T): void {
+    try {
+      ensureDataDirectoryExists();
+      const filePath = path.join(DATA_DIR, filename);
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (e) {
+      console.error(`[PERSISTENCE STORE] Failed to write ${filename}:`, e);
+    }
+  }
+}
+
