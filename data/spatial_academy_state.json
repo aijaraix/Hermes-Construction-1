@@ -1,0 +1,4168 @@
+{
+  "projectId": "BIM-PROOF-0001",
+  "components": [
+    {
+      "id": "WALL-1787519320993-60",
+      "type": "wall",
+      "system": "Architecture",
+      "floor": 1,
+      "room": "SPACE-LIVING-01",
+      "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+      "materials": [
+        {
+          "name": "Spruce-Pine-Fir Wood Studs",
+          "specification": "MAT-WOOD-SPF-NO2",
+          "quantity": 15,
+          "unit": "pcs"
+        },
+        {
+          "name": "5/8\" Type X Gypsum Wallboard",
+          "specification": "MAT-GYP-TYPEX-58",
+          "quantity": 30,
+          "unit": "sq.ft"
+        },
+        {
+          "name": "R-15 Mineral Wool Thermal Insulation",
+          "specification": "MAT-INSUL-MINWOOL-R15",
+          "quantity": 15,
+          "unit": "sq.ft"
+        }
+      ],
+      "geometry": {
+        "position": [
+          0,
+          0,
+          -2.5
+        ],
+        "dimensions": [
+          0.15,
+          3,
+          5
+        ],
+        "rotation": [
+          0,
+          1.5707963267948966,
+          0
+        ]
+      },
+      "isExterior": true,
+      "exposure": "Exterior Severe Weather",
+      "connectedComponentIds": [
+        "DOOR-1787519320994-44",
+        "WIN-1787519320994-29"
+      ],
+      "openings": [
+        "DOOR-1787519320994-44",
+        "WIN-1787519320994-29"
+      ],
+      "quantity": {
+        "value": 15,
+        "unit": "m²"
+      },
+      "unitCost": 110,
+      "totalCost": 1650,
+      "installationStageDay": 3,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+        "environmentalFactor": "160 MPH wind load compliance",
+        "codeRule": "FBC 2023 Section 1609.1",
+        "alternativesConsidered": [
+          "2x4 Light Framing",
+          "8\" CMU Block"
+        ],
+        "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+        "lifecycleNotes": "50-year service life"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcWallStandardCase",
+      "ifcGlobalId": "WALL-mt6aunc1-1001",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-LIVING-01",
+      "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+      "materialSpecIds": [
+        "MAT-WOOD-SPF-NO2",
+        "MAT-GYP-TYPEX-58",
+        "MAT-INSUL-MINWOOL-R15"
+      ],
+      "createdByAgentId": "WOOD-FRAMING-AGENT",
+      "createdByTaskId": "TASK-C-WALL-01",
+      "createdRevisionId": "REV-0002",
+      "currentRevisionId": "REV-0002",
+      "status": "CONSTRUCTED",
+      "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+    },
+    {
+      "id": "SLAB-1787519320994-33",
+      "type": "slab",
+      "system": "Structure",
+      "floor": 1,
+      "room": "FOUNDATION_ZONE",
+      "assembly": "4\" Reinforced Concrete Monolithic Slab",
+      "materials": [
+        {
+          "name": "3,000 PSI Normal Weight Concrete",
+          "specification": "MAT-CONC-3000",
+          "quantity": 191,
+          "unit": "cu.ft"
+        }
+      ],
+      "geometry": {
+        "position": [
+          0,
+          -0.075,
+          0
+        ],
+        "dimensions": [
+          6,
+          0.15,
+          6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "isExterior": true,
+      "exposure": "Subgrade Ground Exposure",
+      "connectedComponentIds": [],
+      "openings": [],
+      "quantity": {
+        "value": 36,
+        "unit": "m²"
+      },
+      "unitCost": 85,
+      "totalCost": 3060,
+      "installationStageDay": 1,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+        "environmentalFactor": "Groundwater table depth 4.5ft",
+        "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+        "alternativesConsidered": [
+          "Raised Pier Foundation"
+        ],
+        "costImpact": "Standard residential foundation",
+        "lifecycleNotes": "100+ year service life"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcSlab",
+      "ifcGlobalId": "SLAB-mt6aunc2-1002",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "materialSpecIds": [
+        "MAT-CONC-3000"
+      ],
+      "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+      "createdByTaskId": "TASK-C-SLAB-01",
+      "createdRevisionId": "REV-0003",
+      "currentRevisionId": "REV-0003",
+      "status": "CONSTRUCTED",
+      "sourceProvenance": "ACI 318-19 Building Code Requirements"
+    },
+    {
+      "id": "DOOR-1787519320994-44",
+      "type": "door",
+      "system": "Architecture",
+      "floor": 1,
+      "room": "SPACE-LIVING-01",
+      "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+      "materials": [
+        {
+          "name": "Solid Core Insulated Fiberglass Door Leaf",
+          "specification": "MAT-DOOR-FIBERGLASS",
+          "quantity": 1,
+          "unit": "ea"
+        }
+      ],
+      "geometry": {
+        "position": [
+          -1,
+          -0.44999999999999996,
+          -2.5
+        ],
+        "dimensions": [
+          0.1,
+          2.1,
+          0.9
+        ],
+        "rotation": [
+          0,
+          1.5707963267948966,
+          0
+        ]
+      },
+      "isExterior": true,
+      "exposure": "Exterior Severe Weather",
+      "connectedComponentIds": [
+        "WALL-1787519320993-60"
+      ],
+      "openings": [],
+      "quantity": {
+        "value": 1,
+        "unit": "ea"
+      },
+      "unitCost": 650,
+      "totalCost": 650,
+      "installationStageDay": 5,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+        "environmentalFactor": "160 MPH wind-borne debris protection",
+        "codeRule": "FBC 2023 Section 1010.1",
+        "alternativesConsidered": [
+          "Hollow core wood door"
+        ],
+        "costImpact": "Code required impact safety door",
+        "lifecycleNotes": "25-year warranty"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcDoor",
+      "ifcGlobalId": "DOOR-mt6aunc2-1003",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-LIVING-01",
+      "hostWallId": "WALL-1787519320993-60",
+      "createdByAgentId": "WOOD-FRAMING-AGENT",
+      "createdByTaskId": "TASK-C-DOOR-01",
+      "createdRevisionId": "REV-0004",
+      "currentRevisionId": "REV-0004",
+      "status": "INSTALLED",
+      "sourceProvenance": "FBC 2023 Building Code"
+    },
+    {
+      "id": "WIN-1787519320994-29",
+      "type": "window",
+      "system": "Architecture",
+      "floor": 1,
+      "room": "SPACE-LIVING-01",
+      "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+      "materials": [
+        {
+          "name": "Low-E Impact Glazed Glass Unit",
+          "specification": "MAT-GLAZING-LOWE",
+          "quantity": 1,
+          "unit": "ea"
+        }
+      ],
+      "geometry": {
+        "position": [
+          1,
+          0,
+          -2.5
+        ],
+        "dimensions": [
+          0.1,
+          1.2,
+          1.2
+        ],
+        "rotation": [
+          0,
+          1.5707963267948966,
+          0
+        ]
+      },
+      "isExterior": true,
+      "exposure": "Exterior Severe Weather",
+      "connectedComponentIds": [
+        "WALL-1787519320993-60"
+      ],
+      "openings": [],
+      "quantity": {
+        "value": 1,
+        "unit": "ea"
+      },
+      "unitCost": 480,
+      "totalCost": 480,
+      "installationStageDay": 5,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+        "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+        "codeRule": "FBC 2023 Energy Conservation Code R402",
+        "alternativesConsidered": [
+          "Non-impact glass with aluminum shutter"
+        ],
+        "costImpact": "Reduces HVAC cooling load by 18%",
+        "lifecycleNotes": "30-year design life"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcWindow",
+      "ifcGlobalId": "WIND-mt6aunc2-1004",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-LIVING-01",
+      "hostWallId": "WALL-1787519320993-60",
+      "createdByAgentId": "WOOD-FRAMING-AGENT",
+      "createdByTaskId": "TASK-C-WINDOW-01",
+      "createdRevisionId": "REV-0005",
+      "currentRevisionId": "REV-0005",
+      "status": "INSTALLED",
+      "sourceProvenance": "FBC 2023 Energy Conservation Code"
+    },
+    {
+      "id": "PIPE-1787519320994-31",
+      "type": "pipe",
+      "system": "Plumbing",
+      "floor": 1,
+      "room": "BATHROOM",
+      "assembly": "2\" DWV Sanitary Piping Line",
+      "materials": [
+        {
+          "name": "Schedule 40 PVC Sanitary Pipe",
+          "specification": "MAT-POLYMERS-PVC-SCH40",
+          "quantity": 5,
+          "unit": "ft"
+        }
+      ],
+      "geometry": {
+        "position": [
+          1.25,
+          0.2,
+          -1
+        ],
+        "dimensions": [
+          0.0508,
+          1.5,
+          0.0508
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "isExterior": false,
+      "exposure": "Interior Concealed Cavity",
+      "connectedComponentIds": [
+        "FIT-1787519320994-10"
+      ],
+      "openings": [],
+      "quantity": {
+        "value": 1.5,
+        "unit": "m"
+      },
+      "unitCost": 22,
+      "totalCost": 33,
+      "installationStageDay": 6,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Schedule 40 PVC DWV drain piping with 1/4\" per foot slope to main sewer stack",
+        "environmentalFactor": "Corrosion resistant to domestic wastewater",
+        "codeRule": "IPC 2024 Section 702.1",
+        "alternativesConsidered": [
+          "ABS plastic",
+          "Cast iron DWV"
+        ],
+        "costImpact": "Standard economical plumbing specification",
+        "lifecycleNotes": "50-year service rating"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcPipeSegment",
+      "ifcGlobalId": "PIPE-mt6aunc2-1005",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-BATHROOM",
+      "materialSpecIds": [
+        "MAT-POLYMERS-PVC-SCH40"
+      ],
+      "createdByAgentId": "PLUMBING-DWV-AGENT",
+      "createdByTaskId": "TASK-C-PIPE-01",
+      "createdRevisionId": "REV-0006",
+      "currentRevisionId": "REV-0006",
+      "status": "ROUGHED_IN",
+      "sourceProvenance": "IPC 2024 Plumbing Code"
+    },
+    {
+      "id": "FIT-1787519320994-10",
+      "type": "pipe",
+      "system": "Plumbing",
+      "floor": 1,
+      "room": "BATHROOM",
+      "assembly": "2\" PVC 90-Degree Sweep Elbow Fitting",
+      "materials": [
+        {
+          "name": "Schedule 40 PVC DWV Elbow Fitting",
+          "specification": "MAT-POLYMERS-PVC-SCH40",
+          "quantity": 1,
+          "unit": "ea"
+        }
+      ],
+      "geometry": {
+        "position": [
+          2,
+          0.2,
+          -1
+        ],
+        "dimensions": [
+          0.1016,
+          0.1016,
+          0.1016
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "isExterior": false,
+      "exposure": "Interior Concealed",
+      "connectedComponentIds": [
+        "PIPE-1787519320994-31"
+      ],
+      "openings": [],
+      "quantity": {
+        "value": 1,
+        "unit": "ea"
+      },
+      "unitCost": 8.5,
+      "totalCost": 8.5,
+      "installationStageDay": 6,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Sweep elbow fitting providing smooth fluid directional change without clogging",
+        "environmentalFactor": "Full flow hydraulic capacity",
+        "codeRule": "IPC 2024 Section 706.3",
+        "alternativesConsidered": [
+          "Short radius elbow"
+        ],
+        "costImpact": "Standard fitting",
+        "lifecycleNotes": "50-year rating"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcPipeFitting",
+      "ifcGlobalId": "FITT-mt6aunc2-1006",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-BATHROOM",
+      "createdByAgentId": "PLUMBING-DWV-AGENT",
+      "createdByTaskId": "TASK-C-FITTING-01",
+      "createdRevisionId": "REV-0007",
+      "currentRevisionId": "REV-0007",
+      "status": "ROUGHED_IN",
+      "sourceProvenance": "IPC 2024 Plumbing Code"
+    },
+    {
+      "id": "ELEC-DEV-1787519320994-11",
+      "type": "receptacle",
+      "system": "Electrical",
+      "floor": 1,
+      "room": "BATHROOM",
+      "assembly": "20A 120V Tamper-Resistant GFCI Outlet",
+      "materials": [
+        {
+          "name": "Specification Grade GFCI Receptacle Unit",
+          "specification": "MAT-ELEC-GFCI-20A",
+          "quantity": 1,
+          "unit": "ea"
+        }
+      ],
+      "geometry": {
+        "position": [
+          -1.8,
+          0.4,
+          -2.4
+        ],
+        "dimensions": [
+          0.1,
+          0.12,
+          0.08
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "isExterior": false,
+      "exposure": "Damp Location Bathroom",
+      "connectedComponentIds": [
+        "CABLE-1787519320994-12"
+      ],
+      "openings": [],
+      "quantity": {
+        "value": 1,
+        "unit": "ea"
+      },
+      "unitCost": 32,
+      "totalCost": 32,
+      "installationStageDay": 7,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Class A 6mA trip GFCI receptacle mandatory within 3ft of wet basin",
+        "environmentalFactor": "Moisture and shock protection",
+        "codeRule": "NEC 2023 Article 210.8(A)(1)",
+        "alternativesConsidered": [
+          "Standard duplex receptacle"
+        ],
+        "costImpact": "Mandatory life safety requirement",
+        "lifecycleNotes": "Self-testing 10-year unit"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcElectricAppliance",
+      "ifcGlobalId": "EAPP-mt6aunc2-1007",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-BATHROOM",
+      "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+      "createdByTaskId": "TASK-C-ELECDEV-01",
+      "createdRevisionId": "REV-0008",
+      "currentRevisionId": "REV-0008",
+      "status": "ROUGHED_IN",
+      "sourceProvenance": "NEC 2023 Electrical Code"
+    },
+    {
+      "id": "CABLE-1787519320994-12",
+      "type": "conduit",
+      "system": "Electrical",
+      "floor": 1,
+      "room": "BATHROOM",
+      "assembly": "12/2 NM-B Solid Copper NM-B Building Wire Run",
+      "materials": [
+        {
+          "name": "12/2 THHN/THWN Solid Copper Wire with Ground",
+          "specification": "MAT-COPPER-THHN-12AWG",
+          "quantity": 2,
+          "unit": "ft"
+        }
+      ],
+      "geometry": {
+        "position": [
+          -2.15,
+          0.4,
+          -2.4
+        ],
+        "dimensions": [
+          0.02,
+          0.7,
+          0.02
+        ],
+        "rotation": [
+          0,
+          0,
+          3.141592653589793
+        ]
+      },
+      "isExterior": false,
+      "exposure": "Wall Stud Cavity concealed",
+      "connectedComponentIds": [
+        "ELEC-DEV-1787519320994-11"
+      ],
+      "openings": [],
+      "quantity": {
+        "value": 0.7,
+        "unit": "m"
+      },
+      "unitCost": 14,
+      "totalCost": 10,
+      "installationStageDay": 7,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "12 AWG 20-amp rated copper conductor homerun to main electrical panel",
+        "environmentalFactor": "90°C dry thermal rating",
+        "codeRule": "NEC 2023 Article 334",
+        "alternativesConsidered": [
+          "14/2 NM-B wire"
+        ],
+        "costImpact": "Standard 20A branch circuit cable",
+        "lifecycleNotes": "40-year rating"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcCableSegment",
+      "ifcGlobalId": "CABL-mt6aunc2-1008",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-BATHROOM",
+      "materialSpecIds": [
+        "MAT-COPPER-THHN-12AWG"
+      ],
+      "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+      "createdByTaskId": "TASK-C-CABLE-01",
+      "createdRevisionId": "REV-0009",
+      "currentRevisionId": "REV-0009",
+      "status": "ROUGHED_IN",
+      "sourceProvenance": "NEC 2023 Electrical Code"
+    },
+    {
+      "id": "DUCT-1787519320995-3",
+      "type": "duct",
+      "system": "HVAC",
+      "floor": 1,
+      "room": "BATHROOM",
+      "assembly": "6\" Rigid Galvanized Sheet Metal Exhaust Duct",
+      "materials": [
+        {
+          "name": "26 Gauge Galvanized Steel Ducting",
+          "specification": "MAT-STEEL-A653",
+          "quantity": 7,
+          "unit": "ft"
+        }
+      ],
+      "geometry": {
+        "position": [
+          0.5,
+          2.6,
+          -1.5
+        ],
+        "dimensions": [
+          0.15239999999999998,
+          2,
+          0.15239999999999998
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "isExterior": false,
+      "exposure": "Ceiling joist cavity",
+      "connectedComponentIds": [],
+      "openings": [],
+      "quantity": {
+        "value": 2,
+        "unit": "m"
+      },
+      "unitCost": 28,
+      "totalCost": 56,
+      "installationStageDay": 8,
+      "inspectionState": "passed",
+      "whySelected": {
+        "reason": "Continuous rigid smooth-wall metal ducting vented directly to outdoors per IMC 2024",
+        "environmentalFactor": "80 CFM mechanical moisture exhaust",
+        "codeRule": "IMC 2024 Section 504.4",
+        "alternativesConsidered": [
+          "Flexible vinyl ducting"
+        ],
+        "costImpact": "Code compliant fire-safe rigid duct",
+        "lifecycleNotes": "30-year design life"
+      },
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "ifcType": "IfcDuctSegment",
+      "ifcGlobalId": "DUCT-mt6aunc3-1009",
+      "parentSpatialContainer": "STOREY-01",
+      "storeyId": "STOREY-01",
+      "spaceId": "SPACE-BATHROOM",
+      "materialSpecIds": [
+        "MAT-STEEL-A653"
+      ],
+      "createdByAgentId": "HVAC-AIR-AGENT",
+      "createdByTaskId": "TASK-C-DUCT-01",
+      "createdRevisionId": "REV-0010",
+      "currentRevisionId": "REV-0010",
+      "status": "INSTALLED",
+      "sourceProvenance": "IMC 2024 Mechanical Code"
+    }
+  ],
+  "revisions": [
+    {
+      "revisionId": "REV-0001",
+      "revisionIndex": 1,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "INIT_PROJECT_CMD",
+      "agentId": "SYSTEM",
+      "description": "REV-0001: Canonical BIM Project Initialized (Empty State)",
+      "timestamp": "2026-08-23T21:08:40.992Z",
+      "componentSnapshot": []
+    },
+    {
+      "revisionId": "REV-0002",
+      "revisionIndex": 2,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_WALL-1787519320993-809",
+      "agentId": "WOOD-FRAMING-AGENT",
+      "description": "REV-0002: Executed CREATE_WALL on [WALL-1787519320993-60]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0003",
+      "revisionIndex": 3,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_SLAB-1787519320994-146",
+      "agentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+      "description": "REV-0003: Executed CREATE_SLAB on [SLAB-1787519320994-33]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0004",
+      "revisionIndex": 4,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_DOOR-1787519320994-797",
+      "agentId": "WOOD-FRAMING-AGENT",
+      "description": "REV-0004: Executed CREATE_DOOR on [DOOR-1787519320994-44, WALL-1787519320993-60]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0005",
+      "revisionIndex": 5,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_WINDOW-1787519320994-114",
+      "agentId": "WOOD-FRAMING-AGENT",
+      "description": "REV-0005: Executed CREATE_WINDOW on [WIN-1787519320994-29, WALL-1787519320993-60]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        },
+        {
+          "id": "WIN-1787519320994-29",
+          "type": "window",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+          "materials": [
+            {
+              "name": "Low-E Impact Glazed Glass Unit",
+              "specification": "MAT-GLAZING-LOWE",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              1.2,
+              1.2
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 480,
+          "totalCost": 480,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+            "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+            "codeRule": "FBC 2023 Energy Conservation Code R402",
+            "alternativesConsidered": [
+              "Non-impact glass with aluminum shutter"
+            ],
+            "costImpact": "Reduces HVAC cooling load by 18%",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWindow",
+          "ifcGlobalId": "WIND-mt6aunc2-1004",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WINDOW-01",
+          "createdRevisionId": "REV-0005",
+          "currentRevisionId": "REV-0005",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Energy Conservation Code"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0006",
+      "revisionIndex": 6,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_PIPE_SEGMENT-1787519320994-32",
+      "agentId": "PLUMBING-DWV-AGENT",
+      "description": "REV-0006: Executed CREATE_PIPE_SEGMENT on [PIPE-1787519320994-31]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        },
+        {
+          "id": "WIN-1787519320994-29",
+          "type": "window",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+          "materials": [
+            {
+              "name": "Low-E Impact Glazed Glass Unit",
+              "specification": "MAT-GLAZING-LOWE",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              1.2,
+              1.2
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 480,
+          "totalCost": 480,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+            "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+            "codeRule": "FBC 2023 Energy Conservation Code R402",
+            "alternativesConsidered": [
+              "Non-impact glass with aluminum shutter"
+            ],
+            "costImpact": "Reduces HVAC cooling load by 18%",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWindow",
+          "ifcGlobalId": "WIND-mt6aunc2-1004",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WINDOW-01",
+          "createdRevisionId": "REV-0005",
+          "currentRevisionId": "REV-0005",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Energy Conservation Code"
+        },
+        {
+          "id": "PIPE-1787519320994-31",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" DWV Sanitary Piping Line",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC Sanitary Pipe",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 5,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1.25,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.0508,
+              1.5,
+              0.0508
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed Cavity",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 1.5,
+            "unit": "m"
+          },
+          "unitCost": 22,
+          "totalCost": 33,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Schedule 40 PVC DWV drain piping with 1/4\" per foot slope to main sewer stack",
+            "environmentalFactor": "Corrosion resistant to domestic wastewater",
+            "codeRule": "IPC 2024 Section 702.1",
+            "alternativesConsidered": [
+              "ABS plastic",
+              "Cast iron DWV"
+            ],
+            "costImpact": "Standard economical plumbing specification",
+            "lifecycleNotes": "50-year service rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeSegment",
+          "ifcGlobalId": "PIPE-mt6aunc2-1005",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-POLYMERS-PVC-SCH40"
+          ],
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-PIPE-01",
+          "createdRevisionId": "REV-0006",
+          "currentRevisionId": "REV-0006",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0007",
+      "revisionIndex": 7,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_PIPE_FITTING-1787519320994-239",
+      "agentId": "PLUMBING-DWV-AGENT",
+      "description": "REV-0007: Executed CREATE_PIPE_FITTING on [FIT-1787519320994-10, PIPE-1787519320994-31]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        },
+        {
+          "id": "WIN-1787519320994-29",
+          "type": "window",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+          "materials": [
+            {
+              "name": "Low-E Impact Glazed Glass Unit",
+              "specification": "MAT-GLAZING-LOWE",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              1.2,
+              1.2
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 480,
+          "totalCost": 480,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+            "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+            "codeRule": "FBC 2023 Energy Conservation Code R402",
+            "alternativesConsidered": [
+              "Non-impact glass with aluminum shutter"
+            ],
+            "costImpact": "Reduces HVAC cooling load by 18%",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWindow",
+          "ifcGlobalId": "WIND-mt6aunc2-1004",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WINDOW-01",
+          "createdRevisionId": "REV-0005",
+          "currentRevisionId": "REV-0005",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Energy Conservation Code"
+        },
+        {
+          "id": "PIPE-1787519320994-31",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" DWV Sanitary Piping Line",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC Sanitary Pipe",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 5,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1.25,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.0508,
+              1.5,
+              0.0508
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed Cavity",
+          "connectedComponentIds": [
+            "FIT-1787519320994-10"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1.5,
+            "unit": "m"
+          },
+          "unitCost": 22,
+          "totalCost": 33,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Schedule 40 PVC DWV drain piping with 1/4\" per foot slope to main sewer stack",
+            "environmentalFactor": "Corrosion resistant to domestic wastewater",
+            "codeRule": "IPC 2024 Section 702.1",
+            "alternativesConsidered": [
+              "ABS plastic",
+              "Cast iron DWV"
+            ],
+            "costImpact": "Standard economical plumbing specification",
+            "lifecycleNotes": "50-year service rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeSegment",
+          "ifcGlobalId": "PIPE-mt6aunc2-1005",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-POLYMERS-PVC-SCH40"
+          ],
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-PIPE-01",
+          "createdRevisionId": "REV-0006",
+          "currentRevisionId": "REV-0006",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "FIT-1787519320994-10",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" PVC 90-Degree Sweep Elbow Fitting",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC DWV Elbow Fitting",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              2,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.1016,
+              0.1016,
+              0.1016
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed",
+          "connectedComponentIds": [
+            "PIPE-1787519320994-31"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 8.5,
+          "totalCost": 8.5,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Sweep elbow fitting providing smooth fluid directional change without clogging",
+            "environmentalFactor": "Full flow hydraulic capacity",
+            "codeRule": "IPC 2024 Section 706.3",
+            "alternativesConsidered": [
+              "Short radius elbow"
+            ],
+            "costImpact": "Standard fitting",
+            "lifecycleNotes": "50-year rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeFitting",
+          "ifcGlobalId": "FITT-mt6aunc2-1006",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-FITTING-01",
+          "createdRevisionId": "REV-0007",
+          "currentRevisionId": "REV-0007",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0008",
+      "revisionIndex": 8,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_ELECTRICAL_DEVICE-1787519320994-439",
+      "agentId": "ELECTRICAL-BRANCH-AGENT",
+      "description": "REV-0008: Executed CREATE_ELECTRICAL_DEVICE on [ELEC-DEV-1787519320994-11]",
+      "timestamp": "2026-08-23T21:08:40.994Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        },
+        {
+          "id": "WIN-1787519320994-29",
+          "type": "window",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+          "materials": [
+            {
+              "name": "Low-E Impact Glazed Glass Unit",
+              "specification": "MAT-GLAZING-LOWE",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              1.2,
+              1.2
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 480,
+          "totalCost": 480,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+            "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+            "codeRule": "FBC 2023 Energy Conservation Code R402",
+            "alternativesConsidered": [
+              "Non-impact glass with aluminum shutter"
+            ],
+            "costImpact": "Reduces HVAC cooling load by 18%",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWindow",
+          "ifcGlobalId": "WIND-mt6aunc2-1004",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WINDOW-01",
+          "createdRevisionId": "REV-0005",
+          "currentRevisionId": "REV-0005",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Energy Conservation Code"
+        },
+        {
+          "id": "PIPE-1787519320994-31",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" DWV Sanitary Piping Line",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC Sanitary Pipe",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 5,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1.25,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.0508,
+              1.5,
+              0.0508
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed Cavity",
+          "connectedComponentIds": [
+            "FIT-1787519320994-10"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1.5,
+            "unit": "m"
+          },
+          "unitCost": 22,
+          "totalCost": 33,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Schedule 40 PVC DWV drain piping with 1/4\" per foot slope to main sewer stack",
+            "environmentalFactor": "Corrosion resistant to domestic wastewater",
+            "codeRule": "IPC 2024 Section 702.1",
+            "alternativesConsidered": [
+              "ABS plastic",
+              "Cast iron DWV"
+            ],
+            "costImpact": "Standard economical plumbing specification",
+            "lifecycleNotes": "50-year service rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeSegment",
+          "ifcGlobalId": "PIPE-mt6aunc2-1005",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-POLYMERS-PVC-SCH40"
+          ],
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-PIPE-01",
+          "createdRevisionId": "REV-0006",
+          "currentRevisionId": "REV-0006",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "FIT-1787519320994-10",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" PVC 90-Degree Sweep Elbow Fitting",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC DWV Elbow Fitting",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              2,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.1016,
+              0.1016,
+              0.1016
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed",
+          "connectedComponentIds": [
+            "PIPE-1787519320994-31"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 8.5,
+          "totalCost": 8.5,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Sweep elbow fitting providing smooth fluid directional change without clogging",
+            "environmentalFactor": "Full flow hydraulic capacity",
+            "codeRule": "IPC 2024 Section 706.3",
+            "alternativesConsidered": [
+              "Short radius elbow"
+            ],
+            "costImpact": "Standard fitting",
+            "lifecycleNotes": "50-year rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeFitting",
+          "ifcGlobalId": "FITT-mt6aunc2-1006",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-FITTING-01",
+          "createdRevisionId": "REV-0007",
+          "currentRevisionId": "REV-0007",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "ELEC-DEV-1787519320994-11",
+          "type": "receptacle",
+          "system": "Electrical",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "20A 120V Tamper-Resistant GFCI Outlet",
+          "materials": [
+            {
+              "name": "Specification Grade GFCI Receptacle Unit",
+              "specification": "MAT-ELEC-GFCI-20A",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1.8,
+              0.4,
+              -2.4
+            ],
+            "dimensions": [
+              0.1,
+              0.12,
+              0.08
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Damp Location Bathroom",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 32,
+          "totalCost": 32,
+          "installationStageDay": 7,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Class A 6mA trip GFCI receptacle mandatory within 3ft of wet basin",
+            "environmentalFactor": "Moisture and shock protection",
+            "codeRule": "NEC 2023 Article 210.8(A)(1)",
+            "alternativesConsidered": [
+              "Standard duplex receptacle"
+            ],
+            "costImpact": "Mandatory life safety requirement",
+            "lifecycleNotes": "Self-testing 10-year unit"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcElectricAppliance",
+          "ifcGlobalId": "EAPP-mt6aunc2-1007",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+          "createdByTaskId": "TASK-C-ELECDEV-01",
+          "createdRevisionId": "REV-0008",
+          "currentRevisionId": "REV-0008",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "NEC 2023 Electrical Code"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0009",
+      "revisionIndex": 9,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_CABLE_OR_CONDUIT_ROUTE-1787519320994-556",
+      "agentId": "ELECTRICAL-BRANCH-AGENT",
+      "description": "REV-0009: Executed CREATE_CABLE_OR_CONDUIT_ROUTE on [ELEC-DEV-1787519320994-11, CABLE-1787519320994-12]",
+      "timestamp": "2026-08-23T21:08:40.995Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        },
+        {
+          "id": "WIN-1787519320994-29",
+          "type": "window",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+          "materials": [
+            {
+              "name": "Low-E Impact Glazed Glass Unit",
+              "specification": "MAT-GLAZING-LOWE",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              1.2,
+              1.2
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 480,
+          "totalCost": 480,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+            "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+            "codeRule": "FBC 2023 Energy Conservation Code R402",
+            "alternativesConsidered": [
+              "Non-impact glass with aluminum shutter"
+            ],
+            "costImpact": "Reduces HVAC cooling load by 18%",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWindow",
+          "ifcGlobalId": "WIND-mt6aunc2-1004",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WINDOW-01",
+          "createdRevisionId": "REV-0005",
+          "currentRevisionId": "REV-0005",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Energy Conservation Code"
+        },
+        {
+          "id": "PIPE-1787519320994-31",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" DWV Sanitary Piping Line",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC Sanitary Pipe",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 5,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1.25,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.0508,
+              1.5,
+              0.0508
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed Cavity",
+          "connectedComponentIds": [
+            "FIT-1787519320994-10"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1.5,
+            "unit": "m"
+          },
+          "unitCost": 22,
+          "totalCost": 33,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Schedule 40 PVC DWV drain piping with 1/4\" per foot slope to main sewer stack",
+            "environmentalFactor": "Corrosion resistant to domestic wastewater",
+            "codeRule": "IPC 2024 Section 702.1",
+            "alternativesConsidered": [
+              "ABS plastic",
+              "Cast iron DWV"
+            ],
+            "costImpact": "Standard economical plumbing specification",
+            "lifecycleNotes": "50-year service rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeSegment",
+          "ifcGlobalId": "PIPE-mt6aunc2-1005",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-POLYMERS-PVC-SCH40"
+          ],
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-PIPE-01",
+          "createdRevisionId": "REV-0006",
+          "currentRevisionId": "REV-0006",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "FIT-1787519320994-10",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" PVC 90-Degree Sweep Elbow Fitting",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC DWV Elbow Fitting",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              2,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.1016,
+              0.1016,
+              0.1016
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed",
+          "connectedComponentIds": [
+            "PIPE-1787519320994-31"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 8.5,
+          "totalCost": 8.5,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Sweep elbow fitting providing smooth fluid directional change without clogging",
+            "environmentalFactor": "Full flow hydraulic capacity",
+            "codeRule": "IPC 2024 Section 706.3",
+            "alternativesConsidered": [
+              "Short radius elbow"
+            ],
+            "costImpact": "Standard fitting",
+            "lifecycleNotes": "50-year rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeFitting",
+          "ifcGlobalId": "FITT-mt6aunc2-1006",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-FITTING-01",
+          "createdRevisionId": "REV-0007",
+          "currentRevisionId": "REV-0007",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "ELEC-DEV-1787519320994-11",
+          "type": "receptacle",
+          "system": "Electrical",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "20A 120V Tamper-Resistant GFCI Outlet",
+          "materials": [
+            {
+              "name": "Specification Grade GFCI Receptacle Unit",
+              "specification": "MAT-ELEC-GFCI-20A",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1.8,
+              0.4,
+              -2.4
+            ],
+            "dimensions": [
+              0.1,
+              0.12,
+              0.08
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Damp Location Bathroom",
+          "connectedComponentIds": [
+            "CABLE-1787519320994-12"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 32,
+          "totalCost": 32,
+          "installationStageDay": 7,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Class A 6mA trip GFCI receptacle mandatory within 3ft of wet basin",
+            "environmentalFactor": "Moisture and shock protection",
+            "codeRule": "NEC 2023 Article 210.8(A)(1)",
+            "alternativesConsidered": [
+              "Standard duplex receptacle"
+            ],
+            "costImpact": "Mandatory life safety requirement",
+            "lifecycleNotes": "Self-testing 10-year unit"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcElectricAppliance",
+          "ifcGlobalId": "EAPP-mt6aunc2-1007",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+          "createdByTaskId": "TASK-C-ELECDEV-01",
+          "createdRevisionId": "REV-0008",
+          "currentRevisionId": "REV-0008",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "NEC 2023 Electrical Code"
+        },
+        {
+          "id": "CABLE-1787519320994-12",
+          "type": "conduit",
+          "system": "Electrical",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "12/2 NM-B Solid Copper NM-B Building Wire Run",
+          "materials": [
+            {
+              "name": "12/2 THHN/THWN Solid Copper Wire with Ground",
+              "specification": "MAT-COPPER-THHN-12AWG",
+              "quantity": 2,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -2.15,
+              0.4,
+              -2.4
+            ],
+            "dimensions": [
+              0.02,
+              0.7,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              3.141592653589793
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Wall Stud Cavity concealed",
+          "connectedComponentIds": [
+            "ELEC-DEV-1787519320994-11"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 0.7,
+            "unit": "m"
+          },
+          "unitCost": 14,
+          "totalCost": 10,
+          "installationStageDay": 7,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "12 AWG 20-amp rated copper conductor homerun to main electrical panel",
+            "environmentalFactor": "90°C dry thermal rating",
+            "codeRule": "NEC 2023 Article 334",
+            "alternativesConsidered": [
+              "14/2 NM-B wire"
+            ],
+            "costImpact": "Standard 20A branch circuit cable",
+            "lifecycleNotes": "40-year rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcCableSegment",
+          "ifcGlobalId": "CABL-mt6aunc2-1008",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-COPPER-THHN-12AWG"
+          ],
+          "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+          "createdByTaskId": "TASK-C-CABLE-01",
+          "createdRevisionId": "REV-0009",
+          "currentRevisionId": "REV-0009",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "NEC 2023 Electrical Code"
+        }
+      ]
+    },
+    {
+      "revisionId": "REV-0010",
+      "revisionIndex": 10,
+      "projectId": "BIM-PROOF-0001",
+      "attemptId": "ATTEMPT-STAGE-C-001",
+      "commandId": "CMD-CREATE_DUCT_SEGMENT-1787519320995-729",
+      "agentId": "HVAC-AIR-AGENT",
+      "description": "REV-0010: Executed CREATE_DUCT_SEGMENT on [DUCT-1787519320995-3]",
+      "timestamp": "2026-08-23T21:08:40.995Z",
+      "componentSnapshot": [
+        {
+          "id": "WALL-1787519320993-60",
+          "type": "wall",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "2x6 Exterior Wood Framed Wall with R-21 Insulation",
+          "materials": [
+            {
+              "name": "Spruce-Pine-Fir Wood Studs",
+              "specification": "MAT-WOOD-SPF-NO2",
+              "quantity": 15,
+              "unit": "pcs"
+            },
+            {
+              "name": "5/8\" Type X Gypsum Wallboard",
+              "specification": "MAT-GYP-TYPEX-58",
+              "quantity": 30,
+              "unit": "sq.ft"
+            },
+            {
+              "name": "R-15 Mineral Wool Thermal Insulation",
+              "specification": "MAT-INSUL-MINWOOL-R15",
+              "quantity": 15,
+              "unit": "sq.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.15,
+              3,
+              5
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "openings": [
+            "DOOR-1787519320994-44",
+            "WIN-1787519320994-29"
+          ],
+          "quantity": {
+            "value": 15,
+            "unit": "m²"
+          },
+          "unitCost": 110,
+          "totalCost": 1650,
+          "installationStageDay": 3,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Load-bearing envelope partition per FBC 2023 structural wind requirements",
+            "environmentalFactor": "160 MPH wind load compliance",
+            "codeRule": "FBC 2023 Section 1609.1",
+            "alternativesConsidered": [
+              "2x4 Light Framing",
+              "8\" CMU Block"
+            ],
+            "costImpact": "Optimal balance of thermal performance R-21 and structural strength",
+            "lifecycleNotes": "50-year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWallStandardCase",
+          "ifcGlobalId": "WALL-mt6aunc1-1001",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "assemblySpecId": "ASSY-WALL-EXT-WOOD-R21",
+          "materialSpecIds": [
+            "MAT-WOOD-SPF-NO2",
+            "MAT-GYP-TYPEX-58",
+            "MAT-INSUL-MINWOOL-R15"
+          ],
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WALL-01",
+          "createdRevisionId": "REV-0002",
+          "currentRevisionId": "REV-0002",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "AWC NDS 2024 / FBC 2023 Section 2308"
+        },
+        {
+          "id": "SLAB-1787519320994-33",
+          "type": "slab",
+          "system": "Structure",
+          "floor": 1,
+          "room": "FOUNDATION_ZONE",
+          "assembly": "4\" Reinforced Concrete Monolithic Slab",
+          "materials": [
+            {
+              "name": "3,000 PSI Normal Weight Concrete",
+              "specification": "MAT-CONC-3000",
+              "quantity": 191,
+              "unit": "cu.ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0,
+              -0.075,
+              0
+            ],
+            "dimensions": [
+              6,
+              0.15,
+              6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Subgrade Ground Exposure",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 36,
+            "unit": "m²"
+          },
+          "unitCost": 85,
+          "totalCost": 3060,
+          "installationStageDay": 1,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Monolithic concrete foundation slab engineered for soil bearing capacity",
+            "environmentalFactor": "Groundwater table depth 4.5ft",
+            "codeRule": "ACI 318-19 / FBC 2023 Section 1907",
+            "alternativesConsidered": [
+              "Raised Pier Foundation"
+            ],
+            "costImpact": "Standard residential foundation",
+            "lifecycleNotes": "100+ year service life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcSlab",
+          "ifcGlobalId": "SLAB-mt6aunc2-1002",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "materialSpecIds": [
+            "MAT-CONC-3000"
+          ],
+          "createdByAgentId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+          "createdByTaskId": "TASK-C-SLAB-01",
+          "createdRevisionId": "REV-0003",
+          "currentRevisionId": "REV-0003",
+          "status": "CONSTRUCTED",
+          "sourceProvenance": "ACI 318-19 Building Code Requirements"
+        },
+        {
+          "id": "DOOR-1787519320994-44",
+          "type": "door",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "36\" x 80\" Solid Core Exterior Entry Door Assembly",
+          "materials": [
+            {
+              "name": "Solid Core Insulated Fiberglass Door Leaf",
+              "specification": "MAT-DOOR-FIBERGLASS",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1,
+              -0.44999999999999996,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              2.1,
+              0.9
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 650,
+          "totalCost": 650,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-rated exterior egress door per FBC 2023 egress requirements",
+            "environmentalFactor": "160 MPH wind-borne debris protection",
+            "codeRule": "FBC 2023 Section 1010.1",
+            "alternativesConsidered": [
+              "Hollow core wood door"
+            ],
+            "costImpact": "Code required impact safety door",
+            "lifecycleNotes": "25-year warranty"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDoor",
+          "ifcGlobalId": "DOOR-mt6aunc2-1003",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-DOOR-01",
+          "createdRevisionId": "REV-0004",
+          "currentRevisionId": "REV-0004",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Building Code"
+        },
+        {
+          "id": "WIN-1787519320994-29",
+          "type": "window",
+          "system": "Architecture",
+          "floor": 1,
+          "room": "SPACE-LIVING-01",
+          "assembly": "Impact Glazed Low-E Vinyl Single-Hung Window Assembly",
+          "materials": [
+            {
+              "name": "Low-E Impact Glazed Glass Unit",
+              "specification": "MAT-GLAZING-LOWE",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1,
+              0,
+              -2.5
+            ],
+            "dimensions": [
+              0.1,
+              1.2,
+              1.2
+            ],
+            "rotation": [
+              0,
+              1.5707963267948966,
+              0
+            ]
+          },
+          "isExterior": true,
+          "exposure": "Exterior Severe Weather",
+          "connectedComponentIds": [
+            "WALL-1787519320993-60"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 480,
+          "totalCost": 480,
+          "installationStageDay": 5,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Impact-resistant vinyl window with SHGC 0.23 thermal rating",
+            "environmentalFactor": "Solar heat gain reduction in Zone 1A climate",
+            "codeRule": "FBC 2023 Energy Conservation Code R402",
+            "alternativesConsidered": [
+              "Non-impact glass with aluminum shutter"
+            ],
+            "costImpact": "Reduces HVAC cooling load by 18%",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcWindow",
+          "ifcGlobalId": "WIND-mt6aunc2-1004",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-LIVING-01",
+          "hostWallId": "WALL-1787519320993-60",
+          "createdByAgentId": "WOOD-FRAMING-AGENT",
+          "createdByTaskId": "TASK-C-WINDOW-01",
+          "createdRevisionId": "REV-0005",
+          "currentRevisionId": "REV-0005",
+          "status": "INSTALLED",
+          "sourceProvenance": "FBC 2023 Energy Conservation Code"
+        },
+        {
+          "id": "PIPE-1787519320994-31",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" DWV Sanitary Piping Line",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC Sanitary Pipe",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 5,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              1.25,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.0508,
+              1.5,
+              0.0508
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed Cavity",
+          "connectedComponentIds": [
+            "FIT-1787519320994-10"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1.5,
+            "unit": "m"
+          },
+          "unitCost": 22,
+          "totalCost": 33,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Schedule 40 PVC DWV drain piping with 1/4\" per foot slope to main sewer stack",
+            "environmentalFactor": "Corrosion resistant to domestic wastewater",
+            "codeRule": "IPC 2024 Section 702.1",
+            "alternativesConsidered": [
+              "ABS plastic",
+              "Cast iron DWV"
+            ],
+            "costImpact": "Standard economical plumbing specification",
+            "lifecycleNotes": "50-year service rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeSegment",
+          "ifcGlobalId": "PIPE-mt6aunc2-1005",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-POLYMERS-PVC-SCH40"
+          ],
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-PIPE-01",
+          "createdRevisionId": "REV-0006",
+          "currentRevisionId": "REV-0006",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "FIT-1787519320994-10",
+          "type": "pipe",
+          "system": "Plumbing",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "2\" PVC 90-Degree Sweep Elbow Fitting",
+          "materials": [
+            {
+              "name": "Schedule 40 PVC DWV Elbow Fitting",
+              "specification": "MAT-POLYMERS-PVC-SCH40",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              2,
+              0.2,
+              -1
+            ],
+            "dimensions": [
+              0.1016,
+              0.1016,
+              0.1016
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Interior Concealed",
+          "connectedComponentIds": [
+            "PIPE-1787519320994-31"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 8.5,
+          "totalCost": 8.5,
+          "installationStageDay": 6,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Sweep elbow fitting providing smooth fluid directional change without clogging",
+            "environmentalFactor": "Full flow hydraulic capacity",
+            "codeRule": "IPC 2024 Section 706.3",
+            "alternativesConsidered": [
+              "Short radius elbow"
+            ],
+            "costImpact": "Standard fitting",
+            "lifecycleNotes": "50-year rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcPipeFitting",
+          "ifcGlobalId": "FITT-mt6aunc2-1006",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "PLUMBING-DWV-AGENT",
+          "createdByTaskId": "TASK-C-FITTING-01",
+          "createdRevisionId": "REV-0007",
+          "currentRevisionId": "REV-0007",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "IPC 2024 Plumbing Code"
+        },
+        {
+          "id": "ELEC-DEV-1787519320994-11",
+          "type": "receptacle",
+          "system": "Electrical",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "20A 120V Tamper-Resistant GFCI Outlet",
+          "materials": [
+            {
+              "name": "Specification Grade GFCI Receptacle Unit",
+              "specification": "MAT-ELEC-GFCI-20A",
+              "quantity": 1,
+              "unit": "ea"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -1.8,
+              0.4,
+              -2.4
+            ],
+            "dimensions": [
+              0.1,
+              0.12,
+              0.08
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Damp Location Bathroom",
+          "connectedComponentIds": [
+            "CABLE-1787519320994-12"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 1,
+            "unit": "ea"
+          },
+          "unitCost": 32,
+          "totalCost": 32,
+          "installationStageDay": 7,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Class A 6mA trip GFCI receptacle mandatory within 3ft of wet basin",
+            "environmentalFactor": "Moisture and shock protection",
+            "codeRule": "NEC 2023 Article 210.8(A)(1)",
+            "alternativesConsidered": [
+              "Standard duplex receptacle"
+            ],
+            "costImpact": "Mandatory life safety requirement",
+            "lifecycleNotes": "Self-testing 10-year unit"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcElectricAppliance",
+          "ifcGlobalId": "EAPP-mt6aunc2-1007",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+          "createdByTaskId": "TASK-C-ELECDEV-01",
+          "createdRevisionId": "REV-0008",
+          "currentRevisionId": "REV-0008",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "NEC 2023 Electrical Code"
+        },
+        {
+          "id": "CABLE-1787519320994-12",
+          "type": "conduit",
+          "system": "Electrical",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "12/2 NM-B Solid Copper NM-B Building Wire Run",
+          "materials": [
+            {
+              "name": "12/2 THHN/THWN Solid Copper Wire with Ground",
+              "specification": "MAT-COPPER-THHN-12AWG",
+              "quantity": 2,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              -2.15,
+              0.4,
+              -2.4
+            ],
+            "dimensions": [
+              0.02,
+              0.7,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              3.141592653589793
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Wall Stud Cavity concealed",
+          "connectedComponentIds": [
+            "ELEC-DEV-1787519320994-11"
+          ],
+          "openings": [],
+          "quantity": {
+            "value": 0.7,
+            "unit": "m"
+          },
+          "unitCost": 14,
+          "totalCost": 10,
+          "installationStageDay": 7,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "12 AWG 20-amp rated copper conductor homerun to main electrical panel",
+            "environmentalFactor": "90°C dry thermal rating",
+            "codeRule": "NEC 2023 Article 334",
+            "alternativesConsidered": [
+              "14/2 NM-B wire"
+            ],
+            "costImpact": "Standard 20A branch circuit cable",
+            "lifecycleNotes": "40-year rating"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcCableSegment",
+          "ifcGlobalId": "CABL-mt6aunc2-1008",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-COPPER-THHN-12AWG"
+          ],
+          "createdByAgentId": "ELECTRICAL-BRANCH-AGENT",
+          "createdByTaskId": "TASK-C-CABLE-01",
+          "createdRevisionId": "REV-0009",
+          "currentRevisionId": "REV-0009",
+          "status": "ROUGHED_IN",
+          "sourceProvenance": "NEC 2023 Electrical Code"
+        },
+        {
+          "id": "DUCT-1787519320995-3",
+          "type": "duct",
+          "system": "HVAC",
+          "floor": 1,
+          "room": "BATHROOM",
+          "assembly": "6\" Rigid Galvanized Sheet Metal Exhaust Duct",
+          "materials": [
+            {
+              "name": "26 Gauge Galvanized Steel Ducting",
+              "specification": "MAT-STEEL-A653",
+              "quantity": 7,
+              "unit": "ft"
+            }
+          ],
+          "geometry": {
+            "position": [
+              0.5,
+              2.6,
+              -1.5
+            ],
+            "dimensions": [
+              0.15239999999999998,
+              2,
+              0.15239999999999998
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "isExterior": false,
+          "exposure": "Ceiling joist cavity",
+          "connectedComponentIds": [],
+          "openings": [],
+          "quantity": {
+            "value": 2,
+            "unit": "m"
+          },
+          "unitCost": 28,
+          "totalCost": 56,
+          "installationStageDay": 8,
+          "inspectionState": "passed",
+          "whySelected": {
+            "reason": "Continuous rigid smooth-wall metal ducting vented directly to outdoors per IMC 2024",
+            "environmentalFactor": "80 CFM mechanical moisture exhaust",
+            "codeRule": "IMC 2024 Section 504.4",
+            "alternativesConsidered": [
+              "Flexible vinyl ducting"
+            ],
+            "costImpact": "Code compliant fire-safe rigid duct",
+            "lifecycleNotes": "30-year design life"
+          },
+          "projectId": "BIM-PROOF-0001",
+          "attemptId": "ATTEMPT-STAGE-C-001",
+          "ifcType": "IfcDuctSegment",
+          "ifcGlobalId": "DUCT-mt6aunc3-1009",
+          "parentSpatialContainer": "STOREY-01",
+          "storeyId": "STOREY-01",
+          "spaceId": "SPACE-BATHROOM",
+          "materialSpecIds": [
+            "MAT-STEEL-A653"
+          ],
+          "createdByAgentId": "HVAC-AIR-AGENT",
+          "createdByTaskId": "TASK-C-DUCT-01",
+          "createdRevisionId": "REV-0010",
+          "currentRevisionId": "REV-0010",
+          "status": "INSTALLED",
+          "sourceProvenance": "IMC 2024 Mechanical Code"
+        }
+      ]
+    }
+  ]
+}

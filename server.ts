@@ -23,6 +23,10 @@ import { Phase318B2FullRosterEngine } from './server/phase318b2FullRosterEngine'
 import { SpatialAcademyEngine } from './server/spatialAcademyEngine';
 import { MaterialsKnowledgeEngine } from './server/materialsKnowledgeEngine';
 import { ScenarioDirectorEngine } from './server/scenarioDirectorEngine';
+import { BimCommandEngine } from './server/bimCommandEngine';
+import { BimProofRunner } from './server/bimProofRunner';
+import { StageCBimProofTests } from './server/stageCBimProofTests';
+import { ReferenceBimStore } from './server/referenceBimStore';
 
 async function startServer() {
   const app = express();
@@ -31,6 +35,7 @@ async function startServer() {
   // Initialize Engines
   SpatialAcademyEngine.initialize();
   MaterialsKnowledgeEngine.initialize();
+  ReferenceBimStore.initialize();
 
   app.use(express.json());
 
@@ -66,6 +71,50 @@ async function startServer() {
 
   app.get('/api/scenario/briefs', (req, res) => {
     res.json(ScenarioDirectorEngine.getAllBriefs());
+  });
+
+  // Stage C & Stage 0: BIM Command Layer & Reference Model Endpoints
+  app.get('/api/bim/reference-model', (req, res) => {
+    const refProject = ReferenceBimStore.getReferenceProject();
+    res.json(refProject);
+  });
+
+  app.get('/api/bim/reload-integrity', (req, res) => {
+    const report = ReferenceBimStore.runReloadIntegrityTest();
+    res.json(report);
+  });
+
+  app.get('/api/bim/proof-report', (req, res) => {
+    const report = BimProofRunner.executeStageCProof();
+    res.json(report);
+  });
+
+  app.get('/api/bim/test-suite', (req, res) => {
+    const testResults = StageCBimProofTests.runAllTests();
+    res.json(testResults);
+  });
+
+  app.get('/api/bim/components/:projectId', (req, res) => {
+    const { projectId } = req.params;
+    const comps = BimCommandEngine.getCanonicalProjectComponents(projectId);
+    res.json(comps);
+  });
+
+  app.get('/api/bim/revisions/:projectId', (req, res) => {
+    const { projectId } = req.params;
+    const revs = BimCommandEngine.getRevisionHistory(projectId);
+    res.json(revs);
+  });
+
+  app.get('/api/bim/ifc-export/:projectId', (req, res) => {
+    const { projectId } = req.params;
+    const exportData = BimCommandEngine.exportToIfcJson(projectId);
+    res.json(exportData);
+  });
+
+  app.post('/api/bim/command', (req, res) => {
+    const record = BimCommandEngine.executeCommand(req.body);
+    res.json(record);
   });
 
   // API Endpoints

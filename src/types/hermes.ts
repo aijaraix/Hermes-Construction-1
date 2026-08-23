@@ -78,12 +78,24 @@ export interface BIMComponent {
   whySelected: Explainability;
 
   // --- STAGE C: OpenBIM & Material Graph Fields ---
+  projectId?: string;
+  attemptId?: string;
   ifcType?: string; // e.g., 'IfcWallStandardCase', 'IfcPipeSegment', 'IfcFlowTerminal'
   ifcGlobalId?: string; // 22-character GUID
+  parentSpatialContainer?: string;
+  storeyId?: string;
+  spaceId?: string;
   assemblySpecId?: string;
   fastenerSpecId?: string;
   responsibleAgentRoleId?: string;
+  createdByAgentId?: string;
+  createdByTaskId?: string;
+  createdRevisionId?: string;
+  currentRevisionId?: string;
   materialSpecIds?: string[];
+  status?: string;
+  sourceProvenance?: string;
+  hostWallId?: string; // For doors/windows hosted in walls
 }
 
 export interface EnvironmentProfile {

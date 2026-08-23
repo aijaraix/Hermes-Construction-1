@@ -7,6 +7,8 @@ import {
   LearnedLesson,
 } from './types/hermes';
 import { AppShell, NavTab, UserExperienceLevel } from './components/AppShell';
+import { BimWorkspaceView } from './components/BimWorkspaceView';
+import { HermesSystemDrawer } from './components/HermesSystemDrawer';
 import { CommandCenterView } from './components/CommandCenterView';
 import { ProjectOverviewView } from './components/ProjectOverviewView';
 import { ThreeBIMViewer } from './components/ThreeBIMViewer';
@@ -33,7 +35,10 @@ import { Phase318B3SpatialAcademyView } from './components/Phase318B3SpatialAcad
 import { OwnerSmeDashboardView } from './components/OwnerSmeDashboardView';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<NavTab>('spatial-academy');
+  const [activeTab, setActiveTab] = useState<NavTab>('bim-workspace');
+  const [isSystemDrawerOpen, setIsSystemDrawerOpen] = useState<boolean>(false);
+  const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
+
   const [heartbeatState, setHeartbeatState] = useState<PrimeHeartbeatState | null>(null);
   const [currentProject, setCurrentProject] = useState<DigitalTwinProject | null>(null);
   const [allProjects, setAllProjects] = useState<DigitalTwinProject[]>([]);
@@ -198,147 +203,157 @@ export default function App() {
   }
 
   return (
-    <AppShell
-      activeTab={activeTab}
-      setActiveTab={setActiveTab}
-      currentProject={currentProject}
-      allProjects={allProjects}
-      onSelectProject={handleSelectProject}
-      heartbeatState={heartbeatState}
-      onTriggerHeartbeat={handleTriggerHeartbeat}
-      isTriggering={isTriggering}
-      selectedComponent={selectedComponent}
-      onCloseInspector={() => setSelectedComponent(null)}
-      uxLevel={uxLevel}
-      setUxLevel={setUxLevel}
-    >
-      {/* 1. Command Center */}
-      {activeTab === 'command-center' && (
-        <CommandCenterView
-          project={currentProject}
-          heartbeatState={heartbeatState}
-          onTriggerHeartbeat={handleTriggerHeartbeat}
-          onNavigateTab={setActiveTab}
-        />
-      )}
+    <>
+      <AppShell
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        currentProject={currentProject}
+        allProjects={allProjects}
+        onSelectProject={handleSelectProject}
+        heartbeatState={heartbeatState}
+        onTriggerHeartbeat={handleTriggerHeartbeat}
+        isTriggering={isTriggering}
+        selectedComponent={selectedComponent}
+        onCloseInspector={() => setSelectedComponent(null)}
+        uxLevel={uxLevel}
+        setUxLevel={setUxLevel}
+        onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
+      >
+        {/* Primary Operating Experience: OpenBIM CAD Workspace */}
+        {activeTab === 'bim-workspace' && (
+          <BimWorkspaceView
+            onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
+            initialSelectedComponentId={selectedComponent?.id}
+          />
+        )}
 
-      {/* 2. Project Overview */}
-      {activeTab === 'project-overview' && (
-        <ProjectOverviewView
-          project={currentProject}
-          heartbeatState={heartbeatState}
-          onNavigateTab={setActiveTab}
-        />
-      )}
+        {/* Command Center */}
+        {activeTab === 'command-center' && (
+          <CommandCenterView
+            project={currentProject}
+            heartbeatState={heartbeatState}
+            onTriggerHeartbeat={handleTriggerHeartbeat}
+            onNavigateTab={setActiveTab}
+          />
+        )}
 
-      {/* 3. 3D Digital Twin Workspace */}
-      {activeTab === '3d-twin' && (
-        <ThreeBIMViewer
-          components={currentProject.components}
-          selectedComponentId={selectedComponent?.id}
-          onSelectComponent={setSelectedComponent}
-          highlightCategory={highlightCategory}
-        />
-      )}
+        {/* Project Overview */}
+        {activeTab === 'project-overview' && (
+          <ProjectOverviewView
+            project={currentProject}
+            heartbeatState={heartbeatState}
+            onNavigateTab={setActiveTab}
+          />
+        )}
 
-      {/* 4. Rooms & Spaces Workspace */}
-      {activeTab === 'rooms-spaces' && (
-        <RoomsSpacesView project={currentProject} onSelectComponent={setSelectedComponent} />
-      )}
+        {/* Legacy 3D Digital Twin Viewer */}
+        {activeTab === '3d-twin' && (
+          <ThreeBIMViewer
+            components={currentProject.components}
+            selectedComponentId={selectedComponent?.id}
+            onSelectComponent={setSelectedComponent}
+            highlightCategory={highlightCategory}
+          />
+        )}
 
-      {/* 5. Plans & Systems Workspace */}
-      {activeTab === 'plans-systems' && <PlansSystemsView project={currentProject} />}
+        {/* Rooms & Spaces Workspace */}
+        {activeTab === 'rooms-spaces' && (
+          <RoomsSpacesView project={currentProject} onSelectComponent={setSelectedComponent} />
+        )}
 
-      {/* 6. Inspections Workspace */}
-      {activeTab === 'inspections' && (
-        <InspectorView
-          tickets={currentProject.inspectionTickets}
-          onRepairTicket={handleRepairTicket}
-          onTriggerHeartbeat={handleTriggerHeartbeat}
-        />
-      )}
+        {/* Plans & Systems Workspace */}
+        {activeTab === 'plans-systems' && <PlansSystemsView project={currentProject} />}
 
-      {/* 7. BOM & Quantities */}
-      {activeTab === 'bom' && (
-        <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
-      )}
+        {/* Inspections Workspace */}
+        {activeTab === 'inspections' && (
+          <InspectorView
+            tickets={currentProject.inspectionTickets}
+            onRepairTicket={handleRepairTicket}
+            onTriggerHeartbeat={handleTriggerHeartbeat}
+          />
+        )}
 
-      {/* 8. Procurement & Price Truth */}
-      {activeTab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
+        {/* BOM & Quantities */}
+        {activeTab === 'bom' && (
+          <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
+        )}
 
-      {/* 9. 4D Schedule */}
-      {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
+        {/* Procurement & Price Truth */}
+        {activeTab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
 
-      {/* 10. Change-Order Risks */}
-      {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
+        {/* 4D Schedule */}
+        {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
 
-      {/* 11. Customizer & Revisions */}
-      {activeTab === 'customizer' && (
-        <CustomizerView
-          projectId={currentProject.id}
-          onProposeRevision={handleProposeRevision}
-          onApplyRevision={handleApplyRevision}
-        />
-      )}
+        {/* Change-Order Risks */}
+        {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
 
-      {/* 12. HERMES Prime */}
-      {activeTab === 'prime' && (
-        <DashboardView
-          project={currentProject}
-          heartbeatState={heartbeatState}
-          onTriggerHeartbeat={handleTriggerHeartbeat}
-        />
-      )}
+        {/* Customizer & Revisions */}
+        {activeTab === 'customizer' && (
+          <CustomizerView
+            projectId={currentProject.id}
+            onProposeRevision={handleProposeRevision}
+            onApplyRevision={handleApplyRevision}
+          />
+        )}
+      </AppShell>
 
-      {/* 13. Agent Organization */}
-      {activeTab === 'agent-org' && <AgentOrganizationView />}
-
-      {/* 14. Knowledge Center */}
-      {activeTab === 'knowledge-center' && <KnowledgeCenterView />}
-
-      {/* 15. Knowledge Gym */}
-      {activeTab === 'knowledge-gym' && <KnowledgeGymView />}
-
-      {/* 16. Core Readiness Gate */}
-      {activeTab === 'readiness-gate' && <ReadinessGateView />}
-
-      {/* 17. Autonomous Gym */}
-      {activeTab === 'gym' && (
-        <GymView
-          projects={allProjects}
-          lessons={learnedLessons}
-          onSelectProject={(id) => {
-            const p = allProjects.find((x) => x.id === id);
-            if (p) setCurrentProject(p);
-          }}
-          onCreateGymProject={handleCreateGymProject}
-        />
-      )}
-
-      {/* 18. Reality & Data Truth */}
-      {activeTab === 'reality-truth' && <RealityDataTruthView />}
-
-      {/* 19. System Audit Trail */}
-      {activeTab === 'audit' && <AuditTrailView />}
-
-      {/* 20. System Health */}
-      {activeTab === 'system-health' && <SystemHealthView />}
-
-      {/* 21. Source Registry */}
-      {activeTab === 'source-registry' && <KnowledgeCenterView />}
-
-      {/* 22. Phase 3.18A.2 Reasoning Quota Integrity Report */}
-      {activeTab === 'quota-integrity' && <Phase318A2ReportView />}
-
-      {/* 23. Phase 3.18B Continuous SME Academy */}
-      {activeTab === 'continuous-academy' && <Phase318BContinuousAcademyView />}
-
-      {/* 23B. Phase 3.18B.3 Continuous Spatial Construction Academy */}
-      {activeTab === 'spatial-academy' && <Phase318B3SpatialAcademyView />}
-
-      {/* 24. Phase 3.18B.2 Owner SME Dashboard & Live SME Proof */}
-      {activeTab === 'owner-sme-dashboard' && <OwnerSmeDashboardView />}
-    </AppShell>
-
+      {/* HERMES System Developer Area Drawer */}
+      <HermesSystemDrawer
+        isOpen={isSystemDrawerOpen}
+        onClose={() => setIsSystemDrawerOpen(false)}
+        activeSystemSubtab={activeSystemSubtab}
+        setActiveSystemSubtab={setActiveSystemSubtab}
+      >
+        {activeSystemSubtab === 'spatial-academy' && <Phase318B3SpatialAcademyView />}
+        {activeSystemSubtab === 'continuous-academy' && <Phase318BContinuousAcademyView />}
+        {activeSystemSubtab === 'owner-sme-dashboard' && <OwnerSmeDashboardView />}
+        {activeSystemSubtab === 'prime' && (
+          <DashboardView
+            project={currentProject}
+            heartbeatState={heartbeatState}
+            onTriggerHeartbeat={handleTriggerHeartbeat}
+          />
+        )}
+        {activeSystemSubtab === 'agent-org' && <AgentOrganizationView />}
+        {activeSystemSubtab === 'knowledge-center' && <KnowledgeCenterView />}
+        {activeSystemSubtab === 'readiness-gate' && <ReadinessGateView />}
+        {activeSystemSubtab === 'gym' && (
+          <GymView
+            projects={allProjects}
+            lessons={learnedLessons}
+            onSelectProject={(id) => {
+              const p = allProjects.find((x) => x.id === id);
+              if (p) setCurrentProject(p);
+            }}
+            onCreateGymProject={handleCreateGymProject}
+          />
+        )}
+        {activeSystemSubtab === 'reality-truth' && <RealityDataTruthView />}
+        {activeSystemSubtab === 'audit' && <AuditTrailView />}
+        {activeSystemSubtab === 'system-health' && <SystemHealthView />}
+        {activeSystemSubtab === 'source-registry' && <KnowledgeCenterView />}
+        {activeSystemSubtab === 'quota-integrity' && <Phase318A2ReportView />}
+        {activeSystemSubtab === 'inspections' && (
+          <InspectorView
+            tickets={currentProject.inspectionTickets}
+            onRepairTicket={handleRepairTicket}
+            onTriggerHeartbeat={handleTriggerHeartbeat}
+          />
+        )}
+        {activeSystemSubtab === 'bom' && (
+          <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
+        )}
+        {activeSystemSubtab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
+        {activeSystemSubtab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
+        {activeSystemSubtab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
+        {activeSystemSubtab === 'customizer' && (
+          <CustomizerView
+            projectId={currentProject.id}
+            onProposeRevision={handleProposeRevision}
+            onApplyRevision={handleApplyRevision}
+          />
+        )}
+      </HermesSystemDrawer>
+    </>
   );
 }

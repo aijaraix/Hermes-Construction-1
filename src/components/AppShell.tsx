@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 
 export type NavTab =
+  | 'bim-workspace'
   | 'command-center'
   | 'project-overview'
   | '3d-twin'
@@ -79,6 +80,7 @@ interface AppShellProps {
   onCloseInspector: () => void;
   uxLevel: UserExperienceLevel;
   setUxLevel: (level: UserExperienceLevel) => void;
+  onOpenSystemDrawer?: () => void;
   children: React.ReactNode;
 }
 
@@ -95,6 +97,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   onCloseInspector,
   uxLevel,
   setUxLevel,
+  onOpenSystemDrawer,
   children,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -102,32 +105,22 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   const navItems = [
     {
-      group: 'PROJECT WORKSPACE',
+      group: 'PROJECTS',
       items: [
-        { id: 'spatial-academy' as NavTab, label: 'Spatial Construction Academy', icon: Box },
-        { id: '3d-twin' as NavTab, label: 'Live 3D BIM World', icon: Layers },
-        { id: 'command-center' as NavTab, label: 'Project Command Center', icon: LayoutDashboard },
-        { id: 'project-overview' as NavTab, label: 'Project Scope & Overview', icon: Building },
+        { id: 'bim-workspace' as NavTab, label: 'Current Project (OpenBIM)', icon: Building },
+        { id: 'project-overview' as NavTab, label: 'Project Scope & Overview', icon: LayoutDashboard },
+        { id: '3d-twin' as NavTab, label: '3D Twin (Legacy Viewer)', icon: Layers },
+      ],
+    },
+    {
+      group: 'MODEL & SYSTEMS',
+      items: [
         { id: 'rooms-spaces' as NavTab, label: 'Rooms & Spaces', icon: Box },
         { id: 'plans-systems' as NavTab, label: 'Systems & Connectivity', icon: Server },
         { id: 'inspections' as NavTab, label: 'Inspections & Defect QA', icon: Wrench },
         { id: 'bom' as NavTab, label: 'Model-Derived BOM', icon: DollarSign },
         { id: 'procurement' as NavTab, label: 'Materials & Procurement', icon: MapPin },
         { id: 'schedule' as NavTab, label: '4D Construction Timeline', icon: Calendar },
-      ],
-    },
-    {
-      group: 'HERMES SYSTEM / DEVELOPER',
-      items: [
-        { id: 'prime' as NavTab, label: 'HERMES Prime Orchestrator', icon: Cpu },
-        { id: 'agent-org' as NavTab, label: 'Agent Roster (118 Contracts)', icon: Users },
-        { id: 'knowledge-center' as NavTab, label: 'Knowledge Ingestion Center', icon: BookOpen },
-        { id: 'readiness-gate' as NavTab, label: 'Core Readiness Gate', icon: ShieldCheck },
-        { id: 'reality-truth' as NavTab, label: 'Reality & Data Truth Swarm', icon: ShieldCheck },
-        { id: 'quota-integrity' as NavTab, label: 'Quota & Reasoning Budget', icon: ShieldCheck },
-        { id: 'audit' as NavTab, label: 'System Audit Trail', icon: FileSearch },
-        { id: 'system-health' as NavTab, label: 'System Health & Subsystems', icon: Server },
-        { id: 'source-registry' as NavTab, label: 'Authoritative Source Registry', icon: FolderGit2 },
       ],
     },
   ];
@@ -304,6 +297,24 @@ export const AppShell: React.FC<AppShellProps> = ({
               </div>
             ))}
           </div>
+
+          {/* HERMES System Developer Area Button */}
+          {onOpenSystemDrawer && (
+            <div className="px-3 pt-2 pb-1 border-t border-slate-800">
+              <button
+                onClick={onOpenSystemDrawer}
+                className="w-full flex items-center justify-between px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-cyan-800/60 rounded-xl text-cyan-300 font-mono font-bold text-xs transition shadow-md group"
+              >
+                <div className="flex items-center gap-2">
+                  <Settings className="w-4 h-4 text-cyan-400 group-hover:rotate-45 transition-transform duration-300" />
+                  <span>HERMES System ⚙</span>
+                </div>
+                <span className="text-[9px] px-1.5 py-0.5 bg-cyan-950 text-cyan-400 rounded border border-cyan-800">
+                  DEV
+                </span>
+              </button>
+            </div>
+          )}
 
           {/* System Status Footer */}
           <div className="p-3 bg-slate-950/80 border-t border-slate-800/80 text-[11px] space-y-1 font-mono">

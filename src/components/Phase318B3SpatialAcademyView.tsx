@@ -41,24 +41,28 @@ export const Phase318B3SpatialAcademyView: React.FC = () => {
 
   // Selected Component Inspector State
   const [selectedComp, setSelectedComp] = useState<BIMComponent | null>(null);
-  const [activeTab, setActiveTab] = useState<'3D' | 'REPORT' | 'BOM' | 'REVISIONS' | 'PHASE4_REPORT' | 'LEARNING' | 'QUALITY'>('3D');
+  const [activeTab, setActiveTab] = useState<'3D' | 'REPORT' | 'BOM' | 'REVISIONS' | 'PHASE4_REPORT' | 'LEARNING' | 'QUALITY' | 'STAGE_C_PROOF'>('3D');
 
   // Attempt selection state
   const [selectedAttemptIndex, setSelectedAttemptIndex] = useState<number>(0);
   const [phase4Report, setPhase4Report] = useState<any>(null);
   const [learningProfiles, setLearningProfiles] = useState<any[]>([]);
   const [systemQualityReports, setSystemQualityReports] = useState<any[]>([]);
+  const [stageCReport, setStageCReport] = useState<any>(null);
+  const [stageCTestSuite, setStageCTestSuite] = useState<any>(null);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [reportRes, projRes, bomRes, p4ReportRes, learnRes, qaRes] = await Promise.all([
+      const [reportRes, projRes, bomRes, p4ReportRes, learnRes, qaRes, stageCRes, testSuiteRes] = await Promise.all([
         fetch('/api/academy/spatial-report').catch(() => null),
         fetch('/api/academy/spatial-project').catch(() => null),
         fetch('/api/academy/spatial-bom').catch(() => null),
         fetch('/api/academy/phase318b4-report').catch(() => null),
         fetch('/api/academy/learning-profiles').catch(() => null),
-        fetch('/api/academy/system-quality').catch(() => null)
+        fetch('/api/academy/system-quality').catch(() => null),
+        fetch('/api/bim/proof-report').catch(() => null),
+        fetch('/api/bim/test-suite').catch(() => null)
       ]);
 
       if (reportRes && reportRes.ok) setReport(await reportRes.json());
@@ -76,6 +80,8 @@ export const Phase318B3SpatialAcademyView: React.FC = () => {
       if (p4ReportRes && p4ReportRes.ok) setPhase4Report(await p4ReportRes.json());
       if (learnRes && learnRes.ok) setLearningProfiles(await learnRes.json());
       if (qaRes && qaRes.ok) setSystemQualityReports(await qaRes.json());
+      if (stageCRes && stageCRes.ok) setStageCReport(await stageCRes.json());
+      if (testSuiteRes && testSuiteRes.ok) setStageCTestSuite(await testSuiteRes.json());
     } catch (err) {
       console.error('Failed to load Spatial Academy data:', err);
     } finally {
@@ -235,6 +241,16 @@ export const Phase318B3SpatialAcademyView: React.FC = () => {
           }`}
         >
           <Box className="w-4 h-4" /> 3D Spatial Model & Playback
+        </button>
+        <button
+          onClick={() => setActiveTab('STAGE_C_PROOF')}
+          className={`px-4 py-2 border-b-2 flex items-center gap-2 font-mono text-xs ${
+            activeTab === 'STAGE_C_PROOF'
+              ? 'border-emerald-500 text-emerald-400 bg-emerald-500/10'
+              : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4 text-emerald-400" /> Stage C Real BIM/IFC Proof
         </button>
         <button
           onClick={() => setActiveTab('PHASE4_REPORT')}
@@ -715,6 +731,158 @@ export const Phase318B3SpatialAcademyView: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+      )}
+      {/* TAB 8: STAGE C REAL BIM / IFC PROOF & TEST SUITE */}
+      {activeTab === 'STAGE_C_PROOF' && (
+        <div className="space-y-6 font-mono text-xs">
+          {/* DECLARATION BANNER */}
+          <div className="p-6 bg-slate-900 border border-emerald-500/40 rounded-xl space-y-4 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-indigo-500" />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-bold uppercase tracking-wider">
+                  STAGE C REAL BIM / IFC PROOF AUDIT REPORT
+                </span>
+                <h2 className="text-xl font-bold text-white tracking-tight mt-2 flex items-center gap-2">
+                  <ShieldCheck className="w-6 h-6 text-emerald-400" />
+                  Canonical BIM Object Store & Revision Proof ({stageCReport?.BIM_PROOF_PROJECT_ID || 'BIM-PROOF-0001'})
+                </h2>
+                <p className="text-slate-400 text-xs mt-1">
+                  Canonical BIM Mutations • Material Knowledge Graph Linked • Dynamic Geometry BOM • Round-Trip Persistence & IFC Export
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 bg-slate-950 p-4 border border-slate-800 rounded-xl">
+                <div>
+                  <div className="text-[10px] text-slate-500 uppercase">Stage C Gate Status</div>
+                  <div className="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5" />
+                    {stageCReport?.DECLARATIONS?.STAGE_C_BIM_PROOF_PASS === 'YES' ? 'PASS (YES)' : 'FAIL (NO)'}
+                  </div>
+                </div>
+                <div className="border-l border-slate-800 pl-4">
+                  <div className="text-[10px] text-slate-500 uppercase">Stage F Lock</div>
+                  <div className="text-xs font-bold text-amber-400">
+                    GYM-APT-1BR-0001: {stageCReport?.DECLARATIONS?.GYM_APT_1BR_0001_STARTED || 'NO'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* QUICK AUDIT METRICS */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 pt-4 border-t border-slate-800 text-xs">
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                <div className="text-slate-500 text-[10px] uppercase">Canonical BIM Objects</div>
+                <div className="text-lg font-bold text-indigo-400">{stageCReport?.CANONICAL_BIM_OBJECT_COUNT || 0}</div>
+              </div>
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                <div className="text-slate-500 text-[10px] uppercase">IFC Entity Mappings</div>
+                <div className="text-lg font-bold text-cyan-400">{stageCReport?.IFC_ENTITY_COUNT || 0}</div>
+              </div>
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                <div className="text-slate-500 text-[10px] uppercase">Agent Mutations</div>
+                <div className="text-lg font-bold text-emerald-400">{stageCReport?.OBJECTS_CREATED_BY_REAL_AGENT_ACTIONS || 0}</div>
+              </div>
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                <div className="text-slate-500 text-[10px] uppercase">Preseeded Objects</div>
+                <div className="text-lg font-bold text-emerald-400">{stageCReport?.OBJECTS_PRESEEDED || 0}</div>
+              </div>
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                <div className="text-slate-500 text-[10px] uppercase">Revision Records</div>
+                <div className="text-lg font-bold text-amber-400">{stageCReport?.REVISION_COUNT || 0}</div>
+              </div>
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                <div className="text-slate-500 text-[10px] uppercase">Material Specs</div>
+                <div className="text-lg font-bold text-purple-400">{stageCReport?.MATERIAL_SPECIFICATIONS_REFERENCED || 0}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* AUTOMATED TEST SUITE RESULTS */}
+          {stageCTestSuite && (
+            <div className="p-6 bg-slate-900 border border-slate-800 rounded-xl space-y-4 shadow-xl">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center justify-between border-b border-slate-800 pb-3">
+                <span>Stage C Automated Verification Test Suite ({stageCTestSuite.passed}/{stageCTestSuite.total} Passed)</span>
+                <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-bold">
+                  {stageCTestSuite.failed === 0 ? 'ALL TESTS PASSED' : `${stageCTestSuite.failed} FAILED`}
+                </span>
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {(stageCTestSuite.results || []).map((t: any, idx: number) => (
+                  <div key={idx} className="p-3 bg-slate-950 border border-slate-800 rounded-lg flex items-start space-x-3">
+                    {t.passed ? (
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                    )}
+                    <div>
+                      <div className="font-bold text-slate-200 text-xs">{t.name}</div>
+                      <div className="text-slate-400 text-[11px] mt-0.5">{t.message}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* REAL BIM RENDER TRUTH AUDIT */}
+          {stageCReport?.BIM_RENDER_TRUTH_AUDIT_RESULT && (
+            <div className="p-6 bg-slate-900 border border-slate-800 rounded-xl space-y-3 shadow-xl">
+              <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider">
+                Reality Swarm Render Truth Audit (BIM_RENDER_TRUTH_AUDIT)
+              </h3>
+              <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <div className="text-slate-500 text-[10px] uppercase">Canonical Objects</div>
+                  <div className="text-sm font-bold text-white">{stageCReport.BIM_RENDER_TRUTH_AUDIT_RESULT.canonicalCount}</div>
+                </div>
+                <div>
+                  <div className="text-slate-500 text-[10px] uppercase">Rendered Scene Meshes</div>
+                  <div className="text-sm font-bold text-white">{stageCReport.BIM_RENDER_TRUTH_AUDIT_RESULT.renderedCount}</div>
+                </div>
+                <div>
+                  <div className="text-slate-500 text-[10px] uppercase">Discrepancy Count</div>
+                  <div className="text-sm font-bold text-emerald-400">{stageCReport.BIM_RENDER_TRUTH_AUDIT_RESULT.discrepancyCount}</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* DERIVED DYNAMIC BOM */}
+          {stageCReport?.BOM_LINES && (
+            <div className="p-6 bg-slate-900 border border-slate-800 rounded-xl space-y-4 shadow-xl">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+                Derived Quantity Takeoff & BOM (Calculated directly from geometry)
+              </h3>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-800 text-slate-400 text-[10px] uppercase">
+                      <th className="py-2 px-3">Item / Assembly</th>
+                      <th className="py-2 px-3">Category</th>
+                      <th className="py-2 px-3 text-right">Quantity</th>
+                      <th className="py-2 px-3 text-right">Unit Cost</th>
+                      <th className="py-2 px-3 text-right">Ext Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60">
+                    {stageCReport.BOM_LINES.map((line: any, idx: number) => (
+                      <tr key={idx} className="hover:bg-slate-800/30">
+                        <td className="py-2.5 px-3 text-slate-200 font-bold">{line.item}</td>
+                        <td className="py-2.5 px-3 text-indigo-400">{line.category}</td>
+                        <td className="py-2.5 px-3 text-right text-emerald-400 font-bold">{line.quantity} {line.unit}</td>
+                        <td className="py-2.5 px-3 text-right text-slate-400">${line.unitCost}</td>
+                        <td className="py-2.5 px-3 text-right text-white font-bold">${line.totalCost}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

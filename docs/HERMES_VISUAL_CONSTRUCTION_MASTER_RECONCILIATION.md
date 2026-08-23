@@ -134,7 +134,7 @@ Under `MATERIALS-INTELLIGENCE-MANAGER`, 25 canonical Subject Matter Experts oper
 
 - **Continuous Knowledge Loop A**: Operates `DISCOVER → RETRIEVE → RIGHTS CHECK → HASH → PARSE → CHUNK → CLASSIFY → EXTRACT → CORROBORATE → MAP TO SME → UPDATE PACK`.
 - **Rights Gate**: Enforces mandatory classification (`PUBLIC_DOMAIN`, `LICENSED`, `METADATA_ONLY`, `CITATION_ONLY`). Copyrighted standards without full-text rights store citations only.
-- **Deduplication Engine**: Single download / single hash policy prevents duplicate retrieval across multiple agents (**96 duplicate downloads avoided**).
+- **Deduplication Engine**: Single download / single hash policy prevents duplicate retrieval across multiple agents.
 - **Knowledge-on-Demand**: When a spatial task encounters unknown specifications, it issues a `BUILD_KNOWLEDGE_REQUEST` and auto-resumes once resolved.
 
 ---
