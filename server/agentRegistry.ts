@@ -48,11 +48,37 @@ export class AgentRegistry {
       outputs: ['Curriculum block directives', 'System pause/resume commands', 'Executive conflict resolutions'],
       tools: ['calculateReadinessGate()', 'updateGymBlockState()', 'escalateToProfessionalReview()'],
       knowledgeDomains: ['Autonomous Construction Governance', 'FBC 2023 Master Code', 'ACI 318-19', 'ASCE 7-22'],
-      canConsult: ['PROJECT-EXECUTIVE-01', 'CONSTRUCTION-KNOWLEDGE-DIRECTOR', 'QUALITY-INSPECTION-DIRECTOR'],
+      canConsult: ['PROJECT-EXECUTIVE-01', 'CONSTRUCTION-KNOWLEDGE-DIRECTOR', 'QUALITY-INSPECTION-DIRECTOR', 'HERMES-LEARNING-EXECUTIVE'],
       cannotDo: ['Cannot bypass inspection sweep failures', 'Cannot unblock Gym if readiness < 85%'],
       validationRequirements: ['100% agreement on safety critical overrides'],
       escalationRules: ['Escalate to human owner if unresolvable legal/professional ambiguity arises'],
       knowledgeCurriculum: ['Autonomous Construction Management', 'Risk Frameworks'],
+      readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+      competencyScore: 100.0,
+      knowledgeCoveragePct: 100.0,
+      isCoreHouse1Role: true
+    });
+
+    this.registerContract({
+      roleId: 'HERMES-LEARNING-EXECUTIVE',
+      roleName: 'HERMES Autonomous Learning Executive',
+      managerRoleId: 'HERMES-PRIME-ORCHESTRATOR',
+      discipline: 'Management',
+      responsibilities: [
+        'Govern autonomous Subject-Matter Expert Academy learning cycles',
+        'Direct Knowledge Director on gap priorities and source discovery',
+        'Monitor per-agent curriculum progress and verify learning heartbeats',
+        'Queue and schedule LLM reasoning tasks and manage provider quotas'
+      ],
+      inputs: ['Agent knowledge gap metrics', 'Curriculum progress state', 'Provider quota status'],
+      outputs: ['Learning dispatch orders', 'Academy progress reports', 'Quota-aware execution schedules'],
+      tools: ['dispatchLearningCycle()', 'checkProviderQuota()', 'triggerAcademyHeartbeat()'],
+      knowledgeDomains: ['Autonomous Curriculum Design', 'Pedagogical Evaluation', 'Knowledge Graph Architecture'],
+      canConsult: ['HERMES-PRIME-ORCHESTRATOR', 'CONSTRUCTION-KNOWLEDGE-DIRECTOR'],
+      cannotDo: ['Cannot bypass manager review requirements for mastery certification'],
+      validationRequirements: ['100% curriculum topic coverage verification'],
+      escalationRules: ['Escalate system-wide learning deadlocks to Prime Orchestrator'],
+      knowledgeCurriculum: ['Autonomous Learning Operations', 'Pedagogy & Evaluation'],
       readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
       competencyScore: 100.0,
       knowledgeCoveragePct: 100.0,

@@ -715,6 +715,49 @@ export interface AgentContract {
   isCoreHouse1Role: boolean;
   activeTaskId?: string;
   lastLearningReportId?: string;
+  domainBoundary?: DomainBoundary;
+  sourcePlan?: SourcePlanItem[];
+}
+
+export interface DomainBoundary {
+  domain: string;
+  subdomains: string[];
+  allowedKnowledge: string[];
+  relatedKnowledge: string[];
+  outOfScopeKnowledge: string[];
+  consultationTargets: string[];
+}
+
+export interface SourcePlanItem {
+  sourceId: string;
+  title: string;
+  publisher: string;
+  url: string;
+  authority: 'PRIMARY_GOVERNMENT' | 'NATIONAL_LAB' | 'ACADEMIC_UNIVERSITY' | 'OPEN_TECHNICAL' | 'MANUFACTURER_SPEC';
+  priority: number;
+  discipline: string;
+  targetTopics: string[];
+}
+
+export interface Phase318AInitialReport {
+  reportTimestamp: string;
+  validSpecialistRolesCount: number;
+  managersCount: number;
+  rolesRemovedOrMerged: string[];
+  curriculaCreatedCount: number;
+  totalCurriculumTopicsCount: number;
+  sourcePlansCount: number;
+  sourcesDiscoveredCount: number;
+  documentsFetchedCount: number;
+  pagesParsedCount: number;
+  chunksCreatedCount: number;
+  knowledgeEntitiesCount: number;
+  knowledgePacksCount: number;
+  agentsActivelyLearningCount: number;
+  reasoningJobsCount: number;
+  knowledgeGapsCount: number;
+  learningHeartbeatStatus: string;
+  unattendedSchedulerStatus: string;
 }
 
 export interface AgentMessage {

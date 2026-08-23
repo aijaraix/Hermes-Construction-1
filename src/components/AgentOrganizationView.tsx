@@ -18,19 +18,27 @@ export const AgentOrganizationView: React.FC = () => {
     try {
       setLoading(true);
       const [contractsRes, messagesRes] = await Promise.all([
-        fetch('/api/organization/contracts'),
-        fetch('/api/organization/messages')
+        fetch('/api/organization/contracts').catch(() => null),
+        fetch('/api/organization/messages').catch(() => null)
       ]);
-      const contractsData = await contractsRes.json();
-      const messagesData = await messagesRes.json();
 
-      setContracts(contractsData || []);
-      setMessages(messagesData || []);
-      if (contractsData && contractsData.length > 0) {
+      let contractsData: any[] = [];
+      let messagesData: any[] = [];
+
+      if (contractsRes && contractsRes.ok) {
+        contractsData = (await contractsRes.json().catch(() => [])) || [];
+      }
+      if (messagesRes && messagesRes.ok) {
+        messagesData = (await messagesRes.json().catch(() => [])) || [];
+      }
+
+      setContracts(contractsData);
+      setMessages(messagesData);
+      if (contractsData.length > 0) {
         setSelectedRole(contractsData[0]);
       }
-    } catch (e) {
-      console.error('Failed to load organization data:', e);
+    } catch {
+      // Handle gracefully
     } finally {
       setLoading(false);
     }

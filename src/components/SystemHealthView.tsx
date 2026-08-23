@@ -8,10 +8,13 @@ export const SystemHealthView: React.FC = () => {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const res = await fetch('/api/system/health');
-        setHealth(await res.json());
-      } catch (e) {
-        console.error('Error fetching system health:', e);
+        const res = await fetch('/api/system/health').catch(() => null);
+        if (res && res.ok) {
+          const data = await res.json().catch(() => null);
+          if (data) setHealth(data);
+        }
+      } catch {
+        // Handle gracefully
       } finally {
         setIsLoading(false);
       }

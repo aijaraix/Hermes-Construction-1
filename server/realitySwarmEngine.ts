@@ -186,7 +186,7 @@ export class RealitySwarmEngine {
         timestamp: now,
         rollbackInfo: `Restore UI displayed value to ${displayedAgentCount}`,
       };
-      this.repairLogs.push(repair);
+      this.repairLogs.unshift(repair);
       agentRepairStatus = 'AUTO_REPAIRED';
       agentValidationStatus = 'VERIFIED';
     }

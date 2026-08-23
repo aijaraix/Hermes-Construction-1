@@ -287,6 +287,10 @@ async function startServer() {
     res.json(KnowledgeIngestionEngine.getLiveActivities());
   });
 
+  app.get('/api/knowledge/academy-report', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getAcademyInitialReport());
+  });
+
   app.get('/api/knowledge/executions', (req, res) => {
     res.json(AgentExecutionService.getExecutionHistory());
   });
