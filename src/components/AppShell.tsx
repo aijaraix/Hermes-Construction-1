@@ -53,12 +53,14 @@ export type NavTab =
   | 'knowledge-gym'
   | 'readiness-gate'
   | 'gym'
+  | 'continuous-academy'
   | 'reality-truth'
   | 'audit'
   | 'system-health'
   | 'source-registry'
   | 'quota-integrity'
   | 'customizer';
+
 
 export type UserExperienceLevel = 'SUMMARY' | 'TECHNICAL' | 'AUDIT';
 
@@ -121,6 +123,7 @@ export const AppShell: React.FC<AppShellProps> = ({
     {
       group: 'HERMES INTELLIGENCE',
       items: [
+        { id: 'continuous-academy' as NavTab, label: '3.18B Continuous Academy', icon: Sparkles },
         { id: 'prime' as NavTab, label: 'HERMES Prime', icon: Cpu },
         { id: 'agent-org' as NavTab, label: 'Agent Organization', icon: Users },
         { id: 'knowledge-center' as NavTab, label: 'Knowledge Center', icon: BookOpen },

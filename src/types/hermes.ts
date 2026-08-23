@@ -1664,6 +1664,133 @@ export interface Phase318A1Report {
   exitGateRecords: ExitGateRecord[];
 }
 
+export interface LiveProofA {
+  proofId: 'PROOF_A_REAL_LLM_REASONING';
+  executed: boolean;
+  passed: boolean;
+  agentRoleId: string;
+  scenarioId: string;
+  provider: string;
+  model: string;
+  knowledgePackId: string;
+  executionMode: 'LLM_REASONED';
+  validatorPassed: boolean;
+  competencyDelta: number;
+  timestamp: string;
+}
+
+export interface LiveProofB {
+  proofId: 'PROOF_B_SIMULATION_ISOLATION';
+  executed: boolean;
+  passed: boolean;
+  competencyBefore: number;
+  certificationBefore: string;
+  shadowQualificationBefore: boolean;
+  house1ReadinessBefore: number;
+  competencyAfter: number;
+  certificationAfter: string;
+  shadowQualificationAfter: boolean;
+  house1ReadinessAfter: number;
+  competencyDelta: number;
+  timestamp: string;
+}
+
+export interface LiveProofC {
+  proofId: 'PROOF_C_QUOTA_DEFER_RECOVERY';
+  executed: boolean;
+  passed: boolean;
+  initialJobState: 'DEFERRED_QUOTA';
+  recoveredJobState: 'LLM_REASONED';
+  queuedAt: string;
+  recoveredAt: string;
+  timestamp: string;
+}
+
+export interface LiveProofD {
+  proofId: 'PROOF_D_REALITY_SWARM_INTEGRITY';
+  executed: boolean;
+  passed: boolean;
+  simulatedContaminationInjected: boolean;
+  incidentDetectedByRealitySwarm: boolean;
+  incidentType: 'SIMULATION_EVIDENCE_ATTACHED_TO_COMPETENCY';
+  engineeringCalculationsAltered: false;
+  invalidLinkageRepaired: boolean;
+  timestamp: string;
+}
+
+export interface Phase318A2LiveProofResults {
+  verified: boolean;
+  phase318a2Verified: boolean;
+  phase318bUnlocked: boolean;
+  executedAt: string;
+  proofA: LiveProofA;
+  proofB: LiveProofB;
+  proofC: LiveProofC;
+  proofD: LiveProofD;
+}
+
+export interface Phase318BContinuousReport {
+  generatedAt: string;
+  heartbeatCycles: number;
+  elapsedRuntimeSeconds: number;
+
+  operationalMetrics: {
+    deterministicOperations: number;
+    realLlmReasoningCalls: number;
+    simulationExecutions: number;
+    quotaDeferrals: number;
+    recoveredReasoningJobs: number;
+    sourcesDiscovered: number;
+    documentsRetrievalCount: number;
+    pagesParsed: number;
+    chunksCreated: number;
+    knowledgeEntitiesCreated: number;
+    knowledgePacksUpdated: number;
+    agentsTrained: number;
+    competencyTests: number;
+    passes: number;
+    failures: number;
+    knowledgeGapsCreated: number;
+    knowledgeGapsResolved: number;
+    sandboxExercises: number;
+    managerReviews: number;
+    managerRejections: number;
+    inspectorSweeps: number;
+    defectsDetected: number;
+    certifiedCapabilitiesCount: number;
+    house1ReadinessBefore: number;
+    house1ReadinessAfter: number;
+  };
+
+  efficiencyMetrics: {
+    deterministicToLlmRatio: string;
+    knowledgeReuseRatePct: number;
+    duplicateReasoningAvoided: number;
+    llmCallsPerAgentAdvancement: number;
+  };
+
+  declarations: {
+    PHASE_3_18A_2_LIVE_PROOF_VERIFIED: 'YES' | 'NO';
+    SIMULATION_COMPETENCY_CONTAMINATION: 'YES' | 'NO';
+    QUOTA_DEFER_AND_RECOVERY_VERIFIED: 'YES' | 'NO';
+    REALITY_LEARNING_INTEGRITY_VERIFIED: 'YES' | 'NO';
+    PHASE_3_18B_UNLOCKED: 'YES' | 'NO';
+    CONTINUOUS_ACADEMY_RUNNING: 'YES' | 'NO';
+    MANUAL_TRAINING_BUTTON_REQUIRED: 'YES' | 'NO';
+    DETERMINISTIC_WORK_REQUIRES_LLM: 'YES' | 'NO';
+    LLM_RESERVED_FOR_REASONING: 'YES' | 'NO';
+    KNOWLEDGE_REUSE_ACTIVE: 'YES' | 'NO';
+    AUTONOMOUS_SOURCE_INGESTION_ACTIVE: 'YES' | 'NO';
+    AUTONOMOUS_SPECIALIST_TRAINING_ACTIVE: 'YES' | 'NO';
+    AUTONOMOUS_MANAGER_TRAINING_ACTIVE: 'YES' | 'NO';
+    AUTONOMOUS_INSPECTOR_TRAINING_ACTIVE: 'YES' | 'NO';
+    AUTONOMOUS_RETRAINING_ACTIVE: 'YES' | 'NO';
+    REALITY_SWARM_MONITORING_ACTIVE: 'YES' | 'NO';
+    HOUSE_1_CANONICAL_BUILD_STARTED: 'YES' | 'NO';
+  };
+}
+
+
 
 
 

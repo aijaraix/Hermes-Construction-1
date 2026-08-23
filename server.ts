@@ -14,6 +14,9 @@ import { RealitySwarmEngine } from './server/realitySwarmEngine';
 import { SandboxExecutionEngine } from './server/sandboxExecutionEngine';
 
 import { QuotaIntegrityEngine } from './server/quotaIntegrityEngine';
+import { Phase318A2LiveProofRunner } from './server/phase318a2LiveProofRunner';
+import { ContinuousAcademyEngine } from './server/continuousAcademyEngine';
+import { ReasoningBudgetManager } from './server/reasoningBudgetManager';
 
 async function startServer() {
   const app = express();
@@ -361,6 +364,68 @@ async function startServer() {
       providerHealth: QuotaIntegrityEngine.getProviderHealthStatus()
     });
   });
+
+  // PHASE 3.18A.2 — LIVE INTEGRITY PROOFS ENDPOINT
+  app.get('/api/academy/phase-318a2-proofs', async (req, res) => {
+    try {
+      let results = Phase318A2LiveProofRunner.getLastResults();
+      if (!results) {
+        results = await Phase318A2LiveProofRunner.executeAllProofs();
+      }
+      res.json(results);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to execute Phase 3.18A.2 live proofs' });
+    }
+  });
+
+  app.post('/api/academy/phase-318a2-proofs/run', async (req, res) => {
+    try {
+      const results = await Phase318A2LiveProofRunner.executeAllProofs();
+      res.json(results);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to run Phase 3.18A.2 live proofs' });
+    }
+  });
+
+  // PHASE 3.18B — CONTINUOUS SME ACADEMY ENDPOINTS
+  app.get('/api/academy/continuous-report', async (req, res) => {
+    try {
+      if (!ContinuousAcademyEngine.isPhase318BUnlocked()) {
+        await ContinuousAcademyEngine.initializeAndUnlock();
+      }
+      const report = ContinuousAcademyEngine.generateReport();
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18B continuous report' });
+    }
+  });
+
+  app.post('/api/academy/run-20-heartbeats', async (req, res) => {
+    try {
+      const report = await ContinuousAcademyEngine.run20HeartbeatCycles();
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to run 20 autonomous heartbeats' });
+    }
+  });
+
+  app.post('/api/academy/trigger-heartbeat', async (req, res) => {
+    try {
+      const hb = await ContinuousAcademyEngine.executeSingleHeartbeat();
+      res.json(hb);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to execute heartbeat' });
+    }
+  });
+
+  app.get('/api/academy/live-feed', (req, res) => {
+    res.json(ContinuousAcademyEngine.getLiveActivityFeed());
+  });
+
+  app.get('/api/academy/reasoning-budget-metrics', (req, res) => {
+    res.json(ReasoningBudgetManager.getMetrics());
+  });
+
 
   app.get('/api/knowledge/gaps', (req, res) => {
     res.json(KnowledgeIngestionEngine.getKnowledgeGaps());

@@ -28,6 +28,7 @@ import { RealityDataTruthView } from './components/RealityDataTruthView';
 import { AuditTrailView } from './components/AuditTrailView';
 import { SystemHealthView } from './components/SystemHealthView';
 import { Phase318A2ReportView } from './components/Phase318A2ReportView';
+import { Phase318BContinuousAcademyView } from './components/Phase318BContinuousAcademyView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('command-center');
@@ -326,6 +327,10 @@ export default function App() {
 
       {/* 22. Phase 3.18A.2 Reasoning Quota Integrity Report */}
       {activeTab === 'quota-integrity' && <Phase318A2ReportView />}
+
+      {/* 23. Phase 3.18B Continuous SME Academy */}
+      {activeTab === 'continuous-academy' && <Phase318BContinuousAcademyView />}
     </AppShell>
+
   );
 }

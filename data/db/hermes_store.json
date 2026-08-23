@@ -7,14 +7,14 @@
     "overall_training_score": 91.2,
     "total_projects_started": 3,
     "total_projects_completed": 2,
-    "total_heartbeat_count": 270,
+    "total_heartbeat_count": 350,
     "total_failures_detected": 18,
     "total_failures_repaired": 16,
     "total_components_created": 12,
     "total_materials_learned": 92,
     "total_knowledge_entities": 3,
-    "last_heartbeat_at": "2026-08-23T02:44:14.285Z",
-    "next_heartbeat_at": "2026-08-23T02:44:24.285Z",
+    "last_heartbeat_at": "2026-08-23T02:57:42.335Z",
+    "next_heartbeat_at": "2026-08-23T02:57:52.335Z",
     "model_quota_state": "HEALTHY",
     "compute_quota_state": "OPTIMAL",
     "pause_controls": {
@@ -544,7 +544,7 @@
         "changeOrderRisk": 84
       },
       "createdAt": "2026-08-20T08:00:00Z",
-      "updatedAt": "2026-08-23T02:44:14.285Z",
+      "updatedAt": "2026-08-23T02:57:42.335Z",
       "snapshots": [
         {
           "id": "SNAP-RESIDENCE-TAMPA-001-V001",
@@ -9651,6 +9651,13 @@
   ],
   "assemblyPatterns": [],
   "activityLogs": [
+    {
+      "id": "LOG-1787453111790-3910",
+      "timestamp": "2026-08-23T02:45:11.790Z",
+      "swarm": "HERMES PERSISTENCE",
+      "message": "Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: 275",
+      "type": "success"
+    },
     {
       "id": "LOG-1787452054198-7564",
       "timestamp": "2026-08-23T02:27:34.198Z",
