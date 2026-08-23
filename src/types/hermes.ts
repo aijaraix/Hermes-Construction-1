@@ -2354,6 +2354,55 @@ export interface SpatialAcademyProject {
   startedFromEmpty: boolean;
 }
 
+export interface BathroomCapabilityRecord {
+  capabilityId: string;
+  capabilityName: string;
+  required: boolean;
+  responsibleSpecialist: string;
+  responsibleManager: string;
+  independentInspector: string;
+  requiredSources: string[];
+  requiredConstructionActions: string[];
+  requiredInspection: string;
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'PASSED' | 'FAILED';
+}
+
+export interface AgentUtilizationRecord {
+  agentId: string;
+  role: string;
+  domain: string;
+  learningJobs: number;
+  spatialConstructionJobs: number;
+  reasoningJobs: number;
+  sandboxExercises: number;
+  managerInteractions: number;
+  inspectionInteractions: number;
+  idleDurationSeconds: number;
+  blockedDurationSeconds: number;
+  lastActivityTimestamp: string;
+  nextScheduledActivity: string;
+  isStarved: boolean;
+}
+
+export interface PrimeOrchestrationDecision {
+  primeDecisionId: string;
+  timestamp: string;
+  candidateJobs: string[];
+  selectedJobs: string[];
+  agentsAssigned: string[];
+  reasonSelected: string;
+  dependencies: string[];
+  resourceConstraints: string;
+  knowledgeGapsTargeted: string[];
+  projectPriority: string;
+  expectedOutcome: string;
+}
+
+export interface SystemConnectivityGraph {
+  nodes: Array<{ id: string; label: string; system: SystemCategory; status: string }>;
+  edges: Array<{ source: string; target: string; connectionType: string; isConnected: boolean }>;
+}
+
 export interface Phase318B3CheckpointReport {
   SPATIAL_ACADEMY_ACTIVE: 'YES' | 'NO';
   CANONICAL_PROJECT_MODEL_ACTIVE: 'YES' | 'NO';

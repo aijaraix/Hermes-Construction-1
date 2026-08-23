@@ -657,6 +657,46 @@ async function startServer() {
     }
   });
 
+  app.get('/api/academy/bathroom-matrix', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getBathroomCapabilityMatrix());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve bathroom capability matrix' });
+    }
+  });
+
+  app.get('/api/academy/parallel-projects', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getParallelProjects());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve parallel training projects' });
+    }
+  });
+
+  app.get('/api/academy/agent-utilization', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getAgentUtilizationReport());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve agent utilization report' });
+    }
+  });
+
+  app.get('/api/academy/prime-decisions', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getPrimeDecisions());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve prime decisions' });
+    }
+  });
+
+  app.get('/api/academy/system-connectivity', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getSystemConnectivity());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve system connectivity graph' });
+    }
+  });
+
   app.get('/api/academy/spatial-project', (req, res) => {
     try {
       res.json(SpatialAcademyEngine.getActiveProject());
