@@ -57,6 +57,7 @@ export type NavTab =
   | 'audit'
   | 'system-health'
   | 'source-registry'
+  | 'quota-integrity'
   | 'customizer';
 
 export type UserExperienceLevel = 'SUMMARY' | 'TECHNICAL' | 'AUDIT';
@@ -131,6 +132,7 @@ export const AppShell: React.FC<AppShellProps> = ({
     {
       group: 'SYSTEM & DATA TRUTH',
       items: [
+        { id: 'quota-integrity' as NavTab, label: '3.18A.2 Quota Integrity', icon: ShieldCheck },
         { id: 'reality-truth' as NavTab, label: 'Reality & Data Truth', icon: ShieldCheck },
         { id: 'audit' as NavTab, label: 'System Audit Trail', icon: FileSearch },
         { id: 'system-health' as NavTab, label: 'System Health', icon: Server },

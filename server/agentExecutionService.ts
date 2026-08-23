@@ -69,11 +69,12 @@ export class AgentExecutionService {
 
     this.executionHistory.push(executionRecord);
 
-    // STRICT MANDATORY RULE:
-    // If executionMode is NOT 'LLM_REASONED' or 'DETERMINISTIC_TOOL' (e.g. EXECUTION_DEFERRED_NO_PROVIDER or EXECUTION_FAILED or NOT_EXECUTED),
-    // competency evaluation MUST NOT pass, overallScorePct = 0, passed = false, criticalFailure = true.
+    // STRICT MANDATORY RULE (PHASE 3.18A.2):
+    // Only 'LLM_REASONED' executions may count toward reasoning competency, SME competency, shadow qualification, certification, or House #1 readiness.
     if (
+      executionRecord.executionMode === 'DEFERRED_QUOTA' ||
       executionRecord.executionMode === 'EXECUTION_DEFERRED_NO_PROVIDER' ||
+      executionRecord.executionMode === 'FAILED_PROVIDER' ||
       executionRecord.executionMode === 'EXECUTION_FAILED' ||
       executionRecord.executionMode === 'NOT_EXECUTED' ||
       executionRecord.executionStatus !== 'EXECUTED'
@@ -96,12 +97,14 @@ export class AgentExecutionService {
         passed: false,
         criticalFailure: true,
         criticalFailureReason:
-          executionRecord.executionMode === 'EXECUTION_DEFERRED_NO_PROVIDER'
+          executionRecord.executionMode === 'DEFERRED_QUOTA'
+            ? 'REASONING EXECUTION DEFERRED (QUOTA EXHAUSTED): Gemini 429 rate limit reached across all models. Job queued for automatic replay upon provider recovery. Competency credit denied.'
+            : executionRecord.executionMode === 'EXECUTION_DEFERRED_NO_PROVIDER'
             ? 'REASONING EXECUTION DEFERRED: No approved reasoning provider available (GEMINI_API_KEY missing). Competency credit denied.'
             : 'REASONING EXECUTION FAILED: Reasoning provider execution error. Competency credit denied.',
         calculatedMetrics: {},
         violations: [
-          `Specialist reasoning did not execute on an approved reasoning provider (${executionRecord.executionMode}).`
+          `Specialist reasoning did not execute on an approved reasoning provider (${executionRecord.executionMode}). Competency credit denied.`
         ],
         unsupportedCitations: [],
         validatedAt: completedAt
@@ -115,10 +118,15 @@ export class AgentExecutionService {
     // 4. Run Independent Deterministic Evaluation
     const validation = validator.validate(scenario, executionRecord, retrievedChunks);
 
-    // If executionMode is SIMULATION_ONLY (explicit simulator), attach warning that result cannot certify competency
-    if (executionRecord.executionMode === 'SIMULATION_ONLY') {
-      validation.violations.unshift('SIMULATION_ONLY EXECUTION: Simulation evaluation score only. Cannot grant competency certification or shadow mode qualification.');
-      // Cannot grant certified pass
+    // If executionMode is DETERMINISTIC_SIMULATION or SIMULATION_ONLY:
+    // It may calculate a sandbox/simulation score for continuity, BUT passed MUST be false for competency/certification!
+    if (
+      executionRecord.executionMode === 'DETERMINISTIC_SIMULATION' ||
+      executionRecord.executionMode === 'SIMULATION_ONLY'
+    ) {
+      validation.violations.unshift(
+        'DETERMINISTIC_SIMULATION EXECUTION: Simulation score generated for workflow continuity only. CANNOT grant SME competency, certification, shadow qualification, or House #1 readiness credit.'
+      );
       validation.passed = false;
     }
 

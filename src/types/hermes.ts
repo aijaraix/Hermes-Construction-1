@@ -1199,11 +1199,115 @@ export interface CompetencyScenario {
 
 export type ExecutionMode =
   | 'LLM_REASONED'
+  | 'DETERMINISTIC_VALIDATOR'
+  | 'DETERMINISTIC_SIMULATION'
+  | 'DEFERRED_QUOTA'
+  | 'FAILED_PROVIDER'
+  | 'NOT_EXECUTED'
   | 'DETERMINISTIC_TOOL'
   | 'SIMULATION_ONLY'
-  | 'NOT_EXECUTED'
   | 'EXECUTION_DEFERRED_NO_PROVIDER'
   | 'EXECUTION_FAILED';
+
+export interface ProviderAttemptRecord {
+  attemptId: string;
+  executionId: string;
+  agentRoleId: string;
+  provider: string;
+  model: string;
+  attemptNumber: number;
+  requestTimestamp: string;
+  responseTimestamp: string;
+  httpStatus: number;
+  quotaStatus: boolean;
+  success: boolean;
+  reason: string;
+}
+
+export interface StructuredProviderErrorMetadata {
+  errorType: 'RATE_LIMIT' | 'API_ERROR' | 'INVALID_CONFIG';
+  provider: string;
+  model: string;
+  status: number;
+  occurredAt: string;
+  messageSummary: string;
+}
+
+export interface DeferredReasoningJob {
+  jobId: string;
+  agentRoleId: string;
+  scenarioId: string;
+  knowledgePackId: string;
+  retrievedChunkIds: string[];
+  createdAt: string;
+  nextAttemptAt: number;
+  retryCount: number;
+  maxRetries: number;
+  status: 'QUEUED_DEFERRED' | 'PROCESSING' | 'COMPLETED' | 'FAILED_EXHAUSTED';
+  lastErrorReason?: string;
+  discipline: string;
+  criticality: 'CRITICAL' | 'HIGH' | 'STANDARD';
+}
+
+export interface ProviderFailoverPolicy {
+  tier1Model: string;
+  tier2Model: string;
+  tier3Model: string;
+  verifiedModels: string[];
+  invalidModels: string[];
+  allowSimulationFallbackForContinuity: boolean;
+  maxQueueRetries: number;
+  baseBackoffMs: number;
+}
+
+export interface RetroactiveAuditReport {
+  auditedAt: string;
+  totalRecordsAudited: number;
+  llmReasonedExecutions: number;
+  deterministicSimulations: number;
+  quotaDeferredExecutions: number;
+  providerFailures: number;
+  improperSimulationCompetencyRecordsFound: number;
+  competencyRecordsInvalidated: number;
+  certificationRecordsInvalidated: number;
+  realReasoningJobsRequeued: number;
+  invalidatedEvidenceDetails: Array<{
+    agentRoleId: string;
+    reason: string;
+    invalidatedAt: string;
+  }>;
+}
+
+export interface Phase318A2Report {
+  generatedAt: string;
+  primaryGeminiModel: string;
+  secondaryGeminiModels: string[];
+  verifiedAvailableModels: string[];
+  realLlmExecutions: number;
+  simulationExecutions: number;
+  quotaDeferrals: number;
+  providerFailures: number;
+  queuedRealReasoningJobs: number;
+  recoveredReplayedJobs: number;
+  simulationCompetencyCredits: number;
+  simulationCertifications: number;
+  simulationHouse1QualificationCredits: number;
+  historicalInvalidSimulationEvidenceFound: number;
+  invalidatedRecordsCount: number;
+  requeuedJobsCount: number;
+  learningIntegrityIncidentsCount: number;
+  providerHealthStatus: 'AVAILABLE' | 'RATE_LIMITED' | 'OFFLINE';
+  governanceQuestions: {
+    CAN_GEMINI_QUOTA_FAILURE_CREATE_FAKE_COMPETENCY: 'NO';
+    CAN_DETERMINISTIC_SIMULATION_CERTIFY_AN_AGENT: 'NO';
+    CAN_SIMULATION_KEEP_ENGINEERING_WORKFLOWS_ACTIVE: 'YES';
+    ARE_SIMULATION_AND_LLM_REASONING_VISIBLY_DISTINCT: 'YES';
+    DO_QUOTA_DEFERRED_JOBS_RESUME_AUTOMATICALLY: 'YES';
+    PHASE_3_18A_2_VERIFIED: 'YES' | 'NO';
+    PHASE_3_18B_READY_TO_UNLOCK: 'NO';
+  };
+  exitGates: ExitGateRecord[];
+}
 
 export interface AgentExecutionRecord {
   executionId: string;
@@ -1491,9 +1595,10 @@ export interface ExitGateRecord {
   gateId: string;
   description: string;
   status: 'PASSED' | 'FAILED' | 'PENDING';
-  evidenceRecordIds: string[];
+  evidenceRecordIds?: string[];
+  evidenceNote?: string;
   verifiedAt: string;
-  verifier: string;
+  verifier?: string;
   failureReason?: string;
 }
 

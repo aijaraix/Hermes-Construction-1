@@ -8,6 +8,8 @@ import {
   KnowledgeChunk
 } from '../src/types/hermes';
 
+import { QuotaIntegrityEngine } from './quotaIntegrityEngine';
+
 export interface ReasoningExecutionParams {
   agentRole: AgentContract;
   scenario: CompetencyScenario;
@@ -46,12 +48,56 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
     const apiKey = process.env.GEMINI_API_KEY;
     const prompt = this.buildPrompt(params);
     const promptHash = crypto.createHash('sha256').update(prompt).digest('hex').substring(0, 16);
+    const executionId = `EXEC-${params.agentRole.roleId}-${Date.now()}`;
+
+    // Check if mock quota exhaustion is active for testing
+    if (QuotaIntegrityEngine.isMockQuotaExhausted()) {
+      QuotaIntegrityEngine.recordProviderAttempt({
+        attemptId: `ATT-${executionId}-1`,
+        executionId,
+        agentRoleId: params.agentRole.roleId,
+        provider: this.providerName,
+        model: this.modelName,
+        attemptNumber: 1,
+        requestTimestamp: new Date().toISOString(),
+        responseTimestamp: new Date().toISOString(),
+        httpStatus: 429,
+        quotaStatus: true,
+        success: false,
+        reason: 'Controlled Quota Test: 429 RESOURCE_EXHAUSTED'
+      });
+
+      // Queue the real reasoning job
+      QuotaIntegrityEngine.enqueueDeferredJob({
+        agentRoleId: params.agentRole.roleId,
+        scenarioId: params.scenario.scenarioId,
+        knowledgePackId: params.knowledgePack.packId,
+        retrievedChunkIds: params.retrievedChunks.map((c) => c.chunkId),
+        discipline: params.agentRole.discipline,
+        lastErrorReason: 'Controlled Quota Test: 429 RESOURCE_EXHAUSTED'
+      });
+
+      return {
+        rawResponse: '[EXECUTION_DEFERRED_QUOTA] Controlled Quota Test: 429 RESOURCE_EXHAUSTED. Reasoning job queued for automatic replay.',
+        structuredProposal: {},
+        citations: [],
+        providerName: this.providerName,
+        modelName: this.modelName,
+        executionMode: 'DEFERRED_QUOTA',
+        responseStatus: 'RESOURCE_EXHAUSTED',
+        executed: false,
+        promptHash
+      };
+    }
 
     if (apiKey) {
       const modelsToTry = [this.modelName, ...this.fallbackModels];
       let lastError: any = null;
+      let attemptCount = 0;
 
       for (const modelCandidate of modelsToTry) {
+        attemptCount++;
+        const requestTimestamp = new Date().toISOString();
         try {
           const ai = new GoogleGenAI({ apiKey });
           const response = await ai.models.generateContent({
@@ -61,6 +107,22 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
               temperature: 0.2,
               responseMimeType: 'application/json'
             }
+          });
+
+          const responseTimestamp = new Date().toISOString();
+          QuotaIntegrityEngine.recordProviderAttempt({
+            attemptId: `ATT-${executionId}-${attemptCount}`,
+            executionId,
+            agentRoleId: params.agentRole.roleId,
+            provider: this.providerName,
+            model: modelCandidate,
+            attemptNumber: attemptCount,
+            requestTimestamp,
+            responseTimestamp,
+            httpStatus: 200,
+            quotaStatus: false,
+            success: true,
+            reason: 'Successful LLM Reasoning Execution'
           });
 
           const rawText = response.text || '';
@@ -92,21 +154,67 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
           };
         } catch (err: any) {
           lastError = err;
-          const isQuotaError = err?.status === 'RESOURCE_EXHAUSTED' || err?.code === 429 || String(err?.message || '').includes('429') || String(err?.message || '').includes('Quota exceeded');
+          const responseTimestamp = new Date().toISOString();
+          const isQuotaError =
+            err?.status === 'RESOURCE_EXHAUSTED' ||
+            err?.code === 429 ||
+            String(err?.message || '').includes('429') ||
+            String(err?.message || '').includes('Quota exceeded');
+
+          QuotaIntegrityEngine.recordProviderAttempt({
+            attemptId: `ATT-${executionId}-${attemptCount}`,
+            executionId,
+            agentRoleId: params.agentRole.roleId,
+            provider: this.providerName,
+            model: modelCandidate,
+            attemptNumber: attemptCount,
+            requestTimestamp,
+            responseTimestamp,
+            httpStatus: isQuotaError ? 429 : 500,
+            quotaStatus: isQuotaError,
+            success: false,
+            reason: err?.message || String(err)
+          });
+
           if (isQuotaError) {
-            console.log(`[REASONING PROVIDER] Model ${modelCandidate} rate limit / quota reached. Trying next model or deterministic fallback.`);
+            console.log(`[REASONING PROVIDER] Model ${modelCandidate} rate limit / quota reached (429). Trying next tier model.`);
           } else {
             console.warn(`[REASONING PROVIDER] Model ${modelCandidate} call error:`, err?.message || String(err));
           }
         }
       }
 
-      // If all Gemini models failed:
-      const isQuotaError = lastError?.status === 'RESOURCE_EXHAUSTED' || lastError?.code === 429 || String(lastError?.message || '').includes('429') || String(lastError?.message || '').includes('Quota exceeded');
+      // If all Gemini models failed due to quota / rate limit
+      const isQuotaError =
+        lastError?.status === 'RESOURCE_EXHAUSTED' ||
+        lastError?.code === 429 ||
+        String(lastError?.message || '').includes('429') ||
+        String(lastError?.message || '').includes('Quota exceeded');
 
-      if (params.allowSimulationFallback || isQuotaError) {
-        console.log('[REASONING PROVIDER] Utilizing deterministic simulator for execution due to API quota threshold.');
-        return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'Deterministic Reasoning Simulator (API Quota Threshold)');
+      if (isQuotaError) {
+        // Enqueue real reasoning job in Deferred Reasoning Queue
+        QuotaIntegrityEngine.enqueueDeferredJob({
+          agentRoleId: params.agentRole.roleId,
+          scenarioId: params.scenario.scenarioId,
+          knowledgePackId: params.knowledgePack.packId,
+          retrievedChunkIds: params.retrievedChunks.map((c) => c.chunkId),
+          discipline: params.agentRole.discipline,
+          lastErrorReason: `429 RESOURCE_EXHAUSTED: ${lastError?.message || 'Quota exceeded across all Gemini models'}`
+        });
+
+        console.log('[REASONING PROVIDER] All Gemini reasoning models rate limited / quota exhausted. Reasoning job queued as DEFERRED_QUOTA.');
+
+        return {
+          rawResponse: `[EXECUTION_DEFERRED_QUOTA] All Gemini reasoning models rate limited or quota exhausted (429). Real reasoning job queued for automatic replay upon capacity recovery. Last error: ${lastError?.message || '429 Quota Exceeded'}`,
+          structuredProposal: {},
+          citations: [],
+          providerName: this.providerName,
+          modelName: 'All Models Rate Limited',
+          executionMode: 'DEFERRED_QUOTA',
+          responseStatus: 'RESOURCE_EXHAUSTED',
+          executed: false,
+          promptHash
+        };
       }
 
       return {
@@ -115,8 +223,8 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
         citations: [],
         providerName: this.providerName,
         modelName: this.modelName,
-        executionMode: 'EXECUTION_FAILED',
-        responseStatus: isQuotaError ? 'RESOURCE_EXHAUSTED' : 'API_ERROR',
+        executionMode: 'FAILED_PROVIDER',
+        responseStatus: 'API_ERROR',
         executed: false,
         promptHash
       };
@@ -275,7 +383,7 @@ export class DeterministicProposalSimulator {
       citations: retrievedChunks.map((c) => c.chunkId),
       providerName: 'DeterministicProposalSimulator',
       modelName: 'hermes-simulator-v1',
-      executionMode: 'SIMULATION_ONLY',
+      executionMode: 'DETERMINISTIC_SIMULATION',
       responseStatus: 'SIMULATION_MODE',
       executed: true,
       promptHash

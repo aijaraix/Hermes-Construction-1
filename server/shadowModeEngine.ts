@@ -42,7 +42,7 @@ export class ShadowModeEngine {
     });
 
     const validation = execution.validation;
-    const passed = validation.passed && (execution.executionRecord.executionMode === 'LLM_REASONED' || execution.executionRecord.executionMode === 'SIMULATION_ONLY');
+    const passed = validation.passed && execution.executionRecord.executionMode === 'LLM_REASONED';
 
     const proposal: ShadowWorkProposal = {
       proposalId: `SHADOW-${agentRole.roleId}-${Date.now()}`,

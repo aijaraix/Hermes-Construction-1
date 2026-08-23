@@ -13,6 +13,8 @@ import { CloseoutEngine } from './server/closeoutEngine';
 import { RealitySwarmEngine } from './server/realitySwarmEngine';
 import { SandboxExecutionEngine } from './server/sandboxExecutionEngine';
 
+import { QuotaIntegrityEngine } from './server/quotaIntegrityEngine';
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -278,6 +280,86 @@ async function startServer() {
     const trace = KnowledgeIngestionEngine.getAuditTrace(req.params.agentRoleId);
     if (!trace) return res.status(404).json({ error: 'Audit trace not found' });
     res.json(trace);
+  });
+
+  // PHASE 3.18A.2 — REASONING QUOTA INTEGRITY & PROVIDER FAILOVER ENDPOINTS
+  app.get('/api/academy/quota-integrity-report', (req, res) => {
+    try {
+      const execHistory = AgentExecutionService.getExecutionHistory();
+      const agentRoles = AgentRegistry.getAllContracts().map((c) => ({
+        roleId: c.roleId,
+        competencyScore: c.competencyScore,
+        competency_status: c.readinessStatus
+      }));
+      const report = QuotaIntegrityEngine.generatePhase318A2Report(execHistory, agentRoles);
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18A.2 report' });
+    }
+  });
+
+  app.get('/api/academy/provider-health', (req, res) => {
+    res.json({
+      status: QuotaIntegrityEngine.getProviderHealthStatus(),
+      policy: QuotaIntegrityEngine.FAILOVER_POLICY,
+      attemptCount: QuotaIntegrityEngine.getAttemptLogs().length,
+      errorCount: QuotaIntegrityEngine.getErrorLogs().length,
+      queuedJobsCount: QuotaIntegrityEngine.getQueuedJobsCount(),
+      replayedJobsCount: QuotaIntegrityEngine.getReplayedJobsCount(),
+      attempts: QuotaIntegrityEngine.getAttemptLogs().slice(-50),
+      errors: QuotaIntegrityEngine.getErrorLogs().slice(-50),
+      queuedJobs: QuotaIntegrityEngine.getDeferredQueue()
+    });
+  });
+
+  app.post('/api/academy/process-deferred-queue', async (req, res) => {
+    try {
+      const result = await QuotaIntegrityEngine.processDeferredQueue(async (job) => {
+        const contract = AgentRegistry.getContract(job.agentRoleId);
+        if (!contract) return false;
+        const pack = KnowledgeIngestionEngine.getKnowledgePackForAgent(job.agentRoleId);
+        const scenario = KnowledgeIngestionEngine.getScenario(job.scenarioId);
+        if (!pack || !scenario) return false;
+
+        const execRes = await AgentExecutionService.executeAgentScenario({
+          agentRole: contract,
+          scenario,
+          knowledgePack: pack,
+          retrievedChunks: []
+        });
+
+        return execRes.executionRecord.executionMode === 'LLM_REASONED';
+      });
+
+      res.json({ success: true, result });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to process deferred queue' });
+    }
+  });
+
+  app.post('/api/academy/run-retroactive-audit', (req, res) => {
+    try {
+      const execHistory = AgentExecutionService.getExecutionHistory();
+      const agentRoles = AgentRegistry.getAllContracts().map((c) => ({
+        roleId: c.roleId,
+        competencyScore: c.competencyScore,
+        competency_status: c.readinessStatus
+      }));
+      const report = QuotaIntegrityEngine.runRetroactiveAudit(execHistory, agentRoles);
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to run retroactive audit' });
+    }
+  });
+
+  app.post('/api/academy/simulate-quota-exhaustion', (req, res) => {
+    const { exhausted } = req.body || {};
+    QuotaIntegrityEngine.setMockQuotaExhausted(Boolean(exhausted));
+    res.json({
+      success: true,
+      mockQuotaExhausted: QuotaIntegrityEngine.isMockQuotaExhausted(),
+      providerHealth: QuotaIntegrityEngine.getProviderHealthStatus()
+    });
   });
 
   app.get('/api/knowledge/gaps', (req, res) => {

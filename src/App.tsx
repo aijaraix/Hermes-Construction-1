@@ -27,6 +27,7 @@ import { GymView } from './components/GymView';
 import { RealityDataTruthView } from './components/RealityDataTruthView';
 import { AuditTrailView } from './components/AuditTrailView';
 import { SystemHealthView } from './components/SystemHealthView';
+import { Phase318A2ReportView } from './components/Phase318A2ReportView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('command-center');
@@ -322,6 +323,9 @@ export default function App() {
 
       {/* 21. Source Registry */}
       {activeTab === 'source-registry' && <KnowledgeCenterView />}
+
+      {/* 22. Phase 3.18A.2 Reasoning Quota Integrity Report */}
+      {activeTab === 'quota-integrity' && <Phase318A2ReportView />}
     </AppShell>
   );
 }
