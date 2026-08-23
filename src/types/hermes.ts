@@ -2349,6 +2349,8 @@ export interface SpatialAcademyProject {
   crossTradeRequests: CrossTradeChangeRequest[];
   knowledgeGaps: KnowledgeGapRecord[];
   agentAssignments: Array<{ agentId: string; role: string; system: SystemCategory }>;
+  attempts?: TrainingEpisodeAttempt[];
+  currentAttemptNumber?: number;
   digitalCompletionPct: number;
   isDigitallyComplete: boolean;
   startedFromEmpty: boolean;
@@ -2437,6 +2439,160 @@ export interface Phase318B3CheckpointReport {
   HOUSE_1_CANONICAL_BUILD_STARTED: 'NO';
   evidenceOfEmptyStart: string;
 }
+
+export interface AgentLearningProfile {
+  agentId: string;
+  domain: string;
+  role: string;
+  managerId: string;
+  curriculumId: string;
+  knowledgePackId: string;
+  approvedSourcePlan: string[];
+  topicCoveragePct: number;
+  knowledgeGaps: string[];
+  competencyDimensions: {
+    knowledgeGrounding: number;
+    reasoningScore: number;
+    spatialConstructionScore: number;
+    tradeCoordinationScore: number;
+    inspectionPassRate: number;
+  };
+  lastKnowledgeRefresh: string;
+  lastTrainingExercise: string;
+  lastReasoningExercise: string;
+  lastPracticalExercise: string;
+  lastManagerReview: string;
+  lastInspectorReview: string;
+  nextLearningPriority: string;
+  sourceFreshnessRequirements: 'STATIC_REFERENCE' | 'SLOW_CHANGE' | 'CODE_CYCLE' | 'PRODUCT_DYNAMIC' | 'PRICE_DYNAMIC' | 'JURISDICTION_DYNAMIC';
+  trainingDifficulty: number;
+  weaknessHistory: string[];
+  failureHistory: string[];
+  generalizationHistory: string[];
+  certificationScope: string;
+  currentLearningState: 'INGESTING' | 'REASONING' | 'PRACTICING' | 'UNDER_REVIEW' | 'CERTIFIED' | 'RETRAINING';
+}
+
+export interface TrainingEpisodeAttempt {
+  attemptId: string;
+  projectId: string;
+  attemptNumber: number;
+  timestamp: string;
+  status: 'PASSED' | 'FAILED' | 'IN_PROGRESS';
+  startingKnowledgeVersions: Record<string, string>;
+  primePlan: string;
+  agentAssignments: string[];
+  constructionActions: string[];
+  modelRevisions: number;
+  renderCheckpoints: string[];
+  defectsFound: number;
+  defectsResolved: number;
+  managerReviews: number;
+  inspectionResults: 'PASSED' | 'FAILED' | 'CONDITIONAL';
+  learningEventsLogged: number;
+  repairsExecuted: number;
+  finalQualityScore: number;
+  passFailReason: string;
+}
+
+export interface SystemQualityAgentReport {
+  agentId: string;
+  role: 'UI-VISUAL-QA-AGENT' | 'UI-DATA-TRUTH-QA-AGENT' | 'FUNCTIONAL-WORKFLOW-QA-AGENT' | 'API-INTEGRATION-QA-AGENT' | 'ACCESSIBILITY-RESPONSIVE-QA-AGENT' | 'PERFORMANCE-RELIABILITY-QA-AGENT' | 'SECURITY-EXPOSURE-QA-AGENT' | 'REGRESSION-REPAIR-QA-AGENT';
+  lastScanTimestamp: string;
+  viewsCrawled: number;
+  issuesFound: number;
+  issuesRepaired: number;
+  trainingDefectsDetected: number;
+  status: 'ACTIVE' | 'SCANNING' | 'VERIFYING';
+}
+
+export interface Phase318B4OperationalReport {
+  CANONICAL_ROLES_TOTAL: number;
+  SPECIALIST_ROLES: number;
+  MANAGER_ROLES: number;
+  INSPECTOR_ROLES: number;
+  SYSTEM_QUALITY_ROLES: number;
+
+  AGENTS_WITH_ACTIVE_LEARNING_PROFILES: number;
+  AGENTS_WITH_ACTIVE_INGESTION_BACKLOG: number;
+  AGENTS_STARVED: number;
+
+  SOURCES_REGISTERED: number;
+  REAL_DOCUMENTS_RETRIEVED: number;
+  DOCUMENTS_PARSED: number;
+  REAL_CHUNKS: number;
+  GROUNDED_ASSERTIONS: number;
+  KNOWLEDGE_PACKS: number;
+  KNOWLEDGE_GAPS: number;
+  KNOWLEDGE_GAPS_RESOLVED: number;
+
+  CURRENT_TRAINING_PROJECTS: number;
+  CURRENT_PROJECT_ATTEMPTS: number;
+  CURRENT_ATTEMPT_NUMBER: number;
+
+  VISUAL_CHECKPOINTS_CAPTURED: number;
+  VISUAL_DEFECTS_FOUND: number;
+  SPATIAL_DEFECTS_FOUND: number;
+  SYSTEM_CONNECTIVITY_FAILURES: number;
+  REPAIRS_COMPLETED: number;
+  GENERALIZATION_TESTS: number;
+
+  SYSTEM_QA_SCANS: number;
+  REAL_UI_BUGS_FOUND: number;
+  REAL_UI_BUGS_REPAIRED: number;
+  TRAINING_ONLY_UI_DEFECTS: number;
+  REGRESSION_TESTS: number;
+
+  PRIME_ORCHESTRATION_FAILURES: number;
+  MANAGER_REVIEW_FAILURES: number;
+  INSPECTOR_FAILURES: number;
+
+  LLM_REASONING_CALLS: number;
+  KNOWLEDGE_REUSE_HITS: number;
+  DUPLICATE_DOWNLOADS_AVOIDED: number;
+  DUPLICATE_REASONING_AVOIDED: number;
+
+  // Declarations
+  NO_NEW_PAGE_CREATED: 'YES';
+  NO_NEW_ROUTE_CREATED: 'YES';
+  NO_NEW_PHASE_TAB_CREATED: 'YES';
+
+  ALL_CANONICAL_AGENTS_HAVE_LEARNING_PROFILE: 'YES' | 'NO';
+  CONTINUOUS_INGESTION_ACTIVE: 'YES' | 'NO';
+  CONTINUOUS_TRAINING_ACTIVE: 'YES' | 'NO';
+  KNOWLEDGE_ON_DEMAND_ACTIVE: 'YES' | 'NO';
+  BLOCKED_TASK_AUTO_RESUME_ACTIVE: 'YES' | 'NO';
+
+  PROJECT_ATTEMPT_HISTORY_PERSISTED: 'YES' | 'NO';
+  FAILED_ATTEMPTS_PRESERVED: 'YES' | 'NO';
+  OWNER_CAN_VIEW_PREVIOUS_ATTEMPTS: 'YES' | 'NO';
+  OWNER_CAN_PLAY_ATTEMPT_REVISIONS: 'YES' | 'NO';
+
+  AUTOMATED_MODEL_RENDER_CAPTURE_ACTIVE: 'YES' | 'NO';
+  HERMES_VISUAL_SELF_INSPECTION_ACTIVE: 'YES' | 'NO';
+  VISUAL_AND_SCENE_GRAPH_REVIEW_ACTIVE: 'YES' | 'NO';
+  OWNER_SCREENSHOT_REQUIRED: 'NO';
+
+  SYSTEM_QUALITY_ACADEMY_ACTIVE: 'YES' | 'NO';
+  SYSTEM_QUALITY_AGENT_COUNT: number;
+  UI_VISUAL_QA_ACTIVE: 'YES' | 'NO';
+  UI_DATA_TRUTH_QA_ACTIVE: 'YES' | 'NO';
+  FUNCTIONAL_WORKFLOW_QA_ACTIVE: 'YES' | 'NO';
+  API_QA_ACTIVE: 'YES' | 'NO';
+  RESPONSIVE_ACCESSIBILITY_QA_ACTIVE: 'YES' | 'NO';
+  PERFORMANCE_QA_ACTIVE: 'YES' | 'NO';
+  SECURITY_QA_ACTIVE: 'YES' | 'NO';
+  REGRESSION_QA_ACTIVE: 'YES' | 'NO';
+
+  REALITY_SWARM_INDEPENDENT: 'YES' | 'NO';
+  ENGINEERING_VALUES_PROTECTED_FROM_UI_AUTOREPAIR: 'YES' | 'NO';
+
+  FULL_ROSTER_FAIR_SCHEDULING_ACTIVE: 'YES' | 'NO';
+  LEARNING_STARVATION_DETECTION_ACTIVE: 'YES' | 'NO';
+
+  HOUSE_1_CANONICAL_BUILD_STARTED: 'NO';
+}
+
 
 
 

@@ -697,6 +697,31 @@ async function startServer() {
     }
   });
 
+  // Phase 3.18B.4 Continuous Academy Endpoints
+  app.get('/api/academy/learning-profiles', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getAgentLearningProfiles());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve agent learning profiles' });
+    }
+  });
+
+  app.get('/api/academy/system-quality', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getSystemQualityReports());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve system quality agent reports' });
+    }
+  });
+
+  app.get(['/api/academy/phase318b4-report', '/api/academy/report-318b4'], (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getPhase318B4Report());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18B.4 report' });
+    }
+  });
+
   app.get('/api/academy/spatial-project', (req, res) => {
     try {
       res.json(SpatialAcademyEngine.getActiveProject());
