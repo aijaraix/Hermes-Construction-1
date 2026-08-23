@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 import { primeOrchestrator } from './server/primeOrchestrator';
 import { researchConstructionTopic } from './server/geminiService';
@@ -77,6 +78,17 @@ async function startServer() {
   app.get('/api/bim/reference-model', (req, res) => {
     const refProject = ReferenceBimStore.getReferenceProject();
     res.json(refProject);
+  });
+
+  app.get('/api/bim/reference-model.ifc', (req, res) => {
+    ReferenceBimStore.initialize();
+    const ifcPath = path.join(process.cwd(), 'data', 'models', 'REFERENCE-BIM-0001.ifc');
+    if (fs.existsSync(ifcPath)) {
+      res.setHeader('Content-Type', 'text/plain');
+      res.sendFile(ifcPath);
+    } else {
+      res.status(404).send('REFERENCE-BIM-0001.ifc file not found');
+    }
   });
 
   app.get('/api/bim/reload-integrity', (req, res) => {

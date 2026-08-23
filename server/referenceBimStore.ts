@@ -113,37 +113,33 @@ export class ReferenceBimStore {
   private static ifcPath = path.join(process.cwd(), 'data', 'models', 'REFERENCE-BIM-0001.ifc');
 
   public static initialize(): ReferenceBimProject {
-    if (this.referenceData) return this.referenceData;
-
-    // Check if json exists on disk
-    if (fs.existsSync(this.dataPath)) {
-      try {
-        const raw = fs.readFileSync(this.dataPath, 'utf-8');
-        this.referenceData = JSON.parse(raw);
-        if (this.referenceData) return this.referenceData;
-      } catch (err) {
-        console.error('Failed to parse existing REFERENCE-BIM-0001.json, re-building canonical store...', err);
-      }
-    }
-
-    // Generate canonical reference BIM project
-    const project = this.buildCanonicalReferenceModel();
-    this.referenceData = project;
-
-    // Ensure directory exists
     const dir = path.dirname(this.dataPath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
 
-    // Persist JSON representation
-    fs.writeFileSync(this.dataPath, JSON.stringify(project, null, 2), 'utf-8');
+    if (!this.referenceData) {
+      if (fs.existsSync(this.dataPath)) {
+        try {
+          const raw = fs.readFileSync(this.dataPath, 'utf-8');
+          this.referenceData = JSON.parse(raw);
+        } catch (err) {
+          console.error('Failed to parse existing REFERENCE-BIM-0001.json, re-building canonical store...', err);
+        }
+      }
 
-    // Generate and persist standard IFC STEP format representation
-    const ifcContent = this.generateStandardIfcStepFile(project);
+      if (!this.referenceData) {
+        const project = this.buildCanonicalReferenceModel();
+        this.referenceData = project;
+        fs.writeFileSync(this.dataPath, JSON.stringify(project, null, 2), 'utf-8');
+      }
+    }
+
+    // Always generate/overwrite the IFC STEP file to guarantee fresh geometric representation
+    const ifcContent = this.generateStandardIfcStepFile(this.referenceData);
     fs.writeFileSync(this.ifcPath, ifcContent, 'utf-8');
 
-    return project;
+    return this.referenceData;
   }
 
   public static getReferenceProject(): ReferenceBimProject {
@@ -824,32 +820,75 @@ export class ReferenceBimStore {
 
   private static generateStandardIfcStepFile(project: ReferenceBimProject): string {
     const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0];
-    return `ISO-10303-21;
-HEADER;
-FILE_DESCRIPTION(('ViewDefinition [CoordinationView_V2.0]'),'2;1');
-FILE_NAME('REFERENCE-BIM-0001.ifc','${now}',('HERMES OS ARCHITECTURAL LEAD'),('HERMES CONSTRUCTION OS'),'web-ifc / IfcOpenShell Engine','HERMES CAD/BIM WORKSPACE','');
-FILE_SCHEMA(('IFC4'));
-ENDSEC;
-DATA;
-#1=IFCPERSON($,$,'HERMES',$,$,$,$,$);
-#2=IFCORGANIZATION($,'HERMES CONSTRUCTION OS',$,$,$);
-#3=IFCPERSONANDORGANIZATION(#1,#2,$);
-#4=IF APPLICATION(#2,'2026.1','HERMES OS BIM WORKSPACE','HERMES-CAD');
-#5=IFCOWNERHISTORY(#3,#4,$,.READWRITE.,$,$,$,1787519300);
-#6=IFCDIRECTION((1.,0.,0.));
-#7=IFCDIRECTION((0.,0.,1.));
-#8=IFCCARTESIANPOINT((0.,0.,0.));
-#9=IFCAXIS2PLACEMENT3D(#8,#7,#6);
-#10=IFCPROJECT('${project.spatialHierarchy.ifcGuid}',#5,'${project.name}',$,$,$,$,(#11),#12);
-#11=IFCGEOMETRICREPRESENTATIONCONTEXT($,'Model',3,1.E-05,#9,$);
-#12=IFCUNITASSIGNMENT((#13,#14));
-#13=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);
-#14=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);
-#15=IFCSITE('${project.spatialHierarchy.siteGuid}',#5,'Reference Building Site',$,$,#9,$,$,.ELEMENT.,(0,0,0),(0,0,0),0.,$,$);
-#16=IFCBUILDING('${project.spatialHierarchy.buildingGuid}',#5,'Main Reference Building',$,$,#9,$,$,.ELEMENT.,$,$,$);
-${project.spatialHierarchy.storeys.map((s, idx) => `#${20 + idx}=IFCBUILDINGSTOREY('${s.ifcGuid}',#5,'${s.name}',$,$,#9,$,$,.ELEMENT.,${s.elevationMeters});`).join('\n')}
-${project.components.map((c, idx) => `#${100 + idx}=${c.ifcType.toUpperCase()}('${c.ifcGuid}',#5,'${c.name}',$,$,#9,$,$);`).join('\n')}
-ENDSEC;
-END-ISO-10303-21;`;
+    const lines: string[] = [
+      'ISO-10303-21;',
+      'HEADER;',
+      'FILE_DESCRIPTION((\'ViewDefinition [CoordinationView_V2.0]\'),\'2;1\');',
+      `FILE_NAME('REFERENCE-BIM-0001.ifc','${now}',('HERMES OS ARCHITECTURAL LEAD'),('HERMES CONSTRUCTION OS'),'web-ifc / IfcOpenShell Engine','HERMES CAD/BIM WORKSPACE','');`,
+      'FILE_SCHEMA((\'IFC4\'));',
+      'ENDSEC;',
+      'DATA;',
+      '#1=IFCPERSON($,$,\'HERMES\',$,$,$,$,$);',
+      '#2=IFCORGANIZATION($,\'HERMES CONSTRUCTION OS\',$,$,$);',
+      '#3=IFCPERSONANDORGANIZATION(#1,#2,$);',
+      '#4=IFCAPPLICATION(#2,\'2026.1\',\'HERMES OS BIM WORKSPACE\',\'HERMES-CAD\');',
+      '#5=IFCOWNERHISTORY(#3,#4,$,.READWRITE.,$,$,$,1787519300);',
+      '#6=IFCDIRECTION((1.,0.,0.));',
+      '#7=IFCDIRECTION((0.,0.,1.));',
+      '#8=IFCCARTESIANPOINT((0.,0.,0.));',
+      '#9=IFCAXIS2PLACEMENT3D(#8,#7,#6);',
+      `#10=IFCPROJECT('${project.spatialHierarchy.ifcGuid}',#5,'${project.name}',$,$,$,$,(#11),#12);`,
+      '#11=IFCGEOMETRICREPRESENTATIONCONTEXT($,\'Model\',3,1.E-05,#9,$);',
+      '#12=IFCUNITASSIGNMENT((#13,#14));',
+      '#13=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);',
+      '#14=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);',
+      `#15=IFCSITE('${project.spatialHierarchy.siteGuid}',#5,'Reference Building Site',$,$,#9,$,$,.ELEMENT.,(0,0,0),(0,0,0),0.,$,$);`,
+      `#16=IFCBUILDING('${project.spatialHierarchy.buildingGuid}',#5,'Main Reference Building',$,$,#9,$,$,.ELEMENT.,$,$,$);`,
+      '#31=IFCDIRECTION((0.,0.,1.));'
+    ];
+
+    project.spatialHierarchy.storeys.forEach((s, idx) => {
+      lines.push(`#${20 + idx}=IFCBUILDINGSTOREY('${s.ifcGuid}',#5,'${s.name}',$,$,#9,$,$,.ELEMENT.,${s.elevationMeters});`);
+    });
+
+    let idCounter = 1000;
+
+    project.components.forEach((c) => {
+      const [dimX, dimY, dimZ] = c.dimensions;
+      const [posX, posY, posZ] = c.position;
+      const rot = c.orientationDegrees || 0;
+
+      const profId = idCounter++;
+      const posPointId = idCounter++;
+      const dirXId = idCounter++;
+      const placement3DId = idCounter++;
+      const localPlacementId = idCounter++;
+      const extrudedSolidId = idCounter++;
+      const shapeRepId = idCounter++;
+      const prodDefShapeId = idCounter++;
+
+      const x = Math.max(0.01, dimX);
+      const y = Math.max(0.01, dimY);
+      const z = Math.max(0.01, dimZ);
+
+      lines.push(`#${profId}=IFCRECTANGLEPROFILEDEF(.AREA.,'Profile',$,${x.toFixed(4)},${y.toFixed(4)});`);
+      lines.push(`#${posPointId}=IFCCARTESIANPOINT((${posX.toFixed(4)},${posY.toFixed(4)},${posZ.toFixed(4)}));`);
+
+      const rad = (rot * Math.PI) / 180;
+      lines.push(`#${dirXId}=IFCDIRECTION((${Math.cos(rad).toFixed(4)},${Math.sin(rad).toFixed(4)},0.));`);
+      lines.push(`#${placement3DId}=IFCAXIS2PLACEMENT3D(#${posPointId},#7,#${dirXId});`);
+      lines.push(`#${localPlacementId}=IFCLOCALPLACEMENT($,#${placement3DId});`);
+      lines.push(`#${extrudedSolidId}=IFCEXTRUDEDAREASOLID(#${profId},#9,#31,${z.toFixed(4)});`);
+      lines.push(`#${shapeRepId}=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid',(#${extrudedSolidId}));`);
+      lines.push(`#${prodDefShapeId}=IFCPRODUCTDEFINITIONSHAPE($,$,(#${shapeRepId}));`);
+
+      const entityExpressId = idCounter++;
+      lines.push(`#${entityExpressId}=${c.ifcType.toUpperCase()}('${c.ifcGuid}',#5,'${c.name.replace(/'/g, "''")}',$,$,#${localPlacementId},#${prodDefShapeId},$);`);
+    });
+
+    lines.push('ENDSEC;');
+    lines.push('END-ISO-10303-21;');
+
+    return lines.join('\n');
   }
 }

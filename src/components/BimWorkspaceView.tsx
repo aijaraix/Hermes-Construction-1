@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as WebIFC from 'web-ifc';
 import {
   Layers,
   Search,
@@ -192,7 +193,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   // Inspector Active Tab
   const [inspectorTab, setInspectorTab] = useState<'IDENTITY' | 'GEOMETRY' | 'ASSEMBLY' | 'PROPERTYSETS' | 'CONNECTIVITY' | 'INSPECTION'>('IDENTITY');
 
-  // 3D Canvas Refs
+  // 3D Canvas Refs & web-ifc Geometry Store
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -202,24 +203,120 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const meshesMapRef = useRef<Map<string, THREE.Mesh>>(new Map());
   const boundingBoxMeshRef = useRef<THREE.BoxHelper | null>(null);
   const clippingPlanesRef = useRef<THREE.Plane[]>([]);
+  const ifcGeometriesRef = useRef<Map<string, THREE.BufferGeometry>>(new Map());
 
-  // Fetch Reference Model Data
+  const [ifcLoaded, setIfcLoaded] = useState<boolean>(false);
+  const [ifcParseError, setIfcParseError] = useState<string | null>(null);
+  const [ifcStats, setIfcStats] = useState<{ meshesCount: number; verticesCount: number; trianglesCount: number } | null>(null);
+
+  // Fetch Reference Model Metadata & Parse Raw IFC via web-ifc WASM
   useEffect(() => {
     let mounted = true;
-    fetch('/api/bim/reference-model')
-      .then((res) => res.json())
-      .then((data: ReferenceBimProject) => {
+
+    async function loadReferenceModelAndIfc() {
+      try {
+        setLoading(true);
+        setError(null);
+        setIfcParseError(null);
+
+        // 1. Fetch metadata JSON
+        const metaRes = await fetch('/api/bim/reference-model');
+        if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} loading model metadata`);
+        const metaData: ReferenceBimProject = await metaRes.json();
+        if (!mounted) return;
+        setProjectData(metaData);
+
+        // 2. Fetch raw IFC STEP file
+        const ifcRes = await fetch('/api/bim/reference-model.ifc');
+        if (!ifcRes.ok) throw new Error(`HTTP ${ifcRes.status} loading raw REFERENCE-BIM-0001.ifc`);
+        const buffer = await ifcRes.arrayBuffer();
+        const uint8Array = new Uint8Array(buffer);
+
+        // 3. Initialize web-ifc WASM engine
+        const ifcApi = new WebIFC.IfcAPI();
+        ifcApi.SetWasmPath('/wasm/');
+        await ifcApi.Init();
+
+        // 4. Open IFC Model
+        const modelID = ifcApi.OpenModel(uint8Array);
+
+        const geomMap = new Map<string, THREE.BufferGeometry>();
+        let totalVerts = 0;
+        let totalTris = 0;
+        let meshIndex = 0;
+
+        // Stream all geometric meshes parsed by web-ifc
+        ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
+          const numGeom = placedMesh.geometries.size();
+          for (let i = 0; i < numGeom; i++) {
+            const placedGeom = placedMesh.geometries.get(i);
+            const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
+
+            const verBuf = ifcApi.GetVertexArray(geomData.GetVertexData(), geomData.GetVertexDataSize());
+            const idxBuf = ifcApi.GetIndexArray(geomData.GetIndexData(), geomData.GetIndexDataSize());
+
+            if (verBuf.length === 0 || idxBuf.length === 0) continue;
+
+            const numVertices = verBuf.length / 6; // Float32Array stride = 6 (pos + normal)
+            const positions = new Float32Array(numVertices * 3);
+            const normals = new Float32Array(numVertices * 3);
+
+            for (let v = 0; v < numVertices; v++) {
+              positions[v * 3] = verBuf[v * 6];
+              positions[v * 3 + 1] = verBuf[v * 6 + 1];
+              positions[v * 3 + 2] = verBuf[v * 6 + 2];
+
+              normals[v * 3] = verBuf[v * 6 + 3];
+              normals[v * 3 + 1] = verBuf[v * 6 + 4];
+              normals[v * 3 + 2] = verBuf[v * 6 + 5];
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+            geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
+
+            // Apply matrix transformation from web-ifc
+            if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
+              const matrix = new THREE.Matrix4().fromArray(placedGeom.flatTransformation);
+              geometry.applyMatrix4(matrix);
+            }
+
+            // Map to corresponding component metadata
+            const comp = metaData.components[meshIndex];
+            if (comp) {
+              geomMap.set(comp.id, geometry);
+            }
+
+            totalVerts += numVertices;
+            totalTris += idxBuf.length / 3;
+          }
+          meshIndex++;
+        });
+
+        ifcApi.CloseModel(modelID);
+
+        if (!mounted) return;
+
+        if (geomMap.size === 0) {
+          setIfcParseError('web-ifc parsed 0 3D geometric meshes from REFERENCE-BIM-0001.ifc.');
+        } else {
+          ifcGeometriesRef.current = geomMap;
+          setIfcLoaded(true);
+          setIfcStats({ meshesCount: meshIndex, verticesCount: totalVerts, trianglesCount: totalTris });
+        }
+
+        setLoading(false);
+      } catch (err: any) {
         if (mounted) {
-          setProjectData(data);
+          console.error('Failed to parse IFC model with web-ifc:', err);
+          setIfcParseError('IFC MODEL PARSE FAILED: ' + (err.message || String(err)));
           setLoading(false);
         }
-      })
-      .catch((err) => {
-        if (mounted) {
-          setError('Failed to load REFERENCE-BIM-0001 dataset: ' + err.message);
-          setLoading(false);
-        }
-      });
+      }
+    }
+
+    loadReferenceModelAndIfc();
 
     return () => {
       mounted = false;
@@ -487,16 +584,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       const [dimX, dimY, dimZ] = comp.dimensions;
       const [posX, posY, posZ] = comp.position;
 
-      // Geometry selection based on IFC Type
-      let geom: THREE.BufferGeometry;
-      if (comp.ifcType === 'IfcPipeSegment' || comp.ifcType === 'IfcCableSegment') {
-        geom = new THREE.CylinderGeometry(dimX / 2 || 0.05, dimX / 2 || 0.05, dimY || 2.0, 16);
-      } else if (comp.ifcType === 'IfcDuctSegment') {
-        geom = new THREE.BoxGeometry(dimX || 0.3, dimY || 0.2, dimZ || 3.0);
-      } else if (comp.ifcType === 'IfcColumn') {
-        geom = new THREE.BoxGeometry(dimX || 0.15, dimY || 3.0, dimZ || 0.15);
-      } else {
-        geom = new THREE.BoxGeometry(dimX || 1.0, dimY || 1.0, dimZ || 1.0);
+      // Retrieve real 3D geometry parsed by web-ifc WASM engine
+      const geom = ifcGeometriesRef.current.get(comp.id);
+      if (!geom) {
+        console.warn(`[HERMES BIM Viewport] No web-ifc BufferGeometry found for component ID ${comp.id}`);
+        return;
       }
 
       // Shading / Color Logic
@@ -541,10 +633,6 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       });
 
       const mesh = new THREE.Mesh(geom, material);
-      mesh.position.set(posX, posY + (dimY || 1.0) / 2, posZ);
-      if (comp.orientationDegrees) {
-        mesh.rotation.y = (comp.orientationDegrees * Math.PI) / 180;
-      }
       mesh.userData = { compId: comp.id };
       mesh.castShadow = true;
       mesh.receiveShadow = true;
@@ -568,6 +656,21 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         boundingBoxMeshRef.current = boxHelper;
       }
     });
+
+    // Auto calculate overall building bounding box and adjust camera target
+    if (meshesMapRef.current.size > 0 && controlsRef.current) {
+      const overallBox = new THREE.Box3();
+      meshesMapRef.current.forEach((m) => {
+        m.geometry.computeBoundingBox();
+        if (m.geometry.boundingBox) {
+          overallBox.union(m.geometry.boundingBox);
+        }
+      });
+
+      const center = new THREE.Vector3();
+      overallBox.getCenter(center);
+      controlsRef.current.target.copy(center);
+    }
   }, [
     projectData,
     activeCategories,
@@ -1050,6 +1153,27 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         {/* CENTER WebGL BIM VIEWPORT */}
         <div className="flex-1 relative bg-slate-950">
           <div ref={containerRef} className="w-full h-full relative" />
+
+          {/* Diagnostic IFC Model Parse Error Overlay */}
+          {ifcParseError && (
+            <div className="absolute inset-0 z-30 flex items-center justify-center p-6 bg-slate-950/95 backdrop-blur-lg">
+              <div className="max-w-xl w-full p-6 bg-red-950/40 border border-red-500/50 rounded-2xl shadow-2xl text-red-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <AlertTriangle className="w-7 h-7 text-red-400 shrink-0" />
+                  <div>
+                    <h3 className="text-lg font-bold font-mono tracking-wider text-red-300">IFC MODEL PARSE FAILED</h3>
+                    <p className="text-xs font-mono text-red-400/80">web-ifc WebAssembly Geometry Pipeline Diagnostic</p>
+                  </div>
+                </div>
+                <div className="p-4 bg-slate-900/90 rounded-xl border border-red-900/60 font-mono text-xs text-red-300 whitespace-pre-wrap overflow-x-auto mb-4">
+                  {ifcParseError}
+                </div>
+                <div className="text-[11px] font-mono text-slate-400">
+                  Direct primitive BoxGeometry fallback is strictly disabled per Hermes Architecture Directives. Please ensure valid IFC4 3D geometry representations exist in REFERENCE-BIM-0001.ifc.
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Floating System Category Filter Overlay */}
           <div className="absolute top-3 left-4 z-10 flex flex-wrap gap-1.5 p-2 bg-slate-900/90 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl max-w-xl">
