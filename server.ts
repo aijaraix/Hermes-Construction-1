@@ -21,15 +21,52 @@ import { AcademyRuntimeHardeningEngine } from './server/academyRuntimeHardening'
 import { LiveLearningProofEngine } from './server/liveLearningProofEngine';
 import { Phase318B2FullRosterEngine } from './server/phase318b2FullRosterEngine';
 import { SpatialAcademyEngine } from './server/spatialAcademyEngine';
+import { MaterialsKnowledgeEngine } from './server/materialsKnowledgeEngine';
+import { ScenarioDirectorEngine } from './server/scenarioDirectorEngine';
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  // Initialize Spatial Construction Academy Engine
+  // Initialize Engines
   SpatialAcademyEngine.initialize();
+  MaterialsKnowledgeEngine.initialize();
 
   app.use(express.json());
+
+  // Materials Knowledge Graph Endpoints (Stage B)
+  app.get('/api/materials/specifications', (req, res) => {
+    res.json(MaterialsKnowledgeEngine.getAllSpecifications());
+  });
+
+  app.get('/api/materials/fasteners', (req, res) => {
+    res.json(MaterialsKnowledgeEngine.getAllFasteners());
+  });
+
+  app.get('/api/materials/assemblies', (req, res) => {
+    res.json(MaterialsKnowledgeEngine.getAllAssemblies());
+  });
+
+  app.get('/api/materials/check-compatibility', (req, res) => {
+    const { materialA, materialB } = req.query;
+    if (!materialA || !materialB) {
+      res.status(400).json({ error: 'Parameters materialA and materialB are required' });
+      return;
+    }
+    const rule = MaterialsKnowledgeEngine.checkCompatibility(materialA as string, materialB as string);
+    res.json(rule || { compatibilityStatus: 'COMPATIBLE', message: 'No explicit incompatibility recorded in Materials Graph' });
+  });
+
+  // Scenario Director & Customer Brief Endpoints (Stage E)
+  app.post('/api/scenario/generate-brief', (req, res) => {
+    const { projectType } = req.body || {};
+    const brief = ScenarioDirectorEngine.generateCanonicalBrief(projectType || 'APARTMENT_1BR');
+    res.json(brief);
+  });
+
+  app.get('/api/scenario/briefs', (req, res) => {
+    res.json(ScenarioDirectorEngine.getAllBriefs());
+  });
 
   // API Endpoints
   app.get('/api/system', (req, res) => {

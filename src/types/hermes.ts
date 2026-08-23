@@ -76,6 +76,14 @@ export interface BIMComponent {
   inspectionState: InspectionState;
   inspectionNotes?: string;
   whySelected: Explainability;
+
+  // --- STAGE C: OpenBIM & Material Graph Fields ---
+  ifcType?: string; // e.g., 'IfcWallStandardCase', 'IfcPipeSegment', 'IfcFlowTerminal'
+  ifcGlobalId?: string; // 22-character GUID
+  assemblySpecId?: string;
+  fastenerSpecId?: string;
+  responsibleAgentRoleId?: string;
+  materialSpecIds?: string[];
 }
 
 export interface EnvironmentProfile {
@@ -2591,6 +2599,104 @@ export interface Phase318B4OperationalReport {
   LEARNING_STARVATION_DETECTION_ACTIVE: 'YES' | 'NO';
 
   HOUSE_1_CANONICAL_BUILD_STARTED: 'NO';
+}
+
+// --- STAGE B: MATERIALS KNOWLEDGE GRAPH INTERFACES ---
+
+export type MaterialFamilyType =
+  | 'CONCRETE_CEMENTITIOUS'
+  | 'STRUCTURAL_STEEL'
+  | 'COLD_FORMED_STEEL'
+  | 'REINFORCING_STEEL'
+  | 'WOOD_ENGINEERED_WOOD'
+  | 'MASONRY'
+  | 'FASTENERS_CONNECTIONS'
+  | 'ADHESIVES_SEALANTS_ANCHORS'
+  | 'WATERPROOFING_MEMBRANES'
+  | 'INSULATION_THERMAL'
+  | 'GYPSUM_INTERIOR_BOARD'
+  | 'ROOFING_MATERIALS'
+  | 'GLAZING_GLASS'
+  | 'ALUMINUM_NONFERROUS'
+  | 'POLYMERS_PLASTICS'
+  | 'COPPER_CONDUCTORS'
+  | 'COATINGS_CORROSION_PROTECTION'
+  | 'FIREPROOFING_FIRESTOP'
+  | 'SOILS_AGGREGATES';
+
+export interface MaterialProperty {
+  propertyName: string;
+  value: number | string;
+  unit?: string;
+  testMethod?: string;
+  isVerifiedFact: boolean;
+}
+
+export interface MaterialSpecification {
+  specId: string;
+  materialName: string;
+  family: MaterialFamilyType;
+  grade: string;
+  composition: string;
+  densityLbsCuFt?: number;
+  yieldStrengthPsi?: number;
+  tensileStrengthPsi?: number;
+  compressiveStrengthPsi?: number;
+  bendingStrengthPsi?: number;
+  thermalConductivity?: number; // BTU-in/hr-ft²-°F
+  fireRatingMinutes?: number;
+  corrosionResistanceGrade?: string;
+  uvResistance: boolean;
+  applicableStandards: string[];
+  properties: MaterialProperty[];
+  responsibleSmeRoleId: string;
+  sourceProvenance: string;
+}
+
+export interface FastenerSpecification {
+  fastenerId: string;
+  name: string;
+  type: 'NAIL' | 'SCREW' | 'BOLT' | 'ANCHOR' | 'CLIP' | 'TIE';
+  materialGrade: string;
+  diameterInches: number;
+  lengthInches: number;
+  coating: string;
+  shearCapacityLbs: number;
+  tensionCapacityLbs: number;
+  minEdgeDistanceInches: number;
+  minSpacingInches: number;
+  substrateCompatibility: string[];
+  applicableStandard: string;
+  sourceProvenance: string;
+}
+
+export interface MaterialCompatibilityRule {
+  ruleId: string;
+  materialA: string;
+  materialB: string;
+  compatibilityStatus: 'COMPATIBLE' | 'REQUIRES_BARRIER' | 'INCOMPATIBLE';
+  riskDescription: string;
+  mitigationRequirement?: string;
+  governingStandard: string;
+}
+
+export interface AssemblySpecification {
+  assemblyId: string;
+  assemblyName: string;
+  category: SystemCategory;
+  layers: Array<{
+    layerSequence: number;
+    layerName: string;
+    specId: string;
+    thicknessInches: number;
+    function: string;
+  }>;
+  overallThicknessInches: number;
+  rValueThermal?: number;
+  fireRatingHours?: number;
+  stcSoundRating?: number;
+  fastenerSpecId?: string;
+  fastenerSpacingInches?: number;
 }
 
 

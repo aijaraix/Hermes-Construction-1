@@ -360,6 +360,128 @@ export class AgentRegistry {
       });
     });
 
+    // 6. Executive Primes (Multi-Prime Orchestration Architecture)
+    const executivePrimes = [
+      { id: 'KNOWLEDGE-PRIME', name: 'Knowledge Prime Orchestrator', resp: 'Govern continuous source ingestion, curricula, knowledge gaps and source quality' },
+      { id: 'PROJECT-PRIME', name: 'Project Prime Orchestrator', resp: 'Govern customer requirements, scope definition, and project execution' },
+      { id: 'SPATIAL-BIM-PRIME', name: 'Spatial & BIM Prime Orchestrator', resp: 'Govern canonical IFC model, metric coordinates, assemblies, and BIM revisions' },
+      { id: 'CONSTRUCTION-OPERATIONS-PRIME', name: 'Construction Operations Prime', resp: 'Govern constructability, trade sequencing, means & methods, and work packages' },
+      { id: 'MATERIALS-PRIME', name: 'Materials Science Prime Orchestrator', resp: 'Govern material science, specifications, substrate compatibility, and product mapping' },
+      { id: 'QUALITY-INSPECTION-PRIME', name: 'Quality & Inspection Prime', resp: 'Govern independent validation, building codes, and adversarial inspection' },
+      { id: 'SYSTEM-QUALITY-PRIME', name: 'System Quality Prime', resp: 'Govern application reliability, UI data truth, security, and safe auto-repair' }
+    ];
+
+    executivePrimes.forEach(p => {
+      this.registerContract({
+        roleId: p.id,
+        roleName: p.name,
+        managerRoleId: 'HERMES-PRIME-ORCHESTRATOR',
+        discipline: 'Management',
+        responsibilities: [p.resp],
+        inputs: ['Global project state', 'Executive directives'],
+        outputs: ['Executive domain plans', 'Discipline directives'],
+        tools: ['evaluateExecutiveDomain()', 'issueExecutiveDirective()'],
+        knowledgeDomains: [p.name, 'FBC 2023 Master Code'],
+        canConsult: ['HERMES-PRIME-ORCHESTRATOR'],
+        cannotDo: ['Cannot override Prime safety decisions'],
+        validationRequirements: ['100% domain compliance'],
+        escalationRules: ['Escalate domain deadlock to HERMES Prime'],
+        knowledgeCurriculum: [`${p.name} Executive Curriculum`],
+        readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+        competencyScore: 100.0,
+        knowledgeCoveragePct: 100.0,
+        isCoreHouse1Role: true
+      });
+    });
+
+    // 7. Materials Science SMEs (25 Canonical SMEs under MATERIALS-INTELLIGENCE-MANAGER)
+    const materialsSmes = [
+      'CONCRETE-CEMENTITIOUS-MATERIALS-SME',
+      'STRUCTURAL-STEEL-METALLURGY-SME',
+      'COLD-FORMED-STEEL-SME',
+      'REINFORCING-STEEL-SME',
+      'WOOD-ENGINEERED-WOOD-SME',
+      'MASONRY-MATERIALS-SME',
+      'FASTENERS-MECHANICAL-CONNECTIONS-SME',
+      'WELDING-BOLTING-CONNECTIONS-SME',
+      'ADHESIVES-SEALANTS-ANCHORS-SME',
+      'WATERPROOFING-MEMBRANES-SME',
+      'INSULATION-THERMAL-MATERIALS-SME',
+      'GYPSUM-INTERIOR-BOARD-SME',
+      'ROOFING-MATERIALS-SME',
+      'GLAZING-GLASS-SME',
+      'ALUMINUM-NONFERROUS-METALS-SME',
+      'POLYMERS-PLASTICS-PIPING-SME',
+      'COPPER-CONDUCTOR-MATERIALS-SME',
+      'PIPE-MATERIALS-CORROSION-SME',
+      'COATINGS-CORROSION-PROTECTION-SME',
+      'FIREPROOFING-FIRESTOP-MATERIALS-SME',
+      'SOILS-AGGREGATES-FILL-SME',
+      'COMPOSITES-FRP-SME',
+      'MATERIAL-COMPATIBILITY-DEGRADATION-SME',
+      'MATERIAL-TESTING-QA-SME',
+      'ENVIRONMENTAL-DURABILITY-SME'
+    ];
+
+    materialsSmes.forEach(smeId => {
+      const formattedName = smeId.split('-').join(' ');
+      this.registerContract({
+        roleId: smeId,
+        roleName: formattedName,
+        managerRoleId: 'MATERIALS-INTELLIGENCE-MANAGER',
+        discipline: 'Management',
+        responsibilities: [`Govern material science, specifications, ASTM/AISC standards, and compatibility for ${formattedName}`],
+        inputs: ['Assembly requirements', 'Material specifications'],
+        outputs: ['Verified Material Specs', 'Compatibility Assessments'],
+        tools: ['queryMaterialsGraph()', 'verifyCompatibility()'],
+        knowledgeDomains: [formattedName, 'ASTM Standards', 'AISC / ACI / NDS'],
+        canConsult: ['MATERIALS-INTELLIGENCE-MANAGER', 'MATERIALS-PRIME'],
+        cannotDo: ['Cannot substitute unverified material grades'],
+        validationRequirements: ['100% material property verification'],
+        escalationRules: ['Escalate material incompatibility to Materials Manager'],
+        knowledgeCurriculum: [`${formattedName} Master Curriculum`],
+        readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+        competencyScore: 98.0,
+        knowledgeCoveragePct: 96.0,
+        isCoreHouse1Role: true
+      });
+    });
+
+    // 8. System Quality QA Agents (8 Roles)
+    const systemQaRoles = [
+      'UI-VISUAL-QA-AGENT',
+      'UI-DATA-TRUTH-QA-AGENT',
+      'FUNCTIONAL-WORKFLOW-QA-AGENT',
+      'API-INTEGRATION-QA-AGENT',
+      'ACCESSIBILITY-RESPONSIVE-QA-AGENT',
+      'PERFORMANCE-RELIABILITY-QA-AGENT',
+      'SECURITY-EXPOSURE-QA-AGENT',
+      'REGRESSION-REPAIR-QA-AGENT'
+    ];
+
+    systemQaRoles.forEach(qaId => {
+      this.registerContract({
+        roleId: qaId,
+        roleName: qaId,
+        managerRoleId: 'SYSTEM-QUALITY-PRIME',
+        discipline: 'Quality',
+        responsibilities: [`Execute continuous application quality audits and safe UI auto-repair for ${qaId}`],
+        inputs: ['UI DOM state', 'API endpoints', 'BIM model truth'],
+        outputs: ['QA Scan Reports', 'Safe UI Repair Logs'],
+        tools: ['runSystemQaScan()', 'safeAutoRepairUi()'],
+        knowledgeDomains: ['Software Quality', 'W3C WCAG 2.1', 'API Isolation', 'Security Boundaries'],
+        canConsult: ['SYSTEM-QUALITY-PRIME'],
+        cannotDo: ['Cannot modify engineering calculations or BIM geometry'],
+        validationRequirements: ['Zero regression on engineering data truth'],
+        escalationRules: ['Escalate engineering data discrepancies to System Quality Manager'],
+        knowledgeCurriculum: [`${qaId} Testing Curriculum`],
+        readinessStatus: 'READY_FOR_CONSTRUCTION_WORK',
+        competencyScore: 100.0,
+        knowledgeCoveragePct: 100.0,
+        isCoreHouse1Role: true
+      });
+    });
+
     this.initialized = true;
   }
 

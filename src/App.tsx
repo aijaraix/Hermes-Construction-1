@@ -33,7 +33,7 @@ import { Phase318B3SpatialAcademyView } from './components/Phase318B3SpatialAcad
 import { OwnerSmeDashboardView } from './components/OwnerSmeDashboardView';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<NavTab>('command-center');
+  const [activeTab, setActiveTab] = useState<NavTab>('spatial-academy');
   const [heartbeatState, setHeartbeatState] = useState<PrimeHeartbeatState | null>(null);
   const [currentProject, setCurrentProject] = useState<DigitalTwinProject | null>(null);
   const [allProjects, setAllProjects] = useState<DigitalTwinProject[]>([]);
