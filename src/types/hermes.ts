@@ -1371,6 +1371,7 @@ export type SourceLifecycleStatus =
   | 'FETCH_PENDING'
   | 'FETCHED'
   | 'FETCH_FAILED'
+  | 'PROVENANCE_INVALID'
   | 'RIGHTS_RESTRICTED'
   | 'PARSED'
   | 'CHUNKED'
@@ -1429,8 +1430,78 @@ export interface UnattendedSchedulerDecision {
   nextRecommendedAction: string;
 }
 
+export interface AcademyMetrics {
+  canonicalRoleCount: number;
+  specialistCount: number;
+  managerCount: number;
+  inspectorCount: number;
+  orchestratorCount: number;
+
+  curriculaCount: number;
+  curriculumTopicCount: number;
+
+  sourcesRegistered: number;
+  sourcesRetrieved: number;
+  sourcesFailed: number;
+  sourcesRightsRestricted: number;
+
+  documentsFetched: number;
+  documentsParsed: number;
+  pagesParsed: number;
+  chunks: number;
+  knowledgeEntities: number;
+  assertions: number;
+
+  knowledgePacks: number;
+
+  realModelExecutions: number;
+  simulationExecutions: number;
+  failedExecutions: number;
+
+  competencyTests: number;
+  competencyPasses: number;
+  competencyFailures: number;
+
+  knowledgeGapsOpen: number;
+  knowledgeGapsResolved: number;
+
+  sandboxRuns: number;
+  sandboxPasses: number;
+  sandboxFailures: number;
+
+  managerReviews: number;
+  inspectorReviews: number;
+
+  heartbeatCycles: number;
+
+  certifiedAgents: number;
+  learningAgents: number;
+  untestedAgents: number;
+
+  // Distinct Coverage Metrics
+  curriculumAssignmentCoveragePct: number;
+  sourceCoveragePct: number;
+  knowledgeEvidenceCoveragePct: number;
+  knowledgeTestCoveragePct: number;
+  sandboxTestCoveragePct: number;
+  certifiedScopeCoveragePct: number;
+}
+
+export interface ExitGateRecord {
+  gateId: string;
+  description: string;
+  status: 'PASSED' | 'FAILED' | 'PENDING';
+  evidenceRecordIds: string[];
+  verifiedAt: string;
+  verifier: string;
+  failureReason?: string;
+}
+
 export interface Phase318A1Report {
   reportTimestamp: string;
+  phase318bLocked: boolean;
+  house1CanonicalBuildLocked: boolean;
+  academyMetrics: AcademyMetrics;
   canonicalRoles: {
     specialistsCount: number;
     managersCount: number;
@@ -1485,6 +1556,7 @@ export interface Phase318A1Report {
   };
   persistenceRestartVerified: boolean;
   exitGates: Record<string, boolean>;
+  exitGateRecords: ExitGateRecord[];
 }
 
 

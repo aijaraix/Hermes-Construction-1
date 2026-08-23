@@ -19,6 +19,29 @@ function getGenAIClient(): GoogleGenAI | null {
   return genAI;
 }
 
+async function generateWithFallback(ai: GoogleGenAI, contents: string, config?: any): Promise<any> {
+  const models = ['gemini-3.7-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
+  let lastError: any = null;
+  for (const model of models) {
+    try {
+      return await ai.models.generateContent({
+        model,
+        contents,
+        ...(config ? { config } : {}),
+      });
+    } catch (err: any) {
+      lastError = err;
+      const isQuotaError = err?.status === 'RESOURCE_EXHAUSTED' || err?.code === 429 || err?.message?.includes('429');
+      if (isQuotaError) {
+        console.log(`[GEMINI SERVICE] Model ${model} rate-limited/quota-exceeded. Trying fallback...`);
+      } else {
+        throw err;
+      }
+    }
+  }
+  throw lastError;
+}
+
 /**
  * Model Abstraction Layer for HERMES Construction
  * Decouples construction intelligence from specific provider API details.
@@ -36,14 +59,11 @@ Context: ${JSON.stringify(context, null, 2)}
 
 Provide a concise, highly technical engineering analysis and actionable recommendation.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.7-flash',
-      contents: prompt,
-    });
+    const response = await generateWithFallback(ai, prompt);
 
     return response.text || 'No output generated.';
   } catch (error: any) {
-    console.error('Gemini reasoning error:', error?.message || error);
+    console.warn('Gemini reasoning fallback triggered:', error?.message || error);
     return `[HERMES Reasoner Fallback]: Evaluated task "${task}" based on embedded construction code standards.`;
   }
 }
@@ -73,12 +93,8 @@ Return a JSON object with keys:
 "sources": array of 3 realistic technical reference documents,
 "recommendations": array of 3 specific engineering recommendations.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.7-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-      },
+    const response = await generateWithFallback(ai, prompt, {
+      responseMimeType: 'application/json',
     });
 
     const parsed = JSON.parse(response.text || '{}');
@@ -115,12 +131,8 @@ export async function validateCandidateAssembly(assemblyName: string, environmen
 Evaluate assembly "${assemblyName}" for Environment Context: ${JSON.stringify(environmentContext)}.
 Return JSON: { "valid": boolean, "issues": string[], "confidence": number (0-100) }.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.7-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-      },
+    const response = await generateWithFallback(ai, prompt, {
+      responseMimeType: 'application/json',
     });
 
     return JSON.parse(response.text || '{"valid": true, "issues": [], "confidence": 90}');

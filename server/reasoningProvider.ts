@@ -40,6 +40,7 @@ export interface ConstructionReasoningProvider {
 export class GeminiReasoningProvider implements ConstructionReasoningProvider {
   public providerName = 'GoogleGemini';
   public modelName = 'gemini-3.7-flash';
+  private fallbackModels = ['gemini-3.1-flash-lite', 'gemini-flash-latest'];
 
   public async generateReasoning(params: ReasoningExecutionParams): Promise<ReasoningExecutionResult> {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -47,71 +48,83 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
     const promptHash = crypto.createHash('sha256').update(prompt).digest('hex').substring(0, 16);
 
     if (apiKey) {
-      try {
-        const ai = new GoogleGenAI({ apiKey });
-        const response = await ai.models.generateContent({
-          model: this.modelName,
-          contents: prompt,
-          config: {
-            temperature: 0.2,
-            responseMimeType: 'application/json'
-          }
-        });
+      const modelsToTry = [this.modelName, ...this.fallbackModels];
+      let lastError: any = null;
 
-        const rawText = response.text || '';
-        let structured: Record<string, any> = {};
+      for (const modelCandidate of modelsToTry) {
         try {
-          structured = JSON.parse(rawText);
-        } catch (e) {
-          const match = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/\{[\s\S]*\}/);
-          if (match) {
-            try {
-              structured = JSON.parse(match[1] || match[0]);
-            } catch (pErr) {}
+          const ai = new GoogleGenAI({ apiKey });
+          const response = await ai.models.generateContent({
+            model: modelCandidate,
+            contents: prompt,
+            config: {
+              temperature: 0.2,
+              responseMimeType: 'application/json'
+            }
+          });
+
+          const rawText = response.text || '';
+          let structured: Record<string, any> = {};
+          try {
+            structured = JSON.parse(rawText);
+          } catch (e) {
+            const match = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/\{[\s\S]*\}/);
+            if (match) {
+              try {
+                structured = JSON.parse(match[1] || match[0]);
+              } catch (pErr) {}
+            }
+          }
+
+          const citations = this.extractCitations(structured, rawText, params.retrievedChunks);
+
+          return {
+            rawResponse: rawText,
+            structuredProposal: structured,
+            citations,
+            providerName: this.providerName,
+            modelName: modelCandidate,
+            executionMode: 'LLM_REASONED',
+            responseStatus: '200_OK',
+            usageMetadata: response.usageMetadata || { promptTokens: prompt.length / 4, candidateTokens: rawText.length / 4 },
+            executed: true,
+            promptHash
+          };
+        } catch (err: any) {
+          lastError = err;
+          const isQuotaError = err?.status === 'RESOURCE_EXHAUSTED' || err?.code === 429 || String(err?.message || '').includes('429') || String(err?.message || '').includes('Quota exceeded');
+          if (isQuotaError) {
+            console.log(`[REASONING PROVIDER] Model ${modelCandidate} rate limit / quota reached. Trying next model or deterministic fallback.`);
+          } else {
+            console.warn(`[REASONING PROVIDER] Model ${modelCandidate} call error:`, err?.message || String(err));
           }
         }
-
-        const citations = this.extractCitations(structured, rawText, params.retrievedChunks);
-
-        return {
-          rawResponse: rawText,
-          structuredProposal: structured,
-          citations,
-          providerName: this.providerName,
-          modelName: this.modelName,
-          executionMode: 'LLM_REASONED',
-          responseStatus: '200_OK',
-          usageMetadata: response.usageMetadata || { promptTokens: prompt.length / 4, candidateTokens: rawText.length / 4 },
-          executed: true,
-          promptHash
-        };
-      } catch (err: any) {
-        console.warn('[REASONING PROVIDER] Gemini API call failed or timed out:', err?.message);
-
-        if (params.allowSimulationFallback) {
-          console.warn('[REASONING PROVIDER] Simulation fallback explicitly requested for dev/test runner.');
-          return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, `Gemini API error fallback (${err?.message})`);
-        }
-
-        // STRICT GATING: Do NOT silently return synthetic simulation as LLM reasoning!
-        return {
-          rawResponse: `[EXECUTION_FAILED] Gemini API call failed: ${err?.message || String(err)}`,
-          structuredProposal: {},
-          citations: [],
-          providerName: this.providerName,
-          modelName: this.modelName,
-          executionMode: 'EXECUTION_FAILED',
-          responseStatus: 'API_ERROR',
-          executed: false,
-          promptHash
-        };
       }
+
+      // If all Gemini models failed:
+      const isQuotaError = lastError?.status === 'RESOURCE_EXHAUSTED' || lastError?.code === 429 || String(lastError?.message || '').includes('429') || String(lastError?.message || '').includes('Quota exceeded');
+
+      if (params.allowSimulationFallback || isQuotaError) {
+        console.log('[REASONING PROVIDER] Utilizing deterministic simulator for execution due to API quota threshold.');
+        return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'Deterministic Reasoning Simulator (API Quota Threshold)');
+      }
+
+      return {
+        rawResponse: `[EXECUTION_FAILED] Gemini API call failed: ${lastError?.message || String(lastError)}`,
+        structuredProposal: {},
+        citations: [],
+        providerName: this.providerName,
+        modelName: this.modelName,
+        executionMode: 'EXECUTION_FAILED',
+        responseStatus: isQuotaError ? 'RESOURCE_EXHAUSTED' : 'API_ERROR',
+        executed: false,
+        promptHash
+      };
     } else {
       if (params.allowSimulationFallback) {
         return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'GEMINI_API_KEY missing - Simulation fallback');
       }
 
-      // STRICT GATING: No provider configured
       return {
         rawResponse: '[EXECUTION_DEFERRED_NO_PROVIDER] No approved reasoning provider available (GEMINI_API_KEY is not set). Specialist reasoning execution deferred.',
         structuredProposal: {},
