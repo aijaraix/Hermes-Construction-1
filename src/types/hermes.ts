@@ -1284,6 +1284,210 @@ export interface LiveLearningActivity {
   executionId?: string;
 }
 
+// ======================================================================
+// PHASE 3.18A.1 REALITY CHECKPOINT & LEARNING PROOF EXTENSIONS
+// ======================================================================
+
+export type RoleLearningCategory = 
+  | 'SPECIALIST_LEARNING'
+  | 'MANAGER_LEARNING'
+  | 'INSPECTOR_LEARNING'
+  | 'SYSTEM_ORCHESTRATION';
+
+export type SpecialistOrManagerType = 'SPECIALIST' | 'MANAGER' | 'INSPECTOR' | 'EXECUTIVE';
+
+export interface MultiDimensionalCompetency {
+  knowledgeCoverage: number;       // %
+  sourceGrounding: number;          // %
+  technicalReasoning: number;       // %
+  calculationAccuracy: number;      // %
+  codeApplication: number;          // %
+  materialKnowledge: number;        // %
+  constructability: number;         // %
+  tradeCoordination: number;        // %
+  safetyRecognition: number;        // %
+  uncertaintyHandling: number;      // %
+  sandboxPerformance: number;       // %
+  adversarialTestPerformance: number; // %
+  overallReadinessScore: number;    // %
+}
+
+export interface ScopeBoundCertification {
+  certifiedScope: string;
+  jurisdictionScope: string;
+  materialSystemScope: string;
+  evidenceVersion: string;
+  knowledgePackVersion: string;
+  certificationDate: string;
+  knownLimitations: string[];
+  unresolvedGaps: string[];
+}
+
+export interface CanonicalRoleRecord {
+  agent_id: string;
+  agent_name: string;
+  role_type: RoleLearningCategory;
+  discipline: string;
+  manager_id: string;
+  specialist_or_manager: SpecialistOrManagerType;
+  curriculum_id: string;
+  source_plan_id: string;
+  knowledge_pack_id: string;
+  academy_status: 'UNTESTED' | 'INGESTING' | 'KNOWLEDGE_TESTED' | 'READY_FOR_SHADOW_WORK' | 'READY_FOR_CONSTRUCTION_WORK';
+  reasoning_jobs_completed: number;
+  sandbox_runs_completed: number;
+  competency_status: string;
+  certification_status: string;
+  competencyBreakdown: MultiDimensionalCompetency;
+  certifiedScopeDetail?: ScopeBoundCertification;
+}
+
+export interface TopicCoverageItem {
+  topicId: string;
+  curriculumTopic: string;
+  requiredKnowledge: string;
+  authoritativeSource: string;
+  retrieved: boolean;
+  parsed: boolean;
+  chunked: boolean;
+  assertionsExtracted: boolean;
+  corroborated: boolean;
+  tested: boolean;
+  confidenceScorePct: number;
+  remainingKnowledgeGap?: string;
+}
+
+export interface AgentKnowledgeCoverageMap {
+  agentRoleId: string;
+  agentName: string;
+  discipline: string;
+  lastUpdated: string;
+  topics: TopicCoverageItem[];
+  overallCoveragePct: number;
+}
+
+export type SourceLifecycleStatus = 
+  | 'DISCOVERED'
+  | 'FETCH_PENDING'
+  | 'FETCHED'
+  | 'FETCH_FAILED'
+  | 'RIGHTS_RESTRICTED'
+  | 'PARSED'
+  | 'CHUNKED'
+  | 'EXTRACTED'
+  | 'VALIDATED';
+
+export interface AuthoritativeSourceLifecycleRecord {
+  source_id: string;
+  authority: string;
+  official_url: string;
+  document_title: string;
+  document_type: string;
+  rights_status: string;
+  retrieval_status: SourceLifecycleStatus;
+  http_status?: number;
+  retrieval_timestamp?: string;
+  etag_or_last_modified?: string;
+  document_sha256?: string;
+  document_size_bytes?: number;
+  parser_used?: string;
+  pages_parsed: number;
+  chunks_created: number;
+  knowledge_entities_extracted: number;
+  agents_assigned: string[];
+}
+
+export interface SandboxRunRecord {
+  sandboxRunId: string;
+  agentRoleId: string;
+  sandboxType: 'Electrical' | 'HVAC' | 'Plumbing' | 'Structural' | 'Envelope' | 'Materials';
+  inputs: Record<string, any>;
+  agentProposal: Record<string, any>;
+  validatorOutput: {
+    passed: boolean;
+    violations: string[];
+    metrics: Record<string, any>;
+  };
+  inspectorReview?: {
+    inspectorAgentRoleId: string;
+    defectsFound: string[];
+    passed: boolean;
+  };
+  timestamp: string;
+}
+
+export interface UnattendedSchedulerDecision {
+  cycleNumber: number;
+  timestamp: string;
+  agentSelected: string;
+  agentName: string;
+  reasonSelected: string;
+  activityPerformed: string;
+  sourceOrReasoningOrSandboxUsed: string;
+  result: string;
+  stateChange: string;
+  nextRecommendedAction: string;
+}
+
+export interface Phase318A1Report {
+  reportTimestamp: string;
+  canonicalRoles: {
+    specialistsCount: number;
+    managersCount: number;
+    inspectorsCount: number;
+    orchestrationCount: number;
+    totalCount: number;
+  };
+  curriculaStats: {
+    assigned: number;
+    inProgress: number;
+    completed: number;
+    blocked: number;
+    orphan: number;
+    duplicate: number;
+    totalTopics: number;
+  };
+  sourceStats: {
+    discovered: number;
+    successfullyRetrieved: number;
+    rightsRestricted: number;
+    failed: number;
+    documentsCount: number;
+    pagesParsed: number;
+    chunksCreated: number;
+    assertionsExtracted: number;
+    knowledgePacksCount: number;
+  };
+  learningStats: {
+    agentsTrainedCount: number;
+    reasoningExecutionsCount: number;
+    competencyTestsCount: number;
+    failedTestsCount: number;
+    knowledgeGapsCreated: number;
+    knowledgeGapsResolved: number;
+  };
+  sandboxStats: {
+    totalRuns: number;
+    passes: number;
+    failures: number;
+  };
+  governanceStats: {
+    managerReviewsCount: number;
+    inspectorReviewsCount: number;
+    certifiedAgentsCount: number;
+    agentsStillTrainingCount: number;
+  };
+  unattendedProof: UnattendedSchedulerDecision[];
+  realitySwarmAudit: {
+    discrepanciesDetected: number;
+    safeRepairsPerformed: number;
+    escalatedDomainConflicts: number;
+  };
+  persistenceRestartVerified: boolean;
+  exitGates: Record<string, boolean>;
+}
+
+
 
 
 

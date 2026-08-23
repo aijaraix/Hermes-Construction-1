@@ -11,6 +11,7 @@ import { AgentExecutionService } from './server/agentExecutionService';
 import { RoomCoordinationEngine } from './server/roomCoordinationEngine';
 import { CloseoutEngine } from './server/closeoutEngine';
 import { RealitySwarmEngine } from './server/realitySwarmEngine';
+import { SandboxExecutionEngine } from './server/sandboxExecutionEngine';
 
 async function startServer() {
   const app = express();
@@ -289,6 +290,39 @@ async function startServer() {
 
   app.get('/api/knowledge/academy-report', (req, res) => {
     res.json(KnowledgeIngestionEngine.getAcademyInitialReport());
+  });
+
+  // Phase 3.18A.1 SME Academy Reality Checkpoint & Verification Endpoints
+  app.get('/api/academy/canonical-roles', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getCanonicalRoleRecords());
+  });
+
+  app.get('/api/academy/curricula-reconciliation', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getCurriculaReconciliation());
+  });
+
+  app.get('/api/academy/source-lifecycle', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getAuthoritativeSourceLifecycleRecords());
+  });
+
+  app.get('/api/academy/coverage-maps', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getAgentKnowledgeCoverageMaps());
+  });
+
+  app.get('/api/academy/coverage-map/:roleId', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getCoverageMapForAgent(req.params.roleId));
+  });
+
+  app.get('/api/academy/sandboxes', (req, res) => {
+    res.json(SandboxExecutionEngine.getAllHistory());
+  });
+
+  app.get('/api/academy/unattended-proof', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getUnattendedSchedulerProof());
+  });
+
+  app.get('/api/academy/report-318a1', (req, res) => {
+    res.json(KnowledgeIngestionEngine.getPhase318A1Report());
   });
 
   app.get('/api/knowledge/executions', (req, res) => {

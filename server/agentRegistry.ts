@@ -331,11 +331,10 @@ export class AgentRegistry {
       { id: 'STORMWATER-DRAINAGE-AGENT', name: 'Civil Stormwater Retention Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
       { id: 'UTILITY-CONNECTION-AGENT', name: 'Underground Utility Trenching Specialist', manager: 'SITE-CIVIL-MANAGER', disc: 'Site' },
       { id: 'MASONRY-CMU-STRUCTURAL-AGENT', name: 'Masonry CMU Bond Beam Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
+      { id: 'STRUCTURAL-STEEL-DESIGN-AGENT', name: 'Structural Steel Design & Connection Specialist', manager: 'STRUCTURAL-ENGINEERING-MANAGER', disc: 'Structure' },
       { id: 'LIGHTING-SWITCHING-AGENT', name: 'Interior Lighting & Switching Specialist', manager: 'ELECTRICAL-SYSTEMS-MANAGER', disc: 'Electrical' },
       { id: 'FIRE-SPRINKLER-EGRESS-AGENT', name: 'Fire Sprinkler & Egress Specialist', manager: 'FIRE-LIFE-SAFETY-MANAGER', disc: 'Fire Protection' },
-      { id: 'INDEPENDENT-MEP-INSPECTOR', name: 'Independent MEP Quality Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality' },
-      { id: 'INDEPENDENT-ENVELOPE-INSPECTOR', name: 'Independent Envelope Air Infiltration Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality' },
-      { id: 'SUPPLIER-PRICING-AGENT', name: 'Supplier Regional Price Intelligence Specialist', manager: 'PROCUREMENT-LOGISTICS-MANAGER', disc: 'Procurement' }
+      { id: 'INDEPENDENT-MEP-INSPECTOR', name: 'Independent MEP Quality Inspector', manager: 'QUALITY-INSPECTION-DIRECTOR', disc: 'Quality' }
     ];
 
     secondarySpecialistCohort.forEach(t => {

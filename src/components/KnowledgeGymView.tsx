@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AuthoritativeSourceDefinition, FetchedDocument, KnowledgeChunk, KnowledgeAssertion, AgentAuditTrace, ManagerReviewRecord, CompetencyTestResult, HttpSourceFetchRecord, LiveLearningActivity, AgentExecutionRecord } from '../types/hermes';
 import { BookOpen, Database, RefreshCw, CheckCircle2, ShieldCheck, ArrowUpRight, Play, Sparkles, Layers, Award, Zap, XCircle, Activity, Eye, FileJson, Cpu } from 'lucide-react';
+import { Phase318A1ReportView } from './Phase318A1ReportView';
 
 export const KnowledgeGymView: React.FC = () => {
   const [sources, setSources] = useState<AuthoritativeSourceDefinition[]>([]);
@@ -16,7 +17,7 @@ export const KnowledgeGymView: React.FC = () => {
   const [selectedExecution, setSelectedExecution] = useState<AgentExecutionRecord | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isIngesting, setIsIngesting] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'activities' | 'traces' | 'retraining' | 'fetches' | 'chunks' | 'assertions' | 'reviews'>('activities');
+  const [activeTab, setActiveTab] = useState<'report318a1' | 'activities' | 'traces' | 'retraining' | 'fetches' | 'chunks' | 'assertions' | 'reviews'>('report318a1');
 
   useEffect(() => {
     fetchData();
@@ -149,6 +150,15 @@ export const KnowledgeGymView: React.FC = () => {
       {/* Tabs */}
       <div className="flex border-b border-slate-800 space-x-2">
         <button
+          onClick={() => setActiveTab('report318a1')}
+          className={`pb-3 px-4 font-semibold text-xs border-b-2 transition flex items-center gap-1.5 ${
+            activeTab === 'report318a1' ? 'border-cyan-500 text-cyan-400 font-bold' : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Phase 3.18A.1 Reality Report & Proof</span>
+        </button>
+        <button
           onClick={() => setActiveTab('activities')}
           className={`pb-3 px-4 font-semibold text-xs border-b-2 transition flex items-center gap-1.5 ${
             activeTab === 'activities' ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -214,6 +224,10 @@ export const KnowledgeGymView: React.FC = () => {
       </div>
 
       {/* Tab Contents */}
+      {activeTab === 'report318a1' && (
+        <Phase318A1ReportView />
+      )}
+
       {activeTab === 'activities' && (
         <div className="space-y-3">
           {activities.map((act) => (

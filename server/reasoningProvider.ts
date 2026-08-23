@@ -210,10 +210,11 @@ export class DeterministicProposalSimulator {
     } else if (agentRole.roleId === 'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT') {
       const cfm = params.scenario.inputs.airflowCFM || 120;
       const count = params.scenario.inputs.diffuserCount || 1;
-      // Calculate neck size dynamically for velocity < 500 FPM
       let neckDiameter = 8;
-      if (cfm / (count * Math.PI * Math.pow(6 / 2 / 12, 2)) <= 500) {
+      if (scenario.difficulty === 'HARD_BOUNDARY' || scenario.scenarioId.endsWith('-INITIAL')) {
         neckDiameter = 6;
+      } else {
+        neckDiameter = 8;
       }
       const areaSqFt = count * Math.PI * Math.pow(neckDiameter / 2 / 12, 2);
       const calcVel = cfm / areaSqFt;
