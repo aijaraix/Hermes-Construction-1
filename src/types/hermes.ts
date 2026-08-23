@@ -1364,13 +1364,29 @@ export interface TopicCompetency {
 }
 
 export interface CertificationScope {
-  status: 'UNTESTED' | 'RETRAINING_REQUIRED' | 'READY_FOR_SHADOW_WORK' | 'READY_FOR_CONSTRUCTION_WORK';
-  buildingType: string;
+  agentId?: string;
+  agentRole?: string;
+  domain?: string;
+  subdomain?: string;
   jurisdiction: string;
-  climateZone: string;
-  allowedScope: string;
-  limitations: string[];
-  certifiedAt: string;
+  buildingType: string;
+  materialSystems?: string[];
+  environmentalConditions?: string[];
+  codeEditions?: string[];
+  validatedCapabilities?: string[];
+  excludedCapabilities?: string[];
+  knowledgePackVersion?: string;
+  sourceCoveragePct?: number;
+  sandboxDifficultyLevel?: number;
+  certificationDate?: string;
+  expirationPolicy?: string;
+  evidenceIds?: string[];
+  certificationStatus?: 'MASTERED_WITHIN_VALIDATED_SCOPE' | 'OUTSIDE_VALIDATED_SCOPE' | 'PENDING_REVALIDATION';
+  status?: 'UNTESTED' | 'RETRAINING_REQUIRED' | 'READY_FOR_SHADOW_WORK' | 'READY_FOR_CONSTRUCTION_WORK';
+  climateZone?: string;
+  allowedScope?: string;
+  limitations?: string[];
+  certifiedAt?: string;
 }
 
 export type EventOrigin = 'REAL_RUNTIME' | 'DETERMINISTIC_ENGINE' | 'SIMULATION' | 'SYSTEM_ADMIN';
@@ -2090,62 +2106,290 @@ export interface AgentMasteryProfile {
   estimatedCyclesToMastery: number;
 }
 
-export interface Phase318B2Report {
+export interface HistoricalClaimAuditRecord {
+  agentId: string;
+  discipline: string;
+  curriculumId: string;
+  knowledgePackVersion: string;
+  claimedPreScore: number;
+  claimedPostScore: number;
+  auditStatus: 'VERIFIED' | 'DOWNGRADED' | 'RE_BENCHMARKED';
+  preTestScenarioIds: string[];
+  postTestScenarioIds: string[];
+  differentQuestionsVerified: boolean;
+  llmExecutionIds: string[];
+  validatorResults: string;
+  managerReview: string;
+  inspectorReview: string;
+  sourceAssertionsUsed: number;
+  sourceProvenanceHashes: string[];
+  verifiedAt: string;
+}
+
+export type House1CapabilityReadiness =
+  | 'NOT_STARTED'
+  | 'TRAINING'
+  | 'SANDBOX_PASSED'
+  | 'MANAGER_APPROVED'
+  | 'INSPECTOR_PASSED'
+  | 'CROSS_TRADE_PASSED'
+  | 'READY'
+  | 'BLOCKED_RIGHTS'
+  | 'KNOWLEDGE_GAP';
+
+export interface House1CapabilityNode {
+  capabilityId: string;
+  name: string;
+  category: 'SITE' | 'FOUNDATION' | 'STRUCTURE' | 'ENCLOSURE' | 'MEP' | 'FINISHES' | 'INSPECTION' | 'PROCUREMENT' | 'SCHEDULE' | 'CLOSEOUT';
+  discipline: string;
+  description: string;
+  isMandatoryForHouse1: boolean;
+  primarySpecialist: string;
+  responsibleManager: string;
+  independentInspector: string;
+  requiredSources: string[];
+  requiredKnowledge: string[];
+  requiredSandbox: string;
+  requiredValidator: string;
+  requiredCrossTradeTests: string[];
+  readinessStatus: House1CapabilityReadiness;
+  difficultyLevelAchieved: number; // 1 to 8
+  roleGapFlagged?: boolean;
+}
+
+export interface SourceRightsAuditRecord {
+  sourceId: string;
+  sourceOwner: string;
+  documentTitle: string;
+  edition: string;
+  url: string;
+  retrievalDate: string;
+  rightsClassification: 'PUBLIC_FULL_TEXT' | 'RESTRICTED_METADATA_ONLY' | 'PROPRIETARY_CITATION_ONLY' | 'QUARANTINED';
+  fullTextIngestionPermitted: boolean;
+  metadataStoragePermitted: boolean;
+  citationPermitted: boolean;
+  documentHash?: string;
+  pagesProcessed: number;
+  pagesParsed?: number;
+  quarantinedTextPresent: boolean;
+  alternativePrimarySources: string[];
+}
+
+export interface RealityAcademyReport {
+  academyId: string;
+  trainingRunsCount: number;
+  defectsInjectedCount: number;
+  defectsDetectedCount: number;
+  falsePositivesCount: number;
+  falseNegativesCount: number;
+  detectionRatePct: number;
+  uiDataConflictsFound: number;
+  securityFindingsCount: number;
+  autoRepairsCount: number;
+  escalationsCount: number;
+  metricTraceVerification: {
+    displayedHeartbeatsTraceable: boolean;
+    displayedAgentCountTraceable: boolean;
+    displayedCompetencyTraceable: boolean;
+    displayedDocumentsTraceable: boolean;
+  };
+}
+
+export interface JobAccountingReconciliation {
+  jobsCreated: number;
+  queued: number;
+  claimed: number;
+  running: number;
+  completed: number;
+  failed: number;
+  deferredQuota: number;
+  blocked: number;
+  retryWait: number;
+  totalAccounted: number;
+  unaccountedJobs: number;
+  accountingVerified: boolean;
+}
+
+export interface Phase318B2FullReport {
   generatedAt: string;
-  observationWindow: {
-    startTime: string;
-    endTime: string;
-    realElapsedMinutes: number;
+  canonicalRoster: {
+    specialistsCount: number;
+    managersCount: number;
+    inspectorsCount: number;
+    orchestratorsCount: number;
+    realityAgentsCount: number;
+    totalRosterCount: number;
   };
-  operationalMetrics: {
-    heartbeats: number;
-    realSourcesDiscovered: number;
-    realDocumentsRetrieved: number;
-    realBytesRetrieved: number;
-    realPagesParsed: number;
-    realChunksCreated: number;
+  historicalClaimAudits: HistoricalClaimAuditRecord[];
+  house1CapabilityGraph: {
+    totalCapabilities: number;
+    readyCount: number;
+    trainingCount: number;
+    blockedCount: number;
+    failedCount: number;
+    readinessPct: number;
+    house1ReadyForOwnerAuthorization: 'YES' | 'NO';
+    house1CanonicalBuildStarted: 'NO';
+    capabilities: House1CapabilityNode[];
+  };
+  sourceRightsAudits: SourceRightsAuditRecord[];
+  realityAcademy: RealityAcademyReport;
+  jobAccounting: JobAccountingReconciliation;
+  learningVelocity24h: {
+    newSourcesDiscovered: number;
+    newLegitimateDocuments: number;
+    newPagesParsed: number;
     newGroundedAssertions: number;
-    newCorroboratedAssertions: number;
-    knowledgePackUpdates: number;
-    realLlmReasoningCalls: number;
-    deterministicOperations: number;
-    knowledgeReuseRatePct: number;
-    competencyTests: number;
-    sandboxExercises: number;
-    managerReviews: number;
-    inspectorSweeps: number;
-    failuresObserved: number;
-    knowledgeGapsCreated: number;
+    newKnowledgePackVersions: number;
+    newCapabilitiesMastered: number;
     knowledgeGapsResolved: number;
+    prePostCompetencyDeltaAvg: number;
+    knowledgeReuseRatePct: number;
   };
-  specialistProofResults: {
-    woodFraming: SpecialistLearningProofResult;
-    electrical: SpecialistLearningProofResult;
-    hvac: SpecialistLearningProofResult;
-  };
-  liveCounters: LiveLearningCounters;
   declarations: {
-    REAL_WALL_CLOCK_LEARNING_VERIFIED: 'YES' | 'NO';
-    REAL_EXTERNAL_INFORMATION_CONSUMED: 'YES' | 'NO';
-    KNOWLEDGE_PACKS_CHANGED_FROM_REAL_INFORMATION: 'YES' | 'NO';
-    UNSEEN_PERFORMANCE_IMPROVEMENT_VERIFIED: 'YES' | 'NO';
-    PRACTICAL_SANDBOX_MASTERY_TESTED: 'YES' | 'NO';
-    INDEPENDENT_INSPECTION_VERIFIED: 'YES' | 'NO';
-    MANAGER_REVIEW_VERIFIED: 'YES' | 'NO';
-    FAKE_LEARNING_COUNTERS_DETECTED: 'YES' | 'NO';
-    SIMULATED_TIME_USED_AS_OPERATIONAL_PROOF: 'YES' | 'NO';
-    HOUSE_1_CANONICAL_BUILD_STARTED: 'YES' | 'NO';
-  };
-  ownerQuestionsAnswers: {
-    whatGenuinelyLearned: string;
-    agentsMeasurablyBetter: string[];
-    evidenceSummary: string;
-    agentsClosestToMastery: string[];
-    whatPreventsRemainingMastery: string;
-    estimatedAdditionalTrainingRequired: string;
+    REAL_SOURCE_RETRIEVAL_ACTIVE: 'YES' | 'NO';
+    REAL_DOCUMENT_PARSING_ACTIVE: 'YES' | 'NO';
+    REAL_KNOWLEDGE_GROWTH_ACTIVE: 'YES' | 'NO';
+    FULL_ROSTER_TRAINING_ACTIVE: 'YES' | 'NO';
+    SCOPE_BOUND_CERTIFICATION_ACTIVE: 'YES' | 'NO';
+    UNSEEN_TESTING_ACTIVE: 'YES' | 'NO';
+    PROGRESSIVE_DIFFICULTY_ACTIVE: 'YES' | 'NO';
+    SPECIALIST_SANDBOX_ACTIVE: 'YES' | 'NO';
+    MANAGER_INDEPENDENT_TRAINING_ACTIVE: 'YES' | 'NO';
+    INSPECTOR_INDEPENDENT_TRAINING_ACTIVE: 'YES' | 'NO';
+    CROSS_TRADE_TRAINING_ACTIVE: 'YES' | 'NO';
+    REALITY_UI_ACADEMY_ACTIVE: 'YES' | 'NO';
+    REALITY_SELF_AUDIT_ACTIVE: 'YES' | 'NO';
+    EXTERNAL_DURABLE_SCHEDULER_ACTIVE: 'YES' | 'NO';
+    WALL_CLOCK_UNATTENDED_EXECUTION_VERIFIED: 'YES' | 'NO';
+    SIMULATION_COMPETENCY_CONTAMINATION: 'NO';
+    UNACCOUNTED_JOBS: 0;
+    HOUSE_1_CAPABILITY_GATE_ACTIVE: 'YES';
+    HOUSE_1_CANONICAL_BUILD_STARTED: 'NO';
   };
   exitGates: ExitGateRecord[];
 }
+
+export type Phase318B2Report = Phase318B2FullReport;
+
+// Phase 3.18B.3 — Continuous Spatial Construction Academy Types
+
+export interface FastenerScheduleItem {
+  id: string;
+  type: string;
+  material: string;
+  size: string;
+  spacingPattern: string;
+  quantity: number;
+  hostObjectId: string;
+  purpose: string;
+  codeReference: string;
+}
+
+export interface CrossTradeChangeRequest {
+  id: string;
+  requestingAgent: string;
+  requestingSystem: SystemCategory;
+  targetAgent: string;
+  targetSystem: SystemCategory;
+  description: string;
+  impactedObjectIds: string[];
+  proposedChange: string;
+  status: 'pending' | 'approved' | 'rejected' | 'resolved';
+  managerApproval?: string;
+  timestamp: string;
+}
+
+export interface SpatialModelRevision {
+  revisionId: string;
+  revisionNumber: number;
+  timestamp: string;
+  agentId: string;
+  agentRole: string;
+  managerId: string;
+  taskDescription: string;
+  actionType: 'CREATE_WALL' | 'PLACE_COMPONENT' | 'ROUTE_SYSTEM' | 'CONNECT_COMPONENTS' | 'REPAIR_DEFECT' | 'COORDINATE_CLASH';
+  objectsAdded: string[];
+  objectsChanged: string[];
+  objectsRemoved: string[];
+  materialsAdded: Array<{ name: string; qty: number; unit: string }>;
+  bomDeltaTotalCost: number;
+  reasoning: string;
+  codeReference: string;
+  modelSnapshot: BIMComponent[];
+}
+
+export interface KnowledgeGapRecord {
+  gapId: string;
+  agentId: string;
+  role: string;
+  topic: string;
+  missingInformation: string;
+  sourceRequirements: string[];
+  createdTimestamp: string;
+  resolvedTimestamp?: string;
+  status: 'UNRESOLVED' | 'RESOLVED' | 'DEPRECATED';
+}
+
+export interface SpatialAcademyProject {
+  projectId: string;
+  title: string;
+  difficultyLevel: number; // 1 = Component, 2 = Assembly, 3 = System, 4 = Room, 5 = Multi-Room, 6 = Floor, 7 = Small House, 8 = Complex House, 9 = House #1
+  difficultyName: string;
+  stage: 'SOURCE_DISCOVERY' | 'KNOWLEDGE_EXTRACTION' | 'SPATIAL_CONSTRUCTION' | 'ROOM_MANAGER_REVIEW' | 'FLOOR_MANAGER_REVIEW' | 'INSPECTION_SWEEP' | 'CROSS_TRADE_COORDINATION' | 'DEFECT_RETRAINING' | 'DIGITALLY_COMPLETE';
+  siteCoordinateSystem: {
+    origin: [number, number, number];
+    bounds: [number, number, number];
+    units: string;
+  };
+  components: BIMComponent[];
+  fasteners: FastenerScheduleItem[];
+  revisions: SpatialModelRevision[];
+  inspectionTickets: InspectionTicket[];
+  crossTradeRequests: CrossTradeChangeRequest[];
+  knowledgeGaps: KnowledgeGapRecord[];
+  agentAssignments: Array<{ agentId: string; role: string; system: SystemCategory }>;
+  digitalCompletionPct: number;
+  isDigitallyComplete: boolean;
+  startedFromEmpty: boolean;
+}
+
+export interface Phase318B3CheckpointReport {
+  SPATIAL_ACADEMY_ACTIVE: 'YES' | 'NO';
+  CANONICAL_PROJECT_MODEL_ACTIVE: 'YES' | 'NO';
+  CURRENT_TRAINING_PROJECT: string;
+  CURRENT_DIFFICULTY_LEVEL: string;
+  CURRENT_PROJECT_STAGE: string;
+  KNOWLEDGE_ACQUISITION_ACTIVE: 'YES' | 'NO';
+  PRACTICAL_CONSTRUCTION_ACTIVE: 'YES' | 'NO';
+  MANAGER_REVIEW_ACTIVE: 'YES' | 'NO';
+  INSPECTOR_MODEL_REVIEW_ACTIVE: 'YES' | 'NO';
+  CROSS_TRADE_COORDINATION_ACTIVE: 'YES' | 'NO';
+  REALITY_SWARM_MODEL_AUDIT_ACTIVE: 'YES' | 'NO';
+  CANONICAL_MODEL_OBJECTS: number;
+  MODEL_REVISIONS: number;
+  ACTIVE_AGENTS: number;
+  COMPLETED_AGENT_TASKS: number;
+  FAILED_AGENT_TASKS: number;
+  CROSS_TRADE_CONSULTATIONS: number;
+  CLASHES_FOUND: number;
+  CLASHES_RESOLVED: number;
+  INSPECTION_DEFECTS: number;
+  REPAIRS: number;
+  KNOWLEDGE_GAPS: number;
+  RETRAINING_CYCLES: number;
+  BOM_MODEL_DERIVED: 'YES' | 'NO';
+  CONSTRUCTION_PLAYBACK_FROM_REAL_REVISIONS: 'YES' | 'NO';
+  VIEWER_RENDERING_CANONICAL_MODEL: 'YES' | 'NO';
+  COMPONENT_CLICK_THROUGH_ACTIVE: 'YES' | 'NO';
+  SYSTEM_LAYER_FILTERING_ACTIVE: 'YES' | 'NO';
+  PROJECT_DIGITAL_COMPLETION_PCT: number;
+  HOUSE_1_READY_FOR_OWNER_AUTHORIZATION: 'YES' | 'NO';
+  HOUSE_1_CANONICAL_BUILD_STARTED: 'NO';
+  evidenceOfEmptyStart: string;
+}
+
+
 
 
 

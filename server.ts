@@ -19,10 +19,15 @@ import { ContinuousAcademyEngine } from './server/continuousAcademyEngine';
 import { ReasoningBudgetManager } from './server/reasoningBudgetManager';
 import { AcademyRuntimeHardeningEngine } from './server/academyRuntimeHardening';
 import { LiveLearningProofEngine } from './server/liveLearningProofEngine';
+import { Phase318B2FullRosterEngine } from './server/phase318b2FullRosterEngine';
+import { SpatialAcademyEngine } from './server/spatialAcademyEngine';
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Initialize Spatial Construction Academy Engine
+  SpatialAcademyEngine.initialize();
 
   app.use(express.json());
 
@@ -594,21 +599,99 @@ async function startServer() {
   });
 
   // Phase 3.18B.2 Live Learning Proof & Owner SME Academy Endpoints
+  app.get(['/api/academy/report-318b2-full', '/api/academy/phase-318b2-full'], (req, res) => {
+    try {
+      const report = Phase318B2FullRosterEngine.generateFullReport();
+      res.json(report);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18B.2 Full Report' });
+    }
+  });
+
   app.get('/api/academy/report-318b2', async (req, res) => {
     try {
-      const report = await LiveLearningProofEngine.runPhase318B2Proof();
-      res.json(report);
+      const fullReport = Phase318B2FullRosterEngine.generateFullReport();
+      res.json(fullReport);
     } catch (e: any) {
       res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18B.2 report' });
     }
   });
 
+  app.get('/api/academy/historical-audits', (req, res) => {
+    res.json(Phase318B2FullRosterEngine.runHistoricalClaimsAudit());
+  });
+
+  app.get('/api/academy/capability-graph', (req, res) => {
+    res.json(Phase318B2FullRosterEngine.buildHouse1CapabilityGraph());
+  });
+
+  app.get('/api/academy/source-rights', (req, res) => {
+    res.json(Phase318B2FullRosterEngine.auditSourceRights());
+  });
+
+  app.get('/api/academy/query-scope', (req, res) => {
+    const { agentId, jurisdiction, buildingType } = req.query as Record<string, string>;
+    const result = Phase318B2FullRosterEngine.queryAgentScope(
+      agentId || 'WOOD-FRAMING-AGENT',
+      jurisdiction || 'Florida / FBC 2023',
+      buildingType || 'Low-Rise Residential'
+    );
+    res.json(result);
+  });
+
   app.post('/api/academy/run-phase-318b2-proof', async (req, res) => {
     try {
-      const report = await LiveLearningProofEngine.runPhase318B2Proof();
+      const report = Phase318B2FullRosterEngine.generateFullReport();
       res.json(report);
     } catch (e: any) {
       res.status(500).json({ error: e.message || 'Failed to execute Phase 3.18B.2 proof' });
+    }
+  });
+
+  // Phase 3.18B.3 Continuous Spatial Construction Academy Endpoints
+  app.get(['/api/academy/spatial-report', '/api/academy/report-318b3'], (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.generateCheckpointReport());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate Phase 3.18B.3 spatial report' });
+    }
+  });
+
+  app.get('/api/academy/spatial-project', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getActiveProject());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve active spatial project' });
+    }
+  });
+
+  app.get('/api/academy/spatial-bom', (req, res) => {
+    try {
+      res.json(SpatialAcademyEngine.getDerivedBOM());
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to generate spatial model derived BOM' });
+    }
+  });
+
+  app.get('/api/academy/spatial-revisions', (req, res) => {
+    try {
+      const proj = SpatialAcademyEngine.getActiveProject();
+      res.json(proj.revisions || []);
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to retrieve spatial revisions' });
+    }
+  });
+
+  app.post('/api/academy/run-spatial-cycle', (req, res) => {
+    try {
+      const proj = SpatialAcademyEngine.runConstructionCycle();
+      res.json({
+        success: true,
+        project: proj,
+        report: SpatialAcademyEngine.generateCheckpointReport()
+      });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || 'Failed to execute spatial construction cycle' });
     }
   });
 

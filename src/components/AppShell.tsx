@@ -54,6 +54,7 @@ export type NavTab =
   | 'readiness-gate'
   | 'gym'
   | 'continuous-academy'
+  | 'spatial-academy'
   | 'owner-sme-dashboard'
   | 'reality-truth'
   | 'audit'
@@ -124,6 +125,7 @@ export const AppShell: React.FC<AppShellProps> = ({
     {
       group: 'HERMES INTELLIGENCE',
       items: [
+        { id: 'spatial-academy' as NavTab, label: '3.18B.3 Spatial Academy', icon: Box },
         { id: 'owner-sme-dashboard' as NavTab, label: '3.18B.2 Live SME Proof', icon: Award },
         { id: 'continuous-academy' as NavTab, label: '3.18B Continuous Academy', icon: Sparkles },
         { id: 'prime' as NavTab, label: 'HERMES Prime', icon: Cpu },

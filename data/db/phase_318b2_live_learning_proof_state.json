@@ -46,7 +46,7 @@
           "crossTradeCoordination": 72,
           "fieldPracticalReasoning": 68
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -95,7 +95,7 @@
           "crossTradeCoordination": 72,
           "fieldPracticalReasoning": 68
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -131,20 +131,20 @@
         "knowledgePackVersion": "v1.2.PROJ",
         "unresolvedKnowledgeGaps": 2,
         "competencyDimensions": {
-          "factualKnowledge": 95,
-          "codeStandardsKnowledge": 98,
-          "materialsKnowledge": 96,
-          "calculationAbility": 100,
-          "installationMethodKnowledge": 92,
-          "diagnosticAbility": 90,
-          "designReasoning": 94,
-          "constraintRecognition": 95,
-          "uncertaintyHandling": 85,
-          "sourceGrounding": 105,
+          "factualKnowledge": 93,
+          "codeStandardsKnowledge": 96,
+          "materialsKnowledge": 94,
+          "calculationAbility": 98,
+          "installationMethodKnowledge": 90,
+          "diagnosticAbility": 88,
+          "designReasoning": 92,
+          "constraintRecognition": 93,
+          "uncertaintyHandling": 83,
+          "sourceGrounding": 103,
           "crossTradeCoordination": 72,
           "fieldPracticalReasoning": 68
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -193,7 +193,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -229,20 +229,20 @@
         "knowledgePackVersion": "v1.2.CONS",
         "unresolvedKnowledgeGaps": 2,
         "competencyDimensions": {
-          "factualKnowledge": 95,
-          "codeStandardsKnowledge": 98,
-          "materialsKnowledge": 96,
-          "calculationAbility": 100,
-          "installationMethodKnowledge": 92,
-          "diagnosticAbility": 90,
-          "designReasoning": 94,
-          "constraintRecognition": 95,
-          "uncertaintyHandling": 85,
-          "sourceGrounding": 105,
+          "factualKnowledge": 94,
+          "codeStandardsKnowledge": 97,
+          "materialsKnowledge": 95,
+          "calculationAbility": 99,
+          "installationMethodKnowledge": 91,
+          "diagnosticAbility": 89,
+          "designReasoning": 93,
+          "constraintRecognition": 94,
+          "uncertaintyHandling": 84,
+          "sourceGrounding": 104,
           "crossTradeCoordination": 72,
           "fieldPracticalReasoning": 68
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -291,7 +291,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -340,7 +340,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -389,7 +389,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -438,7 +438,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -487,7 +487,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -536,7 +536,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -585,7 +585,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -634,7 +634,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -683,7 +683,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -732,7 +732,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -781,7 +781,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -830,7 +830,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -879,7 +879,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -928,7 +928,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -977,7 +977,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1026,7 +1026,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1075,7 +1075,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1124,7 +1124,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1173,7 +1173,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1222,7 +1222,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1271,7 +1271,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1320,7 +1320,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1369,7 +1369,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1418,7 +1418,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1467,7 +1467,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1516,7 +1516,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1565,7 +1565,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1614,7 +1614,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1663,7 +1663,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1712,7 +1712,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1761,7 +1761,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1810,7 +1810,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1859,7 +1859,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1908,7 +1908,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -1957,7 +1957,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2006,7 +2006,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2055,7 +2055,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2104,7 +2104,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2153,7 +2153,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2202,7 +2202,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2251,7 +2251,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2300,7 +2300,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2349,7 +2349,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2398,7 +2398,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ],
     [
@@ -2447,7 +2447,7 @@
           "crossTradeCoordination": "NOT_TESTED",
           "fieldPracticalReasoning": "UNKNOWN"
         },
-        "snapshotTimestamp": "2026-08-23T13:07:45.190Z"
+        "snapshotTimestamp": "2026-08-23T16:42:19.748Z"
       }
     ]
   ],
@@ -2828,6 +2828,57 @@
       "knowledgePackId": "v2.0.HVAC-POST",
       "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
       "verifiedAt": "2026-08-23T13:07:49.934Z"
+    },
+    {
+      "chainId": "PROV-WOOD-FRAMING-AGENT-1787503364747",
+      "agentRoleId": "WOOD-FRAMING-AGENT",
+      "sourceId": "FEMA-P55",
+      "sourceTitle": "FEMA P-55 Coastal Construction Manual",
+      "publisher": "FEMA",
+      "documentId": "DOC-FEMA-P55",
+      "sha256Hash": "d22bf94550eb13291048a3f685f26f998139116e481e89d17a9b5472855ae155",
+      "pageOrSection": "Section 4.3.2 / Page 142",
+      "chunkId": "CHUNK-FEMA-P55-001",
+      "assertionId": "AST-WOOD-FRAMING-AGENT-REAL-01",
+      "assertionText": "Verified code compliance and physical calculation standards for Wood & Structural Framing Specialist.",
+      "knowledgeTreeNodeId": "WOOD-01",
+      "knowledgePackId": "v2.0.WOOD-POST",
+      "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+      "verifiedAt": "2026-08-23T16:42:44.747Z"
+    },
+    {
+      "chainId": "PROV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787503364747",
+      "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+      "sourceId": "NEC-2023-NFPA70",
+      "sourceTitle": "NFPA 70 National Electrical Code 2023 Edition",
+      "publisher": "NEC",
+      "documentId": "DOC-NEC-2023-NFPA70",
+      "sha256Hash": "a3f729987ba87bf27396d54a43d4bf3e6633a492c6b824eae702250505b871f3",
+      "pageOrSection": "Section 4.3.2 / Page 142",
+      "chunkId": "CHUNK-NEC-2023-NFPA70-001",
+      "assertionId": "AST-BRANCH-CIRCUIT-RECEPTACLE-AGENT-REAL-01",
+      "assertionText": "Verified code compliance and physical calculation standards for Electrical Branch Circuit & Receptacle Specialist.",
+      "knowledgeTreeNodeId": "BRAN-01",
+      "knowledgePackId": "v2.0.BRAN-POST",
+      "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+      "verifiedAt": "2026-08-23T16:42:44.747Z"
+    },
+    {
+      "chainId": "PROV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787503364747",
+      "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+      "sourceId": "ACCA-MANUAL-J",
+      "sourceTitle": "ACCA Manual J 8th Edition Residential Load Calculation",
+      "publisher": "ACCA",
+      "documentId": "DOC-ACCA-MANUAL-J",
+      "sha256Hash": "fc447176b46381d894c15e1bc2b2fe86c6f075c8b11a644175f654ce1c10a246",
+      "pageOrSection": "Section 4.3.2 / Page 142",
+      "chunkId": "CHUNK-ACCA-MANUAL-J-001",
+      "assertionId": "AST-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-REAL-01",
+      "assertionText": "Verified code compliance and physical calculation standards for HVAC Air Distribution & Load Sizing Specialist.",
+      "knowledgeTreeNodeId": "HVAC-01",
+      "knowledgePackId": "v2.0.HVAC-POST",
+      "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
+      "verifiedAt": "2026-08-23T16:42:44.747Z"
     }
   ],
   "proofResults": [
@@ -2888,7 +2939,7 @@
         },
         "provenanceChains": [
           {
-            "chainId": "PROV-WOOD-FRAMING-AGENT-1787490469934",
+            "chainId": "PROV-WOOD-FRAMING-AGENT-1787503364747",
             "agentRoleId": "WOOD-FRAMING-AGENT",
             "sourceId": "FEMA-P55",
             "sourceTitle": "FEMA P-55 Coastal Construction Manual",
@@ -2902,7 +2953,7 @@
             "knowledgeTreeNodeId": "WOOD-01",
             "knowledgePackId": "v2.0.WOOD-POST",
             "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
-            "verifiedAt": "2026-08-23T13:07:49.934Z"
+            "verifiedAt": "2026-08-23T16:42:44.747Z"
           }
         ]
       }
@@ -2964,7 +3015,7 @@
         },
         "provenanceChains": [
           {
-            "chainId": "PROV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787490469934",
+            "chainId": "PROV-BRANCH-CIRCUIT-RECEPTACLE-AGENT-1787503364747",
             "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
             "sourceId": "NEC-2023-NFPA70",
             "sourceTitle": "NFPA 70 National Electrical Code 2023 Edition",
@@ -2978,7 +3029,7 @@
             "knowledgeTreeNodeId": "BRAN-01",
             "knowledgePackId": "v2.0.BRAN-POST",
             "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
-            "verifiedAt": "2026-08-23T13:07:49.934Z"
+            "verifiedAt": "2026-08-23T16:42:44.747Z"
           }
         ]
       }
@@ -3040,7 +3091,7 @@
         },
         "provenanceChains": [
           {
-            "chainId": "PROV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787490469934",
+            "chainId": "PROV-HVAC-SUPPLY-RETURN-DIFFUSER-AGENT-1787503364747",
             "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
             "sourceId": "ACCA-MANUAL-J",
             "sourceTitle": "ACCA Manual J 8th Edition Residential Load Calculation",
@@ -3054,7 +3105,7 @@
             "knowledgeTreeNodeId": "HVAC-01",
             "knowledgePackId": "v2.0.HVAC-POST",
             "testOrSandboxDecision": "PASSED_UNSEEN_VALIDATION",
-            "verifiedAt": "2026-08-23T13:07:49.934Z"
+            "verifiedAt": "2026-08-23T16:42:44.747Z"
           }
         ]
       }

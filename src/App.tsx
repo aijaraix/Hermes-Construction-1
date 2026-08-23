@@ -29,6 +29,7 @@ import { AuditTrailView } from './components/AuditTrailView';
 import { SystemHealthView } from './components/SystemHealthView';
 import { Phase318A2ReportView } from './components/Phase318A2ReportView';
 import { Phase318BContinuousAcademyView } from './components/Phase318BContinuousAcademyView';
+import { Phase318B3SpatialAcademyView } from './components/Phase318B3SpatialAcademyView';
 import { OwnerSmeDashboardView } from './components/OwnerSmeDashboardView';
 
 export default function App() {
@@ -331,6 +332,9 @@ export default function App() {
 
       {/* 23. Phase 3.18B Continuous SME Academy */}
       {activeTab === 'continuous-academy' && <Phase318BContinuousAcademyView />}
+
+      {/* 23B. Phase 3.18B.3 Continuous Spatial Construction Academy */}
+      {activeTab === 'spatial-academy' && <Phase318B3SpatialAcademyView />}
 
       {/* 24. Phase 3.18B.2 Owner SME Dashboard & Live SME Proof */}
       {activeTab === 'owner-sme-dashboard' && <OwnerSmeDashboardView />}

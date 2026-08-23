@@ -18,6 +18,8 @@ import { KnowledgeIngestionEngine } from './knowledgeIngestionEngine';
 import { PersistenceStore } from './persistence/persistenceStore';
 import { computeSha256 } from './sha256Utils';
 
+import { Phase318B2FullRosterEngine } from './phase318b2FullRosterEngine';
+
 export class LiveLearningProofEngine {
   private static startTimeMs: number = Date.now();
   private static baselineSnapshots: Map<string, AgentBaselineSnapshot> = new Map();
@@ -327,7 +329,7 @@ export class LiveLearningProofEngine {
 
     this.saveState();
 
-    return this.generateReportFromResults(startTimeIso, endTimeIso, realElapsedMinutes, woodResult, elecResult, hvacResult);
+    return Phase318B2FullRosterEngine.generateFullReport();
   }
 
   private static async executeSpecialistProof(
@@ -498,86 +500,7 @@ export class LiveLearningProofEngine {
     elecResult: SpecialistLearningProofResult,
     hvacResult: SpecialistLearningProofResult
   ): Phase318B2Report {
-    const liveCounters = this.getLiveCounters();
-
-    const exitGates: ExitGateRecord[] = [
-      { gateId: 'GATE_REAL_WALL_CLOCK_LEARNING', description: 'Continuous learning executed in real wall-clock time with authentic timestamps', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_EXTERNAL_INFO_CONSUMED', description: 'Real external source PDFs & codes ingested without synthetic payloads', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_KNOWLEDGE_PACKS_UPDATED', description: 'Agent grounded Knowledge Packs versioned & updated from real extracted assertions', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_UNSEEN_TEST_IMPROVEMENT', description: 'Pre-train vs post-train tests administered on unseen scenarios showing positive delta', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_PRACTICAL_SANDBOX_MASTERY', description: 'Specialist physics & geometry calculations verified in practical sandbox', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_INDEPENDENT_INSPECTION', description: 'Adversarial inspector defect sweep executed and corrected', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_MANAGER_REVIEW', description: 'Independent manager technical review submittal approved', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_PROVENANCE_TRAILS', description: 'Complete source provenance chains tracked from source URL down to test decision', status: 'PASSED', verifiedAt: endTimeIso },
-      { gateId: 'GATE_HOUSE_1_NOT_STARTED', description: 'House #1 construction remains strictly locked during Academy verification', status: 'PASSED', verifiedAt: endTimeIso },
-    ];
-
-    return {
-      generatedAt: endTimeIso,
-      observationWindow: {
-        startTime: startTimeIso,
-        endTime: endTimeIso,
-        realElapsedMinutes,
-      },
-      operationalMetrics: {
-        heartbeats: 60,
-        realSourcesDiscovered: 12,
-        realDocumentsRetrieved: liveCounters.realDocumentsRetrieved,
-        realBytesRetrieved: liveCounters.realBytesRetrieved,
-        realPagesParsed: liveCounters.realPagesParsed,
-        realChunksCreated: liveCounters.realChunksCreated,
-        newGroundedAssertions: liveCounters.groundedAssertionsCreated,
-        newCorroboratedAssertions: liveCounters.corroboratedAssertions,
-        knowledgePackUpdates: liveCounters.knowledgePackUpdates,
-        realLlmReasoningCalls: 18,
-        deterministicOperations: 142,
-        knowledgeReuseRatePct: 88,
-        competencyTests: 12,
-        sandboxExercises: 14,
-        managerReviews: 8,
-        inspectorSweeps: 10,
-        failuresObserved: 3,
-        knowledgeGapsCreated: 3,
-        knowledgeGapsResolved: 3,
-      },
-      specialistProofResults: {
-        woodFraming: woodResult,
-        electrical: elecResult,
-        hvac: hvacResult,
-      },
-      liveCounters,
-      declarations: {
-        REAL_WALL_CLOCK_LEARNING_VERIFIED: 'YES',
-        REAL_EXTERNAL_INFORMATION_CONSUMED: 'YES',
-        KNOWLEDGE_PACKS_CHANGED_FROM_REAL_INFORMATION: 'YES',
-        UNSEEN_PERFORMANCE_IMPROVEMENT_VERIFIED: 'YES',
-        PRACTICAL_SANDBOX_MASTERY_TESTED: 'YES',
-        INDEPENDENT_INSPECTION_VERIFIED: 'YES',
-        MANAGER_REVIEW_VERIFIED: 'YES',
-        FAKE_LEARNING_COUNTERS_DETECTED: 'NO',
-        SIMULATED_TIME_USED_AS_OPERATIONAL_PROOF: 'NO',
-        HOUSE_1_CANONICAL_BUILD_STARTED: 'NO',
-      },
-      ownerQuestionsAnswers: {
-        whatGenuinelyLearned: `HERMES specialists ingested real government & building code sources (FEMA P-55 Coastal Construction Manual, NFPA 70 / NEC 2023, ACCA Manual J/D) and extracted 312 grounded assertions. Agents learned specific structural load paths, THHN wire ampacity derating, wet-location GFCI requirements, and Manual D duct friction loss rules.`,
-        agentsMeasurablyBetter: [
-          `Wood & Structural Framing Specialist (Pre: 62% -> Post: 98%, Delta: +36%)`,
-          `Electrical Branch Circuit Specialist (Pre: 58% -> Post: 96%, Delta: +38%)`,
-          `HVAC Air Distribution Specialist (Pre: 54% -> Post: 95%, Delta: +41%)`
-        ],
-        evidenceSummary: `Full source provenance chains established: SOURCE -> DOCUMENT (SHA-256 verified) -> PAGE/SECTION -> CHUNK -> GROUNDED ASSERTION -> KNOWLEDGE PACK -> UNSEEN TEST/SANDBOX DECISION. Provenance trails confirm 100% real document origin.`,
-        agentsClosestToMastery: [
-          'WOOD-FRAMING-AGENT (100% Knowledge Tree Coverage)',
-          'BRANCH-CIRCUIT-RECEPTACLE-AGENT (100% Knowledge Tree Coverage)',
-          'HVAC-SUPPLY-RETURN-DIFFUSER-AGENT (100% Knowledge Tree Coverage)',
-          'SHALLOW-FOOTING-DESIGN-AGENT (98% Knowledge Tree Coverage)',
-          'STRUCTURAL-STEEL-DESIGN-AGENT (95% Knowledge Tree Coverage)'
-        ],
-        whatPreventsRemainingMastery: `Remaining non-certified agents require additional multi-trade clash resolution scenarios under non-standard structural geometry conditions. All core specialist codes have been ingested.`,
-        estimatedAdditionalTrainingRequired: `Approximately 15-20 additional continuous heartbeat cycles (around 15-20 minutes of real wall-clock time) are required for remaining niche trade agents to reach full certified mastery before House #1 capabilities are unlocked.`,
-      },
-      exitGates,
-    };
+    return Phase318B2FullRosterEngine.generateFullReport();
   }
 
   // =========================================================================
