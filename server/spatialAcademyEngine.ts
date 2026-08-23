@@ -53,6 +53,17 @@ export class SpatialAcademyEngine {
     if (this.activeProject.revisions.length <= 1) {
       this.runFirstBathroomConstructionSequence();
     }
+
+    // Set up continuous background heartbeat for automatic learning and spatial building
+    if (!this.heartbeatTimer) {
+      this.heartbeatTimer = setInterval(() => {
+        try {
+          this.runConstructionCycle();
+        } catch (err) {
+          console.error('[SPATIAL ACADEMY] Error in spatial heartbeat cycle:', err);
+        }
+      }, 15000); // Heartbeat every 15s
+    }
   }
 
   public static isAcademyActive(): boolean {
