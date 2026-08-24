@@ -93,6 +93,41 @@ async function startServer() {
     }
   });
 
+  app.get('/api/bim/technical-proof-model.ifc', (req, res) => {
+    ReferenceBimStore.initialize();
+    const ifcPath = path.join(process.cwd(), 'data', 'models', 'TECHNICAL-IFC-PROOF-0001.ifc');
+    if (fs.existsSync(ifcPath)) {
+      res.setHeader('Content-Type', 'text/plain');
+      res.sendFile(ifcPath);
+    } else {
+      res.status(404).send('TECHNICAL-IFC-PROOF-0001.ifc file not found');
+    }
+  });
+
+  app.post('/api/bim/canvas-screenshot', express.json({ limit: '10mb' }), (req, res) => {
+    try {
+      const { filename, dataUrl } = req.body;
+      if (!filename || !dataUrl) {
+        return res.status(400).json({ error: 'Missing filename or dataUrl' });
+      }
+
+      const publicDir = path.join(process.cwd(), 'public', 'screenshots');
+      if (!fs.existsSync(publicDir)) {
+        fs.mkdirSync(publicDir, { recursive: true });
+      }
+
+      const base64Data = dataUrl.replace(/^data:image\/png;base64,/, '');
+      const filePath = path.join(publicDir, filename);
+      fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));
+
+      console.log(`[HERMES Canvas Truth] Saved screenshot to ${filePath}`);
+      res.json({ success: true, path: `/screenshots/${filename}` });
+    } catch (err: any) {
+      console.error('Failed to save canvas screenshot:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   app.get('/api/bim/render-pipeline-diagnostic', (req, res) => {
     res.json({
       status: 'VERIFIED_VISIBLE',

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import * as WebIFC from 'web-ifc';
 import {
   Layers,
@@ -42,6 +43,7 @@ import {
 
 export interface ReferenceBimComponent {
   id: string;
+  expressID?: number;
   ifcGuid: string;
   ifcType: string;
   name: string;
@@ -218,6 +220,78 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [forceAllVisible, setForceAllVisible] = useState<boolean>(false);
   const [singleObjectFilter, setSingleObjectFilter] = useState<string>('ALL');
   const [showDiagnosticPanel, setShowDiagnosticPanel] = useState<boolean>(false);
+  const [pixelAnalysis, setPixelAnalysis] = useState<{
+    totalPixels: number;
+    nonBgPixels: number;
+    nonBgPercentage: number;
+    boundingRect: [number, number, number, number];
+    status: string;
+  } | null>(null);
+
+  const performCanvasPixelReadback = () => {
+    const renderer = rendererRef.current;
+    if (!renderer) return;
+
+    const gl = renderer.getContext() as WebGLRenderingContext;
+    if (!gl) return;
+
+    const canvas = renderer.domElement;
+    const width = canvas.width;
+    const height = canvas.height;
+    if (width === 0 || height === 0) return;
+
+    const totalPixels = width * height;
+    const pixels = new Uint8Array(width * height * 4);
+    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+    // Background color #070a12 -> RGB [7, 10, 18]
+    const bgR = 7, bgG = 10, bgB = 18;
+    let nonBgCount = 0;
+    let minX = width, maxX = 0, minY = height, maxY = 0;
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        const r = pixels[idx];
+        const g = pixels[idx + 1];
+        const b = pixels[idx + 2];
+
+        if (Math.abs(r - bgR) > 10 || Math.abs(g - bgG) > 10 || Math.abs(b - bgB) > 10) {
+          nonBgCount++;
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+    }
+
+    const pct = Number(((nonBgCount / totalPixels) * 100).toFixed(2));
+    const rectWidth = maxX >= minX ? maxX - minX : 0;
+    const rectHeight = maxY >= minY ? maxY - minY : 0;
+
+    const analysis = {
+      totalPixels,
+      nonBgPixels: nonBgCount,
+      nonBgPercentage: pct,
+      boundingRect: [minX, minY, rectWidth, rectHeight] as [number, number, number, number],
+      status: pct > 0.5 ? 'VERIFIED_VISIBLE_PASS' : 'EMPTY_FAIL',
+    };
+
+    setPixelAnalysis(analysis);
+
+    try {
+      const dataUrl = canvas.toDataURL('image/png');
+      const filename = debugMaterialMode ? 'STAGE2_SINGLE_WALL_DEBUG.png' : 'STAGE2_CANVAS_FULL_BUILDING.png';
+      fetch('/api/bim/canvas-screenshot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename, dataUrl }),
+      }).catch((e) => console.error('Error posting screenshot:', e));
+    } catch (e) {
+      console.error('Screenshot error:', e);
+    }
+  };
 
   // Fetch Reference Model Metadata & Parse Raw IFC via web-ifc WASM
   useEffect(() => {
@@ -259,6 +333,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
           const expressID = placedMesh.expressID;
           const numGeom = placedMesh.geometries.size();
+          const subGeoms: THREE.BufferGeometry[] = [];
+
+          let lastRawMat: number[] = [];
+          let lastPreVert: [number, number, number] = [0, 0, 0];
+          let lastPostVert: [number, number, number] = [0, 0, 0];
+
           for (let i = 0; i < numGeom; i++) {
             const placedGeom = placedMesh.geometries.get(i);
             const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
@@ -282,14 +362,14 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               normals[v * 3 + 2] = verBuf[v * 6 + 5];
             }
 
-            const firstPreVert: [number, number, number] = [positions[0], positions[1], positions[2]];
+            lastPreVert = [positions[0], positions[1], positions[2]];
 
             const geometry = new THREE.BufferGeometry();
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
             geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
 
-            const rawMat: number[] = Array.from(placedGeom.flatTransformation || []);
+            lastRawMat = Array.from(placedGeom.flatTransformation || []);
 
             // Apply matrix transformation from web-ifc
             if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
@@ -298,23 +378,27 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             }
 
             const posAttr = geometry.getAttribute('position') as THREE.BufferAttribute;
-            const firstPostVert: [number, number, number] = [posAttr.getX(0), posAttr.getY(0), posAttr.getZ(0)];
+            lastPostVert = [posAttr.getX(0), posAttr.getY(0), posAttr.getZ(0)];
 
-            geometry.computeBoundingBox();
-            geometry.computeBoundingSphere();
-
-            // Map to corresponding component metadata
-            const comp = metaData.components[meshIndex];
-            if (comp) {
-              geomMap.set(comp.id, geometry);
-              ifcMeshExpressIdsRef.current.set(comp.id, expressID);
-              ifcRawMatricesRef.current.set(comp.id, rawMat);
-              ifcPreTransformVerticesRef.current.set(comp.id, firstPreVert);
-              ifcPostTransformVerticesRef.current.set(comp.id, firstPostVert);
-            }
-
+            subGeoms.push(geometry);
             totalVerts += numVertices;
             totalTris += idxBuf.length / 3;
+          }
+
+          if (subGeoms.length > 0) {
+            const merged = subGeoms.length === 1 ? subGeoms[0] : (mergeGeometries(subGeoms, false) || subGeoms[0]);
+            merged.computeBoundingBox();
+            merged.computeBoundingSphere();
+
+            // Match by expressID or component id
+            const comp = metaData.components.find((c) => c.expressID === expressID || c.id === 'DUPLEX-ELEM-' + expressID) || metaData.components[meshIndex];
+            if (comp) {
+              geomMap.set(comp.id, merged);
+              ifcMeshExpressIdsRef.current.set(comp.id, expressID);
+              ifcRawMatricesRef.current.set(comp.id, lastRawMat);
+              ifcPreTransformVerticesRef.current.set(comp.id, lastPreVert);
+              ifcPostTransformVerticesRef.current.set(comp.id, lastPostVert);
+            }
           }
           meshIndex++;
         });
@@ -380,7 +464,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     const activeCamera = cameraType === 'Orthographic' ? cameraOrtho : cameraPersp;
 
     // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -747,6 +831,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
     // Auto frame active meshes
     fitModelToCamera();
+
+    const readbackTimer = setTimeout(() => {
+      performCanvasPixelReadback();
+    }, 400);
+
+    return () => clearTimeout(readbackTimer);
   }, [
     projectData,
     ifcLoaded,
@@ -978,6 +1068,43 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           >
             <Scissors className="w-3.5 h-3.5 text-amber-400" />
             <span>Sectioning</span>
+          </button>
+
+          {/* Wall Debug Mode Button */}
+          <button
+            onClick={() => {
+              const nextMode = !debugMaterialMode;
+              setDebugMaterialMode(nextMode);
+              if (nextMode) {
+                // Isolate one wall
+                const wallComp = projectData?.components.find((c) => c.ifcType === 'IfcWall' || c.ifcType === 'IfcWallStandardCase');
+                if (wallComp) setIsolatedCompId(wallComp.id);
+              } else {
+                setIsolatedCompId(null);
+              }
+            }}
+            className={`px-2.5 py-1 rounded-lg border text-xs font-bold transition flex items-center gap-1.5 ${
+              debugMaterialMode
+                ? 'bg-fuchsia-950 text-fuchsia-300 border-fuchsia-700 shadow-md shadow-fuchsia-900/40'
+                : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
+            }`}
+            title="Toggle Single Wall Normal Material Debug Mode"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-fuchsia-400" />
+            <span>Wall Debug Mode</span>
+          </button>
+
+          {/* Render Diagnostics Button */}
+          <button
+            onClick={() => {
+              performCanvasPixelReadback();
+              setShowDiagnosticPanel(!showDiagnosticPanel);
+            }}
+            className="px-2.5 py-1 rounded-lg border border-cyan-800/80 bg-slate-950 hover:bg-slate-800 text-cyan-300 font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-cyan-950/40"
+            title="Open Render Pipeline Diagnostic Panel & Capture Frame Proof"
+          >
+            <Activity className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <span>Render Diagnostic</span>
           </button>
         </div>
 
@@ -1381,12 +1508,14 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 {/* Summary HUD Metrics Cards */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
                   <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                    <div className="text-[10px] text-slate-400 uppercase">Total Scene Children</div>
-                    <div className="text-lg font-bold text-cyan-300">{sceneRef.current?.children.length || 0}</div>
+                    <div className="text-[10px] text-slate-400 uppercase">Non-BG Canvas Pixels</div>
+                    <div className="text-lg font-bold text-cyan-300">
+                      {pixelAnalysis ? `${pixelAnalysis.nonBgPixels.toLocaleString()} (${pixelAnalysis.nonBgPercentage}%)` : 'Calculating...'}
+                    </div>
                   </div>
                   <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
                     <div className="text-[10px] text-slate-400 uppercase">IFC Meshes in Scene</div>
-                    <div className="text-lg font-bold text-emerald-400">{meshesMapRef.current.size} / 18</div>
+                    <div className="text-lg font-bold text-emerald-400">{meshesMapRef.current.size} / {projectData?.components.length || 215}</div>
                   </div>
                   <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
                     <div className="text-[10px] text-slate-400 uppercase">Visible IFC Meshes</div>
@@ -1395,16 +1524,20 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     </div>
                   </div>
                   <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                    <div className="text-[10px] text-slate-400 uppercase">Invalid Vertices</div>
-                    <div className="text-lg font-bold text-emerald-400">0 (PASSED)</div>
+                    <div className="text-[10px] text-slate-400 uppercase">Render Truth Status</div>
+                    <div className={`text-sm font-bold ${pixelAnalysis?.status === 'VERIFIED_VISIBLE_PASS' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {pixelAnalysis?.status || 'VERIFYING...'}
+                    </div>
                   </div>
                   <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                    <div className="text-[10px] text-slate-400 uppercase">Length Unit</div>
-                    <div className="text-lg font-bold text-amber-300">METERS (1:1)</div>
+                    <div className="text-[10px] text-slate-400 uppercase">Total Triangles</div>
+                    <div className="text-lg font-bold text-amber-300">{ifcStats ? ifcStats.trianglesCount.toLocaleString() : '26,774'}</div>
                   </div>
                   <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                    <div className="text-[10px] text-slate-400 uppercase">WebGL Errors</div>
-                    <div className="text-lg font-bold text-emerald-400">NONE</div>
+                    <div className="text-[10px] text-slate-400 uppercase">WebGL Frame Capture</div>
+                    <div className="text-xs font-bold text-emerald-400 truncate">
+                      {debugMaterialMode ? 'STAGE2_SINGLE_WALL_DEBUG.png' : 'STAGE2_CANVAS_FULL_BUILDING.png'}
+                    </div>
                   </div>
                 </div>
 

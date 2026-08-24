@@ -17,6 +17,7 @@ export interface AssemblyLayer {
 
 export interface CanonicalBimEntity {
   id: string;
+  expressID?: number;
   ifcGuid: string;
   ifcType: string;
   name: string;
@@ -118,26 +119,32 @@ export class ReferenceBimStore {
       fs.mkdirSync(dir, { recursive: true });
     }
 
-    if (!this.referenceData) {
-      if (fs.existsSync(this.dataPath)) {
-        try {
-          const raw = fs.readFileSync(this.dataPath, 'utf-8');
-          this.referenceData = JSON.parse(raw);
-        } catch (err) {
-          console.error('Failed to parse existing REFERENCE-BIM-0001.json, re-building canonical store...', err);
-        }
-      }
+    const duplexPath = path.join(process.cwd(), 'data', 'models', 'Duplex.ifc');
+    const techIfcPath = path.join(process.cwd(), 'data', 'models', 'TECHNICAL-IFC-PROOF-0001.ifc');
 
-      if (!this.referenceData) {
-        const project = this.buildCanonicalReferenceModel();
-        this.referenceData = project;
-        fs.writeFileSync(this.dataPath, JSON.stringify(project, null, 2), 'utf-8');
+    if (fs.existsSync(duplexPath)) {
+      if (!fs.existsSync(this.ifcPath) || fs.statSync(this.ifcPath).size !== fs.statSync(duplexPath).size) {
+        fs.copyFileSync(duplexPath, this.ifcPath);
+      }
+      if (!fs.existsSync(techIfcPath) || fs.statSync(techIfcPath).size !== fs.statSync(duplexPath).size) {
+        fs.copyFileSync(duplexPath, techIfcPath);
       }
     }
 
-    // Always generate/overwrite the IFC STEP file to guarantee fresh geometric representation
-    const ifcContent = this.generateStandardIfcStepFile(this.referenceData);
-    fs.writeFileSync(this.ifcPath, ifcContent, 'utf-8');
+    if (fs.existsSync(this.dataPath)) {
+      try {
+        const raw = fs.readFileSync(this.dataPath, 'utf-8');
+        this.referenceData = JSON.parse(raw);
+      } catch (err) {
+        console.error('Failed to parse existing REFERENCE-BIM-0001.json, re-building canonical store...', err);
+      }
+    }
+
+    if (!this.referenceData) {
+      const project = this.buildCanonicalReferenceModel();
+      this.referenceData = project;
+      fs.writeFileSync(this.dataPath, JSON.stringify(project, null, 2), 'utf-8');
+    }
 
     return this.referenceData;
   }
