@@ -472,6 +472,64 @@ export interface AssemblyPattern {
   timestamp: string;
 }
 
+export type ProjectClassification = 'REFERENCE' | 'ACADEMY_REAL' | 'CUSTOMER_PROJECT' | 'COMPLETED';
+
+export type ProjectEventType =
+  | 'PROJECT_CREATED'
+  | 'CUSTOMER_BRIEF_RECEIVED'
+  | 'PRIME_QUESTION'
+  | 'CUSTOMER_RESPONSE'
+  | 'PROJECT_PLAN_CREATED'
+  | 'TASK_ASSIGNED'
+  | 'AGENT_STARTED'
+  | 'KNOWLEDGE_REQUESTED'
+  | 'SOURCE_RETRIEVED'
+  | 'KNOWLEDGE_VALIDATED'
+  | 'AGENT_PROPOSAL'
+  | 'MANAGER_REVIEW'
+  | 'MANAGER_APPROVED'
+  | 'MANAGER_REJECTED'
+  | 'INSPECTION_STARTED'
+  | 'INSPECTION_FAILED'
+  | 'INSPECTION_PASSED'
+  | 'DEFECT_CREATED'
+  | 'RETRAINING_STARTED'
+  | 'RETRAINING_COMPLETED'
+  | 'BIM_REVISION_CREATED'
+  | 'BIM_OBJECT_CREATED'
+  | 'BIM_OBJECT_MODIFIED'
+  | 'BIM_OBJECT_REMOVED'
+  | 'CLASH_FOUND'
+  | 'CLASH_RESOLVED'
+  | 'TASK_COMPLETED'
+  | 'PROJECT_STAGE_CHANGED'
+  | 'PROJECT_COMPLETED';
+
+export interface ProjectEventRecord {
+  eventId: string;
+  projectId: string;
+  timestamp: string;
+  eventType: ProjectEventType;
+  agentId: string;
+  agentRole?: string;
+  managerId?: string;
+  taskId?: string;
+  parentTaskId?: string;
+  revisionId?: string;
+  affectedObjectIds?: string[];
+  spaceId?: string;
+  storeyId?: string;
+  position?: [number, number, number];
+  message: string;
+  decision?: string;
+  status?: string;
+  evidence?: string;
+  codeRule?: string;
+  costImpact?: number;
+  scheduleImpactDays?: number;
+  durationMs?: number;
+}
+
 export interface DigitalTwinProject {
   id: string;
   name: string;
@@ -480,6 +538,9 @@ export interface DigitalTwinProject {
   iterationNumber: number;
   overallCompletionPct: number;
   status: 'planning' | 'building' | 'inspecting' | 'repairing' | 'completed';
+  classification?: ProjectClassification;
+  isReadOnly?: boolean;
+  hasBuildHistory?: boolean;
   environment: EnvironmentProfile;
   components: BIMComponent[];
   inspectionTickets: InspectionTicket[];
@@ -488,6 +549,7 @@ export interface DigitalTwinProject {
   schedule: ConstructionTaskSchedule[];
   changeOrderRisks: ChangeOrderRisk[];
   score: ProjectScore;
+  projectEvents?: ProjectEventRecord[];
   snapshots?: ProjectSnapshot[];
   currentVersionTag?: string;
   createdAt: string;

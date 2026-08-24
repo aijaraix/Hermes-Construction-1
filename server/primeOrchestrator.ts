@@ -32,6 +32,9 @@ import { generateAnchorBoltRepairJustification } from './repairJustificationEngi
 import { generateBOMWithProvenance } from './bomProvenanceEngine';
 import { KnowledgeIngestionEngine } from './knowledgeIngestionEngine';
 
+import { AutonomousBuildEngine } from './autonomousBuildEngine';
+import { ReferenceBimStore } from './referenceBimStore';
+
 class HermesPrimeOrchestrator {
   private systemState: HermesSystemState;
   private projects: Map<string, DigitalTwinProject> = new Map();
@@ -211,10 +214,110 @@ class HermesPrimeOrchestrator {
   }
 
   public getAllProjects(): DigitalTwinProject[] {
-    return Array.from(this.projects.values());
+    const list = Array.from(this.projects.values());
+    
+    // Ensure ACADEMY-HOUSE-0001 is included (Part R - First Real Autonomous Build)
+    const academyProj = AutonomousBuildEngine.getProject();
+    if (!list.find(p => p.id === academyProj.id)) {
+      list.unshift(academyProj);
+      this.projects.set(academyProj.id, academyProj);
+    }
+
+    // Ensure REFERENCE-BIM-0001 is included (Part A/B - Read-Only Reference Model)
+    const refProject = ReferenceBimStore.getReferenceProject();
+    if (refProject && !list.find(p => p.id === 'REFERENCE-BIM-0001')) {
+      const formattedRef: DigitalTwinProject = {
+        id: 'REFERENCE-BIM-0001',
+        name: 'REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)',
+        buildingType: 'Residential Duplex 2-Story (IfcOpenShell Standard)',
+        gymLevel: 3,
+        iterationNumber: 1,
+        overallCompletionPct: 100.0,
+        status: 'completed',
+        classification: 'REFERENCE',
+        isReadOnly: true,
+        hasBuildHistory: false,
+        environment: {
+          latitude: 27.9506,
+          longitude: -82.4572,
+          locationName: 'OpenBIM Validation Site',
+          jurisdiction: 'Standard OpenBIM ISO 16739',
+          climateZone: 'Zone 2A',
+          coastalProximityMiles: 0,
+          saltExposureRisk: 'Low',
+          windSpeedMph: 120,
+          rainfallInchesYear: 40,
+          humidityPctAvg: 60,
+          minTempF: 40,
+          maxTempF: 90,
+          freezeThawCycles: 0,
+          seismicCategory: 'Category A',
+          wildfireRisk: 'Low',
+          floodZone: 'X',
+          soilBearingCapacityPsf: 3000,
+          groundwaterTableFt: 10,
+          utilitiesAvailable: ['Electric', 'Water', 'Sewer'],
+          localCodeVersion: 'ISO 16739 / IFC4',
+        },
+        components: refProject.components.map(c => ({
+          id: c.id,
+          type: (c.ifcType.includes('Wall') ? 'wall' : c.ifcType.includes('Slab') ? 'slab' : c.ifcType.includes('Door') ? 'door' : c.ifcType.includes('Window') ? 'window' : c.ifcType.includes('Pipe') ? 'pipe' : c.ifcType.includes('Duct') ? 'duct' : 'wall') as any,
+          system: c.category as any,
+          floor: c.storeyName.includes('1') ? 1 : 2,
+          room: c.spaceName || c.storeyName,
+          assembly: c.name,
+          materials: c.materialSpecIds.map(m => ({ name: m, specification: m, quantity: 1, unit: 'pcs' })),
+          geometry: { position: c.position, dimensions: c.dimensions },
+          isExterior: c.name.toLowerCase().includes('ext'),
+          exposure: 'Standard',
+          connectedComponentIds: c.connectedComponentIds,
+          openings: c.openings,
+          quantity: { value: 1, unit: 'ea' },
+          unitCost: 100,
+          totalCost: 100,
+          installationStageDay: 1,
+          inspectionState: 'passed',
+          whySelected: {
+            reason: 'Read-only architectural reference model provided for viewer validation and navigation.',
+            environmentalFactor: 'ISO 16739 Standard',
+            codeRule: 'IFC4 Schema Validation',
+            alternativesConsidered: [],
+            costImpact: 'N/A',
+            lifecycleNotes: 'Reference model ONLY. No HERMES autonomous build history.',
+          },
+        })),
+        inspectionTickets: [],
+        bom: [],
+        suppliers: [],
+        schedule: [],
+        changeOrderRisks: [],
+        score: {
+          overall: 100,
+          completeness: 100,
+          structuralValidation: 100,
+          mepConnectivity: 100,
+          clashFreePercentage: 100,
+          codeValidation: 100,
+          environmentalAppropriateness: 100,
+          materialCompleteness: 100,
+          inspectionSuccess: 100,
+          constructability: 100,
+          costConfidence: 100,
+          changeOrderRisk: 100,
+        },
+        projectEvents: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      list.push(formattedRef);
+      this.projects.set('REFERENCE-BIM-0001', formattedRef);
+    }
+
+    return list;
   }
 
   public getProject(id: string): DigitalTwinProject | undefined {
+    this.getAllProjects(); // Ensure cache is populated
     return this.projects.get(id);
   }
 
