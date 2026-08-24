@@ -244,7 +244,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
         // 3. Initialize web-ifc WASM engine
         const ifcApi = new WebIFC.IfcAPI();
-        ifcApi.SetWasmPath('/wasm/');
+        ifcApi.SetWasmPath('/wasm/', true);
         await ifcApi.Init();
 
         // 4. Open IFC Model
