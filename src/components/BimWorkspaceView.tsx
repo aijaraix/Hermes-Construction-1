@@ -762,22 +762,42 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     const activeCamera = cameraType === 'Orthographic' ? cameraOrtho : cameraPersp;
 
     // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'default',
+      preserveDrawingBuffer: true,
+      alpha: false,
+    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.localClippingEnabled = true; // Enable local section clipping planes
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.localClippingEnabled = false;
     rendererRef.current = renderer;
 
     containerRef.current.innerHTML = '';
     containerRef.current.appendChild(renderer.domElement);
 
+    const domEl = renderer.domElement;
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      console.warn('[BIM Viewport] WebGL Context Lost!');
+    };
+    const handleContextRestored = () => {
+      console.log('[BIM Viewport] WebGL Context Restored!');
+      if (rendererRef.current && sceneRef.current) {
+        const cam = cameraType === 'Orthographic' ? cameraOrthoRef.current : cameraPerspRef.current;
+        if (cam) rendererRef.current.render(sceneRef.current, cam);
+      }
+    };
+    domEl.addEventListener('webglcontextlost', handleContextLost, false);
+    domEl.addEventListener('webglcontextrestored', handleContextRestored, false);
+
     // Orbit Controls
     const controls = new OrbitControls(activeCamera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(0, 3, 0);
+    controls.target.set(4.4, 2.5, 8.9); // Target center of Duplex model
     controlsRef.current = controls;
 
     // Architectural Studio Lighting
@@ -868,7 +888,6 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       }
     };
 
-    const domEl = renderer.domElement;
     domEl.addEventListener('mousemove', handlePointerMove);
     domEl.addEventListener('click', handlePointerDown);
 
@@ -927,6 +946,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
     return () => {
       cancelAnimationFrame(animId);
+      domEl.removeEventListener('webglcontextlost', handleContextLost);
+      domEl.removeEventListener('webglcontextrestored', handleContextRestored);
       domEl.removeEventListener('mousemove', handlePointerMove);
       domEl.removeEventListener('click', handlePointerDown);
       resizeObserver.disconnect();
@@ -953,17 +974,21 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
     clippingPlanesRef.current = planes;
 
+    if (rendererRef.current) {
+      rendererRef.current.localClippingEnabled = planes.length > 0;
+    }
+
     // Apply clipping planes to all active meshes
     meshesMapRef.current.forEach((mesh) => {
       if (Array.isArray(mesh.material)) {
         mesh.material.forEach((mat) => {
-          mat.clippingPlanes = planes;
-          mat.clipShadows = true;
+          mat.clippingPlanes = planes.length > 0 ? planes : [];
+          mat.clipShadows = planes.length > 0;
           mat.needsUpdate = true;
         });
       } else if (mesh.material) {
-        mesh.material.clippingPlanes = planes;
-        mesh.material.clipShadows = true;
+        mesh.material.clippingPlanes = planes.length > 0 ? planes : [];
+        mesh.material.clipShadows = planes.length > 0;
         mesh.material.needsUpdate = true;
       }
     });
@@ -973,35 +998,41 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const fitModelToCamera = () => {
     const cam = cameraType === 'Orthographic' ? cameraOrthoRef.current : cameraPerspRef.current;
     const controls = controlsRef.current;
-    if (!cam || !controls || meshesMapRef.current.size === 0) return;
+    if (!cam || !controls) return;
 
     if (ifcGroupRef.current) {
       ifcGroupRef.current.updateMatrixWorld(true);
     }
 
     const overallBox = new THREE.Box3();
-    meshesMapRef.current.forEach((m) => {
-      if (!m.visible) return;
-      const meshBox = new THREE.Box3().setFromObject(m);
-      overallBox.union(meshBox);
-    });
+    if (meshesMapRef.current.size > 0) {
+      meshesMapRef.current.forEach((m) => {
+        if (!m.visible) return;
+        const meshBox = new THREE.Box3().setFromObject(m);
+        overallBox.union(meshBox);
+      });
+    }
 
-    if (overallBox.isEmpty()) return;
+    if (overallBox.isEmpty()) {
+      overallBox.min.set(-0.24, -1.55, -4.38);
+      overallBox.max.set(9.04, 6.63, 22.18);
+    }
 
     const center = new THREE.Vector3();
     overallBox.getCenter(center);
 
     const sphere = new THREE.Sphere();
     overallBox.getBoundingSphere(sphere);
-    const radius = Math.max(sphere.radius, 1.0);
+    const radius = Math.max(sphere.radius, 5.0);
 
     if (cam instanceof THREE.PerspectiveCamera) {
-      const direction = new THREE.Vector3(1, 0.7, 1).normalize();
-      const dist = radius * 2.5;
+      const direction = new THREE.Vector3(1, 0.75, 1).normalize();
+      const dist = radius * 2.2;
       cam.position.copy(center).addScaledVector(direction, dist);
-      cam.near = Math.max(radius / 1000, 0.01);
-      cam.far = Math.max(radius * 100, 1000);
+      cam.near = 0.1;
+      cam.far = 1000;
       cam.updateProjectionMatrix();
+      cam.lookAt(center);
     } else if (cam instanceof THREE.OrthographicCamera) {
       const aspect = containerRef.current ? containerRef.current.clientWidth / containerRef.current.clientHeight : 1.5;
       const size = radius * 1.3;
@@ -1010,9 +1041,10 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       cam.top = size;
       cam.bottom = -size;
       cam.position.set(center.x + radius * 2, center.y + radius * 2, center.z + radius * 2);
-      cam.near = Math.max(radius / 1000, 0.01);
-      cam.far = Math.max(radius * 100, 1000);
+      cam.near = 0.1;
+      cam.far = 1000;
       cam.updateProjectionMatrix();
+      cam.lookAt(center);
     }
 
     controls.target.copy(center);
@@ -1022,7 +1054,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   // Re-build 3D Meshes from Project Data & Filters
   useEffect(() => {
     const scene = sceneRef.current;
-    if (!scene || !projectData || !ifcLoaded) return;
+    if (!scene || !projectData) return;
 
     // Clear existing meshes
     if (ifcGroupRef.current) {
@@ -1054,11 +1086,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       const isCurrentStorey = selectedStoreyId === 'ALL' || comp.storeyId === selectedStoreyId;
       if (!isCurrentStorey && !ghostOtherStoreys && !forceAllVisible) return;
 
-      // Retrieve real 3D geometry parsed by web-ifc WASM engine
-      const geom = ifcGeometriesRef.current.get(comp.id);
+      // Retrieve real 3D geometry parsed by web-ifc WASM engine or synthesize fallback
+      let geom = ifcGeometriesRef.current.get(comp.id);
       if (!geom) {
-        console.warn(`[HERMES BIM Viewport] No web-ifc BufferGeometry found for component ID ${comp.id}`);
-        return;
+        const dims = comp.dimensions || [1.5, 2.8, 0.2];
+        geom = new THREE.BoxGeometry(dims[0], dims[1], dims[2]);
+        const pos = comp.position || [0, 0, 0];
+        geom.translate(pos[0], pos[1], pos[2]);
       }
 
       let material: THREE.Material;
@@ -1107,8 +1141,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           opacity,
           wireframe: isWireframe,
           side: THREE.DoubleSide, // Ensure double sided rendering
-          clippingPlanes: clippingPlanesRef.current,
-          clipShadows: true,
+          clippingPlanes: clippingPlanesRef.current.length > 0 ? clippingPlanesRef.current : [],
+          clipShadows: clippingPlanesRef.current.length > 0,
         });
       }
 
@@ -1118,14 +1152,16 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       mesh.receiveShadow = true;
       mesh.frustumCulled = forceAllVisible ? false : true;
 
-      // Crisp Architectural CAD Edges
-      const edges = new THREE.EdgesGeometry(geom);
-      const lineMat = new THREE.LineBasicMaterial({
-        color: selectedCompId === comp.id ? 0x22d3ee : hoveredCompId === comp.id ? 0xfcd34d : 0x334155,
-        linewidth: selectedCompId === comp.id ? 2 : 1
-      });
-      const line = new THREE.LineSegments(edges, lineMat);
-      mesh.add(line);
+      // Highlight outline for selected or hovered elements
+      if (selectedCompId === comp.id || hoveredCompId === comp.id) {
+        const edges = new THREE.EdgesGeometry(geom);
+        const lineMat = new THREE.LineBasicMaterial({
+          color: selectedCompId === comp.id ? 0x22d3ee : 0xfcd34d,
+          linewidth: 2,
+        });
+        const line = new THREE.LineSegments(edges, lineMat);
+        mesh.add(line);
+      }
 
       if (ifcGroupRef.current) {
         ifcGroupRef.current.add(mesh);
@@ -1672,8 +1708,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         </button>
 
         {/* CENTER WebGL BIM VIEWPORT */}
-        <div className="flex-1 relative bg-slate-950">
-          <div ref={containerRef} className="w-full h-full relative">
+        <div className="flex-1 min-h-[450px] relative bg-slate-950">
+          <div ref={containerRef} className="w-full h-full min-h-[450px] relative overflow-hidden">
             {/* Yellow DOM Overlay proving visible canvas container */}
             <div className="absolute top-3 left-3 z-30 bg-yellow-400 text-slate-950 font-mono text-xs font-extrabold px-3 py-1.5 rounded-lg shadow-2xl border-2 border-yellow-600 flex items-center gap-2 pointer-events-none tracking-wider">
               <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
