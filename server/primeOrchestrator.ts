@@ -43,7 +43,7 @@ class HermesPrimeOrchestrator {
   private knowledgeEntities: KnowledgeEntity[] = [];
   private learnedLessons: LearnedLesson[] = [];
   private assemblyPatterns: AssemblyPattern[] = [];
-  private activeProjectId: string = 'RESIDENCE-TAMPA-001';
+  private activeProjectId: string = 'REFERENCE-BIM-0001';
   private isHeartbeatLocked: boolean = false;
   private competencyMatrix: CompetencyMatrix = {
     siteGrading: 92.0,
@@ -213,19 +213,18 @@ class HermesPrimeOrchestrator {
     };
   }
 
-  public getAllProjects(): DigitalTwinProject[] {
+  public getAllProjects(includeArchived: boolean = false): DigitalTwinProject[] {
     const list = Array.from(this.projects.values());
     
-    // Ensure ACADEMY-HOUSE-0001 is included (Part R - First Real Autonomous Build)
+    // Ensure ACADEMY-HOUSE-0001 is populated in internal cache as legacy fixture
     const academyProj = AutonomousBuildEngine.getProject();
     if (!list.find(p => p.id === academyProj.id)) {
-      list.unshift(academyProj);
-      this.projects.set(academyProj.id, academyProj);
+      this.projects.set(academyProj.id, { ...academyProj, classification: 'SYNTHETIC_TEST_FIXTURE' as any });
     }
 
-    // Ensure REFERENCE-BIM-0001 is included (Part A/B - Read-Only Reference Model)
+    // Ensure REFERENCE-BIM-0001 is included (Read-Only Reference Model)
     const refProject = ReferenceBimStore.getReferenceProject();
-    if (refProject && !list.find(p => p.id === 'REFERENCE-BIM-0001')) {
+    if (refProject && !this.projects.has('REFERENCE-BIM-0001')) {
       const formattedRef: DigitalTwinProject = {
         id: 'REFERENCE-BIM-0001',
         name: 'REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)',
@@ -309,11 +308,14 @@ class HermesPrimeOrchestrator {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      list.push(formattedRef);
       this.projects.set('REFERENCE-BIM-0001', formattedRef);
     }
 
-    return list;
+    const allProjects = Array.from(this.projects.values());
+    if (includeArchived) return allProjects;
+
+    // Customer-facing UI retains strictly: REFERENCE-BIM-0001 (and ACADEMY-HOUSE-0002 once created in Stage 6)
+    return allProjects.filter(p => p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
   }
 
   public getProject(id: string): DigitalTwinProject | undefined {

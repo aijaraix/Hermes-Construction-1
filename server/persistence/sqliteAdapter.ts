@@ -11,6 +11,7 @@ import {
   InspectionAuditRecord,
   BOMRevisionRecord,
   DecisionLogRecord,
+  ProjectEventRecord,
   KnowledgeEntity,
   LearnedLesson,
   CorpusSourceItem,
@@ -238,6 +239,16 @@ export class HermesSqliteAdapter {
         agent_role_id TEXT NOT NULL,
         data TEXT NOT NULL,
         created_at TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS project_events (
+        event_id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        attempt_id TEXT,
+        event_type TEXT NOT NULL,
+        timestamp TEXT NOT NULL,
+        agent_id TEXT,
+        data TEXT NOT NULL
       );
     `);
   }
@@ -502,6 +513,38 @@ export class HermesSqliteAdapter {
       stmt.free();
     } catch (err: any) {
       console.error('[HERMES SQLITE] Error reading decision logs:', err?.message || err);
+    }
+    return results;
+  }
+
+  // Project Event Records
+  public insertProjectEvent(event: ProjectEventRecord): void {
+    this.safeRun(
+      `INSERT OR REPLACE INTO project_events (event_id, project_id, attempt_id, event_type, timestamp, agent_id, data) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [event.eventId, event.projectId, event.attemptId || '', event.eventType, event.timestamp, event.agentId || '', JSON.stringify(event)]
+    );
+  }
+
+  public getProjectEvents(projectId: string, attemptId?: string): ProjectEventRecord[] {
+    if (!this.db) return [];
+    const results: ProjectEventRecord[] = [];
+    try {
+      const sql = attemptId
+        ? `SELECT data FROM project_events WHERE project_id = ? AND attempt_id = ? ORDER BY timestamp ASC`
+        : `SELECT data FROM project_events WHERE project_id = ? ORDER BY timestamp ASC`;
+      const stmt = this.db.prepare(sql);
+      if (attemptId) {
+        stmt.bind([projectId, attemptId]);
+      } else {
+        stmt.bind([projectId]);
+      }
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        results.push(JSON.parse(row.data as string));
+      }
+      stmt.free();
+    } catch (err: any) {
+      console.error('[HERMES SQLITE] Error reading project events:', err?.message || err);
     }
     return results;
   }

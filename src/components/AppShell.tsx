@@ -105,22 +105,9 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   const navItems = [
     {
-      group: 'PROJECTS',
+      group: 'CUSTOMER WORKSPACE',
       items: [
-        { id: 'bim-workspace' as NavTab, label: 'Current Project (OpenBIM)', icon: Building },
-        { id: 'project-overview' as NavTab, label: 'Project Scope & Overview', icon: LayoutDashboard },
-        { id: '3d-twin' as NavTab, label: '3D Twin (Legacy Viewer)', icon: Layers },
-      ],
-    },
-    {
-      group: 'MODEL & SYSTEMS',
-      items: [
-        { id: 'rooms-spaces' as NavTab, label: 'Rooms & Spaces', icon: Box },
-        { id: 'plans-systems' as NavTab, label: 'Systems & Connectivity', icon: Server },
-        { id: 'inspections' as NavTab, label: 'Inspections & Defect QA', icon: Wrench },
-        { id: 'bom' as NavTab, label: 'Model-Derived BOM', icon: DollarSign },
-        { id: 'procurement' as NavTab, label: 'Materials & Procurement', icon: MapPin },
-        { id: 'schedule' as NavTab, label: '4D Construction Timeline', icon: Calendar },
+        { id: 'bim-workspace' as NavTab, label: 'BIM Workspace (OpenBIM)', icon: Building },
       ],
     },
   ];
@@ -246,9 +233,9 @@ export const AppShell: React.FC<AppShellProps> = ({
 
       {/* Main Container Layout */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar (Desktop) / Slide-over (Mobile) */}
+        {/* Left Sidebar (Mobile Only when activeTab === bim-workspace, or Desktop for legacy subtabs) */}
         <aside
-          className={`fixed lg:static inset-y-0 left-0 z-30 w-64 bg-white border-r border-slate-200 transform ${
+          className={`fixed ${activeTab === 'bim-workspace' ? 'lg:hidden' : 'lg:static'} inset-y-0 left-0 z-30 w-64 bg-white border-r border-slate-200 transform ${
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           } transition-transform duration-200 ease-in-out flex flex-col justify-between overflow-y-auto shrink-0 select-none shadow-xs`}
         >

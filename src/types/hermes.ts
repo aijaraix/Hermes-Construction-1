@@ -499,6 +499,12 @@ export type ProjectEventType =
   | 'BIM_OBJECT_CREATED'
   | 'BIM_OBJECT_MODIFIED'
   | 'BIM_OBJECT_REMOVED'
+  | 'CONSTRUCTION_METHOD_SELECTED'
+  | 'SPATIAL_ACTION_EXECUTED'
+  | 'MATERIAL_STATE_CHANGED'
+  | 'DELIVERY_RECORD_CREATED'
+  | 'ISSUE_RECORD_CREATED'
+  | 'REPAIR_RECORD_CREATED'
   | 'CLASH_FOUND'
   | 'CLASH_RESOLVED'
   | 'TASK_COMPLETED'
@@ -508,6 +514,7 @@ export type ProjectEventType =
 export interface ProjectEventRecord {
   eventId: string;
   projectId: string;
+  attemptId?: string;
   timestamp: string;
   eventType: ProjectEventType;
   agentId: string;
@@ -528,6 +535,127 @@ export interface ProjectEventRecord {
   costImpact?: number;
   scheduleImpactDays?: number;
   durationMs?: number;
+  payload?: Record<string, any>;
+}
+
+export interface CustomerInteractionRecord {
+  id: string;
+  projectId: string;
+  timestamp: string;
+  type: 'QUESTION' | 'RESPONSE' | 'REQUIREMENT_UPDATE';
+  sender: 'HERMES_PRIME' | 'CUSTOMER';
+  content: string;
+  category?: string;
+}
+
+export interface PrimeDecisionRecord {
+  id: string;
+  projectId: string;
+  attemptId?: string;
+  timestamp: string;
+  primeRole: string;
+  decisionType: string;
+  rationale: string;
+  affectedDisciplines: string[];
+  codeGrounding?: string;
+}
+
+export interface AgentTaskRecord {
+  taskId: string;
+  projectId: string;
+  attemptId?: string;
+  assignedAgentId: string;
+  assignedRole: string;
+  stage: string;
+  status: 'PENDING' | 'IN_PROGRESS' | 'BLOCKED' | 'COMPLETED' | 'FAILED';
+  workZone?: string;
+  prerequisites: string[];
+  createdAt: string;
+  completedAt?: string;
+}
+
+export interface KnowledgeRequestRecord {
+  id: string;
+  projectId?: string;
+  agentId: string;
+  agentRole: string;
+  topic: string;
+  knowledgeGap: string;
+  status: 'PENDING' | 'RESOLVED' | 'UNRESOLVED';
+  resolvedSourceId?: string;
+  timestamp: string;
+}
+
+export interface ConstructionMethodSelectionRecord {
+  id: string;
+  projectId: string;
+  assemblyType: string;
+  methodId: string;
+  methodName: string;
+  selectedByAgentRole: string;
+  rationale: string;
+  timestamp: string;
+}
+
+export interface SpatialActionRecord {
+  id: string;
+  projectId: string;
+  attemptId?: string;
+  actorId: string;
+  actorRole: string;
+  actionPrimitive: string; // e.g. 'GO_TO', 'PLACE', 'DRILL', 'FASTEN'
+  targetPosition: [number, number, number];
+  targetOrientation?: number;
+  affectedComponentId?: string;
+  timestamp: string;
+}
+
+export interface MaterialStateRecord {
+  id: string;
+  projectId: string;
+  materialSpecId: string;
+  state: 'SPECIFIED' | 'QUANTIFIED' | 'PROCUREMENT_READY' | 'ORDERED' | 'CONFIRMED' | 'DELIVERED' | 'STAGED' | 'AT_WORK_ZONE' | 'INSTALLED' | 'INSPECTED';
+  quantity: number;
+  unit: string;
+  location?: string;
+  timestamp: string;
+}
+
+export interface DeliveryRecord {
+  id: string;
+  projectId: string;
+  materialSpecId: string;
+  quantity: number;
+  unit: string;
+  deliveryPoint: string;
+  stagingZone: string;
+  status: 'SCHEDULED' | 'IN_TRANSIT' | 'DELIVERED';
+  isSimulated: boolean;
+  timestamp: string;
+}
+
+export interface IssueRecord {
+  id: string;
+  projectId: string;
+  attemptId?: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  type: 'CLASH' | 'CODE_VIOLATION' | 'CONSTRUCTABILITY' | 'MATERIAL_MISMATCH' | 'LOGISTICS_CLASH';
+  description: string;
+  location?: [number, number, number];
+  reportedByRole: string;
+  status: 'OPEN' | 'IN_REPAIR' | 'RESOLVED';
+  timestamp: string;
+}
+
+export interface RepairRecord {
+  id: string;
+  issueId: string;
+  projectId: string;
+  repairedByRole: string;
+  actionTaken: string;
+  verificationMethod: string;
+  status: 'PROPOSED' | 'APPROVED' | 'VERIFIED';
+  timestamp: string;
 }
 
 export interface DigitalTwinProject {

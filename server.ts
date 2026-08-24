@@ -288,6 +288,15 @@ async function startServer() {
     res.json(primeOrchestrator.getDecisionLogs(projectId as string));
   });
 
+  app.get('/api/records/events', (req, res) => {
+    const { projectId } = req.query;
+    const pId = projectId as string;
+    const tasks = primeOrchestrator.getTaskExecutionRecords(pId);
+    const revisions = primeOrchestrator.getModelRevisionRecords(pId);
+    const decisions = primeOrchestrator.getDecisionLogs(pId);
+    res.json([...tasks, ...revisions, ...decisions]);
+  });
+
   app.get('/api/records/competency', (req, res) => {
     res.json(primeOrchestrator.getCompetencyMatrix());
   });
@@ -297,7 +306,8 @@ async function startServer() {
   });
 
   app.get('/api/projects', (req, res) => {
-    res.json(primeOrchestrator.getAllProjects());
+    const includeArchived = req.query.includeArchived === 'true';
+    res.json(primeOrchestrator.getAllProjects(includeArchived));
   });
 
   app.get('/api/projects/:id', (req, res) => {
