@@ -126,10 +126,12 @@ export class ReferenceBimStore {
       if (!fs.existsSync(this.ifcPath) || fs.statSync(this.ifcPath).size !== fs.statSync(duplexPath).size) {
         fs.copyFileSync(duplexPath, this.ifcPath);
       }
-      if (!fs.existsSync(techIfcPath) || fs.statSync(techIfcPath).size !== fs.statSync(duplexPath).size) {
-        fs.copyFileSync(duplexPath, techIfcPath);
-      }
     }
+
+    // Generate small 18-object technical proof model
+    const canonicalProject = this.buildCanonicalReferenceModel();
+    const techStep = this.generateStandardIfcStepFile(canonicalProject);
+    fs.writeFileSync(techIfcPath, techStep, 'utf-8');
 
     if (fs.existsSync(this.dataPath)) {
       try {

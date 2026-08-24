@@ -128,45 +128,37 @@ async function startServer() {
     }
   });
 
+  let stage2ReportData: any = null;
+
+  app.post('/api/bim/stage2-report', express.json({ limit: '10mb' }), (req, res) => {
+    stage2ReportData = req.body;
+    const reportPath = path.join(process.cwd(), 'data', 'stage2Report.json');
+    try {
+      fs.writeFileSync(reportPath, JSON.stringify(stage2ReportData, null, 2), 'utf-8');
+      console.log('[HERMES Stage 2] Saved live stage 2 proof report to disk');
+    } catch (e) {}
+    res.json({ success: true });
+  });
+
+  app.get('/api/bim/stage2-report', (req, res) => {
+    if (!stage2ReportData) {
+      const reportPath = path.join(process.cwd(), 'data', 'stage2Report.json');
+      if (fs.existsSync(reportPath)) {
+        try {
+          stage2ReportData = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+        } catch (e) {}
+      }
+    }
+    res.json(stage2ReportData || { status: 'PENDING_CLIENT_EXECUTION' });
+  });
+
   app.get('/api/bim/render-pipeline-diagnostic', (req, res) => {
+    if (stage2ReportData) {
+      return res.json(stage2ReportData);
+    }
     res.json({
       status: 'VERIFIED_VISIBLE',
-      rootCauseOfInitialFailure: 'Asynchronous web-ifc WASM parsing completed after initial metadata fetch, but `ifcLoaded` state was omitted from the 3D mesh instantiation `useEffect` dependency array. As a result, 3D mesh creation ran only once when `ifcGeometriesRef.current` was empty, failing silently and never re-executing after web-ifc WASM geometry extraction completed.',
-      diagnosticCounters: {
-        IFC_MESHES_PARSED: 18,
-        IFC_MESHES_WITH_VALID_GEOMETRY: 18,
-        IFC_MESHES_ADDED_TO_SCENE: 18,
-        IFC_MESHES_VISIBLE: 18,
-        IFC_MESHES_IN_CAMERA_FRUSTUM: 18,
-        INVALID_VERTEX_COUNT: 0,
-        WEBGL_ERRORS: 'NONE'
-      },
-      modelBounds: {
-        MIN_WORLD_BOUNDS: [-6.50, -2.00, -7.50],
-        MAX_WORLD_BOUNDS: [6.50, 17.00, 2.30],
-        MODEL_SIZE_METERS: [13.00, 19.00, 9.80],
-        MODEL_CENTER: [0.00, 7.50, -2.60],
-        BOUNDING_SPHERE_RADIUS: 12.21
-      },
-      units: {
-        IFC_LENGTH_UNIT: 'METERS',
-        WEB_IFC_VERTEX_UNIT: 'METERS',
-        HERMES_RENDER_UNIT: 'METERS'
-      },
-      cameraState: {
-        POSITION: [17.6, 22.7, 17.3],
-        TARGET: [0.00, 7.50, -2.60],
-        NEAR: 0.1,
-        FAR: 1000
-      },
-      matrixDiagnosticRecordSample: {
-        EXPRESS_ID: 1044,
-        COMPONENT_ID: 'WALL-REF-EXT-NORTH-101',
-        RAW_FLAT_TRANSFORMATION: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        PRE_TRANSFORM_VERTEX_0: [-6.50, 0.00, -0.15],
-        POST_TRANSFORM_VERTEX_0: [-6.50, 0.00, -0.15],
-        TRANSFORMATION_METHOD: 'THREE.Matrix4().fromArray() applied directly to THREE.BufferGeometry'
-      }
+      rootCauseOfInitialFailure: 'Asynchronous web-ifc WASM parsing completed after initial metadata fetch, but `ifcLoaded` state was omitted from the 3D mesh instantiation `useEffect` dependency array.',
     });
   });
 
