@@ -97,7 +97,7 @@ export const ProjectOverviewView: React.FC<ProjectOverviewViewProps> = ({
         <div className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-1">
           <span className="text-[10px] uppercase font-bold text-slate-400 font-sans block">Change-Order Exposure</span>
           <div className="text-lg font-bold text-amber-400 font-mono">
-            ${project.changeOrderRisks.reduce((acc, r) => acc + (r.costImpactEst || 0), 0).toLocaleString()}
+            ${project.changeOrderRisks.reduce((acc, r) => acc + (r.potentialCost || 0), 0).toLocaleString()}
           </div>
           <p className="text-[11px] text-slate-400">{project.changeOrderRisks.length} Mitigated Risks</p>
         </div>

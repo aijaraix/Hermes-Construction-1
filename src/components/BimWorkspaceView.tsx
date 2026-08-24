@@ -352,8 +352,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const width = containerRef.current.clientWidth;
-    const height = containerRef.current.clientHeight;
+    const width = containerRef.current.clientWidth || 800;
+    const height = containerRef.current.clientHeight || 600;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color('#070a12'); // Deep CAD viewport navy-black
@@ -515,7 +515,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries[0] || !rendererRef.current) return;
-      const { width: w, height: h } = entries[0].contentRect;
+      const w = entries[0].contentRect.width || 800;
+      const h = entries[0].contentRect.height || 600;
 
       if (cameraPerspRef.current) {
         cameraPerspRef.current.aspect = w / h;

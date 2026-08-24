@@ -20,7 +20,7 @@ export const BOMView: React.FC<BOMViewProps> = ({ bom, onHighlightComponents }) 
   });
 
   const totalCost = bom.reduce((acc, curr) => acc + curr.estimatedTotalCost, 0);
-  const verifiedCount = bom.filter((b) => b.priceSource === 'VERIFIED CURRENT PRICE').length;
+  const verifiedCount = bom.filter((b) => b.priceSource === 'VERIFIED CURRENT QUOTE' || b.priceSource === 'PUBLISHED CURRENT PRICE').length;
 
   return (
     <div className="space-y-6">

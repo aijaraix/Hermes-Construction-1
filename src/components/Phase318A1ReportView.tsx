@@ -387,8 +387,8 @@ export const Phase318A1ReportView: React.FC = () => {
                   </span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] text-slate-300">
-                  <div>Evaluated Equations: <span className="text-cyan-300">{sb.validatorOutput.evaluatedEquations?.join(', ') || 'N/A'}</span></div>
-                  <div>Execution Timestamp: <span className="text-slate-400">{new Date(sb.executionTimestamp).toLocaleString()}</span></div>
+                  <div>Evaluated Equations: <span className="text-cyan-300">{(sb as any).validatorOutput?.evaluatedEquations?.join(', ') || 'N/A'}</span></div>
+                  <div>Execution Timestamp: <span className="text-slate-400">{(sb as any).executionTimestamp ? new Date((sb as any).executionTimestamp).toLocaleString() : 'N/A'}</span></div>
                 </div>
               </div>
             ))}

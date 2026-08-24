@@ -480,10 +480,10 @@ export const Phase318BContinuousAcademyView: React.FC = () => {
               <span className="text-slate-300">{key}</span>
               <span
                 className={`px-2.5 py-1 rounded font-bold text-[11px] ${
-                  val === 'YES' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                  String(val) === 'YES' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
                 }`}
               >
-                {val}
+                {String(val)}
               </span>
             </div>
           ))}

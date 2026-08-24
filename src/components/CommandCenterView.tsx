@@ -212,7 +212,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                         {act.agentRoleId}
                       </span>
                       <span className="text-slate-400 text-[10px] font-mono">
-                        {act.stage}
+                        {act.activityType}
                       </span>
                     </div>
                     <span className="text-[10px] text-slate-500 font-mono">
@@ -220,11 +220,11 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-slate-200 font-medium leading-normal">{act.activityDescription}</p>
+                  <p className="text-slate-200 font-medium leading-normal">{act.title}</p>
 
-                  {act.outcomeDetails && (
+                  {act.details && (
                     <p className="text-[11px] text-slate-400 font-mono bg-slate-900 p-2 rounded border border-slate-800/60">
-                      {act.outcomeDetails}
+                      {act.details}
                     </p>
                   )}
                 </div>

@@ -527,7 +527,7 @@ export const Phase318B3SpatialAcademyView: React.FC = () => {
               <p className="text-slate-400 text-xs">Derived directly from 3D component geometry & material volumes</p>
             </div>
             <div className="text-emerald-400 font-bold text-base">
-              Total Derived Cost: ${bomItems.reduce((acc, item) => acc + (item.totalPrice || 0), 0).toFixed(2)}
+              Total Derived Cost: ${bomItems.reduce((acc, item) => acc + (item.estimatedTotalCost || 0), 0).toFixed(2)}
             </div>
           </div>
 
@@ -552,7 +552,7 @@ export const Phase318B3SpatialAcademyView: React.FC = () => {
                     <td className="p-3 text-slate-400 text-[11px]">{item.specification}</td>
                     <td className="p-3 text-emerald-400 font-bold">{item.modeledQuantity} {item.unit}</td>
                     <td className="p-3">${item.unitPrice?.toFixed(2)}</td>
-                    <td className="p-3 text-emerald-400 font-bold">${item.totalPrice?.toFixed(2)}</td>
+                    <td className="p-3 text-emerald-400 font-bold">${item.estimatedTotalCost?.toFixed(2)}</td>
                     <td className="p-3">
                       <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 text-slate-300 rounded text-[10px]">
                         {item.priceSource}

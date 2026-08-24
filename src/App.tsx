@@ -39,9 +39,82 @@ export default function App() {
   const [isSystemDrawerOpen, setIsSystemDrawerOpen] = useState<boolean>(false);
   const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
 
-  const [heartbeatState, setHeartbeatState] = useState<PrimeHeartbeatState | null>(null);
-  const [currentProject, setCurrentProject] = useState<DigitalTwinProject | null>(null);
-  const [allProjects, setAllProjects] = useState<DigitalTwinProject[]>([]);
+  const defaultFallbackProject: DigitalTwinProject = {
+    id: 'RESIDENCE-TAMPA-001',
+    name: 'House #1: Tampa Coastal 2-Story Residence',
+    buildingType: 'Residential Single-Family',
+    gymLevel: 3,
+    iterationNumber: 1,
+    overallCompletionPct: 85.0,
+    status: 'inspecting',
+    environment: {
+      latitude: 27.9506,
+      longitude: -82.4572,
+      locationName: 'Tampa Bay Coastal Corridor, Florida',
+      jurisdiction: 'City of Tampa / Hillsborough County',
+      climateZone: 'Zone 2A (Hot-Humid)',
+      coastalProximityMiles: 1.2,
+      saltExposureRisk: 'High',
+      windSpeedMph: 160,
+      rainfallInchesYear: 51.5,
+      humidityPctAvg: 74,
+      minTempF: 38,
+      maxTempF: 96,
+      freezeThawCycles: 0,
+      seismicCategory: 'Category A (Low Risk)',
+      wildfireRisk: 'Low',
+      floodZone: 'AE (Base Flood Elev 11 ft)',
+      soilBearingCapacityPsf: 2200,
+      groundwaterTableFt: 4.5,
+      utilitiesAvailable: ['Municipal Water', 'Sanitary Sewer', 'Underground Electric 240V', 'Fiber Optic'],
+      localCodeVersion: 'Florida Building Code 8th Edition (2023)',
+    },
+    components: [],
+    inspectionTickets: [],
+    bom: [],
+    suppliers: [],
+    schedule: [],
+    changeOrderRisks: [],
+    score: {
+      overall: 88.5,
+      completeness: 94.0,
+      structuralValidation: 96.0,
+      mepConnectivity: 85.0,
+      clashFreePercentage: 92.0,
+      codeValidation: 90.0,
+      environmentalAppropriateness: 96.0,
+      materialCompleteness: 91.0,
+      inspectionSuccess: 88.0,
+      constructability: 90.0,
+      costConfidence: 92.0,
+      changeOrderRisk: 84.0,
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  const defaultFallbackHeartbeat: PrimeHeartbeatState = {
+    activeProjectId: 'RESIDENCE-TAMPA-001',
+    activeProjectName: 'House #1: Tampa Coastal 2-Story Residence',
+    gymLevel: 3,
+    overallCompletionPct: 85.0,
+    heartbeatCount: 1,
+    lastHeartbeatTime: new Date().toISOString(),
+    statusMessage: 'HERMES Construction OS Initialized',
+    activeSwarmAgent: 'Prime Orchestrator',
+    unresolvedQuestions: 0,
+    inspectionFailuresCount: 0,
+    openClashesCount: 0,
+    missingMaterialSpecsCount: 0,
+    missingPriceEvidenceCount: 0,
+    changeOrderRisksCount: 0,
+    projectScore: 88.5,
+    recentLogs: [],
+  };
+
+  const [heartbeatState, setHeartbeatState] = useState<PrimeHeartbeatState>(defaultFallbackHeartbeat);
+  const [currentProject, setCurrentProject] = useState<DigitalTwinProject>(defaultFallbackProject);
+  const [allProjects, setAllProjects] = useState<DigitalTwinProject[]>([defaultFallbackProject]);
   const [learnedLessons, setLearnedLessons] = useState<LearnedLesson[]>([]);
   const [uxLevel, setUxLevel] = useState<UserExperienceLevel>('TECHNICAL');
 
