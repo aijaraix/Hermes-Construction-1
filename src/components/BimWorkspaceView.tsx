@@ -270,87 +270,94 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           setProjectData(metaData);
 
           // Try parsing raw IFC via web-ifc WASM
-          const ifcRes = await fetch('/api/bim/reference-model.ifc');
-          if (ifcRes.ok) {
-            const buffer = await ifcRes.arrayBuffer();
-            const uint8Array = new Uint8Array(buffer);
+          try {
+            const ifcRes = await fetch('/api/bim/reference-model.ifc');
+            if (ifcRes.ok) {
+              const buffer = await ifcRes.arrayBuffer();
+              const uint8Array = new Uint8Array(buffer);
 
-            const ifcApi = new WebIFC.IfcAPI();
-            ifcApi.SetWasmPath('/wasm/', true);
-            await ifcApi.Init();
+              const ifcApi = new WebIFC.IfcAPI();
+              ifcApi.SetWasmPath('/wasm/', true);
+              await ifcApi.Init();
 
-            const modelID = ifcApi.OpenModel(uint8Array);
-            const geomMap = new Map<string, THREE.BufferGeometry>();
-            let totalVerts = 0, totalTris = 0, meshIndex = 0;
+              const modelID = ifcApi.OpenModel(uint8Array);
+              const geomMap = new Map<string, THREE.BufferGeometry>();
+              let totalVerts = 0, totalTris = 0, meshIndex = 0;
 
-            ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
-              const expressID = placedMesh.expressID;
-              const numGeom = placedMesh.geometries.size();
-              const subGeoms: THREE.BufferGeometry[] = [];
+              ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
+                const expressID = placedMesh.expressID;
+                const numGeom = placedMesh.geometries.size();
+                const subGeoms: THREE.BufferGeometry[] = [];
 
-              for (let i = 0; i < numGeom; i++) {
-                const placedGeom = placedMesh.geometries.get(i);
-                const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
-                const verBuf = ifcApi.GetVertexArray(geomData.GetVertexData(), geomData.GetVertexDataSize());
-                const idxBuf = ifcApi.GetIndexArray(geomData.GetIndexData(), geomData.GetIndexDataSize());
+                for (let i = 0; i < numGeom; i++) {
+                  const placedGeom = placedMesh.geometries.get(i);
+                  const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
+                  const verBuf = ifcApi.GetVertexArray(geomData.GetVertexData(), geomData.GetVertexDataSize());
+                  const idxBuf = ifcApi.GetIndexArray(geomData.GetIndexData(), geomData.GetIndexDataSize());
 
-                if (verBuf.length === 0 || idxBuf.length === 0) continue;
-                const numVertices = verBuf.length / 6;
-                const positions = new Float32Array(numVertices * 3);
-                const normals = new Float32Array(numVertices * 3);
+                  if (verBuf.length === 0 || idxBuf.length === 0) continue;
+                  const numVertices = verBuf.length / 6;
+                  const positions = new Float32Array(numVertices * 3);
+                  const normals = new Float32Array(numVertices * 3);
 
-                let hasInvalid = false;
-                for (let v = 0; v < numVertices; v++) {
-                  const x = verBuf[v * 6], y = verBuf[v * 6 + 1], z = verBuf[v * 6 + 2];
-                  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
-                    hasInvalid = true;
-                    break;
+                  let hasInvalid = false;
+                  for (let v = 0; v < numVertices; v++) {
+                    const x = verBuf[v * 6], y = verBuf[v * 6 + 1], z = verBuf[v * 6 + 2];
+                    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
+                      hasInvalid = true;
+                      break;
+                    }
+                    positions[v * 3] = x;
+                    positions[v * 3 + 1] = y;
+                    positions[v * 3 + 2] = z;
+                    normals[v * 3] = verBuf[v * 6 + 3];
+                    normals[v * 3 + 1] = verBuf[v * 6 + 4];
+                    normals[v * 3 + 2] = verBuf[v * 6 + 5];
                   }
-                  positions[v * 3] = x;
-                  positions[v * 3 + 1] = y;
-                  positions[v * 3 + 2] = z;
-                  normals[v * 3] = verBuf[v * 6 + 3];
-                  normals[v * 3 + 1] = verBuf[v * 6 + 4];
-                  normals[v * 3 + 2] = verBuf[v * 6 + 5];
-                }
-                if (hasInvalid) continue;
+                  if (hasInvalid) continue;
 
-                const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
-                geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
+                  const geometry = new THREE.BufferGeometry();
+                  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                  geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+                  geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
 
-                if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
-                  const matrix = new THREE.Matrix4().fromArray(placedGeom.flatTransformation);
-                  geometry.applyMatrix4(matrix);
+                  if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
+                    const matrix = new THREE.Matrix4().fromArray(placedGeom.flatTransformation);
+                    geometry.applyMatrix4(matrix);
+                  }
+                  subGeoms.push(geometry);
+                  totalVerts += numVertices;
+                  totalTris += idxBuf.length / 3;
                 }
-                subGeoms.push(geometry);
-                totalVerts += numVertices;
-                totalTris += idxBuf.length / 3;
+
+                if (subGeoms.length > 0) {
+                  const merged = subGeoms.length === 1 ? subGeoms[0] : (mergeGeometries(subGeoms, false) || subGeoms[0]);
+                  merged.computeBoundingBox();
+                  merged.computeBoundingSphere();
+
+                  const compId = `DUPLEX-ELEM-${expressID}`;
+                  let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
+                  if (!comp && meshIndex < metaData.components.length) {
+                    comp = metaData.components[meshIndex];
+                  }
+                  if (comp) {
+                    geomMap.set(comp.id, merged);
+                  }
+                }
+                meshIndex++;
+              });
+
+              ifcApi.CloseModel(modelID);
+              if (mounted) {
+                ifcGeometriesRef.current = geomMap;
+                setIfcLoaded(true);
+                setIfcStats({ meshesCount: meshIndex, verticesCount: totalVerts, trianglesCount: totalTris });
               }
-
-              if (subGeoms.length > 0) {
-                const merged = subGeoms.length === 1 ? subGeoms[0] : (mergeGeometries(subGeoms, false) || subGeoms[0]);
-                merged.computeBoundingBox();
-                merged.computeBoundingSphere();
-
-                const compId = `DUPLEX-ELEM-${expressID}`;
-                let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
-                if (!comp && meshIndex < metaData.components.length) {
-                  comp = metaData.components[meshIndex];
-                }
-                if (comp) {
-                  geomMap.set(comp.id, merged);
-                }
-              }
-              meshIndex++;
-            });
-
-            ifcApi.CloseModel(modelID);
+            }
+          } catch (wasmErr: any) {
+            console.warn('[BIM WORKSPACE] WebAssembly IFC parsing warning, falling back to JSON geometry engine:', wasmErr?.message || wasmErr);
             if (mounted) {
-              ifcGeometriesRef.current = geomMap;
-              setIfcLoaded(true);
-              setIfcStats({ meshesCount: meshIndex, verticesCount: totalVerts, trianglesCount: totalTris });
+              setIfcParseError(wasmErr?.message || 'IFC WASM parsing fallback to JSON geometry');
             }
           }
           setLoading(false);
