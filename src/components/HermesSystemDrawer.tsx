@@ -72,6 +72,7 @@ export const HermesSystemDrawer: React.FC<HermesSystemDrawerProps> = ({
     {
       title: 'AUDIT & DIAGNOSTICS',
       items: [
+        { id: 'prehouse-spatial-proof' as NavTab, label: 'Spatial Diagnostics', icon: Box },
         { id: 'audit' as NavTab, label: 'System Audit Trail', icon: FileSearch },
         { id: 'system-health' as NavTab, label: 'System Health & Subsystems', icon: Server },
       ]

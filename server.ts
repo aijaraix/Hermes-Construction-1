@@ -37,6 +37,8 @@ import { EventReplayEngine } from './server/eventReplayEngine';
 import { CoreProofRunner } from './server/coreProofRunner';
 import { PrehouseSpatialEngine } from './server/prehouseSpatialEngine';
 import { PrehouseSpatialProofRunner } from './server/prehouseSpatialProofRunner';
+import { House0002Engine } from './server/house0002Engine';
+import { House0002CheckpointRunner } from './server/house0002CheckpointRunner';
 
 async function startServer() {
   const app = express();
@@ -385,6 +387,42 @@ async function startServer() {
     try {
       const result = PrehouseSpatialEngine.executeSurveyMethodSpatialActions();
       res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/house0002-checkpoint', (req, res) => {
+    try {
+      const report = House0002CheckpointRunner.executeCheckpointReport();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/house0002-spatial-world', (req, res) => {
+    try {
+      House0002Engine.initialize();
+      res.json({
+        projectId: House0002Engine.getProjectId(),
+        attemptId: House0002Engine.getAttemptId(),
+        spatialEntities: House0002Engine.getSpatialEntities(),
+        agentSpatialStates: House0002Engine.getAgentSpatialStates(),
+        materials: House0002Engine.getMaterials(),
+        surveyMarks: House0002Engine.getSurveyMarks(),
+        fieldConsultations: House0002Engine.getFieldConsultations(),
+        knowledgeRequests: House0002Engine.getKnowledgeRequests(),
+        facilityEvaluation: House0002Engine.getFacilityEvaluation(),
+        robotContracts: House0002Engine.getRobotContracts(),
+        spatialActions: House0002Engine.getSpatialActions(),
+        events: House0002Engine.getEventStream(),
+        customerInteractions: House0002Engine.getCustomerInteractions(),
+        programVolumes: House0002Engine.getProgramVolumes(),
+        bimComponents: House0002Engine.getBimComponents(),
+        bomItems: House0002Engine.getBomItems(),
+        methodGaps: House0002Engine.getMethodGapsDiscovered()
+      });
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });
     }

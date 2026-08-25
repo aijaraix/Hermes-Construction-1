@@ -237,11 +237,38 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         return [];
       })
       .then((data) => {
+        const prehouseEntry = {
+          id: 'PREHOUSE-SPATIAL-PROOF-0001',
+          name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
+          buildingType: 'Pre-House Site World',
+        };
+        const house2Entry = {
+          id: 'ACADEMY-HOUSE-0002',
+          name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
+          buildingType: 'Autonomous Construction (Tampa, FL)',
+        };
         if (Array.isArray(data)) {
-          setAllProjectsList(data);
+          const filtered = data.filter((p) => p.id !== 'PREHOUSE-SPATIAL-PROOF-0001' && p.id !== 'ACADEMY-HOUSE-0002');
+          setAllProjectsList([house2Entry, prehouseEntry, ...filtered]);
+        } else {
+          setAllProjectsList([house2Entry, prehouseEntry]);
         }
       })
-      .catch((e) => console.error('Failed to load projects list:', e));
+      .catch((e) => {
+        console.error('Failed to load projects list:', e);
+        setAllProjectsList([
+          {
+            id: 'ACADEMY-HOUSE-0002',
+            name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
+            buildingType: 'Autonomous Construction (Tampa, FL)',
+          },
+          {
+            id: 'PREHOUSE-SPATIAL-PROOF-0001',
+            name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
+            buildingType: 'Pre-House Site World',
+          },
+        ]);
+      });
   }, []);
 
   // Fetch Project Data on Active Project Switch
@@ -257,7 +284,415 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         setSelectedSystem(null);
         setActiveTrace(null);
 
-        if (activeProjectId === 'REFERENCE-BIM-0001') {
+        if (activeProjectId === 'ACADEMY-HOUSE-0002') {
+          const worldRes = await fetch('/api/hermes/house0002-spatial-world');
+          if (!worldRes.ok) throw new Error(`HTTP ${worldRes.status} loading house0002 spatial world`);
+          const worldData = await worldRes.json();
+          if (!mounted) return;
+
+          const components: ReferenceBimComponent[] = [];
+
+          // 1. Spatial Entities (Facilities, site boundary, footprint, 3D Program Volumes)
+          if (worldData.spatialEntities) {
+            worldData.spatialEntities.forEach((e: any) => {
+              components.push({
+                id: e.entityId,
+                ifcGuid: `GUID-${e.entityId}`,
+                ifcType: 'IfcBuildingElementProxy',
+                name: e.name,
+                category: 'Site',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: e.worldPosition || [0, 0, 0],
+                dimensions: e.dimensions || [1, 1, 1],
+                orientationDegrees: 0,
+                materialSpecIds: ['SITE-FACILITY-SPEC'],
+                propertySets: [
+                  { name: 'Pset_FacilityDetails', properties: { EntityType: e.entityType, ProjectId: e.projectId } },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'HOUSE_0002_ENGINE',
+                  creator: 'ACADEMY-HOUSE-0002',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // 2. Program Volumes (Room Blocks)
+          if (worldData.programVolumes) {
+            worldData.programVolumes.forEach((p: any) => {
+              components.push({
+                id: p.id,
+                ifcGuid: `GUID-${p.id}`,
+                ifcType: 'IfcSpace',
+                name: `[Program Volume] ${p.name}`,
+                category: 'Architecture',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: p.worldPositionMeters || [0, 1.4, 0],
+                dimensions: p.dimensionsMeters || [3, 2.8, 3],
+                orientationDegrees: 0,
+                materialSpecIds: ['PROGRAM-VOLUME-SPEC'],
+                propertySets: [
+                  {
+                    name: 'Pset_ProgramDetails',
+                    properties: {
+                      TargetAreaSqFt: p.targetAreaSqFt,
+                      RoomType: p.roomType,
+                      AdjacentRooms: p.adjacentRooms.join(', '),
+                    },
+                  },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'PRIME_PROGRAM_ENGINE',
+                  creator: 'PROJECT-PRIME',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // 3. Workforce Agents (68 Agents)
+          if (worldData.agentSpatialStates) {
+            worldData.agentSpatialStates.forEach((a: any) => {
+              components.push({
+                id: `AGENT-${a.agentId}`,
+                ifcGuid: `GUID-AGENT-${a.agentId}`,
+                ifcType: 'IfcActor',
+                name: `${a.role} (${a.agentId})`,
+                category: a.agentType === 'INTELLIGENCE' ? 'Architecture' : 'Structure',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: a.worldPosition || [0, 0, 0],
+                dimensions: a.workEnvelope || [0.5, 1.75, 0.5],
+                orientationDegrees: 0,
+                materialSpecIds: ['WORKFORCE-HUMAN-SPEC'],
+                propertySets: [
+                  {
+                    name: 'Pset_AgentDetails',
+                    properties: {
+                      Discipline: a.discipline,
+                      State: a.currentState,
+                      HomeBase: a.homeBaseEntityId,
+                      ReportsTo: a.reportsTo || 'PRIME',
+                    },
+                  },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'WORKFORCE_SPATIAL_ENGINE',
+                  creator: 'HERMES_ROSTER',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // 4. Survey Marks
+          if (worldData.surveyMarks) {
+            worldData.surveyMarks.forEach((s: any) => {
+              components.push({
+                id: s.markId,
+                ifcGuid: `GUID-${s.markId}`,
+                ifcType: 'IfcBuildingElementProxy',
+                name: s.name,
+                category: 'Site',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: s.worldPosition || [0, 0, 0],
+                dimensions: [0.15, 0.8, 0.15],
+                orientationDegrees: 0,
+                materialSpecIds: ['SURVEY-STAKE-SPEC'],
+                propertySets: [
+                  {
+                    name: 'Pset_SurveyControl',
+                    properties: {
+                      Elevation: s.measuredElevationMeters,
+                      ToleranceMm: s.toleranceMm,
+                      Surveyor: s.surveyorAgentId,
+                    },
+                  },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'SURVEY_ENGINE',
+                  creator: s.surveyorAgentId,
+                  verifiedDate: s.verifiedTimestamp,
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // 5. Design BIM Revision 1 Components (Built from ZERO!)
+          if (worldData.bimComponents) {
+            worldData.bimComponents.forEach((c: any) => {
+              components.push({
+                id: c.id,
+                ifcGuid: `GUID-${c.id}`,
+                ifcType: c.type === 'wall' ? 'IfcWall' : c.type === 'slab' ? 'IfcSlab' : c.type === 'door' ? 'IfcDoor' : c.type === 'window' ? 'IfcWindow' : c.type === 'roof' ? 'IfcRoof' : 'IfcBuildingElementProxy',
+                name: c.assembly,
+                category: c.system || 'Structure',
+                storeyId: c.floor === 2 ? 'STOREY-ROOF' : 'STOREY-GROUND',
+                storeyName: c.floor === 2 ? 'Roof Level' : 'Ground Level',
+                position: c.geometry.position,
+                dimensions: c.geometry.dimensions,
+                orientationDegrees: 0,
+                materialSpecIds: c.materials ? c.materials.map((m: any) => m.name) : ['CONCRETE-4000PSI'],
+                propertySets: [
+                  {
+                    name: 'Pset_DesignBimDetails',
+                    properties: {
+                      System: c.system,
+                      Room: c.room,
+                      FireRatingHours: c.fireRatingHours || 0,
+                      IsExterior: c.isExterior ? 'YES' : 'NO',
+                      InspectionState: c.inspectionState || 'PASSED',
+                    },
+                  },
+                ],
+                connectedComponentIds: c.connectedComponentIds || [],
+                openings: c.openings || [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'DESIGN_BIM_REV1',
+                  creator: 'SPATIAL-BIM-PRIME',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          const normalizedProj: ReferenceBimProject = {
+            projectId: 'ACADEMY-HOUSE-0002',
+            name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
+            description: 'Autonomous Single-Family House Construction Project (Tampa, FL) - First Owner Checkpoint',
+            classification: 'ACADEMY_AUTONOMOUS_CONSTRUCTION',
+            immutableSource: false,
+            academyWritable: true,
+            hermesGenerated: true,
+            referenceModel: false,
+            license: 'HERMES OpenBIM License',
+            sourceUri: 'hermes://academy-house-0002',
+            spatialHierarchy: {
+              projectId: 'ACADEMY-HOUSE-0002',
+              ifcGuid: 'ACADEMY-HOUSE-0002-GUID',
+              siteId: 'SITE-H2-PARCEL',
+              siteGuid: 'SITE-GUID-H2',
+              buildingId: 'Tampa House #2 Residence',
+              buildingGuid: 'BUILDING-GUID-H2',
+              storeys: [
+                {
+                  id: 'STOREY-GROUND',
+                  ifcGuid: 'STOREY-GROUND-GUID-H2',
+                  name: 'Ground Level (0.00m Datum)',
+                  elevationMeters: 0,
+                  heightMeters: 3.0,
+                  spaces: [
+                    { id: 'ROOM-LIVING', name: 'Living & Dining Great Room', ifcGuid: 'SP-LIVING', areaSqMeters: 28, volumeCuMeters: 78.4 },
+                    { id: 'ROOM-KITCHEN', name: 'Kitchen & Pantry', ifcGuid: 'SP-KITCHEN', areaSqMeters: 13, volumeCuMeters: 36.4 },
+                    { id: 'ROOM-BED1', name: 'Primary Bedroom Suite', ifcGuid: 'SP-BED1', areaSqMeters: 16.7, volumeCuMeters: 46.7 },
+                    { id: 'ROOM-BATH1', name: 'Primary Ensuite Bathroom', ifcGuid: 'SP-BATH1', areaSqMeters: 6.9, volumeCuMeters: 19.3 },
+                    { id: 'ROOM-BED2', name: 'Bedroom 2 / Flex Office', ifcGuid: 'SP-BED2', areaSqMeters: 13.9, volumeCuMeters: 38.9 },
+                    { id: 'ROOM-BATH2', name: 'Bathroom 2 / Guest Bath', ifcGuid: 'SP-BATH2', areaSqMeters: 5.6, volumeCuMeters: 15.6 },
+                  ],
+                },
+              ],
+            },
+            components,
+            relationships: {
+              containedInStorey: {},
+              containedInSpace: {},
+              hostsOpening: {},
+              systemConnectivity: {},
+            },
+          };
+
+          setProjectData(normalizedProj);
+          setLoading(false);
+        } else if (activeProjectId === 'PREHOUSE-SPATIAL-PROOF-0001') {
+          const worldRes = await fetch('/api/hermes/prehouse-spatial-world');
+          if (!worldRes.ok) throw new Error(`HTTP ${worldRes.status} loading prehouse spatial world`);
+          const worldData = await worldRes.json();
+          if (!mounted) return;
+
+          const components: ReferenceBimComponent[] = [];
+
+          // Convert spatial entities (facilities, site boundaries, containers)
+          if (worldData.spatialEntities) {
+            const entList = Array.isArray(worldData.spatialEntities)
+              ? worldData.spatialEntities
+              : Object.values(worldData.spatialEntities);
+            entList.forEach((e: any) => {
+              components.push({
+                id: e.entityId,
+                ifcGuid: `GUID-${e.entityId}`,
+                ifcType: 'IfcBuildingElementProxy',
+                name: e.name,
+                category: 'Site',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: e.worldPosition || [0, 0, 0],
+                dimensions: e.dimensions || [1, 1, 1],
+                orientationDegrees: e.worldRotation ? e.worldRotation[1] : 0,
+                materialSpecIds: ['SITE-FACILITY-SPEC'],
+                propertySets: [
+                  { name: 'Pset_FacilityDetails', properties: { EntityType: e.entityType, ProjectId: e.projectId } },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'PREHOUSE_SPATIAL_ENGINE',
+                  creator: 'HERMES_SPATIAL_PROOF',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // Convert agent spatial states (68 agents)
+          if (worldData.agentSpatialStates) {
+            const agentList = Array.isArray(worldData.agentSpatialStates)
+              ? worldData.agentSpatialStates
+              : Object.values(worldData.agentSpatialStates);
+            agentList.forEach((a: any) => {
+              components.push({
+                id: `AGENT-${a.agentId}`,
+                ifcGuid: `GUID-AGENT-${a.agentId}`,
+                ifcType: 'IfcActor',
+                name: `${a.role} (${a.agentId})`,
+                category: a.agentType === 'INTELLIGENCE' ? 'Architecture' : 'Structure',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: a.worldPosition || [0, 0, 0],
+                dimensions: a.workEnvelope || [0.5, 1.75, 0.5],
+                orientationDegrees: 0,
+                materialSpecIds: ['WORKFORCE-HUMAN-SPEC'],
+                propertySets: [
+                  {
+                    name: 'Pset_AgentDetails',
+                    properties: {
+                      Discipline: a.discipline,
+                      State: a.currentState,
+                      HomeBase: a.homeBaseEntityId,
+                      ReportsTo: a.reportsTo || 'PRIME',
+                    },
+                  },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'WORKFORCE_SPATIAL_ENGINE',
+                  creator: 'HERMES_ROSTER',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // Convert materials
+          if (worldData.materials) {
+            worldData.materials.forEach((m: any) => {
+              components.push({
+                id: m.materialId,
+                ifcGuid: `GUID-${m.materialId}`,
+                ifcType: 'IfcElementAssembly',
+                name: m.materialType,
+                category: 'Structure',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: m.currentPosition || [0, 0, 0],
+                dimensions: m.dimensions || [1.22, 1.22, 2.44],
+                orientationDegrees: 0,
+                materialSpecIds: ['GYPSUM-TYPE-X-5/8'],
+                propertySets: [
+                  {
+                    name: 'Pset_MaterialState',
+                    properties: {
+                      Stage: m.stage,
+                      WeightKg: m.weightKg,
+                      ClearanceMeters: m.clearanceMeters,
+                    },
+                  },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'SPATIAL_LOGISTICS_ENGINE',
+                  creator: 'MATERIAL_MANAGER',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          const normalizedProj: ReferenceBimProject = {
+            projectId: 'PREHOUSE-SPATIAL-PROOF-0001',
+            name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
+            description: 'Autonomous 1:1 Scale Pre-House Site World with 68 Agents, Facilities & Spatial Logistics',
+            classification: 'PREHOUSE_SPATIAL_PROOF',
+            immutableSource: true,
+            academyWritable: false,
+            hermesGenerated: true,
+            referenceModel: true,
+            license: 'HERMES OpenBIM License',
+            sourceUri: 'hermes://prehouse-spatial-world',
+            spatialHierarchy: {
+              projectId: 'PREHOUSE-SPATIAL-PROOF-0001',
+              ifcGuid: 'PREHOUSE-SITE-GUID-001',
+              siteId: 'SITE-PREHOUSE-CANONICAL-01',
+              siteGuid: 'SITE-GUID-PREHOUSE-001',
+              buildingId: 'Pre-House Temporary Facilities & Yard',
+              buildingGuid: 'BUILDING-GUID-PREHOUSE-001',
+              storeys: [
+                {
+                  id: 'STOREY-GROUND',
+                  ifcGuid: 'STOREY-GROUND-GUID',
+                  name: 'Ground Site Elevation (0.00m Datum)',
+                  elevationMeters: 0,
+                  heightMeters: 12.0,
+                  spaces: [
+                    { id: 'FACILITY-OPS-01', name: 'Operations Trailer (OPS-01)', ifcGuid: 'SPACE-1', areaSqMeters: 36, volumeCuMeters: 108 },
+                    { id: 'FACILITY-LEARNING-01', name: 'Active Learning Center (ACADEMY-01)', ifcGuid: 'SPACE-2', areaSqMeters: 48, volumeCuMeters: 144 },
+                    { id: 'FACILITY-WORKFORCE-01', name: 'Workforce Staging Area (STAGING-01)', ifcGuid: 'SPACE-3', areaSqMeters: 60, volumeCuMeters: 180 },
+                    { id: 'FACILITY-LAYDOWN-01', name: 'Material Laydown Yard (LAYDOWN-01)', ifcGuid: 'SPACE-4', areaSqMeters: 100, volumeCuMeters: 300 },
+                  ],
+                },
+              ],
+            },
+            components,
+            relationships: {
+              containedInStorey: {},
+              containedInSpace: {},
+              hostsOpening: {},
+              systemConnectivity: {},
+            },
+          };
+
+          setProjectData(normalizedProj);
+          setLoading(false);
+        } else if (activeProjectId === 'REFERENCE-BIM-0001') {
           // Fetch reference model JSON & STEP file
           const metaRes = await fetch('/api/bim/reference-model');
           if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} loading reference model metadata`);

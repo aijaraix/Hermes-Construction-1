@@ -361,9 +361,6 @@ export default function App() {
         {/* Change-Order Risks */}
         {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
 
-        {/* Pre-House Spatial Proof View */}
-        {activeTab === 'prehouse-spatial-proof' && <PrehouseSpatialProofView />}
-
         {/* Customizer & Revisions */}
         {activeTab === 'customizer' && (
           <CustomizerView
@@ -381,6 +378,7 @@ export default function App() {
         activeSystemSubtab={activeSystemSubtab}
         setActiveSystemSubtab={setActiveSystemSubtab}
       >
+        {activeSystemSubtab === 'prehouse-spatial-proof' && <PrehouseSpatialProofView />}
         {activeSystemSubtab === 'spatial-academy' && <Phase318B3SpatialAcademyView />}
         {activeSystemSubtab === 'continuous-academy' && <Phase318BContinuousAcademyView />}
         {activeSystemSubtab === 'owner-sme-dashboard' && <OwnerSmeDashboardView />}

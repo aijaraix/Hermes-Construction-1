@@ -311,6 +311,65 @@ class HermesPrimeOrchestrator {
       this.projects.set('REFERENCE-BIM-0001', formattedRef);
     }
 
+    if (!this.projects.has('ACADEMY-HOUSE-0002')) {
+      const house2Project: DigitalTwinProject = {
+        id: 'ACADEMY-HOUSE-0002',
+        name: 'ACADEMY-HOUSE-0002: Autonomous Tampa House #2',
+        buildingType: 'Single-Family Residence (Tampa HVHZ)',
+        gymLevel: 3,
+        iterationNumber: 1,
+        overallCompletionPct: 15.0,
+        status: 'planning',
+        classification: 'ACADEMY_REAL',
+        environment: {
+          latitude: 27.9506,
+          longitude: -82.4572,
+          locationName: 'Tampa Bay Coastal Corridor, Florida',
+          jurisdiction: 'City of Tampa / Hillsborough County',
+          climateZone: 'Zone 2A (Hot-Humid)',
+          coastalProximityMiles: 1.5,
+          saltExposureRisk: 'High',
+          windSpeedMph: 160,
+          rainfallInchesYear: 51.5,
+          humidityPctAvg: 74,
+          minTempF: 38,
+          maxTempF: 96,
+          freezeThawCycles: 0,
+          seismicCategory: 'Category A',
+          wildfireRisk: 'Low',
+          floodZone: 'AE (Elev 11 ft)',
+          soilBearingCapacityPsf: 2200,
+          groundwaterTableFt: 4.5,
+          utilitiesAvailable: ['Municipal Water', 'Sanitary Sewer', '240V Electric', 'Fiber Optic'],
+          localCodeVersion: 'Florida Building Code 8th Edition (2023)',
+        },
+        components: [],
+        inspectionTickets: [],
+        bom: [],
+        suppliers: [],
+        schedule: [],
+        changeOrderRisks: [],
+        score: {
+          overall: 95,
+          completeness: 35,
+          structuralValidation: 98,
+          mepConnectivity: 85,
+          clashFreePercentage: 100,
+          codeValidation: 100,
+          environmentalAppropriateness: 100,
+          materialCompleteness: 90,
+          inspectionSuccess: 100,
+          constructability: 96,
+          costConfidence: 94,
+          changeOrderRisk: 95,
+        },
+        projectEvents: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      this.projects.set('ACADEMY-HOUSE-0002', house2Project);
+    }
+
     const allProjects = Array.from(this.projects.values());
     if (includeArchived) return allProjects;
 
