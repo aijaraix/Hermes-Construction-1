@@ -25,23 +25,23 @@ export class ReasoningGatingEngine {
   }
 
   public static getProviderStatus(): {
-    status: 'ONLINE' | 'LLM_PROVIDER_UNAVAILABLE';
+    status: 'DEFERRED' | 'ONLINE' | 'LLM_PROVIDER_UNAVAILABLE';
     hasApiKey: boolean;
     activeProvider: string;
+    llmAutonomousDecisionsEnabled: boolean;
     deterministicFallbackActive: boolean;
     competencyAllowedForDeterministic: boolean;
     instructions: string;
   } {
     const hasKey = this.isGeminiKeyConfigured();
     return {
-      status: hasKey ? 'ONLINE' : 'LLM_PROVIDER_UNAVAILABLE',
+      status: 'DEFERRED',
       hasApiKey: hasKey,
-      activeProvider: hasKey ? 'Google Gemini 2.5 Flash / Pro' : 'DeterministicProposalSimulator (Fallback)',
-      deterministicFallbackActive: !hasKey,
-      competencyAllowedForDeterministic: false, // MUST BE NO
-      instructions: hasKey
-        ? 'Gemini API key is configured and active.'
-        : 'GEMINI_API_KEY is not configured in the environment. System is operating safely via deterministic proposal heuristics. Deterministic outputs are marked and excluded from LLM reasoning competency metrics.'
+      activeProvider: 'Hermes Grounded Deterministic Pipeline',
+      llmAutonomousDecisionsEnabled: false,
+      deterministicFallbackActive: true,
+      competencyAllowedForDeterministic: false,
+      instructions: 'LLM_PROVIDER_STATUS is DEFERRED per Owner Gate Directive. Autonomous LLM decision-making is strictly disabled. Execution proceeds solely via deterministic rules, physics calculations, and grounded knowledge retrieval.'
     };
   }
 
@@ -53,32 +53,17 @@ export class ReasoningGatingEngine {
     const timestamp = new Date().toISOString();
 
     if (requestedCategory === 'LLM_REASONING') {
-      if (hasKey) {
-        const audit: ReasoningExecutionAudit = {
-          requestId,
-          category: 'LLM_REASONING',
-          providerUsed: 'Google Gemini API',
-          isLlmReasoning: true,
-          countsTowardCompetency: true,
-          timestamp,
-          reason: 'Live Gemini LLM reasoning call executed successfully.'
-        };
-        this.auditLogs.push(audit);
-        return audit;
-      } else {
-        // Fallback to deterministic simulation
-        const audit: ReasoningExecutionAudit = {
-          requestId,
-          category: 'DETERMINISTIC_EXECUTION',
-          providerUsed: 'DeterministicProposalSimulator',
-          isLlmReasoning: false,
-          countsTowardCompetency: false, // MUST BE NO
-          timestamp,
-          reason: 'GEMINI_API_KEY not configured. Executed deterministic simulation fallback. Competency credit denied.'
-        };
-        this.auditLogs.push(audit);
-        return audit;
-      }
+      const audit: ReasoningExecutionAudit = {
+        requestId,
+        category: 'DETERMINISTIC_EXECUTION',
+        providerUsed: 'DeterministicProposalSimulator (DEFERRED Gate Enforced)',
+        isLlmReasoning: false,
+        countsTowardCompetency: false,
+        timestamp,
+        reason: 'LLM_PROVIDER_STATUS is DEFERRED per Owner Gate Directive. Autonomous LLM decision-making blocked; executed deterministic simulation fallback.'
+      };
+      this.auditLogs.push(audit);
+      return audit;
     } else {
       const audit: ReasoningExecutionAudit = {
         requestId,

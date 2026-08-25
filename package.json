@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "dev": "npm run copy:wasm && tsx server.ts",
+    "copy:wasm": "mkdir -p public/wasm && cp -f node_modules/web-ifc/*.wasm public/wasm/ && cp -f node_modules/sql.js/dist/sql-wasm.wasm public/wasm/",
+    "build": "npm run copy:wasm && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.cjs",
     "test": "vitest run",

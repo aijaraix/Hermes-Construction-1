@@ -83,7 +83,13 @@ async function startServer() {
   });
 
   // Stage C & Stage 0: BIM Command Layer & Reference Model Endpoints
-  app.use('/wasm', express.static(path.join(process.cwd(), 'public', 'wasm')));
+  app.use('/wasm', express.static(path.join(process.cwd(), 'public', 'wasm'), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.wasm')) {
+        res.setHeader('Content-Type', 'application/wasm');
+      }
+    }
+  }));
 
   app.get('/api/bim/reference-model', (req, res) => {
     const refProject = ReferenceBimStore.getReferenceProject();
@@ -394,6 +400,37 @@ async function startServer() {
       scrubSequence
     );
     res.json(result);
+  });
+
+  // CLOSEOUT RECONCILIATION & FINAL GATE ENDPOINTS
+  app.get('/api/closeout/reconciliation/event-source', (req, res) => {
+    CloseoutEngine.initialize();
+    res.json(CloseoutEngine.getEventSourceReconciliation());
+  });
+
+  app.get('/api/closeout/reconciliation/workforce', (req, res) => {
+    CloseoutEngine.initialize();
+    res.json(CloseoutEngine.getWorkforceReconciliation());
+  });
+
+  app.get('/api/closeout/reconciliation/gap-register', (req, res) => {
+    CloseoutEngine.initialize();
+    res.json(CloseoutEngine.getCoverageGapRegister());
+  });
+
+  app.get('/api/closeout/reconciliation/reasoning-gate', (req, res) => {
+    CloseoutEngine.initialize();
+    res.json(CloseoutEngine.getReasoningGateEnforcement());
+  });
+
+  app.get('/api/closeout/release-package', (req, res) => {
+    CloseoutEngine.initialize();
+    const suite = CoreProofRunner.runAcceptanceTestSuite();
+    const pkg = CloseoutEngine.getFinalReleasePackage();
+    res.json({
+      suite,
+      releasePackage: pkg
+    });
   });
 
   app.get('/api/projects', (req, res) => {

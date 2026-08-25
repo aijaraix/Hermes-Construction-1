@@ -489,4 +489,93 @@ export class ConstructionMethodEngine {
   public static getSpatialActions(): SpatialActionRecord[] {
     return [...this.spatialActions];
   }
+
+  public static getScopeBoundaryStatus(): {
+    classification: 'CORE_METHOD_COVERAGE';
+    provenMethodCount: number;
+    description: string;
+  } {
+    this.initialize();
+    return {
+      classification: 'CORE_METHOD_COVERAGE',
+      provenMethodCount: 7,
+      description: 'The seven proven construction method graphs (Survey, Monolithic Slab, Steel Column, Wood Framing, DWV Plumbing, Electrical Branch, and HVAC Branch) represent proven CORE METHOD COVERAGE for House #1 execution, not complete-house method coverage.'
+    };
+  }
+
+  public static getCoverageGapRegister(): Array<{
+    gapId: string;
+    systemCategory: string;
+    description: string;
+    impact: string;
+    mitigationStrategy: string;
+    targetPhase: string;
+  }> {
+    return [
+      {
+        gapId: 'GAP-ROOFING-01',
+        systemCategory: 'Roofing Systems',
+        description: 'Standing seam metal roofing & TPO membrane assembly method graph unproven.',
+        impact: 'Exterior weather enclosure incomplete.',
+        mitigationStrategy: 'Develop and prove METHOD-ROOF-01 graph in Phase 2.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-ENVELOPE-01',
+        systemCategory: 'Building Envelope & WRB',
+        description: 'Continuous exterior insulation and thermal barrier graph unproven.',
+        impact: 'Thermal boundary and air barrier details pending verification.',
+        mitigationStrategy: 'Conduct dedicated envelope mock-up testing.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-FENESTRATION-01',
+        systemCategory: 'Windows & Exterior Doors',
+        description: 'Fenestration flashing integration and impact-window anchoring graph unproven.',
+        impact: 'Windborne debris opening protection verification pending.',
+        mitigationStrategy: 'Prove METHOD-WINDOW-01 graph in Phase 2.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-FIRE-01',
+        systemCategory: 'Fire & Life Safety',
+        description: 'Fire sprinkler piping, smoke dampers, and alarm loop graph unproven.',
+        impact: 'Life safety submittal pending dedicated trade graph.',
+        mitigationStrategy: 'Develop fire sprinkler trade graph with Life Safety Specialist.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-ACCESSIBILITY-01',
+        systemCategory: 'Accessibility & ADA',
+        description: 'ADA ramp slopes, grab bar blocking, and zero-step threshold graph unproven.',
+        impact: 'Accessibility clearance verification pending.',
+        mitigationStrategy: 'Integrate ADA rule checks into closeout suite.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-FINISHES-01',
+        systemCategory: 'Interior Finishes',
+        description: 'Flooring underlayment, millwork cabinetry, and paint coat graph unproven.',
+        impact: 'Cosmetic and architectural finish sequence unproven.',
+        mitigationStrategy: 'Add interior finishes graph in Phase 2.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-PERMIT-01',
+        systemCategory: 'Permitting & AHJ',
+        description: 'Municipal AHJ digital submittal routing and fee graph unproven.',
+        impact: 'Plan review submission automation pending local jurisdiction integration.',
+        mitigationStrategy: 'Map local municipal AHJ API connectors.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      },
+      {
+        gapId: 'GAP-CIVIL-01',
+        systemCategory: 'Site-Specific Geotechnical & Civil',
+        description: 'Deep helical pier piling and municipal storm sewer hookup graph unproven.',
+        impact: 'Site-specific subsoil foundation modifications pending.',
+        mitigationStrategy: 'Incorporate site geotechnical engineering sub-graphs.',
+        targetPhase: 'PHASE_2_EXPANSION'
+      }
+    ];
+  }
 }

@@ -31,6 +31,8 @@ export interface ReplayFrameState {
   };
   components: BIMComponent[];
   componentCount: number;
+  physicalComponentCount: number;
+  referenceEntityCount: number;
   activeTasks: AgentTaskRecord[];
   spatialActions: SpatialActionRecord[];
   materialStates: MaterialStateRecord[];
@@ -74,12 +76,72 @@ export class EventReplayEngine {
         payload: { stage: 'SITE_ANALYSIS' }
       },
       {
+        eventId: 'EVT-001A',
+        projectId: 'REFERENCE-BIM-0001',
+        timestamp: new Date(Date.now() - 3600000 * 23).toISOString(),
+        eventType: 'BIM_OBJECT_CREATED',
+        agentId: 'SITE-SURVEY-SPECIALIST-01',
+        message: 'Site Reference Control Grid A1 Established',
+        payload: {
+          component: {
+            id: 'BIM-SURVEY-GRID-01',
+            type: 'wall',
+            system: 'Site',
+            floor: 0,
+            room: 'SITE',
+            assembly: 'Primary Site Survey Control Lines',
+            materials: [{ name: 'Survey Datum Markers', specification: 'AISC-SURVEY-01', quantity: 4, unit: 'pts' }],
+            geometry: { position: [0, 0, 0], bounds: { min: [-10, 0, -10], max: [20, 0, 20] } }
+          }
+        }
+      },
+      {
+        eventId: 'EVT-001B',
+        projectId: 'REFERENCE-BIM-0001',
+        timestamp: new Date(Date.now() - 3600000 * 22).toISOString(),
+        eventType: 'BIM_OBJECT_CREATED',
+        agentId: 'SITE-SURVEY-SPECIALIST-01',
+        message: 'Site Boundary Control Envelope Set',
+        payload: {
+          component: {
+            id: 'BIM-SITE-BOUNDARY-01',
+            type: 'wall',
+            system: 'Site',
+            floor: 0,
+            room: 'SITE',
+            assembly: 'Property Setback Line Envelope',
+            materials: [{ name: 'Monitored Property Line Boundary', specification: 'FBC-2023-SITE', quantity: 1, unit: 'ls' }],
+            geometry: { position: [0, 0, 0], bounds: { min: [-15, 0, -15], max: [25, 10, 25] } }
+          }
+        }
+      },
+      {
+        eventId: 'EVT-001C',
+        projectId: 'REFERENCE-BIM-0001',
+        timestamp: new Date(Date.now() - 3600000 * 21).toISOString(),
+        eventType: 'BIM_OBJECT_CREATED',
+        agentId: 'SITE-SURVEY-SPECIALIST-01',
+        message: 'Ground Elevation Benchmark Datum Verified',
+        payload: {
+          component: {
+            id: 'BIM-DATUM-BENCHMARK-01',
+            type: 'wall',
+            system: 'Site',
+            floor: 0,
+            room: 'SITE',
+            assembly: 'NOAA NAVD88 Elevation Datum Monument',
+            materials: [{ name: 'Bronze Datum Pin', specification: 'NOAA-NAVD88', quantity: 1, unit: 'ea' }],
+            geometry: { position: [0, 0, 0], bounds: { min: [-0.1, -0.1, -0.1], max: [0.1, 0.1, 0.1] } }
+          }
+        }
+      },
+      {
         eventId: 'EVT-002',
         projectId: 'REFERENCE-BIM-0001',
         timestamp: new Date(Date.now() - 3600000 * 20).toISOString(),
         eventType: 'BIM_OBJECT_CREATED',
         agentId: 'SITE-SURVEY-SPECIALIST-01',
-        message: 'Survey Grid Control Points established',
+        message: 'Foundation Slab Poured and Verified',
         payload: {
           component: {
             id: 'BIM-FOUNDATION-SLAB-01',
@@ -276,6 +338,10 @@ export class EventReplayEngine {
       message: 'Project Initialized at Event 0'
     };
 
+    const allCompArray = Array.from(reconstructedComponents.values());
+    const physicalComps = allCompArray.filter(c => c.system !== 'Site' && !c.id.includes('GRID') && !c.id.includes('BOUNDARY') && !c.id.includes('DATUM'));
+    const referenceEntities = allCompArray.filter(c => c.system === 'Site' || c.id.includes('GRID') || c.id.includes('BOUNDARY') || c.id.includes('DATUM'));
+
     return {
       eventSequence: clampedSeq,
       totalEvents,
@@ -287,8 +353,10 @@ export class EventReplayEngine {
         stage: currentStage,
         completionPct
       },
-      components: Array.from(reconstructedComponents.values()),
-      componentCount: reconstructedComponents.size,
+      components: allCompArray,
+      componentCount: allCompArray.length,
+      physicalComponentCount: physicalComps.length,
+      referenceEntityCount: referenceEntities.length,
       activeTasks: Array.from(activeTasks.values()),
       spatialActions,
       materialStates: Array.from(materialStates.values()),

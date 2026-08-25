@@ -6,6 +6,10 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+    assetsInclude: ['**/*.wasm', '**/*.ifc'],
+    optimizeDeps: {
+      exclude: ['web-ifc'],
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
