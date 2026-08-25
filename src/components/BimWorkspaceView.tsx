@@ -284,70 +284,98 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               const geomMap = new Map<string, THREE.BufferGeometry>();
               let totalVerts = 0, totalTris = 0, meshIndex = 0;
 
-              ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
-                const expressID = placedMesh.expressID;
-                const numGeom = placedMesh.geometries.size();
-                const subGeoms: THREE.BufferGeometry[] = [];
+              try {
+                ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
+                  try {
+                    const expressID = placedMesh.expressID;
+                    const numGeom = placedMesh.geometries.size();
+                    const subGeoms: THREE.BufferGeometry[] = [];
 
-                for (let i = 0; i < numGeom; i++) {
-                  const placedGeom = placedMesh.geometries.get(i);
-                  const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
-                  const verBuf = ifcApi.GetVertexArray(geomData.GetVertexData(), geomData.GetVertexDataSize());
-                  const idxBuf = ifcApi.GetIndexArray(geomData.GetIndexData(), geomData.GetIndexDataSize());
+                    for (let i = 0; i < numGeom; i++) {
+                      const placedGeom = placedMesh.geometries.get(i);
+                      const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
+                      const verBuf = ifcApi.GetVertexArray(geomData.GetVertexData(), geomData.GetVertexDataSize());
+                      const idxBuf = ifcApi.GetIndexArray(geomData.GetIndexData(), geomData.GetIndexDataSize());
 
-                  if (verBuf.length === 0 || idxBuf.length === 0) continue;
-                  const numVertices = verBuf.length / 6;
-                  const positions = new Float32Array(numVertices * 3);
-                  const normals = new Float32Array(numVertices * 3);
+                      if (verBuf.length === 0 || idxBuf.length === 0) continue;
+                      const numVertices = verBuf.length / 6;
+                      const positions = new Float32Array(numVertices * 3);
+                      const normals = new Float32Array(numVertices * 3);
 
-                  let hasInvalid = false;
-                  for (let v = 0; v < numVertices; v++) {
-                    const x = verBuf[v * 6], y = verBuf[v * 6 + 1], z = verBuf[v * 6 + 2];
-                    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
-                      hasInvalid = true;
-                      break;
+                      let hasInvalid = false;
+                      for (let v = 0; v < numVertices; v++) {
+                        const x = verBuf[v * 6], y = verBuf[v * 6 + 1], z = verBuf[v * 6 + 2];
+                        if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
+                          hasInvalid = true;
+                          break;
+                        }
+                        positions[v * 3] = x;
+                        positions[v * 3 + 1] = y;
+                        positions[v * 3 + 2] = z;
+                        normals[v * 3] = verBuf[v * 6 + 3];
+                        normals[v * 3 + 1] = verBuf[v * 6 + 4];
+                        normals[v * 3 + 2] = verBuf[v * 6 + 5];
+                      }
+                      if (hasInvalid) continue;
+
+                      const geometry = new THREE.BufferGeometry();
+                      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                      geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+                      geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
+
+                      if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
+                        const matrix = new THREE.Matrix4().fromArray(placedGeom.flatTransformation);
+                        geometry.applyMatrix4(matrix);
+                      }
+                      subGeoms.push(geometry);
+                      totalVerts += numVertices;
+                      totalTris += idxBuf.length / 3;
                     }
-                    positions[v * 3] = x;
-                    positions[v * 3 + 1] = y;
-                    positions[v * 3 + 2] = z;
-                    normals[v * 3] = verBuf[v * 6 + 3];
-                    normals[v * 3 + 1] = verBuf[v * 6 + 4];
-                    normals[v * 3 + 2] = verBuf[v * 6 + 5];
+
+                    if (subGeoms.length > 0) {
+                      const merged = subGeoms.length === 1 ? subGeoms[0] : (mergeGeometries(subGeoms, false) || subGeoms[0]);
+                      
+                      // Check position attribute to ensure no NaN values
+                      const posAttr = merged.getAttribute('position');
+                      let isPosValid = true;
+                      if (posAttr && posAttr.array) {
+                        for (let pIdx = 0; pIdx < posAttr.array.length; pIdx++) {
+                          const val = posAttr.array[pIdx];
+                          if (val === null || val === undefined || !Number.isFinite(val)) {
+                            isPosValid = false;
+                            break;
+                          }
+                        }
+                      }
+
+                      if (isPosValid) {
+                        try {
+                          merged.computeBoundingBox();
+                          merged.computeBoundingSphere();
+                        } catch (e) {
+                          console.warn('Bounding box computation skipped for mesh:', e);
+                        }
+
+                        const compId = `DUPLEX-ELEM-${expressID}`;
+                        let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
+                        if (!comp && meshIndex < metaData.components.length) {
+                          comp = metaData.components[meshIndex];
+                        }
+                        if (comp) {
+                          geomMap.set(comp.id, merged);
+                        }
+                      }
+                    }
+                    meshIndex++;
+                  } catch (meshErr) {
+                    console.warn('Individual IFC mesh parse warning:', meshErr);
                   }
-                  if (hasInvalid) continue;
-
-                  const geometry = new THREE.BufferGeometry();
-                  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                  geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
-                  geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
-
-                  if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
-                    const matrix = new THREE.Matrix4().fromArray(placedGeom.flatTransformation);
-                    geometry.applyMatrix4(matrix);
-                  }
-                  subGeoms.push(geometry);
-                  totalVerts += numVertices;
-                  totalTris += idxBuf.length / 3;
-                }
-
-                if (subGeoms.length > 0) {
-                  const merged = subGeoms.length === 1 ? subGeoms[0] : (mergeGeometries(subGeoms, false) || subGeoms[0]);
-                  merged.computeBoundingBox();
-                  merged.computeBoundingSphere();
-
-                  const compId = `DUPLEX-ELEM-${expressID}`;
-                  let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
-                  if (!comp && meshIndex < metaData.components.length) {
-                    comp = metaData.components[meshIndex];
-                  }
-                  if (comp) {
-                    geomMap.set(comp.id, merged);
-                  }
-                }
-                meshIndex++;
-              });
-
-              ifcApi.CloseModel(modelID);
+                });
+              } finally {
+                try {
+                  ifcApi.CloseModel(modelID);
+                } catch (_) {}
+              }
               if (mounted) {
                 ifcGeometriesRef.current = geomMap;
                 setIfcLoaded(true);
@@ -555,13 +583,24 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     const rectWidth = maxX >= minX ? maxX - minX : 0;
     const rectHeight = maxY >= minY ? maxY - minY : 0;
 
-    setPixelAnalysis({
+    const reportData = {
+      timestamp: new Date().toISOString(),
+      projectId: activeProjectId,
       totalPixels,
       nonBgPixels: nonBgCount,
       nonBgPercentage: pct,
       boundingRect: [minX, minY, rectWidth, rectHeight],
       status: pct > 0.5 ? 'VERIFIED_VISIBLE_PASS' : 'EMPTY_FAIL',
-    });
+      verifiedComponentsCount: meshesMapRef.current.size,
+      ifcLoaded,
+    };
+    setPixelAnalysis(reportData);
+
+    fetch('/api/bim/stage2-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reportData),
+    }).catch((err) => console.warn('Could not post Stage 2 report:', err));
   };
 
   // Initialize WebGL 3D Scene
@@ -821,7 +860,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     if (meshesMapRef.current.size > 0) {
       meshesMapRef.current.forEach((m) => {
         if (!m.visible) return;
-        overallBox.union(new THREE.Box3().setFromObject(m));
+        const b = new THREE.Box3().setFromObject(m);
+        if (
+          Number.isFinite(b.min.x) && Number.isFinite(b.min.y) && Number.isFinite(b.min.z) &&
+          Number.isFinite(b.max.x) && Number.isFinite(b.max.y) && Number.isFinite(b.max.z)
+        ) {
+          overallBox.union(b);
+        }
       });
     }
 
@@ -879,10 +924,19 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       // Geometry lookup or creation
       let geom = ifcGeometriesRef.current.get(comp.id);
       if (!geom) {
-        const dims = comp.dimensions || [1.5, 2.8, 0.2];
-        geom = new THREE.BoxGeometry(dims[0], dims[1], dims[2]);
-        const pos = comp.position || [0, 0, 0];
-        geom.translate(pos[0], pos[1], pos[2]);
+        const rawDims = comp.dimensions || [1.5, 2.8, 0.2];
+        const w = typeof rawDims[0] === 'number' && Number.isFinite(rawDims[0]) && rawDims[0] > 0 ? rawDims[0] : 1.5;
+        const h = typeof rawDims[1] === 'number' && Number.isFinite(rawDims[1]) && rawDims[1] > 0 ? rawDims[1] : 2.8;
+        const d = typeof rawDims[2] === 'number' && Number.isFinite(rawDims[2]) && rawDims[2] > 0 ? rawDims[2] : 0.2;
+
+        geom = new THREE.BoxGeometry(w, h, d);
+
+        const rawPos = comp.position || [0, 0, 0];
+        const px = typeof rawPos[0] === 'number' && Number.isFinite(rawPos[0]) ? rawPos[0] : 0;
+        const py = typeof rawPos[1] === 'number' && Number.isFinite(rawPos[1]) ? rawPos[1] : 0;
+        const pz = typeof rawPos[2] === 'number' && Number.isFinite(rawPos[2]) ? rawPos[2] : 0;
+
+        geom.translate(px, py, pz);
       }
 
       const isSelected = selectedCompId === comp.id;

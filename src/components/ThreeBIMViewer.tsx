@@ -182,16 +182,26 @@ export const ThreeBIMViewer: React.FC<ThreeBIMViewerProps> = ({
 
       if (!visibleLayer || !visibleTimeline) return;
 
-      const [w, h, d] = comp.geometry.dimensions;
-      const [x, y, z] = comp.geometry.position;
+      const rawDims = comp.geometry?.dimensions || [1, 1, 1];
+      const rawPos = comp.geometry?.position || [0, 0, 0];
+
+      const w = typeof rawDims[0] === 'number' && Number.isFinite(rawDims[0]) && rawDims[0] > 0 ? rawDims[0] : 1;
+      const h = typeof rawDims[1] === 'number' && Number.isFinite(rawDims[1]) && rawDims[1] > 0 ? rawDims[1] : 1;
+      const d = typeof rawDims[2] === 'number' && Number.isFinite(rawDims[2]) && rawDims[2] > 0 ? rawDims[2] : 1;
+
+      const x = typeof rawPos[0] === 'number' && Number.isFinite(rawPos[0]) ? rawPos[0] : 0;
+      const y = typeof rawPos[1] === 'number' && Number.isFinite(rawPos[1]) ? rawPos[1] : 0;
+      const z = typeof rawPos[2] === 'number' && Number.isFinite(rawPos[2]) ? rawPos[2] : 0;
 
       let geom: THREE.BufferGeometry;
       if (comp.type === 'pipe' || comp.type === 'conduit') {
-        geom = new THREE.CylinderGeometry(w / 2 || 0.2, w / 2 || 0.2, d || h || 5, 12);
+        const radius = Math.max(0.05, w / 2);
+        const cylHeight = Math.max(0.1, d);
+        geom = new THREE.CylinderGeometry(radius, radius, cylHeight, 12);
       } else if (comp.type === 'duct') {
-        geom = new THREE.BoxGeometry(w || 1, h || 1, d || 10);
+        geom = new THREE.BoxGeometry(w, h, Math.max(0.1, d));
       } else {
-        geom = new THREE.BoxGeometry(w || 1, h || 1, d || 1);
+        geom = new THREE.BoxGeometry(w, h, d);
       }
 
       // Material color selection

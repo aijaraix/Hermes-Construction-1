@@ -85,12 +85,14 @@ async function startServer() {
 
   app.get('/api/bim/reference-model.ifc', (req, res) => {
     ReferenceBimStore.initialize();
-    const ifcPath = path.join(process.cwd(), 'data', 'models', 'REFERENCE-BIM-0001.ifc');
+    const proofPath = path.join(process.cwd(), 'data', 'models', 'TECHNICAL-IFC-PROOF-0001.ifc');
+    const refPath = path.join(process.cwd(), 'data', 'models', 'REFERENCE-BIM-0001.ifc');
+    const ifcPath = fs.existsSync(proofPath) ? proofPath : refPath;
     if (fs.existsSync(ifcPath)) {
       res.setHeader('Content-Type', 'text/plain');
       res.sendFile(ifcPath);
     } else {
-      res.status(404).send('REFERENCE-BIM-0001.ifc file not found');
+      res.status(404).send('Reference IFC file not found');
     }
   });
 
