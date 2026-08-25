@@ -33,6 +33,7 @@ import { Phase318A2ReportView } from './components/Phase318A2ReportView';
 import { Phase318BContinuousAcademyView } from './components/Phase318BContinuousAcademyView';
 import { Phase318B3SpatialAcademyView } from './components/Phase318B3SpatialAcademyView';
 import { OwnerSmeDashboardView } from './components/OwnerSmeDashboardView';
+import { PrehouseSpatialProofView } from './components/PrehouseSpatialProofView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('bim-workspace');
@@ -359,6 +360,9 @@ export default function App() {
 
         {/* Change-Order Risks */}
         {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
+
+        {/* Pre-House Spatial Proof View */}
+        {activeTab === 'prehouse-spatial-proof' && <PrehouseSpatialProofView />}
 
         {/* Customizer & Revisions */}
         {activeTab === 'customizer' && (

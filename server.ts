@@ -35,6 +35,8 @@ import { KnowledgeMemoryEngine } from './server/knowledgeMemoryEngine';
 import { ReasoningGatingEngine } from './server/reasoningGatingEngine';
 import { EventReplayEngine } from './server/eventReplayEngine';
 import { CoreProofRunner } from './server/coreProofRunner';
+import { PrehouseSpatialEngine } from './server/prehouseSpatialEngine';
+import { PrehouseSpatialProofRunner } from './server/prehouseSpatialProofRunner';
 
 async function startServer() {
   const app = express();
@@ -44,6 +46,7 @@ async function startServer() {
   SpatialAcademyEngine.initialize();
   MaterialsKnowledgeEngine.initialize();
   ReferenceBimStore.initialize();
+  PrehouseSpatialEngine.initialize();
 
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -325,6 +328,63 @@ async function startServer() {
     try {
       const report = CoreProofRunner.runAcceptanceTestSuite();
       res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/prehouse-spatial-proof', (req, res) => {
+    try {
+      const report = PrehouseSpatialProofRunner.runPrehouseSpatialProofSuite();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/prehouse-spatial-world', (req, res) => {
+    try {
+      PrehouseSpatialEngine.initialize();
+      res.json({
+        projectId: PrehouseSpatialEngine.getProjectId(),
+        spatialEntities: PrehouseSpatialEngine.getSpatialEntities(),
+        agentSpatialStates: PrehouseSpatialEngine.getAgentSpatialStates(),
+        materials: PrehouseSpatialEngine.getMaterials(),
+        surveyMarks: PrehouseSpatialEngine.getSurveyMarks(),
+        fieldConsultations: PrehouseSpatialEngine.getFieldConsultations(),
+        knowledgeRequests: PrehouseSpatialEngine.getKnowledgeRequests(),
+        facilityEvaluation: PrehouseSpatialEngine.getFacilityEvaluation(),
+        robotContracts: PrehouseSpatialEngine.getRobotContracts(),
+        spatialActions: PrehouseSpatialEngine.getSpatialActions(),
+        events: PrehouseSpatialEngine.getEventStream()
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/prehouse/knowledge-demand', (req, res) => {
+    try {
+      const result = PrehouseSpatialEngine.executeKnowledgeOnDemandWorkflow();
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/prehouse/field-consultation', (req, res) => {
+    try {
+      const result = PrehouseSpatialEngine.executeFieldConsultationWorkflow();
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/prehouse/survey-actions', (req, res) => {
+    try {
+      const result = PrehouseSpatialEngine.executeSurveyMethodSpatialActions();
+      res.json(result);
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });
     }

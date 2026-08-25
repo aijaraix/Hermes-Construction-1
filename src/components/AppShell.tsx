@@ -56,6 +56,7 @@ export type NavTab =
   | 'gym'
   | 'continuous-academy'
   | 'spatial-academy'
+  | 'prehouse-spatial-proof'
   | 'owner-sme-dashboard'
   | 'reality-truth'
   | 'audit'
@@ -108,6 +109,7 @@ export const AppShell: React.FC<AppShellProps> = ({
       group: 'CUSTOMER WORKSPACE',
       items: [
         { id: 'bim-workspace' as NavTab, label: 'BIM Workspace (OpenBIM)', icon: Building },
+        { id: 'prehouse-spatial-proof' as NavTab, label: 'Pre-House Spatial Proof', icon: Box },
       ],
     },
   ];

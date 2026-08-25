@@ -603,15 +603,34 @@ export interface ConstructionMethodSelectionRecord {
 }
 
 export interface SpatialActionRecord {
-  id: string;
-  projectId: string;
+  id?: string;
+  actionId?: string;
+  projectId?: string;
   attemptId?: string;
   actorId: string;
-  actorRole: string;
-  actionPrimitive: string; // e.g. 'GO_TO', 'PLACE', 'DRILL', 'FASTEN'
+  actorRole?: string;
+  actorType?: 'HUMAN_WORKER' | 'TRACKED_WORKER' | 'ROBOT' | 'EQUIPMENT' | 'VEHICLE';
+  actionPrimitive?: string; // e.g. 'GO_TO', 'PLACE', 'DRILL', 'FASTEN'
+  actionType?: string;
+  startPosition?: [number, number, number];
   targetPosition: [number, number, number];
   targetOrientation?: number;
+  orientation?: number;
   affectedComponentId?: string;
+  targetEntityId?: string;
+  toolId?: string;
+  materialId?: string;
+  pathId?: string;
+  requiredClearance?: number;
+  preconditions?: string[];
+  postconditions?: string[];
+  expectedDurationMs?: number;
+  verificationMethod?: string;
+  result?: {
+    status: 'SUCCESS' | 'FAILED';
+    evidence?: string;
+    measuredCoordinates?: [number, number, number];
+  };
   timestamp: string;
 }
 
@@ -3150,6 +3169,250 @@ export interface CoreProofSuiteReport {
   eventSourcedReplayComplete: boolean;
   llmProviderStatus: 'OFFLINE' | 'ONLINE' | 'DEFERRED';
 }
+
+// ============================================================
+// STAGE A-N PRE-HOUSE SPATIAL PROOF TYPES
+// ============================================================
+
+export type SpatialEntityType =
+  | 'BUILDING'
+  | 'ROOM'
+  | 'WALL'
+  | 'SLAB'
+  | 'COLUMN'
+  | 'BEAM'
+  | 'PIPE'
+  | 'DUCT'
+  | 'CONDUIT'
+  | 'EQUIPMENT'
+  | 'MATERIAL'
+  | 'PALLET'
+  | 'DELIVERY'
+  | 'WORKER_AGENT'
+  | 'MANAGER_AGENT'
+  | 'INSPECTOR_AGENT'
+  | 'ROBOT'
+  | 'VEHICLE'
+  | 'TRAILER'
+  | 'STAGING_ZONE'
+  | 'LAYDOWN_ZONE'
+  | 'WORK_ZONE'
+  | 'ACCESS_PATH'
+  | 'WASTE_ZONE'
+  | 'SAFETY_ZONE'
+  | 'SURVEY_MARK';
+
+export interface SpatialEntityRecord {
+  entityId: string;
+  entityType: SpatialEntityType;
+  projectId: string;
+  name: string;
+  worldPosition: [number, number, number]; // [x, y, z] in METERS
+  worldRotation: [number, number, number]; // degrees or radians
+  dimensions: [number, number, number]; // [length, width, height] in METERS
+  boundingEnvelope: { min: [number, number, number]; max: [number, number, number] };
+  collisionEnvelope?: { min: [number, number, number]; max: [number, number, number] };
+  clearanceEnvelope?: { min: [number, number, number]; max: [number, number, number] };
+  currentZoneId?: string;
+  storeyId?: string;
+  roomId?: string;
+  parentEntityId?: string;
+  mobilityType: 'STATIC' | 'MOBILE' | 'PORTABLE';
+  state: string;
+  sourceRecordId?: string;
+  revisionId?: string;
+  timestamp: string;
+}
+
+export type SpatialActionPrimitive =
+  | 'GO_TO'
+  | 'LOOK_AT'
+  | 'SCAN'
+  | 'MEASURE'
+  | 'MARK'
+  | 'PICK'
+  | 'CARRY'
+  | 'PLACE'
+  | 'ALIGN'
+  | 'LEVEL'
+  | 'PLUMB'
+  | 'CUT'
+  | 'DRILL'
+  | 'FASTEN'
+  | 'CONNECT'
+  | 'DISCONNECT'
+  | 'REMOVE'
+  | 'INSTALL'
+  | 'VERIFY'
+  | 'WAIT'
+  | 'HANDOFF'
+  | 'RETURN';
+
+export interface RobotReadySpatialContract {
+  contractId: string;
+  projectId: string;
+  methodId: string;
+  actions: SpatialActionRecord[];
+  compiledAt: string;
+  verified: boolean;
+}
+
+export type DetailedAgentState =
+  | 'ACTIVE_PROJECT_TASK'
+  | 'AVAILABLE'
+  | 'ACTIVE_KNOWLEDGE_LEARNING'
+  | 'TRAVELING'
+  | 'WAITING_DEPENDENCY'
+  | 'BLOCKED_KNOWLEDGE'
+  | 'MANAGER_REVIEW'
+  | 'INSPECTING'
+  | 'REWORKING'
+  | 'RETRAINING'
+  | 'RETURNING';
+
+export interface AgentSpatialState {
+  agentId: string;
+  role: string;
+  discipline: string;
+  agentType: 'INTELLIGENCE' | 'EXECUTION';
+  currentState: DetailedAgentState;
+  currentProjectId: string;
+  currentTaskId?: string;
+  worldPosition: [number, number, number]; // [x, y, z] in METERS
+  worldRotation: [number, number, number];
+  currentZone?: string;
+  currentStorey?: string;
+  currentRoom?: string;
+  homeBaseEntityId?: string;
+  destinationEntityId?: string;
+  destinationPosition?: [number, number, number];
+  navigationPath?: [number, number, number][];
+  workEnvelope?: [number, number, number];
+  requiredTools?: string[];
+  carriedMaterial?: {
+    materialId: string;
+    name: string;
+    dimensions: [number, number, number];
+    weightLbs: number;
+  };
+  reportsTo?: string;
+  knowledgeState?: string;
+  knowledgeRequestId?: string;
+  lastSpatialActionId?: string;
+  timestamp: string;
+}
+
+export interface FacilityPlacementCandidate {
+  facilityType: string;
+  proposedPosition: [number, number, number];
+  score: number;
+  valid: boolean;
+  reason: string;
+}
+
+export interface FacilityPlacementEvaluation {
+  parcelBoundary: { min: [number, number, number]; max: [number, number, number] };
+  buildableArea: { min: [number, number, number]; max: [number, number, number] };
+  candidates: FacilityPlacementCandidate[];
+  rejectedPlacements: Array<{ facilityType: string; position: [number, number, number]; rejectionReason: string }>;
+  selectedPlacements: Array<{
+    facilityType: string;
+    position: [number, number, number];
+    dimensions: [number, number, number];
+    reason: string;
+  }>;
+  accessValidation: { accessValid: boolean; clearWidthMeters: number };
+  collisionValidation: { hasCollisions: boolean; checkedEnvelopes: number };
+}
+
+export interface FieldConsultationRecord {
+  id: string;
+  projectId: string;
+  requestingAgentId: string;
+  consultantAgentId: string; // Manager/SME
+  targetWorkZone: string;
+  targetPosition: [number, number, number];
+  reason: string;
+  status: 'PENDING' | 'IN_TRANSIT' | 'ON_SITE' | 'COMPLETED';
+  decision?: string;
+  timestamp: string;
+}
+
+export interface MaterialSpatialRecord {
+  materialId: string;
+  name: string;
+  projectId: string;
+  type: string;
+  dimensionsMeters: [number, number, number]; // [l, w, h]
+  weightLbs: number;
+  worldPosition: [number, number, number];
+  worldRotation: [number, number, number];
+  status: 'PLANNED' | 'ORDERED' | 'IN_TRANSIT' | 'DELIVERED' | 'STAGED' | 'ALLOCATED' | 'CARRIED' | 'INSTALLED' | 'CONSUMED' | 'DAMAGED' | 'WASTE' | 'RETURNED';
+  stagingZoneId?: string;
+  assignedTaskId?: string;
+  carriedByAgentId?: string;
+  movementHistory: Array<{ timestamp: string; position: [number, number, number]; status: string }>;
+}
+
+export interface SurveyControlMark {
+  markId: string;
+  projectId: string;
+  worldPosition: [number, number, number]; // XYZ in METERS
+  creatorActorId: string;
+  assignedTaskId: string;
+  timestamp: string;
+  measurementEvidence: string;
+  verificationStatus: 'PENDING' | 'VERIFIED' | 'FAILED';
+}
+
+export interface PrehouseSpatialProofReport {
+  prehouseProjectId: 'PREHOUSE-SPATIAL-PROOF-0001';
+  worldUnit: 'METERS';
+  worldScale: '1:1';
+  gridIntervalMeters: 1.0;
+  siteDimensionsMeters: [number, number, number];
+  temporaryFacilitiesCount: number;
+  facilityPlacementMethod: 'SPATIAL_LOGISTICS_ENGINE_EVALUATED';
+  facilityEvaluation: FacilityPlacementEvaluation;
+  canonicalWorkforceCount: number;
+  deployedWorkforceCount: number;
+  learningWorkforceCount: number;
+  availableWorkforceCount: number;
+  blockedWorkforceCount: number;
+  spatialEntityCount: number;
+  spatialActionCount: number;
+  materialEntityCount: number;
+  knowledgeRequestCount: number;
+  fieldConsultationCount: number;
+  logisticsTests: {
+    feasibleRoutePassed: boolean;
+    infeasibleRoutePassed: boolean;
+  };
+  robotReadyContractTest: {
+    compiled: boolean;
+    actionCount: number;
+  };
+  eventReplayTest: {
+    reconstructed: boolean;
+    parity100Pct: boolean;
+  };
+  parityMismatchCount: number;
+  acceptanceTestResults: DiagnosticItem[];
+  totalPass: number;
+  totalFail: number;
+  totalPartial: number;
+  knownLimitations: string[];
+  spatialWorldReady: boolean;
+  workforceVisualizationReady: boolean;
+  knowledgeVisualizationReady: boolean;
+  logisticsReady: boolean;
+  replayReady: boolean;
+  robotReadyAbstractionReady: boolean;
+  house2ReadyForOwnerAuthorization: boolean;
+  academyHouse0002Created: 'NO';
+  academyHouse0002Started: 'NO';
+}
+
 
 
 
