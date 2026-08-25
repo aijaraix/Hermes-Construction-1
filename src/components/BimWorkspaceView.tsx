@@ -47,7 +47,13 @@ import {
   Network,
   Share2,
   Filter,
-  Maximize2
+  Maximize2,
+  Users,
+  HardHat,
+  GraduationCap,
+  MapPin,
+  HelpCircle,
+  Truck
 } from 'lucide-react';
 
 export interface ReferenceBimComponent {
@@ -129,21 +135,35 @@ export interface ReferenceBimProject {
 }
 
 interface BimWorkspaceViewProps {
+  activeProjectId?: string;
+  onSelectProject?: (projectId: string) => void;
   onOpenSystemDrawer?: () => void;
   initialSelectedComponentId?: string | null;
 }
 
 export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
+  activeProjectId: propActiveProjectId,
+  onSelectProject,
   onOpenSystemDrawer,
   initialSelectedComponentId = null,
 }) => {
-  // Project & Data state
-  const [activeProjectId, setActiveProjectId] = useState<string>('REFERENCE-BIM-0001');
+  // Synchronized active project state
+  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'REFERENCE-BIM-0001');
+
+  useEffect(() => {
+    if (propActiveProjectId && propActiveProjectId !== activeProjectId) {
+      setActiveProjectId(propActiveProjectId);
+    }
+  }, [propActiveProjectId]);
+
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [allProjectsList, setAllProjectsList] = useState<Array<{ id: string; name: string; buildingType?: string }>>([]);
   const [projectData, setProjectData] = useState<ReferenceBimProject | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Raw Backend Extra Spatial State
+  const [house0002RawData, setHouse0002RawData] = useState<any | null>(null);
 
   // Selection & Nav State
   const [selectedCompId, setSelectedCompId] = useState<string | null>(initialSelectedComponentId);
@@ -152,6 +172,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
   const [hoveredCompId, setHoveredCompId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [workforceDisciplineFilter, setWorkforceDisciplineFilter] = useState<string>('ALL');
 
   // System Tracing & Isolation
   const [activeTrace, setActiveTrace] = useState<'ELECTRICAL_CIRCUIT' | 'PLUMBING_WASTE' | 'HVAC_AIR_PATH' | null>(null);
@@ -168,16 +189,21 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   // Drawers & Tabs
   const [leftTreeOpen, setLeftTreeOpen] = useState<boolean>(true);
   const [rightInspectorOpen, setRightInspectorOpen] = useState<boolean>(true);
-  const [bottomTimelineOpen, setBottomTimelineOpen] = useState<boolean>(true);
-  const [leftTab, setLeftTab] = useState<'TREE' | 'SYSTEMS' | 'TRACE' | 'VIEWS' | 'AGENTS'>('TREE');
-  const [inspectorTab, setInspectorTab] = useState<'OVERVIEW' | 'ASSEMBLY' | 'FASTENERS' | 'ENGINEERING' | 'QUANTITIES' | 'COST_HISTORY'>('OVERVIEW');
+  const [leftTab, setLeftTab] = useState<'TREE' | 'WORKFORCE' | 'SYSTEMS' | 'TRACE'>('TREE');
+  const [inspectorTab, setInspectorTab] = useState<'OVERVIEW' | 'ASSEMBLY' | 'ENGINEERING' | 'QUANTITIES'>('OVERVIEW');
 
   // Expanded Tree Nodes
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>({
     'building-root': true,
+    'site-root': true,
+    'program-root': true,
+    'building-structures': true,
+    'systems-root': true,
+    'materials-root': true,
+    'inspections-root': true,
+    'STOREY-GROUND': true,
     'STOREY-1': true,
     'STOREY-2': true,
-    'STOREY-REF-1': true,
   });
 
   // Category Layer Filters
@@ -195,8 +221,6 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [sectionYValue, setSectionYValue] = useState<number>(3.5);
   const [sectionXEnabled, setSectionXEnabled] = useState<boolean>(false);
   const [sectionXValue, setSectionXValue] = useState<number>(1.0);
-  const [sectionZEnabled, setSectionZEnabled] = useState<boolean>(false);
-  const [sectionZValue, setSectionZValue] = useState<number>(2.0);
 
   // Timeline & Replay Engine State
   const [replayEvents, setReplayEvents] = useState<any[]>([]);
@@ -204,48 +228,45 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [isPlayingTimeline, setIsPlayingTimeline] = useState<boolean>(false);
   const [replaySpeed, setReplaySpeed] = useState<number>(1);
 
-  // Stage 2 Proof & Diagnostics State
+  // Diagnostics & IFC Parsing State
   const [debugMaterialMode, setDebugMaterialMode] = useState<boolean>(false);
   const [forceAllVisible, setForceAllVisible] = useState<boolean>(false);
-  const [showDiagnosticPanel, setShowDiagnosticPanel] = useState<boolean>(false);
-  const [pixelAnalysis, setPixelAnalysis] = useState<any>(null);
   const [ifcLoaded, setIfcLoaded] = useState<boolean>(false);
   const [ifcParseError, setIfcParseError] = useState<string | null>(null);
-  const [ifcStats, setIfcStats] = useState<{ meshesCount: number; verticesCount: number; trianglesCount: number } | null>(null);
 
   // 3D Canvas Refs
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const ifcGroupRef = useRef<THREE.Group>(new THREE.Group());
-  const agentGroupRef = useRef<THREE.Group>(new THREE.Group());
   const cameraPerspRef = useRef<THREE.PerspectiveCamera | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const meshesMapRef = useRef<Map<string, THREE.Mesh>>(new Map());
   const boundingBoxMeshRef = useRef<THREE.BoxHelper | null>(null);
-  const clippingPlanesRef = useRef<THREE.Plane[]>([]);
   const ifcGeometriesRef = useRef<Map<string, THREE.BufferGeometry>>(new Map());
-  const ifcMeshExpressIdsRef = useRef<Map<string, number>>(new Map());
+
+  // Handle Project Selection Change
+  const handleSwitchProject = (newId: string) => {
+    setActiveProjectId(newId);
+    if (onSelectProject) {
+      onSelectProject(newId);
+    }
+  };
 
   // Fetch Projects List
   useEffect(() => {
     fetch('/api/projects')
-      .then((r) => {
-        if (r.ok && r.headers.get('content-type')?.includes('application/json')) {
-          return r.json();
-        }
-        return [];
-      })
+      .then((r) => (r.ok && r.headers.get('content-type')?.includes('application/json') ? r.json() : []))
       .then((data) => {
-        const prehouseEntry = {
-          id: 'PREHOUSE-SPATIAL-PROOF-0001',
-          name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
-          buildingType: 'Pre-House Site World',
-        };
         const house2Entry = {
           id: 'ACADEMY-HOUSE-0002',
           name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
           buildingType: 'Autonomous Construction (Tampa, FL)',
+        };
+        const prehouseEntry = {
+          id: 'PREHOUSE-SPATIAL-PROOF-0001',
+          name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
+          buildingType: 'Pre-House Site World',
         };
         if (Array.isArray(data)) {
           const filtered = data.filter((p) => p.id !== 'PREHOUSE-SPATIAL-PROOF-0001' && p.id !== 'ACADEMY-HOUSE-0002');
@@ -254,35 +275,40 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           setAllProjectsList([house2Entry, prehouseEntry]);
         }
       })
-      .catch((e) => {
-        console.error('Failed to load projects list:', e);
-        setAllProjectsList([
-          {
-            id: 'ACADEMY-HOUSE-0002',
-            name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
-            buildingType: 'Autonomous Construction (Tampa, FL)',
-          },
-          {
-            id: 'PREHOUSE-SPATIAL-PROOF-0001',
-            name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
-            buildingType: 'Pre-House Site World',
-          },
-        ]);
-      });
+      .catch((e) => console.error('Failed to load projects list:', e));
   }, []);
 
-  // Fetch Project Data on Active Project Switch
+  // Fetch Project Data & Reset Scene on Active Project Switch
   useEffect(() => {
     let mounted = true;
+
     async function loadActiveProjectData() {
       try {
         setLoading(true);
         setError(null);
         setIfcParseError(null);
+
+        // CLEAR ALL PREVIOUS SCENE & METADATA MAPS
+        ifcGeometriesRef.current.clear();
+        if (ifcGroupRef.current) ifcGroupRef.current.clear();
+        if (sceneRef.current) {
+          meshesMapRef.current.forEach((m) => sceneRef.current?.remove(m));
+          if (boundingBoxMeshRef.current) {
+            sceneRef.current.remove(boundingBoxMeshRef.current);
+            boundingBoxMeshRef.current = null;
+          }
+        }
+        meshesMapRef.current.clear();
+
         setSelectedCompId(null);
         setSelectedRoomId(null);
         setSelectedSystem(null);
         setActiveTrace(null);
+        setIsolatedCompId(null);
+        setHiddenCompIds(new Set());
+        setIfcLoaded(false);
+        setCurrentEventIndex(0);
+        setIsPlayingTimeline(false);
 
         if (activeProjectId === 'ACADEMY-HOUSE-0002') {
           const worldRes = await fetch('/api/hermes/house0002-spatial-world');
@@ -290,9 +316,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           const worldData = await worldRes.json();
           if (!mounted) return;
 
+          setHouse0002RawData(worldData);
+          setReplayEvents(worldData.events || []);
+
           const components: ReferenceBimComponent[] = [];
 
-          // 1. Spatial Entities (Facilities, site boundary, footprint, 3D Program Volumes)
+          // 1. Facilities (7 Facilities)
           if (worldData.spatialEntities) {
             worldData.spatialEntities.forEach((e: any) => {
               components.push({
@@ -304,11 +333,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 storeyId: 'STOREY-GROUND',
                 storeyName: 'Ground Site Level (0.00m Datum)',
                 position: e.worldPosition || [0, 0, 0],
-                dimensions: e.dimensions || [1, 1, 1],
+                dimensions: e.dimensions || [12, 2.9, 2.4],
                 orientationDegrees: 0,
                 materialSpecIds: ['SITE-FACILITY-SPEC'],
                 propertySets: [
-                  { name: 'Pset_FacilityDetails', properties: { EntityType: e.entityType, ProjectId: e.projectId } },
+                  { name: 'Pset_FacilityDetails', properties: { EntityType: e.entityType, ProjectId: e.projectId, Status: e.status } },
                 ],
                 connectedComponentIds: [],
                 openings: [],
@@ -323,7 +352,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             });
           }
 
-          // 2. Program Volumes (Room Blocks)
+          // 2. Program Volumes (3D Room Blocks)
           if (worldData.programVolumes) {
             worldData.programVolumes.forEach((p: any) => {
               components.push({
@@ -334,7 +363,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 category: 'Architecture',
                 storeyId: 'STOREY-GROUND',
                 storeyName: 'Ground Site Level (0.00m Datum)',
-                position: p.worldPositionMeters || [0, 1.4, 0],
+                position: p.worldPositionMeters || [0, 0, 0],
                 dimensions: p.dimensionsMeters || [3, 2.8, 3],
                 orientationDegrees: 0,
                 materialSpecIds: ['PROGRAM-VOLUME-SPEC'],
@@ -344,7 +373,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     properties: {
                       TargetAreaSqFt: p.targetAreaSqFt,
                       RoomType: p.roomType,
-                      AdjacentRooms: p.adjacentRooms.join(', '),
+                      AdjacentRooms: Array.isArray(p.adjacentRooms) ? p.adjacentRooms.join(', ') : '',
                     },
                   },
                 ],
@@ -361,7 +390,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             });
           }
 
-          // 3. Workforce Agents (68 Agents)
+          // 3. Workforce Agents (68 Roster Agents)
           if (worldData.agentSpatialStates) {
             worldData.agentSpatialStates.forEach((a: any) => {
               components.push({
@@ -369,7 +398,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 ifcGuid: `GUID-AGENT-${a.agentId}`,
                 ifcType: 'IfcActor',
                 name: `${a.role} (${a.agentId})`,
-                category: a.agentType === 'INTELLIGENCE' ? 'Architecture' : 'Structure',
+                category: 'Structure',
                 storeyId: 'STOREY-GROUND',
                 storeyName: 'Ground Site Level (0.00m Datum)',
                 position: a.worldPosition || [0, 0, 0],
@@ -384,6 +413,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                       State: a.currentState,
                       HomeBase: a.homeBaseEntityId,
                       ReportsTo: a.reportsTo || 'PRIME',
+                      Role: a.role,
                     },
                   },
                 ],
@@ -400,7 +430,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             });
           }
 
-          // 4. Survey Marks
+          // 4. Survey Control Stakes
           if (worldData.surveyMarks) {
             worldData.surveyMarks.forEach((s: any) => {
               components.push({
@@ -438,15 +468,26 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             });
           }
 
-          // 5. Design BIM Revision 1 Components (Built from ZERO!)
+          // 5. Design BIM Revision 1 Components (11 Built from ZERO)
           if (worldData.bimComponents) {
             worldData.bimComponents.forEach((c: any) => {
               components.push({
                 id: c.id,
                 ifcGuid: `GUID-${c.id}`,
-                ifcType: c.type === 'wall' ? 'IfcWall' : c.type === 'slab' ? 'IfcSlab' : c.type === 'door' ? 'IfcDoor' : c.type === 'window' ? 'IfcWindow' : c.type === 'roof' ? 'IfcRoof' : 'IfcBuildingElementProxy',
+                ifcType:
+                  c.type === 'wall'
+                    ? 'IfcWall'
+                    : c.type === 'slab'
+                    ? 'IfcSlab'
+                    : c.type === 'door'
+                    ? 'IfcDoor'
+                    : c.type === 'window'
+                    ? 'IfcWindow'
+                    : c.type === 'roof'
+                    ? 'IfcRoof'
+                    : 'IfcBuildingElementProxy',
                 name: c.assembly,
-                category: c.system || 'Structure',
+                category: (c.system as any) || 'Structure',
                 storeyId: c.floor === 2 ? 'STOREY-ROOF' : 'STOREY-GROUND',
                 storeyName: c.floor === 2 ? 'Roof Level' : 'Ground Level',
                 position: c.geometry.position,
@@ -458,8 +499,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     name: 'Pset_DesignBimDetails',
                     properties: {
                       System: c.system,
-                      Room: c.room,
-                      FireRatingHours: c.fireRatingHours || 0,
+                      Room: c.room || 'Main Structure',
+                      FireRatingHours: c.fireRatingHours || 2,
                       IsExterior: c.isExterior ? 'YES' : 'NO',
                       InspectionState: c.inspectionState || 'PASSED',
                     },
@@ -471,6 +512,44 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 provenance: {
                   source: 'DESIGN_BIM_REV1',
                   creator: 'SPATIAL-BIM-PRIME',
+                  verifiedDate: new Date().toISOString(),
+                  license: 'HERMES',
+                },
+              });
+            });
+          }
+
+          // 6. Materials
+          if (worldData.materials) {
+            worldData.materials.forEach((m: any) => {
+              components.push({
+                id: m.materialId,
+                ifcGuid: `GUID-${m.materialId}`,
+                ifcType: 'IfcElementAssembly',
+                name: m.materialType,
+                category: 'Structure',
+                storeyId: 'STOREY-GROUND',
+                storeyName: 'Ground Site Level (0.00m Datum)',
+                position: m.currentPosition || [0, 0, 0],
+                dimensions: m.dimensions || [1.2, 1.2, 2.4],
+                orientationDegrees: 0,
+                materialSpecIds: ['CMU-8IN-MASONRY'],
+                propertySets: [
+                  {
+                    name: 'Pset_MaterialState',
+                    properties: {
+                      Stage: m.stage,
+                      WeightKg: m.weightKg,
+                      ClearanceMeters: m.clearanceMeters,
+                    },
+                  },
+                ],
+                connectedComponentIds: [],
+                openings: [],
+                inspectionStatus: 'PASSED',
+                provenance: {
+                  source: 'SPATIAL_LOGISTICS_ENGINE',
+                  creator: 'MATERIAL_MANAGER',
                   verifiedDate: new Date().toISOString(),
                   license: 'HERMES',
                 },
@@ -512,172 +591,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     { id: 'ROOM-BATH2', name: 'Bathroom 2 / Guest Bath', ifcGuid: 'SP-BATH2', areaSqMeters: 5.6, volumeCuMeters: 15.6 },
                   ],
                 },
-              ],
-            },
-            components,
-            relationships: {
-              containedInStorey: {},
-              containedInSpace: {},
-              hostsOpening: {},
-              systemConnectivity: {},
-            },
-          };
-
-          setProjectData(normalizedProj);
-          setLoading(false);
-        } else if (activeProjectId === 'PREHOUSE-SPATIAL-PROOF-0001') {
-          const worldRes = await fetch('/api/hermes/prehouse-spatial-world');
-          if (!worldRes.ok) throw new Error(`HTTP ${worldRes.status} loading prehouse spatial world`);
-          const worldData = await worldRes.json();
-          if (!mounted) return;
-
-          const components: ReferenceBimComponent[] = [];
-
-          // Convert spatial entities (facilities, site boundaries, containers)
-          if (worldData.spatialEntities) {
-            const entList = Array.isArray(worldData.spatialEntities)
-              ? worldData.spatialEntities
-              : Object.values(worldData.spatialEntities);
-            entList.forEach((e: any) => {
-              components.push({
-                id: e.entityId,
-                ifcGuid: `GUID-${e.entityId}`,
-                ifcType: 'IfcBuildingElementProxy',
-                name: e.name,
-                category: 'Site',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: e.worldPosition || [0, 0, 0],
-                dimensions: e.dimensions || [1, 1, 1],
-                orientationDegrees: e.worldRotation ? e.worldRotation[1] : 0,
-                materialSpecIds: ['SITE-FACILITY-SPEC'],
-                propertySets: [
-                  { name: 'Pset_FacilityDetails', properties: { EntityType: e.entityType, ProjectId: e.projectId } },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'PREHOUSE_SPATIAL_ENGINE',
-                  creator: 'HERMES_SPATIAL_PROOF',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // Convert agent spatial states (68 agents)
-          if (worldData.agentSpatialStates) {
-            const agentList = Array.isArray(worldData.agentSpatialStates)
-              ? worldData.agentSpatialStates
-              : Object.values(worldData.agentSpatialStates);
-            agentList.forEach((a: any) => {
-              components.push({
-                id: `AGENT-${a.agentId}`,
-                ifcGuid: `GUID-AGENT-${a.agentId}`,
-                ifcType: 'IfcActor',
-                name: `${a.role} (${a.agentId})`,
-                category: a.agentType === 'INTELLIGENCE' ? 'Architecture' : 'Structure',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: a.worldPosition || [0, 0, 0],
-                dimensions: a.workEnvelope || [0.5, 1.75, 0.5],
-                orientationDegrees: 0,
-                materialSpecIds: ['WORKFORCE-HUMAN-SPEC'],
-                propertySets: [
-                  {
-                    name: 'Pset_AgentDetails',
-                    properties: {
-                      Discipline: a.discipline,
-                      State: a.currentState,
-                      HomeBase: a.homeBaseEntityId,
-                      ReportsTo: a.reportsTo || 'PRIME',
-                    },
-                  },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'WORKFORCE_SPATIAL_ENGINE',
-                  creator: 'HERMES_ROSTER',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // Convert materials
-          if (worldData.materials) {
-            worldData.materials.forEach((m: any) => {
-              components.push({
-                id: m.materialId,
-                ifcGuid: `GUID-${m.materialId}`,
-                ifcType: 'IfcElementAssembly',
-                name: m.materialType,
-                category: 'Structure',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: m.currentPosition || [0, 0, 0],
-                dimensions: m.dimensions || [1.22, 1.22, 2.44],
-                orientationDegrees: 0,
-                materialSpecIds: ['GYPSUM-TYPE-X-5/8'],
-                propertySets: [
-                  {
-                    name: 'Pset_MaterialState',
-                    properties: {
-                      Stage: m.stage,
-                      WeightKg: m.weightKg,
-                      ClearanceMeters: m.clearanceMeters,
-                    },
-                  },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'SPATIAL_LOGISTICS_ENGINE',
-                  creator: 'MATERIAL_MANAGER',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          const normalizedProj: ReferenceBimProject = {
-            projectId: 'PREHOUSE-SPATIAL-PROOF-0001',
-            name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
-            description: 'Autonomous 1:1 Scale Pre-House Site World with 68 Agents, Facilities & Spatial Logistics',
-            classification: 'PREHOUSE_SPATIAL_PROOF',
-            immutableSource: true,
-            academyWritable: false,
-            hermesGenerated: true,
-            referenceModel: true,
-            license: 'HERMES OpenBIM License',
-            sourceUri: 'hermes://prehouse-spatial-world',
-            spatialHierarchy: {
-              projectId: 'PREHOUSE-SPATIAL-PROOF-0001',
-              ifcGuid: 'PREHOUSE-SITE-GUID-001',
-              siteId: 'SITE-PREHOUSE-CANONICAL-01',
-              siteGuid: 'SITE-GUID-PREHOUSE-001',
-              buildingId: 'Pre-House Temporary Facilities & Yard',
-              buildingGuid: 'BUILDING-GUID-PREHOUSE-001',
-              storeys: [
                 {
-                  id: 'STOREY-GROUND',
-                  ifcGuid: 'STOREY-GROUND-GUID',
-                  name: 'Ground Site Elevation (0.00m Datum)',
-                  elevationMeters: 0,
-                  heightMeters: 12.0,
-                  spaces: [
-                    { id: 'FACILITY-OPS-01', name: 'Operations Trailer (OPS-01)', ifcGuid: 'SPACE-1', areaSqMeters: 36, volumeCuMeters: 108 },
-                    { id: 'FACILITY-LEARNING-01', name: 'Active Learning Center (ACADEMY-01)', ifcGuid: 'SPACE-2', areaSqMeters: 48, volumeCuMeters: 144 },
-                    { id: 'FACILITY-WORKFORCE-01', name: 'Workforce Staging Area (STAGING-01)', ifcGuid: 'SPACE-3', areaSqMeters: 60, volumeCuMeters: 180 },
-                    { id: 'FACILITY-LAYDOWN-01', name: 'Material Laydown Yard (LAYDOWN-01)', ifcGuid: 'SPACE-4', areaSqMeters: 100, volumeCuMeters: 300 },
-                  ],
+                  id: 'STOREY-ROOF',
+                  ifcGuid: 'STOREY-ROOF-GUID-H2',
+                  name: 'Roof Level (+3.00m Datum)',
+                  elevationMeters: 3.0,
+                  heightMeters: 2.5,
+                  spaces: [{ id: 'SPACE-ROOF', name: 'Pre-Engineered Truss & Roof Deck', ifcGuid: 'SP-ROOF', areaSqMeters: 90, volumeCuMeters: 225 }],
                 },
               ],
             },
@@ -693,18 +613,17 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           setProjectData(normalizedProj);
           setLoading(false);
         } else if (activeProjectId === 'REFERENCE-BIM-0001') {
+          setHouse0002RawData(null);
+          setReplayEvents([]);
+
           // Fetch reference model JSON & STEP file
           const metaRes = await fetch('/api/bim/reference-model');
           if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} loading reference model metadata`);
-          const metaContentType = metaRes.headers.get('content-type');
-          if (!metaContentType || !metaContentType.includes('application/json')) {
-            throw new Error('Server returned non-JSON metadata for reference model');
-          }
           const metaData: ReferenceBimProject = await metaRes.json();
           if (!mounted) return;
           setProjectData(metaData);
 
-          // Try parsing raw IFC via web-ifc WASM
+          // Parse raw IFC via web-ifc WASM
           try {
             const ifcRes = await fetch('/api/bim/reference-model.ifc');
             if (ifcRes.ok) {
@@ -717,7 +636,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
               const modelID = ifcApi.OpenModel(uint8Array);
               const geomMap = new Map<string, THREE.BufferGeometry>();
-              let totalVerts = 0, totalTris = 0, meshIndex = 0;
+              let meshIndex = 0;
 
               try {
                 ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
@@ -739,7 +658,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
                       let hasInvalid = false;
                       for (let v = 0; v < numVertices; v++) {
-                        const x = verBuf[v * 6], y = verBuf[v * 6 + 1], z = verBuf[v * 6 + 2];
+                        const x = verBuf[v * 6],
+                          y = verBuf[v * 6 + 1],
+                          z = verBuf[v * 6 + 2];
                         if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
                           hasInvalid = true;
                           break;
@@ -763,42 +684,17 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                         geometry.applyMatrix4(matrix);
                       }
                       subGeoms.push(geometry);
-                      totalVerts += numVertices;
-                      totalTris += idxBuf.length / 3;
                     }
 
                     if (subGeoms.length > 0) {
-                      const merged = subGeoms.length === 1 ? subGeoms[0] : (mergeGeometries(subGeoms, false) || subGeoms[0]);
-                      
-                      // Check position attribute to ensure no NaN values
-                      const posAttr = merged.getAttribute('position');
-                      let isPosValid = true;
-                      if (posAttr && posAttr.array) {
-                        for (let pIdx = 0; pIdx < posAttr.array.length; pIdx++) {
-                          const val = posAttr.array[pIdx];
-                          if (val === null || val === undefined || !Number.isFinite(val)) {
-                            isPosValid = false;
-                            break;
-                          }
-                        }
+                      const merged = subGeoms.length === 1 ? subGeoms[0] : mergeGeometries(subGeoms, false) || subGeoms[0];
+                      const compId = `DUPLEX-ELEM-${expressID}`;
+                      let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
+                      if (!comp && meshIndex < metaData.components.length) {
+                        comp = metaData.components[meshIndex];
                       }
-
-                      if (isPosValid) {
-                        try {
-                          merged.computeBoundingBox();
-                          merged.computeBoundingSphere();
-                        } catch (e) {
-                          console.warn('Bounding box computation skipped for mesh:', e);
-                        }
-
-                        const compId = `DUPLEX-ELEM-${expressID}`;
-                        let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
-                        if (!comp && meshIndex < metaData.components.length) {
-                          comp = metaData.components[meshIndex];
-                        }
-                        if (comp) {
-                          geomMap.set(comp.id, merged);
-                        }
+                      if (comp) {
+                        geomMap.set(comp.id, merged);
                       }
                     }
                     meshIndex++;
@@ -814,28 +710,19 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               if (mounted) {
                 ifcGeometriesRef.current = geomMap;
                 setIfcLoaded(true);
-                setIfcStats({ meshesCount: meshIndex, verticesCount: totalVerts, trianglesCount: totalTris });
               }
             }
           } catch (wasmErr: any) {
             console.warn('[BIM WORKSPACE] WebAssembly IFC parsing warning, falling back to JSON geometry engine:', wasmErr?.message || wasmErr);
-            if (mounted) {
-              setIfcParseError(wasmErr?.message || 'IFC WASM parsing fallback to JSON geometry');
-            }
           }
           setLoading(false);
         } else {
-          // Fetch ACADEMY-HOUSE-0001 or active project from API
+          // Fetch generic project
           const projRes = await fetch(`/api/projects/${activeProjectId}`);
           if (!projRes.ok) throw new Error(`HTTP ${projRes.status} loading project`);
-          const projContentType = projRes.headers.get('content-type');
-          if (!projContentType || !projContentType.includes('application/json')) {
-            throw new Error(`Server returned non-JSON data for project ${activeProjectId}`);
-          }
           const rawProj = await projRes.json();
           if (!mounted) return;
 
-          // Normalize raw project to ReferenceBimProject schema
           const normalizedProj: ReferenceBimProject = {
             projectId: rawProj.id,
             name: rawProj.name,
@@ -845,96 +732,27 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             academyWritable: true,
             hermesGenerated: true,
             referenceModel: false,
-            license: 'HERMES Proprietary OpenBIM Model',
-            sourceUri: 'hermes://academy-house-0001',
+            license: 'HERMES OpenBIM License',
+            sourceUri: 'hermes://project',
             spatialHierarchy: {
               projectId: rawProj.id,
-              ifcGuid: 'ACADEMY-SITE-GUID-001',
-              siteId: 'SITE-TAMPA-BAY-01',
-              siteGuid: 'SITE-GUID-TAMPA-001',
-              buildingId: rawProj.name || 'Academy Coastal Residence',
-              buildingGuid: 'BUILDING-GUID-ACADEMY-001',
+              ifcGuid: 'GUID-GENERIC-001',
+              siteId: 'SITE-01',
+              siteGuid: 'SITE-GUID-01',
+              buildingId: rawProj.name,
+              buildingGuid: 'BUILDING-GUID-01',
               storeys: [
                 {
                   id: 'STOREY-1',
                   ifcGuid: 'STOREY-1-GUID',
-                  name: 'Ground Floor (Level 1)',
+                  name: 'Ground Level',
                   elevationMeters: 0,
                   heightMeters: 3.0,
-                  spaces: [
-                    { id: 'ROOM-LIVING-01', name: 'Living Room', ifcGuid: 'ROOM-1-GUID', areaSqMeters: 35, volumeCuMeters: 105 },
-                    { id: 'ROOM-KITCHEN-01', name: 'Kitchen & Dining', ifcGuid: 'ROOM-2-GUID', areaSqMeters: 22, volumeCuMeters: 66 },
-                    { id: 'ROOM-BATH-01', name: 'Ground Bath', ifcGuid: 'ROOM-3-GUID', areaSqMeters: 8, volumeCuMeters: 24 },
-                  ],
-                },
-                {
-                  id: 'STOREY-2',
-                  ifcGuid: 'STOREY-2-GUID',
-                  name: 'Upper Floor (Level 2)',
-                  elevationMeters: 3.0,
-                  heightMeters: 3.0,
-                  spaces: [
-                    { id: 'ROOM-BED-01', name: 'Master Bedroom', ifcGuid: 'ROOM-4-GUID', areaSqMeters: 28, volumeCuMeters: 84 },
-                    { id: 'ROOM-BED-02', name: 'Guest Bedroom', ifcGuid: 'ROOM-5-GUID', areaSqMeters: 20, volumeCuMeters: 60 },
-                    { id: 'ROOM-BATH-02', name: 'Master En-suite Bath', ifcGuid: 'ROOM-6-GUID', areaSqMeters: 12, volumeCuMeters: 36 },
-                  ],
+                  spaces: [{ id: 'ROOM-1', name: 'Main Area', ifcGuid: 'ROOM-1-GUID', areaSqMeters: 50, volumeCuMeters: 150 }],
                 },
               ],
             },
-            components: (rawProj.components || []).map((c: any) => ({
-              id: c.id,
-              ifcGuid: c.ifcGuid || `GUID-${c.id}`,
-              ifcType: c.ifcType || (c.type === 'wall' ? 'IfcWallStandardCase' : c.type === 'slab' ? 'IfcSlab' : 'IfcElement'),
-              name: c.assembly || c.type || c.id,
-              category: c.system as any || 'Architecture',
-              storeyId: c.floor === 2 ? 'STOREY-2' : 'STOREY-1',
-              storeyName: c.floor === 2 ? 'Upper Floor (Level 2)' : 'Ground Floor (Level 1)',
-              spaceId: c.room,
-              spaceName: c.room,
-              position: c.geometry?.position || [0, 0, 0],
-              dimensions: c.geometry?.dimensions || [1, 1, 1],
-              orientationDegrees: c.orientationDegrees || 0,
-              materialSpecIds: (c.materials || []).map((m: any) => m.specification || m.name),
-              assemblySpecId: c.assembly,
-              assemblyLayers: [
-                { layerIndex: 1, materialName: 'Exterior Stucco Finish', materialSpecId: 'STUCCO-EXT', thicknessMeters: 0.02, structuralRole: 'Finish', thermalConductivityWmK: 0.7 },
-                { layerIndex: 2, materialName: 'Weather Barrier Stego Wrap', materialSpecId: 'MEMBRANE-01', thicknessMeters: 0.005, structuralRole: 'Air Barrier', thermalConductivityWmK: 0.1 },
-                { layerIndex: 3, materialName: 'Core Load Member', materialSpecId: 'CORE-STRUCT', thicknessMeters: 0.15, structuralRole: 'Structural Core', thermalConductivityWmK: 0.3 },
-                { layerIndex: 4, materialName: 'Batt Insulation R-19', materialSpecId: 'INSUL-R19', thicknessMeters: 0.09, structuralRole: 'Thermal Insulation', thermalConductivityWmK: 0.04 },
-                { layerIndex: 5, materialName: '5/8" Type X Gypsum Drywall', materialSpecId: 'GYP-TYPE-X', thicknessMeters: 0.016, structuralRole: 'Interior Finish', thermalConductivityWmK: 0.16 },
-              ],
-              propertySets: [
-                {
-                  name: 'Pset_WallCommon',
-                  properties: {
-                    IsExternal: c.isExterior ?? true,
-                    LoadBearing: c.system === 'Structure',
-                    FireRating: '2 Hours',
-                    AcousticRating: 'STC 52',
-                  },
-                },
-                {
-                  name: 'Pset_HermesEngineering',
-                  properties: {
-                    WindLoadCapacityMPH: 160,
-                    CodeCompliance: 'Florida Building Code 2023',
-                    FastenerSpecification: '#8 Stainless Steel Screws @ 12" o.c. + Anchor Bolts @ 24" o.c.',
-                  },
-                },
-              ],
-              connectedComponentIds: c.connectedComponentIds || [],
-              openings: c.openings || [],
-              inspectionStatus: c.inspectionState === 'passed' ? 'PASSED' : 'UNINSPECTED',
-              fireRatingMinutes: 120,
-              thermalResistanceRValue: 19,
-              acousticSTC: 52,
-              provenance: {
-                source: 'HERMES_AUTONOMOUS_BUILD_ENGINE',
-                creator: 'PROJECT-PRIME-ORCHESTRATOR',
-                verifiedDate: new Date().toISOString(),
-                license: 'HERMES OpenBIM License',
-              },
-            })),
+            components: rawProj.components || [],
             relationships: {
               containedInStorey: {},
               containedInSpace: {},
@@ -944,171 +762,84 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           };
 
           setProjectData(normalizedProj);
-
-          // Fetch Event Records for timeline replay
-          try {
-            const evRes = await fetch(`/api/records/events?projectId=${activeProjectId}`);
-            if (evRes.ok) {
-              const ct = evRes.headers.get('content-type');
-              if (ct && ct.includes('application/json')) {
-                const evData = await evRes.json();
-                if (Array.isArray(evData)) setReplayEvents(evData);
-              }
-            }
-          } catch (evErr) {
-            console.warn('Could not fetch replay events:', evErr);
-          }
           setLoading(false);
         }
-      } catch (err: any) {
+      } catch (e: any) {
         if (mounted) {
-          console.error('Failed loading project data:', err);
-          setError(err.message || String(err));
+          setError(e.message || String(e));
           setLoading(false);
         }
       }
     }
 
     loadActiveProjectData();
+
     return () => {
       mounted = false;
     };
   }, [activeProjectId]);
 
-  // Stage 2 Proof Readback Analysis Pipeline
-  const performCanvasPixelReadback = () => {
-    const renderer = rendererRef.current;
-    if (!renderer) return;
-
-    const gl = renderer.getContext() as WebGLRenderingContext;
-    if (!gl) return;
-
-    const canvas = renderer.domElement;
-    const width = canvas.width;
-    const height = canvas.height;
-    if (width === 0 || height === 0) return;
-
-    const totalPixels = width * height;
-    const pixels = new Uint8Array(width * height * 4);
-    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-
-    // Light Theme background color #f8fafc -> RGB [248, 250, 252]
-    const bgR = 248, bgG = 250, bgB = 252;
-    let nonBgCount = 0;
-    let minX = width, maxX = 0, minY = height, maxY = 0;
-
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        const idx = (y * width + x) * 4;
-        const r = pixels[idx];
-        const g = pixels[idx + 1];
-        const b = pixels[idx + 2];
-
-        if (Math.abs(r - bgR) > 10 || Math.abs(g - bgG) > 10 || Math.abs(b - bgB) > 10) {
-          nonBgCount++;
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
-        }
-      }
-    }
-
-    const pct = Number(((nonBgCount / totalPixels) * 100).toFixed(2));
-    const rectWidth = maxX >= minX ? maxX - minX : 0;
-    const rectHeight = maxY >= minY ? maxY - minY : 0;
-
-    const reportData = {
-      timestamp: new Date().toISOString(),
-      projectId: activeProjectId,
-      totalPixels,
-      nonBgPixels: nonBgCount,
-      nonBgPercentage: pct,
-      boundingRect: [minX, minY, rectWidth, rectHeight],
-      status: pct > 0.5 ? 'VERIFIED_VISIBLE_PASS' : 'EMPTY_FAIL',
-      verifiedComponentsCount: meshesMapRef.current.size,
-      ifcLoaded,
-    };
-    setPixelAnalysis(reportData);
-
-    fetch('/api/bim/stage2-report', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(reportData),
-    }).catch((err) => console.warn('Could not post Stage 2 report:', err));
-  };
-
-  // Initialize WebGL 3D Scene
+  // Three.js Scene Setup (Mount Once)
   useEffect(() => {
     if (!containerRef.current) return;
-
-    const width = containerRef.current.clientWidth || 800;
-    const height = containerRef.current.clientHeight || 600;
+    const domEl = containerRef.current;
+    const width = domEl.clientWidth || 800;
+    const height = domEl.clientHeight || 600;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#f8fafc'); // Clean White Light Blueprint Canvas
+    scene.background = new THREE.Color(0xf8fafc);
     sceneRef.current = scene;
 
-    const ifcGroup = new THREE.Group();
-    scene.add(ifcGroup);
-    ifcGroupRef.current = ifcGroup;
-
-    const agentGroup = new THREE.Group();
-    scene.add(agentGroup);
-    agentGroupRef.current = agentGroup;
-
-    // Camera setup
     const cameraPersp = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    cameraPersp.position.set(20, 15, 24);
+    cameraPersp.position.set(22, 16, 28);
     cameraPerspRef.current = cameraPersp;
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      powerPreference: 'default',
-      preserveDrawingBuffer: true,
-      alpha: false,
-    });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     rendererRef.current = renderer;
 
-    containerRef.current.innerHTML = '';
-    containerRef.current.appendChild(renderer.domElement);
+    domEl.innerHTML = '';
+    domEl.appendChild(renderer.domElement);
 
-    // Orbit Controls
     const controls = new OrbitControls(cameraPersp, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(4, 2.5, 8);
+    controls.maxPolarAngle = Math.PI / 2 + 0.05; // Stay above ground
     controlsRef.current = controls;
 
-    // Lighting (Bright & Architectural)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    // Lighting Setup
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.9);
-    dirLight1.position.set(30, 40, 25);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.1);
+    dirLight1.position.set(30, 40, 20);
     dirLight1.castShadow = true;
+    dirLight1.shadow.mapSize.width = 2048;
+    dirLight1.shadow.mapSize.height = 2048;
     scene.add(dirLight1);
 
     const dirLight2 = new THREE.DirectionalLight(0x93c5fd, 0.4);
     dirLight2.position.set(-20, 20, -20);
     scene.add(dirLight2);
 
-    // Light Slate Grid Helper
-    const gridHelper = new THREE.GridHelper(60, 60, 0x2563eb, 0xd1d5db);
+    // Site Grid & Datum
+    const gridHelper = new THREE.GridHelper(80, 80, 0x0284c7, 0xcbd5e1);
     gridHelper.position.y = -0.01;
     scene.add(gridHelper);
 
-    // Click Raycasting for Bidirectional Selection
+    // Group containers
+    ifcGroupRef.current = new THREE.Group();
+    scene.add(ifcGroupRef.current);
+
+    // Raycasting for object selection
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     const handlePointerDown = (event: MouseEvent) => {
-      if (!containerRef.current || !rendererRef.current) return;
+      if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -1117,34 +848,19 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       const intersects = raycaster.intersectObjects(ifcGroupRef.current.children, true);
 
       if (intersects.length > 0) {
-        let hitObj: THREE.Object3D | null = intersects[0].object;
-        while (hitObj && !hitObj.userData.compId && hitObj.parent !== ifcGroupRef.current) {
-          hitObj = hitObj.parent;
+        let obj: THREE.Object3D | null = intersects[0].object;
+        while (obj && !obj.userData?.compId && obj.parent) {
+          obj = obj.parent;
         }
-        if (hitObj && hitObj.userData.compId) {
-          const compId = hitObj.userData.compId;
-          setSelectedCompId(compId);
+        if (obj && obj.userData?.compId) {
+          setSelectedCompId(obj.userData.compId);
           setRightInspectorOpen(true);
-
-          // Expand tree node for this component
-          if (projectData) {
-            const comp = projectData.components.find((c) => c.id === compId);
-            if (comp) {
-              setExpandedNodes((prev) => ({
-                ...prev,
-                'building-root': true,
-                [comp.storeyId]: true,
-              }));
-            }
-          }
         }
       }
     };
 
-    const domEl = renderer.domElement;
     domEl.addEventListener('click', handlePointerDown);
 
-    // Animation Loop
     let animId: number;
     const animate = () => {
       animId = requestAnimationFrame(animate);
@@ -1171,7 +887,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     };
   }, []);
 
-  // ResizeObserver for instant responsive viewport sizing on panel open/close & fullscreen
+  // ResizeObserver for instant responsive viewport sizing
   useEffect(() => {
     if (!containerRef.current || !rendererRef.current || !cameraPerspRef.current) return;
 
@@ -1195,95 +911,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [leftTreeOpen, rightInspectorOpen, bottomTimelineOpen, isFullscreen]);
-
-  // WASD Walk Mode Keyboard Navigation with Eye-Height Constraint
-  useEffect(() => {
-    if (navMode !== 'Walk' || !cameraPerspRef.current || !controlsRef.current) return;
-
-    const cam = cameraPerspRef.current;
-    const controls = controlsRef.current;
-
-    controls.enableRotate = true;
-    controls.enableZoom = false;
-    controls.enablePan = false;
-
-    const moveKeys: Record<string, boolean> = {};
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (['w', 'a', 's', 'd', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        moveKeys[e.key.toLowerCase()] = true;
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (['w', 'a', 's', 'd', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        moveKeys[e.key.toLowerCase()] = false;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    let frameId: number;
-    const moveSpeed = 0.12;
-
-    const walkLoop = () => {
-      frameId = requestAnimationFrame(walkLoop);
-
-      const forward = new THREE.Vector3();
-      cam.getWorldDirection(forward);
-      forward.y = 0; // Lock horizontal plane
-      forward.normalize();
-
-      const right = new THREE.Vector3();
-      right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
-
-      let moved = false;
-      if (moveKeys['w'] || moveKeys['arrowup']) {
-        cam.position.addScaledVector(forward, moveSpeed);
-        controls.target.addScaledVector(forward, moveSpeed);
-        moved = true;
-      }
-      if (moveKeys['s'] || moveKeys['arrowdown']) {
-        cam.position.addScaledVector(forward, -moveSpeed);
-        controls.target.addScaledVector(forward, -moveSpeed);
-        moved = true;
-      }
-      if (moveKeys['a'] || moveKeys['arrowleft']) {
-        cam.position.addScaledVector(right, -moveSpeed);
-        controls.target.addScaledVector(right, -moveSpeed);
-        moved = true;
-      }
-      if (moveKeys['d'] || moveKeys['arrowright']) {
-        cam.position.addScaledVector(right, moveSpeed);
-        controls.target.addScaledVector(right, moveSpeed);
-        moved = true;
-      }
-
-      // Constrain eye height ~1.65m above floor elevation
-      let targetFloorY = 0;
-      if (selectedStoreyId === 'STOREY-2' || selectedStoreyId === '2') {
-        targetFloorY = 3.2;
-      }
-      cam.position.y = targetFloorY + 1.65;
-
-      if (moved) {
-        controls.update();
-      }
-    };
-
-    walkLoop();
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-      cancelAnimationFrame(frameId);
-      controls.enableRotate = true;
-      controls.enableZoom = true;
-      controls.enablePan = true;
-    };
-  }, [navMode, selectedStoreyId]);
+  }, [leftTreeOpen, rightInspectorOpen, isFullscreen]);
 
   // Camera Framing Utility
   const fitModelToCamera = () => {
@@ -1297,8 +925,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         if (!m.visible) return;
         const b = new THREE.Box3().setFromObject(m);
         if (
-          Number.isFinite(b.min.x) && Number.isFinite(b.min.y) && Number.isFinite(b.min.z) &&
-          Number.isFinite(b.max.x) && Number.isFinite(b.max.y) && Number.isFinite(b.max.z)
+          Number.isFinite(b.min.x) &&
+          Number.isFinite(b.min.y) &&
+          Number.isFinite(b.min.z) &&
+          Number.isFinite(b.max.x) &&
+          Number.isFinite(b.max.y) &&
+          Number.isFinite(b.max.z)
         ) {
           overallBox.union(b);
         }
@@ -1306,24 +938,24 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     }
 
     if (overallBox.isEmpty()) {
-      overallBox.min.set(-2, -0.5, -2);
-      overallBox.max.set(12, 8, 18);
+      overallBox.min.set(-15, 0, -15);
+      overallBox.max.set(15, 8, 15);
     }
 
     const center = new THREE.Vector3();
     overallBox.getCenter(center);
     const sphere = new THREE.Sphere();
     overallBox.getBoundingSphere(sphere);
-    const radius = Math.max(sphere.radius, 6.0);
+    const radius = Math.max(sphere.radius, 10.0);
 
     const direction = new THREE.Vector3(1, 0.8, 1.2).normalize();
-    cam.position.copy(center).addScaledVector(direction, radius * 2.1);
+    cam.position.copy(center).addScaledVector(direction, radius * 2.2);
     cam.lookAt(center);
     controls.target.copy(center);
     controls.update();
   };
 
-  // Re-build 3D Meshes from Project Data & Filters
+  // Build 3D Meshes strictly backed by active project records
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene || !projectData) return;
@@ -1356,66 +988,132 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       // System Trace filter
       const isTraced = activeTrace && tracedCompIds.has(comp.id);
 
-      // Geometry lookup or creation
-      let geom = ifcGeometriesRef.current.get(comp.id);
-      if (!geom) {
-        const rawDims = comp.dimensions || [1.5, 2.8, 0.2];
-        const w = typeof rawDims[0] === 'number' && Number.isFinite(rawDims[0]) && rawDims[0] > 0 ? rawDims[0] : 1.5;
-        const h = typeof rawDims[1] === 'number' && Number.isFinite(rawDims[1]) && rawDims[1] > 0 ? rawDims[1] : 2.8;
-        const d = typeof rawDims[2] === 'number' && Number.isFinite(rawDims[2]) && rawDims[2] > 0 ? rawDims[2] : 0.2;
-
-        geom = new THREE.BoxGeometry(w, h, d);
-
-        const rawPos = comp.position || [0, 0, 0];
-        const px = typeof rawPos[0] === 'number' && Number.isFinite(rawPos[0]) ? rawPos[0] : 0;
-        const py = typeof rawPos[1] === 'number' && Number.isFinite(rawPos[1]) ? rawPos[1] : 0;
-        const pz = typeof rawPos[2] === 'number' && Number.isFinite(rawPos[2]) ? rawPos[2] : 0;
-
-        geom.translate(px, py, pz);
-      }
-
       const isSelected = selectedCompId === comp.id;
       const isHovered = hoveredCompId === comp.id;
 
-      let colorHex = getCategoryColorHex(comp.category);
-      if (selectedSystem && comp.category === selectedSystem) {
-        colorHex = getSystemColorHex(selectedSystem);
-      }
-      if (isTraced) {
-        colorHex = 0x06b6d4; // Highlight traced circuit/pipe in electric cyan
+      let geom = ifcGeometriesRef.current.get(comp.id);
+      let mesh: THREE.Mesh;
+
+      const rawDims = comp.dimensions || [1.5, 2.8, 0.2];
+      const w = typeof rawDims[0] === 'number' && Number.isFinite(rawDims[0]) && rawDims[0] > 0 ? rawDims[0] : 1.5;
+      const h = typeof rawDims[1] === 'number' && Number.isFinite(rawDims[1]) && rawDims[1] > 0 ? rawDims[1] : 2.8;
+      const d = typeof rawDims[2] === 'number' && Number.isFinite(rawDims[2]) && rawDims[2] > 0 ? rawDims[2] : 0.2;
+
+      const rawPos = comp.position || [0, 0, 0];
+      const px = typeof rawPos[0] === 'number' && Number.isFinite(rawPos[0]) ? rawPos[0] : 0;
+      const py = typeof rawPos[1] === 'number' && Number.isFinite(rawPos[1]) ? rawPos[1] : 0;
+      const pz = typeof rawPos[2] === 'number' && Number.isFinite(rawPos[2]) ? rawPos[2] : 0;
+
+      if (comp.ifcType === 'IfcActor') {
+        // AGENT AVATAR SHAPE: Cylinder body + sphere head
+        const group = new THREE.Group();
+        const discipline = comp.propertySets.find((p) => p.name === 'Pset_AgentDetails')?.properties.Discipline as string;
+
+        let agentColor = 0x06b6d4; // Default cyan
+        if (discipline === 'EXECUTIVE' || discipline === 'PRIME') agentColor = 0xf59e0b; // Gold
+        else if (discipline === 'SURVEY') agentColor = 0xeab308; // High-Vis Yellow
+        else if (['CONCRETE', 'MASONRY', 'FRAMING', 'ROOFING'].includes(discipline)) agentColor = 0xf97316; // Orange
+        else if (['PLUMBING', 'ELECTRICAL', 'HVAC'].includes(discipline)) agentColor = 0x3b82f6; // Blue
+        else if (discipline === 'KNOWLEDGE') agentColor = 0x64748b; // Slate Blue
+
+        const bodyGeom = new THREE.CylinderGeometry(0.2, 0.22, 1.2, 12);
+        bodyGeom.translate(0, 0.6, 0);
+        const bodyMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : agentColor,
+          roughness: 0.4,
+        });
+        const bodyMesh = new THREE.Mesh(bodyGeom, bodyMat);
+        group.add(bodyMesh);
+
+        const headGeom = new THREE.SphereGeometry(0.18, 12, 12);
+        headGeom.translate(0, 1.35, 0);
+        const headMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+        const headMesh = new THREE.Mesh(headGeom, headMat);
+        group.add(headMesh);
+
+        group.position.set(px, py, pz);
+        group.userData = { compId: comp.id };
+
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(group);
+        }
+        meshesMapRef.current.set(comp.id, bodyMesh);
+        return;
       }
 
-      let opacity = 1.0;
-      let transparent = false;
+      if (comp.ifcType === 'IfcSpace') {
+        // 3D PROGRAM VOLUME ROOM BLOCK
+        const boxGeom = new THREE.BoxGeometry(w, h, d);
+        boxGeom.translate(px, py + h / 2, pz);
 
-      // System isolation ghosting
-      if (selectedSystem && comp.category !== selectedSystem && !forceAllVisible) {
-        opacity = 0.12;
-        transparent = true;
-      }
-
-      let material: THREE.Material;
-      if (debugMaterialMode) {
-        material = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide });
-      } else {
-        material = new THREE.MeshStandardMaterial({
-          color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : colorHex,
-          roughness: comp.category === 'Structure' ? 0.7 : 0.35,
-          metalness: comp.category === 'Plumbing' || comp.category === 'HVAC' ? 0.5 : 0.1,
-          transparent,
-          opacity,
+        const spaceMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : 0x38bdf8,
+          transparent: true,
+          opacity: 0.2,
           side: THREE.DoubleSide,
         });
+
+        mesh = new THREE.Mesh(boxGeom, spaceMat);
+        const edges = new THREE.EdgesGeometry(boxGeom);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x0284c7, linewidth: 2 });
+        mesh.add(new THREE.LineSegments(edges, lineMat));
+      } else if (comp.id.startsWith('FACILITY-')) {
+        // TEMPORARY SITE FACILITY CONTAINER
+        const facGeom = new THREE.BoxGeometry(w, h, d);
+        facGeom.translate(px, py + h / 2, pz);
+
+        let facColor = 0x1e3a8a; // Navy trailer
+        if (comp.id.includes('LEARNING')) facColor = 0x0e7490;
+        else if (comp.id.includes('WORKFORCE')) facColor = 0x334155;
+        else if (comp.id.includes('LAYDOWN')) facColor = 0x92400e;
+        else if (comp.id.includes('RECEIVING')) facColor = 0x15803d;
+
+        const facMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : facColor,
+          roughness: 0.5,
+          side: THREE.DoubleSide,
+        });
+
+        mesh = new THREE.Mesh(facGeom, facMat);
+        const edges = new THREE.EdgesGeometry(facGeom);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x94a3b8, linewidth: 1 });
+        mesh.add(new THREE.LineSegments(edges, lineMat));
+      } else {
+        // STANDARD BUILDING / SITE COMPONENT
+        if (!geom) {
+          geom = new THREE.BoxGeometry(w, h, d);
+          geom.translate(px, py + h / 2, pz);
+        }
+
+        let colorHex = getCategoryColorHex(comp.category);
+        if (selectedSystem && comp.category === selectedSystem) {
+          colorHex = getSystemColorHex(selectedSystem);
+        }
+        if (isTraced) {
+          colorHex = 0x06b6d4;
+        }
+
+        let material: THREE.Material;
+        if (debugMaterialMode) {
+          material = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide });
+        } else {
+          material = new THREE.MeshStandardMaterial({
+            color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : colorHex,
+            roughness: comp.category === 'Structure' ? 0.7 : 0.35,
+            metalness: comp.category === 'Plumbing' || comp.category === 'HVAC' ? 0.5 : 0.1,
+            side: THREE.DoubleSide,
+          });
+        }
+
+        mesh = new THREE.Mesh(geom, material);
       }
 
-      const mesh = new THREE.Mesh(geom, material);
       mesh.userData = { compId: comp.id };
       mesh.castShadow = true;
       mesh.receiveShadow = true;
 
-      // Selection outline
       if (isSelected || isHovered || isTraced) {
-        const edges = new THREE.EdgesGeometry(geom);
+        const edges = new THREE.EdgesGeometry(mesh.geometry);
         const lineMat = new THREE.LineBasicMaterial({
           color: isSelected ? 0x0284c7 : isTraced ? 0x06b6d4 : 0xfcd34d,
           linewidth: 2,
@@ -1436,78 +1134,38 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     });
 
     fitModelToCamera();
+  }, [projectData, activeCategories, selectedCompId, hoveredCompId, selectedStoreyId, selectedSystem, isolatedCompId, hiddenCompIds, debugMaterialMode, forceAllVisible, tracedCompIds, activeTrace]);
 
-    const timer = setTimeout(() => {
-      performCanvasPixelReadback();
-    }, 400);
-    return () => clearTimeout(timer);
-  }, [
-    projectData,
-    activeCategories,
-    selectedCompId,
-    hoveredCompId,
-    selectedStoreyId,
-    selectedSystem,
-    isolatedCompId,
-    hiddenCompIds,
-    debugMaterialMode,
-    forceAllVisible,
-    tracedCompIds,
-    activeTrace,
-  ]);
-
-  // Handle System Tracing Logic
-  const handleTraceSystem = (type: 'ELECTRICAL_CIRCUIT' | 'PLUMBING_WASTE' | 'HVAC_AIR_PATH') => {
-    if (!projectData) return;
-    setActiveTrace(type);
-
-    const matches = new Set<string>();
-    if (type === 'ELECTRICAL_CIRCUIT') {
-      projectData.components
-        .filter((c) => c.category === 'Electrical')
-        .forEach((c) => matches.add(c.id));
-      setShowElectricalLegend(true);
-    } else if (type === 'PLUMBING_WASTE') {
-      projectData.components
-        .filter((c) => c.category === 'Plumbing')
-        .forEach((c) => matches.add(c.id));
-    } else if (type === 'HVAC_AIR_PATH') {
-      projectData.components
-        .filter((c) => c.category === 'HVAC')
-        .forEach((c) => matches.add(c.id));
-    }
-    setTracedCompIds(matches);
-  };
-
-  // Selected Component Data Lookup
+  // Selected Component Lookup
   const selectedComponent = projectData?.components.find((c) => c.id === selectedCompId) || null;
+  const selectedRoom = selectedRoomId && projectData ? projectData.spatialHierarchy.storeys.flatMap((s) => s.spaces).find((sp) => sp.id === selectedRoomId) : null;
 
-  // Selected Room Data Lookup
-  const selectedRoom = selectedRoomId && projectData
-    ? projectData.spatialHierarchy.storeys.flatMap((s) => s.spaces).find((sp) => sp.id === selectedRoomId)
-    : null;
+  // Selected Agent Lookup
+  const selectedAgent = house0002RawData?.agentSpatialStates?.find((a: any) => `AGENT-${a.agentId}` === selectedCompId || a.agentId === selectedCompId) || null;
 
-  // Room Components
-  const roomComponents = selectedRoomId && projectData
-    ? projectData.components.filter((c) => c.spaceId === selectedRoomId || c.spaceName === selectedRoom?.name)
-    : [];
+  // Selected Facility Lookup
+  const selectedFacility = house0002RawData?.spatialEntities?.find((e: any) => e.entityId === selectedCompId) || null;
+
+  // Active Replay Event
+  const activeReplayEvent = replayEvents.length > 0 ? replayEvents[Math.min(currentEventIndex, replayEvents.length - 1)] : null;
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 text-slate-900 font-sans overflow-hidden select-none">
-      {/* 1. COMPACT TOP VIEWPORT CONTROL RIBBON */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between gap-3 shadow-2xs z-20 shrink-0">
+      {/* 1. TOP CONTROL RIBBON */}
+      <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between gap-3 shadow-2xs z-20 shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
           {/* Project Switcher Dropdown */}
           <div className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-3 py-1 rounded-xl text-xs font-mono">
             <Building className="w-4 h-4 text-blue-600" />
             <select
               value={activeProjectId}
-              onChange={(e) => setActiveProjectId(e.target.value)}
+              onChange={(e) => handleSwitchProject(e.target.value)}
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
-              <option value="REFERENCE-BIM-0001">REFERENCE-BIM-0001 (Read-Only Reference)</option>
+              <option value="REFERENCE-BIM-0001">REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)</option>
+              <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)</option>
               {allProjectsList
-                .filter((p) => p.id !== 'REFERENCE-BIM-0001')
+                .filter((p) => !['REFERENCE-BIM-0001', 'ACADEMY-HOUSE-0002'].includes(p.id))
                 .map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name} ({p.id})
@@ -1516,184 +1174,88 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             </select>
           </div>
 
-          <span className="text-slate-300">|</span>
+          <span className="text-slate-300 hidden sm:inline">|</span>
 
           {/* Navigation Modes */}
           <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-medium">
             <button
               onClick={() => setNavMode('Orbit')}
-              className={`px-3 py-1 rounded-lg transition flex items-center gap-1.5 ${
-                navMode === 'Orbit'
-                  ? 'bg-blue-600 text-white font-bold shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-3 py-1 rounded-lg transition flex items-center gap-1.5 ${navMode === 'Orbit' ? 'bg-blue-600 text-white font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               <Compass className="w-3.5 h-3.5" /> Orbit
             </button>
             <button
-              onClick={() => setNavMode('Walk')}
-              className={`px-3 py-1 rounded-lg transition flex items-center gap-1.5 ${
-                navMode === 'Walk'
-                  ? 'bg-blue-600 text-white font-bold shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Footprints className="w-3.5 h-3.5" /> Walk Mode
-            </button>
-            <button
               onClick={() => setNavMode('Inspect')}
-              className={`px-3 py-1 rounded-lg transition flex items-center gap-1.5 ${
-                navMode === 'Inspect'
-                  ? 'bg-blue-600 text-white font-bold shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-3 py-1 rounded-lg transition flex items-center gap-1.5 ${navMode === 'Inspect' ? 'bg-blue-600 text-white font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               <Crosshair className="w-3.5 h-3.5" /> Inspect
             </button>
           </div>
         </div>
 
-        {/* Essential Viewport Tools */}
+        {/* Viewport Tools & Mobile Drawer Controls */}
         <div className="flex items-center gap-2">
+          {/* Mobile Drawer Toggles */}
           <button
-            onClick={() => setMeasureActive(!measureActive)}
-            className={`px-2.5 py-1 rounded-xl border text-xs font-medium transition flex items-center gap-1.5 ${
-              measureActive
-                ? 'bg-blue-50 text-blue-700 border-blue-200 font-bold'
-                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
+            onClick={() => {
+              setLeftTreeOpen(!leftTreeOpen);
+              if (!leftTreeOpen) setRightInspectorOpen(false);
+            }}
+            className={`px-2.5 py-1 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 sm:hidden ${leftTreeOpen ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-700 border-slate-200'}`}
           >
-            <Ruler className="w-3.5 h-3.5 text-blue-600" /> Measure
-          </button>
-
-          <button
-            onClick={() => setSectionBarOpen(!sectionBarOpen)}
-            className={`px-2.5 py-1 rounded-xl border text-xs font-medium transition flex items-center gap-1.5 ${
-              sectionBarOpen
-                ? 'bg-blue-50 text-blue-700 border-blue-200 font-bold'
-                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
-          >
-            <Sliders className="w-3.5 h-3.5 text-blue-600" /> Section
-          </button>
-
-          <button
-            onClick={fitModelToCamera}
-            className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-2xs transition flex items-center gap-1.5"
-          >
-            <Maximize2 className="w-3.5 h-3.5" /> Fit View
+            <FolderTree className="w-3.5 h-3.5" /> Tree
           </button>
 
           <button
             onClick={() => {
-              setIsFullscreen(!isFullscreen);
-              if (!isFullscreen) {
-                setLeftTreeOpen(false);
-                setRightInspectorOpen(false);
-              } else {
-                setLeftTreeOpen(true);
-                setRightInspectorOpen(true);
-              }
+              setLeftTreeOpen(true);
+              setLeftTab('WORKFORCE');
+              setRightInspectorOpen(false);
             }}
-            className={`px-3 py-1 text-xs font-bold rounded-xl transition flex items-center gap-1.5 ${
-              isFullscreen
-                ? 'bg-amber-500 text-white hover:bg-amber-600'
-                : 'bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200'
-            }`}
+            className="px-2.5 py-1 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
           >
-            <Maximize2 className="w-3.5 h-3.5" /> {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+            <Users className="w-3.5 h-3.5 text-amber-600" /> Workforce (68)
+          </button>
+
+          <button
+            onClick={() => {
+              setRightInspectorOpen(!rightInspectorOpen);
+              if (!rightInspectorOpen) setLeftTreeOpen(false);
+            }}
+            className={`px-2.5 py-1 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 sm:hidden ${rightInspectorOpen ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-700 border-slate-200'}`}
+          >
+            <FileText className="w-3.5 h-3.5" /> Inspector
+          </button>
+
+          <button onClick={fitModelToCamera} className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-2xs transition flex items-center gap-1.5">
+            <Maximize2 className="w-3.5 h-3.5" /> Fit View
           </button>
         </div>
       </div>
 
-      {/* Interactive Section Planes Bar (if open) */}
-      {sectionBarOpen && (
-        <div className="bg-slate-100 border-b border-slate-200 px-4 py-2 flex items-center gap-6 text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="cutY"
-              checked={sectionYEnabled}
-              onChange={(e) => setSectionYEnabled(e.target.checked)}
-              className="accent-blue-600 rounded"
-            />
-            <label htmlFor="cutY" className="font-bold text-slate-700">Floor Cut (Y):</label>
-            <input
-              type="range"
-              min={0}
-              max={8}
-              step={0.1}
-              value={sectionYValue}
-              onChange={(e) => setSectionYValue(Number(e.target.value))}
-              disabled={!sectionYEnabled}
-              className="w-32 accent-blue-600"
-            />
-            <span className="text-blue-700 font-bold">{sectionYValue}m</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="cutX"
-              checked={sectionXEnabled}
-              onChange={(e) => setSectionXEnabled(e.target.checked)}
-              className="accent-blue-600 rounded"
-            />
-            <label htmlFor="cutX" className="font-bold text-slate-700">Side Cut (X):</label>
-            <input
-              type="range"
-              min={-5}
-              max={15}
-              step={0.1}
-              value={sectionXValue}
-              onChange={(e) => setSectionXValue(Number(e.target.value))}
-              disabled={!sectionXEnabled}
-              className="w-32 accent-blue-600"
-            />
-            <span className="text-blue-700 font-bold">{sectionXValue}m</span>
-          </div>
-        </div>
-      )}
-
       {/* 2. MAIN CENTER WORKSPACE LAYOUT */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* LEFT BUILDING NAVIGATOR SIDEBAR */}
-        <div
-          className={`${
-            leftTreeOpen ? 'w-80' : 'w-0'
-          } bg-white border-r border-slate-200 transition-all duration-200 ease-in-out flex flex-col shrink-0 z-10 overflow-hidden shadow-2xs`}
-        >
+        <div className={`${leftTreeOpen ? 'w-full sm:w-80' : 'w-0'} bg-white border-r border-slate-200 transition-all duration-200 ease-in-out flex flex-col shrink-0 z-10 overflow-hidden shadow-2xs`}>
           {/* Subtabs Header */}
           <div className="p-2 border-b border-slate-200 bg-slate-50 flex items-center justify-around text-xs font-bold font-sans">
             <button
               onClick={() => setLeftTab('TREE')}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
-                leftTab === 'TREE'
-                  ? 'bg-white text-blue-700 shadow-2xs border border-slate-200'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+              className={`px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 ${leftTab === 'TREE' ? 'bg-white text-blue-700 shadow-2xs border border-slate-200' : 'text-slate-500 hover:text-slate-900'}`}
             >
               <FolderTree className="w-3.5 h-3.5" /> Model Tree
             </button>
             <button
-              onClick={() => setLeftTab('SYSTEMS')}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
-                leftTab === 'SYSTEMS'
-                  ? 'bg-white text-blue-700 shadow-2xs border border-slate-200'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+              onClick={() => setLeftTab('WORKFORCE')}
+              className={`px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 ${leftTab === 'WORKFORCE' ? 'bg-white text-amber-700 shadow-2xs border border-slate-200 font-bold' : 'text-slate-500 hover:text-slate-900'}`}
             >
-              <Network className="w-3.5 h-3.5" /> Systems
+              <Users className="w-3.5 h-3.5 text-amber-600" /> Workforce
             </button>
             <button
-              onClick={() => setLeftTab('TRACE')}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
-                leftTab === 'TRACE'
-                  ? 'bg-white text-blue-700 shadow-2xs border border-slate-200'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+              onClick={() => setLeftTab('SYSTEMS')}
+              className={`px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 ${leftTab === 'SYSTEMS' ? 'bg-white text-blue-700 shadow-2xs border border-slate-200' : 'text-slate-500 hover:text-slate-900'}`}
             >
-              <Zap className="w-3.5 h-3.5" /> Trace
+              <Network className="w-3.5 h-3.5" /> Systems
             </button>
           </div>
 
@@ -1703,7 +1265,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
               <input
                 type="text"
-                placeholder="Search walls, rooms, systems..."
+                placeholder={leftTab === 'WORKFORCE' ? 'Search 68 workforce agents...' : 'Search walls, facilities, systems...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-50 text-slate-800 text-xs pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 font-sans"
@@ -1714,201 +1276,317 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           {/* Left Tab Content */}
           <div className="flex-1 overflow-y-auto p-3 text-xs font-mono space-y-2">
             {leftTab === 'TREE' && projectData && (
-              <div className="space-y-1 font-sans">
-                {/* Building Root */}
-                <div>
-                  <div className="px-2 py-1 bg-slate-100 rounded-lg text-slate-800 font-bold text-xs flex items-center justify-between mb-2">
-                    <span className="flex items-center gap-1.5">
-                      <Building className="w-4 h-4 text-blue-600" />
-                      {projectData.name}
+              <div className="space-y-2 font-sans">
+                {/* Project Header */}
+                <div className="px-2 py-1.5 bg-slate-100 rounded-xl text-slate-900 font-bold text-xs flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 truncate">
+                    <Building className="w-4 h-4 text-blue-600 shrink-0" />
+                    {projectData.name}
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono shrink-0">{projectData.components.length} Items</span>
+                </div>
+
+                {activeProjectId === 'ACADEMY-HOUSE-0002' ? (
+                  /* HOUSE #2 SPECIFIC STRUCTURED MODEL TREE */
+                  <div className="space-y-2 text-xs">
+                    {/* Site & Temporary Facilities Section */}
+                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                      <button
+                        onClick={() => setExpandedNodes((p) => ({ ...p, 'site-root': !p['site-root'] }))}
+                        className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-blue-600" />
+                          Site & Temporary Facilities (7 Facilities)
+                        </span>
+                        {expandedNodes['site-root'] ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
+                      </button>
+
+                      {expandedNodes['site-root'] && (
+                        <div className="p-2 space-y-1">
+                          {projectData.components
+                            .filter((c) => c.category === 'Site')
+                            .map((comp) => (
+                              <button
+                                key={comp.id}
+                                onClick={() => {
+                                  setSelectedCompId(comp.id);
+                                  setRightInspectorOpen(true);
+                                }}
+                                className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                  selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
+                                }`}
+                              >
+                                <span className="truncate">{comp.name}</span>
+                                <span className="text-[9px] font-mono opacity-75">{comp.id}</span>
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 3D Spatial Program Volumes */}
+                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                      <button
+                        onClick={() => setExpandedNodes((p) => ({ ...p, 'program-root': !p['program-root'] }))}
+                        className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Box className="w-3.5 h-3.5 text-blue-600" />
+                          3D Spatial Program (6 Room Volumes)
+                        </span>
+                        {expandedNodes['program-root'] ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
+                      </button>
+
+                      {expandedNodes['program-root'] && (
+                        <div className="p-2 space-y-1">
+                          {projectData.components
+                            .filter((c) => c.ifcType === 'IfcSpace')
+                            .map((comp) => (
+                              <button
+                                key={comp.id}
+                                onClick={() => {
+                                  setSelectedCompId(comp.id);
+                                  setRightInspectorOpen(true);
+                                }}
+                                className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                  selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
+                                }`}
+                              >
+                                <span className="truncate">{comp.name}</span>
+                                <span className="text-[9px] font-mono opacity-75">{comp.dimensions[0]}x{comp.dimensions[2]}m</span>
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Building Architecture & Structure */}
+                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                      <button
+                        onClick={() => setExpandedNodes((p) => ({ ...p, 'building-structures': !p['building-structures'] }))}
+                        className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Layers className="w-3.5 h-3.5 text-blue-600" />
+                          Building BIM Rev 1 (11 Components)
+                        </span>
+                        {expandedNodes['building-structures'] ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
+                      </button>
+
+                      {expandedNodes['building-structures'] && (
+                        <div className="p-2 space-y-1 font-mono text-[11px]">
+                          {projectData.components
+                            .filter((c) => ['IfcWall', 'IfcSlab', 'IfcDoor', 'IfcWindow', 'IfcRoof'].includes(c.ifcType))
+                            .map((comp) => (
+                              <button
+                                key={comp.id}
+                                onClick={() => {
+                                  setSelectedCompId(comp.id);
+                                  setRightInspectorOpen(true);
+                                }}
+                                className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                  selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
+                                }`}
+                              >
+                                <span className="truncate">{comp.name}</span>
+                                <span className="text-[9px] opacity-75">{comp.category}</span>
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  /* REFERENCE MODEL STOREY HIERARCHY */
+                  <div className="space-y-1 font-sans">
+                    {projectData.spatialHierarchy.storeys.map((storey) => {
+                      const isExpanded = expandedNodes[storey.id];
+                      const storeyComps = projectData.components.filter((c) => c.storeyId === storey.id);
+
+                      return (
+                        <div key={storey.id} className="mb-2">
+                          <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-slate-100 transition">
+                            <button
+                              onClick={() => setExpandedNodes((prev) => ({ ...prev, [storey.id]: !prev[storey.id] }))}
+                              className="flex items-center gap-1.5 font-bold text-slate-800 text-xs truncate"
+                            >
+                              {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-slate-400" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-400" />}
+                              <Layers className="w-3.5 h-3.5 text-blue-600" />
+                              {storey.name}
+                            </button>
+                          </div>
+
+                          {isExpanded && (
+                            <div className="ml-4 pl-2 border-l border-slate-200 space-y-1 mt-1 font-mono text-[11px]">
+                              {storeyComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1 rounded transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] opacity-75">{comp.category}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* HERMES WORKFORCE TAB */}
+            {leftTab === 'WORKFORCE' && (
+              <div className="space-y-3 font-sans">
+                {/* Roster Header & Real-Time Metrics */}
+                <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-amber-900 text-xs flex items-center gap-1.5">
+                      <Users className="w-4 h-4 text-amber-600" />
+                      HERMES WORKFORCE ROSTER
                     </span>
-                    <span className="text-[10px] text-slate-500 font-mono">
-                      {projectData.components.length} Meshes
+                    <span className="bg-amber-200 text-amber-900 font-mono text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      68 AGENTS
                     </span>
                   </div>
 
-                  {/* Storeys & Rooms Tree */}
-                  {projectData.spatialHierarchy.storeys.map((storey) => {
-                    const isExpanded = expandedNodes[storey.id];
-                    const storeyComps = projectData.components.filter((c) => c.storeyId === storey.id);
+                  <div className="grid grid-cols-2 gap-1.5 text-center font-mono text-[10px]">
+                    <div className="p-1.5 bg-white rounded-lg border border-amber-200">
+                      <span className="text-slate-400 block">Deployed / Field</span>
+                      <span className="font-bold text-amber-800 text-xs">10 Active</span>
+                    </div>
+                    <div className="p-1.5 bg-white rounded-lg border border-amber-200">
+                      <span className="text-slate-400 block">Learning Reserve</span>
+                      <span className="font-bold text-blue-700 text-xs">46 Learning</span>
+                    </div>
+                  </div>
+                </div>
 
-                    return (
-                      <div key={storey.id} className="mb-2">
-                        <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-slate-100 transition">
-                          <button
-                            onClick={() =>
-                              setExpandedNodes((prev) => ({ ...prev, [storey.id]: !prev[storey.id] }))
+                {/* Discipline Filter Dropdown */}
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter Discipline</span>
+                  <select
+                    value={workforceDisciplineFilter}
+                    onChange={(e) => setWorkforceDisciplineFilter(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-2 text-xs font-bold focus:outline-none"
+                  >
+                    <option value="ALL">All Disciplines (17 Trades)</option>
+                    <option value="EXECUTIVE">Executive / Prime (1)</option>
+                    <option value="MANAGEMENT">Management (5)</option>
+                    <option value="SURVEY">Survey (2)</option>
+                    <option value="CONCRETE">Concrete / Foundation (6)</option>
+                    <option value="MASONRY">Masonry (6)</option>
+                    <option value="FRAMING">Framing (6)</option>
+                    <option value="ROOFING">Roofing (4)</option>
+                    <option value="ENVELOPE">Envelope (4)</option>
+                    <option value="PLUMBING">Plumbing (4)</option>
+                    <option value="ELECTRICAL">Electrical (4)</option>
+                    <option value="HVAC">HVAC (3)</option>
+                    <option value="INTERIOR">Interior (3)</option>
+                    <option value="LOGISTICS">Logistics (3)</option>
+                    <option value="MATERIALS">Materials (3)</option>
+                    <option value="INSPECTION">Inspection (4)</option>
+                    <option value="KNOWLEDGE">Learning Reserve (46)</option>
+                  </select>
+                </div>
+
+                {/* Agent List */}
+                <div className="space-y-1.5">
+                  {house0002RawData?.agentSpatialStates
+                    ?.filter((a: any) => {
+                      if (workforceDisciplineFilter !== 'ALL' && a.discipline !== workforceDisciplineFilter) return false;
+                      if (searchQuery && !a.role.toLowerCase().includes(searchQuery.toLowerCase()) && !a.agentId.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+                      return true;
+                    })
+                    .map((agent: any) => {
+                      const isSelected = selectedCompId === `AGENT-${agent.agentId}` || selectedCompId === agent.agentId;
+                      return (
+                        <button
+                          key={agent.agentId}
+                          onClick={() => {
+                            setSelectedCompId(`AGENT-${agent.agentId}`);
+                            setRightInspectorOpen(true);
+
+                            // Focus 3D camera
+                            if (cameraPerspRef.current && controlsRef.current && agent.worldPosition) {
+                              const [x, y, z] = agent.worldPosition;
+                              controlsRef.current.target.set(x, y + 1, z);
+                              cameraPerspRef.current.position.set(x + 3, y + 2.5, z + 3);
+                              controlsRef.current.update();
                             }
-                            className="flex items-center gap-1.5 font-bold text-slate-800 text-xs truncate"
-                          >
-                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-slate-400" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-400" />}
-                            <Layers className="w-3.5 h-3.5 text-blue-600" />
-                            {storey.name}
-                          </button>
+                          }}
+                          className={`w-full text-left p-2.5 rounded-xl border transition flex items-center justify-between ${
+                            isSelected ? 'bg-amber-100 border-amber-300 font-bold shadow-2xs' : 'bg-white border-slate-200 hover:bg-slate-50'
+                          }`}
+                        >
+                          <div className="space-y-0.5 truncate pr-2">
+                            <div className="font-bold text-slate-900 text-xs truncate flex items-center gap-1.5">
+                              <HardHat className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                              {agent.role}
+                            </div>
+                            <div className="text-[10px] text-slate-500 font-mono">
+                              ID: {agent.agentId} • {agent.discipline}
+                            </div>
+                          </div>
 
-                          <div className="flex items-center gap-1 text-[10px]">
-                            <button
-                              onClick={() => setSelectedStoreyId(storey.id === selectedStoreyId ? 'ALL' : storey.id)}
-                              className={`px-1.5 py-0.5 rounded border font-bold ${
-                                selectedStoreyId === storey.id
-                                  ? 'bg-blue-600 text-white border-blue-600'
-                                  : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                          <div className="text-right shrink-0">
+                            <span
+                              className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                                agent.currentState === 'WORKING' || agent.currentState === 'DEPLOYED'
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : agent.currentState === 'LEARNING'
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : 'bg-slate-100 text-slate-600'
                               }`}
                             >
-                              {selectedStoreyId === storey.id ? 'Isolated' : 'Isolate'}
-                            </button>
+                              {agent.currentState}
+                            </span>
                           </div>
-                        </div>
-
-                        {/* Storey Rooms & Elements */}
-                        {isExpanded && (
-                          <div className="ml-4 pl-2 border-l border-slate-200 space-y-1.5 mt-1">
-                            {/* Rooms */}
-                            {storey.spaces.map((space) => {
-                              const roomComps = storeyComps.filter(
-                                (c) => c.spaceId === space.id || c.spaceName === space.name
-                              );
-                              return (
-                                <div key={space.id} className="p-2 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-                                  <div className="flex items-center justify-between">
-                                    <button
-                                      onClick={() => {
-                                        setSelectedRoomId(space.id);
-                                        setRightInspectorOpen(true);
-                                      }}
-                                      className="font-bold text-slate-900 text-xs flex items-center gap-1 hover:text-blue-600"
-                                    >
-                                      <Box className="w-3.5 h-3.5 text-blue-600" />
-                                      {space.name}
-                                    </button>
-                                    <span className="text-[10px] text-slate-500">{space.areaSqMeters} m²</span>
-                                  </div>
-
-                                  <div className="pl-2 space-y-0.5 font-mono text-[11px]">
-                                    {roomComps
-                                      .filter((c) => !searchQuery || c.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                                      .map((comp) => (
-                                        <button
-                                          key={comp.id}
-                                          onClick={() => {
-                                            setSelectedCompId(comp.id);
-                                            setRightInspectorOpen(true);
-                                          }}
-                                          className={`w-full text-left px-2 py-1 rounded transition flex items-center justify-between ${
-                                            selectedCompId === comp.id
-                                              ? 'bg-blue-600 text-white font-bold'
-                                              : 'hover:bg-slate-200/60 text-slate-700'
-                                          }`}
-                                        >
-                                          <span className="truncate">{comp.name}</span>
-                                          <span className="text-[9px] opacity-75">{comp.category}</span>
-                                        </button>
-                                      ))}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                        </button>
+                      );
+                    })}
                 </div>
               </div>
             )}
 
+            {/* SYSTEMS TAB */}
             {leftTab === 'SYSTEMS' && (
               <div className="space-y-2 font-sans">
-                <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                  System Isolation Networks
-                </span>
-                {(['Architecture', 'Structure', 'Plumbing', 'HVAC', 'Electrical'] as const).map((sys) => {
+                <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">System Isolation Networks</span>
+                {(['Architecture', 'Structure', 'Plumbing', 'HVAC', 'Electrical', 'Site'] as const).map((sys) => {
                   const isActive = selectedSystem === sys;
                   return (
                     <button
                       key={sys}
                       onClick={() => setSelectedSystem(isActive ? null : sys)}
                       className={`w-full text-left p-3 rounded-xl border transition flex items-center justify-between ${
-                        isActive
-                          ? 'bg-blue-50 border-blue-200 text-blue-800 font-bold shadow-2xs'
-                          : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+                        isActive ? 'bg-blue-50 border-blue-200 text-blue-800 font-bold shadow-2xs' : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: `#${getSystemColorHex(sys).toString(16).padStart(6, '0')}` }}
-                        />
+                        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: `#${getSystemColorHex(sys).toString(16).padStart(6, '0')}` }} />
                         <span>{sys} Network</span>
                       </div>
-                      <span className="text-xs text-slate-400 font-mono">
-                        {projectData?.components.filter((c) => c.category === sys).length} Items
-                      </span>
+                      <span className="text-xs text-slate-400 font-mono">{projectData?.components.filter((c) => c.category === sys).length} Items</span>
                     </button>
                   );
                 })}
-              </div>
-            )}
-
-            {leftTab === 'TRACE' && (
-              <div className="space-y-3 font-sans">
-                <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                  Interactive System Tracing
-                </span>
-
-                <button
-                  onClick={() => handleTraceSystem('ELECTRICAL_CIRCUIT')}
-                  className="w-full text-left p-3 bg-amber-50 hover:bg-amber-100/80 border border-amber-200 rounded-xl text-amber-900 font-bold text-xs transition flex items-center gap-2"
-                >
-                  <Zap className="w-4 h-4 text-amber-600" />
-                  <div>
-                    <div>Trace Electrical Circuit</div>
-                    <div className="text-[10px] font-normal text-amber-700">Outlet → Cable → Junction → Panel</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleTraceSystem('PLUMBING_WASTE')}
-                  className="w-full text-left p-3 bg-cyan-50 hover:bg-cyan-100/80 border border-cyan-200 rounded-xl text-cyan-900 font-bold text-xs transition flex items-center gap-2"
-                >
-                  <Wrench className="w-4 h-4 text-cyan-600" />
-                  <div>
-                    <div>Trace Plumbing Waste Path</div>
-                    <div className="text-[10px] font-normal text-cyan-700">Fixture → Branch → Stack → Drain</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleTraceSystem('HVAC_AIR_PATH')}
-                  className="w-full text-left p-3 bg-orange-50 hover:bg-orange-100/80 border border-orange-200 rounded-xl text-orange-900 font-bold text-xs transition flex items-center gap-2"
-                >
-                  <Flame className="w-4 h-4 text-orange-600" />
-                  <div>
-                    <div>Trace HVAC Air Distribution</div>
-                    <div className="text-[10px] font-normal text-orange-700">Diffuser → Trunk Duct → AHU</div>
-                  </div>
-                </button>
-
-                {showElectricalLegend && (
-                  <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1.5 text-xs font-mono">
-                    <span className="font-bold text-slate-800 font-sans block text-[11px]">Electrical Visual Legend</span>
-                    <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-cyan-400" /> 120V Branch Circuit</div>
-                    <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-blue-600" /> 240V Appliance Power</div>
-                    <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Lighting Circuit</div>
-                    <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-purple-500" /> Low Voltage / Data</div>
-                    <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Grounding System</div>
-                  </div>
-                )}
               </div>
             )}
           </div>
         </div>
 
         {/* Toggle Left Sidebar Button */}
-        <button
-          onClick={() => setLeftTreeOpen(!leftTreeOpen)}
-          className="absolute left-0 top-3 z-20 p-1.5 bg-white border border-slate-200 rounded-r-xl text-slate-600 hover:text-slate-900 shadow-md"
-        >
+        <button onClick={() => setLeftTreeOpen(!leftTreeOpen)} className="absolute left-0 top-3 z-20 p-1.5 bg-white border border-slate-200 rounded-r-xl text-slate-600 hover:text-slate-900 shadow-md">
           {leftTreeOpen ? <X className="w-4 h-4" /> : <FolderTree className="w-4 h-4 text-blue-600" />}
         </button>
 
@@ -1919,20 +1597,14 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           {/* Floating Canvas Indicator */}
           <div className="absolute top-3 left-4 z-10 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-extrabold text-slate-900 shadow-xs flex items-center gap-2 pointer-events-none">
             <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-            <span>HERMES REAL-TIME BIM VIEWPORT</span>
+            <span>HERMES BIM SPATIAL WORKSPACE ({activeProjectId})</span>
           </div>
 
           {/* Active Filter Floating Badge */}
           {(selectedSystem || activeTrace || isolatedCompId) && (
             <div className="absolute bottom-4 left-4 z-10 bg-blue-50/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-blue-200 text-xs font-bold text-blue-900 shadow-md flex items-center gap-2">
               <Filter className="w-4 h-4 text-blue-600" />
-              <span>
-                {selectedSystem
-                  ? `${selectedSystem} Network Isolated`
-                  : activeTrace
-                  ? `Active Trace: ${activeTrace}`
-                  : 'Component Isolated'}
-              </span>
+              <span>{selectedSystem ? `${selectedSystem} Network Isolated` : activeTrace ? `Active Trace: ${activeTrace}` : 'Component Isolated'}</span>
               <button
                 onClick={() => {
                   setSelectedSystem(null);
@@ -1948,17 +1620,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         </div>
 
         {/* RIGHT CONTEXT INSPECTOR SIDEBAR */}
-        <div
-          className={`${
-            rightInspectorOpen ? 'w-96' : 'w-0'
-          } bg-white border-l border-slate-200 transition-all duration-200 ease-in-out flex flex-col shrink-0 z-10 overflow-hidden shadow-2xs`}
-        >
+        <div className={`${rightInspectorOpen ? 'w-full sm:w-96' : 'w-0'} bg-white border-l border-slate-200 transition-all duration-200 ease-in-out flex flex-col shrink-0 z-10 overflow-hidden shadow-2xs`}>
           {/* Inspector Header */}
           <div className="p-3 border-b border-slate-200 flex items-center justify-between gap-2 bg-slate-50">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-blue-600" />
               <span className="text-xs font-bold uppercase tracking-wider text-slate-900 font-sans">
-                {selectedComponent ? 'Component Scope Inspector' : selectedRoom ? 'Room Scope Inspector' : 'Project Scope Inspector'}
+                {selectedAgent ? 'Agent Scope Inspector' : selectedFacility ? 'Facility Scope Inspector' : selectedComponent ? 'Component Scope Inspector' : 'Project Scope Inspector'}
               </span>
             </div>
             <button onClick={() => setRightInspectorOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
@@ -1968,8 +1636,59 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           {/* Inspector Body */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans text-xs">
-            {selectedComponent ? (
-              /* Component Level Deep Scope Inspection */
+            {selectedAgent ? (
+              /* AGENT SCOPE INSPECTION */
+              <div className="space-y-3">
+                <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-amber-800 bg-white px-2 py-0.5 rounded border border-amber-200">
+                      AGENT-{selectedAgent.agentId}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                      {selectedAgent.currentState}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-extrabold text-slate-900 mt-1">{selectedAgent.role}</h3>
+                  <p className="text-[11px] text-slate-500 font-mono">Discipline: {selectedAgent.discipline} • Reports to: {selectedAgent.reportsTo || 'PRIME'}</p>
+                </div>
+
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">Spatial & Home Base Details</span>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">Home Base Facility:</span>
+                    <span className="font-bold text-slate-900 font-mono">{selectedAgent.homeBaseEntityId}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">World Position:</span>
+                    <span className="font-bold text-slate-900 font-mono">[{selectedAgent.worldPosition?.join(', ')}]</span>
+                  </div>
+                </div>
+              </div>
+            ) : selectedFacility ? (
+              /* FACILITY SCOPE INSPECTION */
+              <div className="space-y-3">
+                <div className="p-3 bg-blue-50 rounded-2xl border border-blue-200 space-y-1">
+                  <span className="font-mono text-xs font-bold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-200">
+                    {selectedFacility.entityId}
+                  </span>
+                  <h3 className="text-sm font-extrabold text-slate-900 mt-1">{selectedFacility.name}</h3>
+                  <p className="text-[11px] text-slate-500 font-mono">Type: {selectedFacility.entityType}</p>
+                </div>
+
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">Clearance & Access Path</span>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">Clash Status:</span>
+                    <span className="font-bold text-emerald-700">CLEAR (0 Clashes)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">Clearance Margin:</span>
+                    <span className="font-bold text-slate-900 font-mono">0.5 meters</span>
+                  </div>
+                </div>
+              </div>
+            ) : selectedComponent ? (
+              /* COMPONENT SCOPE INSPECTION */
               <div className="space-y-3">
                 <div className="p-3 bg-blue-50 rounded-2xl border border-blue-200 space-y-1">
                   <div className="flex items-center justify-between">
@@ -1981,213 +1700,46 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     </span>
                   </div>
                   <h3 className="text-sm font-extrabold text-slate-900 mt-1">{selectedComponent.name}</h3>
-                  <p className="text-[11px] text-slate-500 font-mono">
-                    {selectedComponent.storeyName} • Space: {selectedComponent.spaceName || 'Main Structure'}
-                  </p>
+                  <p className="text-[11px] text-slate-500 font-mono">{selectedComponent.storeyName}</p>
                 </div>
 
-                {/* Scope Inspector Subtabs */}
-                <div className="flex border-b border-slate-200 text-[11px] font-bold text-slate-600">
-                  <button
-                    onClick={() => setInspectorTab('OVERVIEW')}
-                    className={`px-2.5 py-1.5 border-b-2 transition ${
-                      inspectorTab === 'OVERVIEW' ? 'border-blue-600 text-blue-600' : 'border-transparent'
-                    }`}
-                  >
-                    Overview
-                  </button>
-                  <button
-                    onClick={() => setInspectorTab('ASSEMBLY')}
-                    className={`px-2.5 py-1.5 border-b-2 transition ${
-                      inspectorTab === 'ASSEMBLY' ? 'border-blue-600 text-blue-600' : 'border-transparent'
-                    }`}
-                  >
-                    Assembly
-                  </button>
-                  <button
-                    onClick={() => setInspectorTab('ENGINEERING')}
-                    className={`px-2.5 py-1.5 border-b-2 transition ${
-                      inspectorTab === 'ENGINEERING' ? 'border-blue-600 text-blue-600' : 'border-transparent'
-                    }`}
-                  >
-                    Engineering
-                  </button>
-                  <button
-                    onClick={() => setInspectorTab('QUANTITIES')}
-                    className={`px-2.5 py-1.5 border-b-2 transition ${
-                      inspectorTab === 'QUANTITIES' ? 'border-blue-600 text-blue-600' : 'border-transparent'
-                    }`}
-                  >
-                    Quantities
-                  </button>
-                </div>
-
-                {/* Tab Content */}
-                {inspectorTab === 'OVERVIEW' && (
-                  <div className="space-y-2">
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">
-                        Dimensions & Spatial Bounds
-                      </span>
-                      <div className="grid grid-cols-3 gap-2 text-center font-mono">
-                        <div className="p-1.5 bg-white rounded-lg border border-slate-200">
-                          <span className="text-slate-400 text-[9px] block">Width (X)</span>
-                          <span className="font-bold text-slate-900">{selectedComponent.dimensions[0]} m</span>
-                        </div>
-                        <div className="p-1.5 bg-white rounded-lg border border-slate-200">
-                          <span className="text-slate-400 text-[9px] block">Height (Y)</span>
-                          <span className="font-bold text-slate-900">{selectedComponent.dimensions[1]} m</span>
-                        </div>
-                        <div className="p-1.5 bg-white rounded-lg border border-slate-200">
-                          <span className="text-slate-400 text-[9px] block">Length (Z)</span>
-                          <span className="font-bold text-slate-900">{selectedComponent.dimensions[2]} m</span>
-                        </div>
-                      </div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">Dimensions</span>
+                  <div className="grid grid-cols-3 gap-2 text-center font-mono">
+                    <div className="p-1.5 bg-white rounded-lg border border-slate-200">
+                      <span className="text-slate-400 text-[9px] block">W (X)</span>
+                      <span className="font-bold text-slate-900">{selectedComponent.dimensions[0]}m</span>
+                    </div>
+                    <div className="p-1.5 bg-white rounded-lg border border-slate-200">
+                      <span className="text-slate-400 text-[9px] block">H (Y)</span>
+                      <span className="font-bold text-slate-900">{selectedComponent.dimensions[1]}m</span>
+                    </div>
+                    <div className="p-1.5 bg-white rounded-lg border border-slate-200">
+                      <span className="text-slate-400 text-[9px] block">D (Z)</span>
+                      <span className="font-bold text-slate-900">{selectedComponent.dimensions[2]}m</span>
                     </div>
                   </div>
-                )}
-
-                {inspectorTab === 'ASSEMBLY' && (
-                  <div className="space-y-2">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">
-                      Multi-Layer Material Assembly Breakdown
-                    </span>
-                    {selectedComponent.assemblyLayers?.map((layer) => (
-                      <div key={layer.layerIndex} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-0.5 font-mono">
-                        <div className="flex justify-between font-bold text-slate-900">
-                          <span>L{layer.layerIndex}: {layer.materialName}</span>
-                          <span className="text-blue-600">{(layer.thicknessMeters * 1000).toFixed(0)} mm</span>
-                        </div>
-                        <div className="text-[10px] text-slate-500">Role: {layer.structuralRole}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {inspectorTab === 'ENGINEERING' && (
-                  <div className="space-y-2">
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">
-                        Structural & Thermal Engineering Ratings
-                      </span>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Fire Resistance:</span>
-                        <span className="font-bold text-slate-900">{selectedComponent.fireRatingMinutes || 120} Mins</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Thermal R-Value:</span>
-                        <span className="font-bold text-slate-900">R-{selectedComponent.thermalResistanceRValue || 19}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Acoustic STC:</span>
-                        <span className="font-bold text-slate-900">STC {selectedComponent.acousticSTC || 52}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {inspectorTab === 'QUANTITIES' && (
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 font-mono">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block font-sans">
-                      Calculated Bill of Materials Quantities
-                    </span>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-slate-600">Drywall Sheets (4x8 ft):</span>
-                      <span className="font-bold text-blue-700">14 Sheets</span>
-                    </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-slate-600">Stud Members (2x4 / 2x6):</span>
-                      <span className="font-bold text-blue-700">18 Studs</span>
-                    </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-slate-600">Fastener Screws Count:</span>
-                      <span className="font-bold text-blue-700">220 Screws</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : selectedRoom ? (
-              /* Room Level Scope Aggregation */
-              <div className="space-y-3">
-                <div className="p-3 bg-blue-50 rounded-2xl border border-blue-200">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-extrabold text-blue-900">{selectedRoom.name} Scope</h3>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">
-                      {selectedRoom.areaSqMeters} m² • {selectedRoom.volumeCuMeters} m³
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => {
-                      // Calculate average position of room components
-                      let rx = 2, ry = 1.65, rz = 2;
-                      if (roomComponents.length > 0) {
-                        rx = roomComponents.reduce((acc, c) => acc + (c.position?.[0] || 0), 0) / roomComponents.length;
-                        rz = roomComponents.reduce((acc, c) => acc + (c.position?.[2] || 0), 0) / roomComponents.length;
-                      }
-                      if (cameraPerspRef.current && controlsRef.current) {
-                        cameraPerspRef.current.position.set(rx, ry, rz);
-                        controlsRef.current.target.set(rx + 1, ry, rz + 1);
-                        controlsRef.current.update();
-                      }
-                      setNavMode('Walk');
-                    }}
-                    className="w-full mt-2 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-2xs"
-                  >
-                    <Footprints className="w-3.5 h-3.5" /> Enter Room in Walk Mode
-                  </button>
-                </div>
-
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 font-sans">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">
-                    Room System Breakdown & Truth Status
-                  </span>
-                  {(['Architecture', 'Structure', 'Plumbing', 'Electrical', 'HVAC'] as const).map((sys) => {
-                    const sysComps = roomComponents.filter((c) => c.category === sys);
-                    return (
-                      <div key={sys} className="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 text-xs font-mono">
-                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                          <span
-                            className="w-2.5 h-2.5 rounded-full"
-                            style={{ backgroundColor: `#${getSystemColorHex(sys).toString(16).padStart(6, '0')}` }}
-                          />
-                          {sys}
-                        </span>
-                        {sysComps.length > 0 ? (
-                          <span className="font-bold text-blue-700">{sysComps.length} Items</span>
-                        ) : (
-                          <span className="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 font-sans">
-                            NOT YET MODELED FOR ROOM
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
                 </div>
               </div>
             ) : (
-              /* Project Level Summary Scope */
+              /* PROJECT LEVEL SUMMARY SCOPE */
               <div className="space-y-3">
                 <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                  <span className="text-[10px] uppercase font-mono font-bold text-blue-600 block">Active Project Scope</span>
                   <h3 className="text-sm font-extrabold text-slate-900">{projectData?.name}</h3>
                   <p className="text-[11px] text-slate-500">{projectData?.description}</p>
                 </div>
 
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 font-mono">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block font-sans">
-                    Project Aggregated Scope
-                  </span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block font-sans">Project Metrics</span>
                   <div className="grid grid-cols-2 gap-2 text-center">
                     <div className="p-2 bg-white rounded-lg border border-slate-200">
-                      <span className="text-[9px] text-slate-400 block">Total Storeys</span>
-                      <span className="text-sm font-bold text-blue-700">
-                        {projectData?.spatialHierarchy.storeys.length}
-                      </span>
+                      <span className="text-[9px] text-slate-400 block">Project ID</span>
+                      <span className="text-xs font-bold text-blue-700">{activeProjectId}</span>
                     </div>
                     <div className="p-2 bg-white rounded-lg border border-slate-200">
-                      <span className="text-[9px] text-slate-400 block">Total Components</span>
-                      <span className="text-sm font-bold text-blue-700">
-                        {projectData?.components.length}
-                      </span>
+                      <span className="text-[9px] text-slate-400 block">Components</span>
+                      <span className="text-xs font-bold text-blue-700">{projectData?.components.length}</span>
                     </div>
                   </div>
                 </div>
@@ -2197,10 +1749,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         </div>
 
         {/* Toggle Right Inspector Button */}
-        <button
-          onClick={() => setRightInspectorOpen(!rightInspectorOpen)}
-          className="absolute right-0 top-3 z-20 p-1.5 bg-white border border-slate-200 rounded-l-xl text-slate-600 hover:text-slate-900 shadow-md"
-        >
+        <button onClick={() => setRightInspectorOpen(!rightInspectorOpen)} className="absolute right-0 top-3 z-20 p-1.5 bg-white border border-slate-200 rounded-l-xl text-slate-600 hover:text-slate-900 shadow-md">
           {rightInspectorOpen ? <X className="w-4 h-4" /> : <FileText className="w-4 h-4 text-blue-600" />}
         </button>
       </div>
@@ -2223,13 +1772,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               </button>
 
               <div className="flex items-center bg-slate-100 rounded-xl p-0.5 border border-slate-200 text-[11px] font-mono">
-                {[1, 2, 5, 10, 20].map((s) => (
+                {[1, 2, 5, 10].map((s) => (
                   <button
                     key={s}
                     onClick={() => setReplaySpeed(s)}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition ${
-                      replaySpeed === s ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                    className={`px-2 py-0.5 rounded-lg font-bold transition ${replaySpeed === s ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-slate-900'}`}
                   >
                     {s}x
                   </button>
@@ -2239,22 +1786,24 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
             <div className="flex-1 flex items-center gap-3 font-mono text-xs max-w-xl">
               <span className="text-slate-500 text-[11px]">
-                Event {currentEventIndex + 1} / {replayEvents.length || 10}
+                Event {currentEventIndex + 1} / {replayEvents.length || 1}
               </span>
               <input
                 type="range"
                 min={0}
-                max={Math.max(0, (replayEvents.length || 10) - 1)}
+                max={Math.max(0, replayEvents.length - 1)}
                 value={currentEventIndex}
                 onChange={(e) => setCurrentEventIndex(Number(e.target.value))}
                 className="w-full accent-blue-600 cursor-pointer h-1.5 bg-slate-200 rounded-lg"
               />
             </div>
 
-            <div className="text-xs font-bold text-blue-700 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-blue-600" />
-              <span>Autonomous Agent Replay Active</span>
-            </div>
+            {activeReplayEvent && (
+              <div className="hidden md:flex items-center gap-2 text-xs font-bold text-blue-900 bg-blue-50 px-3 py-1 rounded-xl border border-blue-200 max-w-sm truncate">
+                <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span className="truncate">{activeReplayEvent.title || activeReplayEvent.questionOrTopic}</span>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -2265,15 +1814,17 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 function getCategoryColorHex(cat: string): number {
   switch (cat) {
     case 'Architecture':
-      return 0xe2e8f0; // Clean White Slate
+      return 0xe2e8f0;
     case 'Structure':
-      return 0x64748b; // Concrete Slate
+      return 0x64748b;
     case 'Plumbing':
-      return 0x0284c7; // Deep Cyan Blue
+      return 0x0284c7;
     case 'HVAC':
-      return 0xd97706; // Amber
+      return 0xd97706;
     case 'Electrical':
-      return 0xeab308; // Yellow Gold
+      return 0xeab308;
+    case 'Site':
+      return 0x15803d;
     default:
       return 0x3b82f6;
   }
@@ -2291,6 +1842,8 @@ function getSystemColorHex(sys: string): number {
       return 0xe11d48;
     case 'Electrical':
       return 0xeab308;
+    case 'Site':
+      return 0x15803d;
     default:
       return 0x2563eb;
   }

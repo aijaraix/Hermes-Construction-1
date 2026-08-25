@@ -39,6 +39,7 @@ import { PrehouseSpatialEngine } from './server/prehouseSpatialEngine';
 import { PrehouseSpatialProofRunner } from './server/prehouseSpatialProofRunner';
 import { House0002Engine } from './server/house0002Engine';
 import { House0002CheckpointRunner } from './server/house0002CheckpointRunner';
+import { ProjectSwitchingTester } from './server/projectSwitchingTests';
 
 async function startServer() {
   const app = express();
@@ -395,6 +396,15 @@ async function startServer() {
   app.get('/api/hermes/house0002-checkpoint', (req, res) => {
     try {
       const report = House0002CheckpointRunner.executeCheckpointReport();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/test-project-switching', (req, res) => {
+    try {
+      const report = ProjectSwitchingTester.runAllTests();
       res.json(report);
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });

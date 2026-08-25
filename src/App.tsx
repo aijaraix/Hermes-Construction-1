@@ -296,6 +296,8 @@ export default function App() {
         {/* Primary Operating Experience: OpenBIM CAD Workspace */}
         {activeTab === 'bim-workspace' && (
           <BimWorkspaceView
+            activeProjectId={currentProject.id}
+            onSelectProject={handleSelectProject}
             onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
             initialSelectedComponentId={selectedComponent?.id}
           />

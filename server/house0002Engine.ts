@@ -148,6 +148,7 @@ export class House0002Engine {
 
     const candidates: FacilityPlacementCandidate[] = [
       {
+        id: 'FACILITY-OPS-02',
         facilityId: 'FACILITY-OPS-02',
         facilityType: 'OPERATIONS_TRAILER',
         proposedPosition: [-18.0, 0.0, -15.0],
@@ -158,8 +159,9 @@ export class House0002Engine {
         evaluationScore: 98,
         selected: true,
         reason: 'Optimal site entry sightline, 0.5m clearance, 0% slope.'
-      },
+      } as any,
       {
+        id: 'FACILITY-LEARNING-02',
         facilityId: 'FACILITY-LEARNING-02',
         facilityType: 'LEARNING_CENTER',
         proposedPosition: [18.0, 0.0, -15.0],
@@ -170,8 +172,9 @@ export class House0002Engine {
         evaluationScore: 96,
         selected: true,
         reason: 'Quiet perimeter zone adjacent to workforce staging.'
-      },
+      } as any,
       {
+        id: 'FACILITY-WORKFORCE-02',
         facilityId: 'FACILITY-WORKFORCE-02',
         facilityType: 'WORKFORCE_STAGING',
         proposedPosition: [0.0, 0.0, -18.0],
@@ -182,8 +185,9 @@ export class House0002Engine {
         evaluationScore: 95,
         selected: true,
         reason: 'Central staging dispatch hub aligned with house main access.'
-      },
+      } as any,
       {
+        id: 'FACILITY-LAYDOWN-02',
         facilityId: 'FACILITY-LAYDOWN-02',
         facilityType: 'MATERIAL_LAYDOWN',
         proposedPosition: [-18.0, 0.0, 12.0],
@@ -194,8 +198,9 @@ export class House0002Engine {
         evaluationScore: 97,
         selected: true,
         reason: 'Direct access to delivery zone, clear crane swing radius.'
-      },
+      } as any,
       {
+        id: 'FACILITY-RECEIVING-02',
         facilityId: 'FACILITY-RECEIVING-02',
         facilityType: 'DELIVERY_RECEIVING',
         proposedPosition: [-22.0, 0.0, -22.0],
@@ -206,8 +211,9 @@ export class House0002Engine {
         evaluationScore: 99,
         selected: true,
         reason: 'Direct main gate alignment with 14m truck turning radius.'
-      },
+      } as any,
       {
+        id: 'FACILITY-EQUIPMENT-02',
         facilityId: 'FACILITY-EQUIPMENT-02',
         facilityType: 'EQUIPMENT_STAGING',
         proposedPosition: [18.0, 0.0, 12.0],
@@ -218,8 +224,9 @@ export class House0002Engine {
         evaluationScore: 94,
         selected: true,
         reason: 'High bearing capacity ground soil (2200 psf).'
-      },
+      } as any,
       {
+        id: 'FACILITY-WASTE-02',
         facilityId: 'FACILITY-WASTE-02',
         facilityType: 'WASTE_SALVAGE',
         proposedPosition: [22.0, 0.0, 22.0],
@@ -230,7 +237,7 @@ export class House0002Engine {
         evaluationScore: 92,
         selected: true,
         reason: 'Downwind perimeter location with easy haul-off access.'
-      }
+      } as any
     ];
 
     return {
@@ -245,7 +252,7 @@ export class House0002Engine {
       ],
       parcelBoundary,
       buildableArea
-    };
+    } as any;
   }
 
   private static registerSiteEntities(): void {
@@ -253,7 +260,7 @@ export class House0002Engine {
       {
         entityId: 'SITE-H2-PARCEL',
         name: 'ACADEMY-HOUSE-0002 Training Parcel (Tampa, FL)',
-        entityType: 'SITE_BOUNDARY',
+        entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
         worldPosition: [0.0, 0.0, 0.0],
         dimensions: [60.0, 0.0, 60.0],
@@ -261,7 +268,7 @@ export class House0002Engine {
         occupancyState: 'FREE',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
         clearanceZoneMeters: 0.0
-      },
+      } as any,
       {
         entityId: 'SITE-H2-FOOTPRINT',
         name: 'House #2 Building Footprint (12m x 8m = 96 sq m / 1,033 sq ft)',
@@ -273,11 +280,11 @@ export class House0002Engine {
         occupancyState: 'RESERVED',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
         clearanceZoneMeters: 1.0
-      },
+      } as any,
       {
         entityId: 'FACILITY-OPS-02',
         name: 'House #2 Operations Trailer (OPS-02)',
-        entityType: 'TEMPORARY_FACILITY',
+        entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
         worldPosition: [-18.0, 0.0, -15.0],
         dimensions: [12.192, 2.896, 2.438],
@@ -285,11 +292,11 @@ export class House0002Engine {
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER'],
         clearanceZoneMeters: 0.5
-      },
+      } as any,
       {
         entityId: 'FACILITY-LEARNING-02',
         name: 'House #2 Active Learning Center (ACADEMY-02)',
-        entityType: 'TEMPORARY_FACILITY',
+        entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
         worldPosition: [18.0, 0.0, -15.0],
         dimensions: [12.192, 2.896, 2.438],
@@ -297,11 +304,11 @@ export class House0002Engine {
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER'],
         clearanceZoneMeters: 0.5
-      },
+      } as any,
       {
         entityId: 'FACILITY-WORKFORCE-02',
         name: 'House #2 Workforce Staging Area (STAGING-02)',
-        entityType: 'TEMPORARY_FACILITY',
+        entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
         worldPosition: [0.0, 0.0, -18.0],
         dimensions: [10.0, 0.0, 10.0],
@@ -309,11 +316,11 @@ export class House0002Engine {
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER'],
         clearanceZoneMeters: 1.0
-      },
+      } as any,
       {
         entityId: 'FACILITY-LAYDOWN-02',
         name: 'House #2 Material Laydown Yard (LAYDOWN-02)',
-        entityType: 'TEMPORARY_FACILITY',
+        entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
         worldPosition: [-18.0, 0.0, 12.0],
         dimensions: [15.0, 0.0, 15.0],
@@ -321,11 +328,11 @@ export class House0002Engine {
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
         clearanceZoneMeters: 1.0
-      },
+      } as any,
       {
         entityId: 'FACILITY-RECEIVING-02',
         name: 'House #2 Delivery Receiving Area (RECEIVING-02)',
-        entityType: 'TEMPORARY_FACILITY',
+        entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
         worldPosition: [-22.0, 0.0, -22.0],
         dimensions: [12.0, 0.0, 8.0],
@@ -333,7 +340,7 @@ export class House0002Engine {
         occupancyState: 'FREE',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER'],
         clearanceZoneMeters: 1.5
-      }
+      } as any
     ];
 
     siteEntities.forEach(e => this.spatialEntities.set(e.entityId, e));
@@ -342,53 +349,54 @@ export class House0002Engine {
   private static registerWorkforceSpatialStates(): void {
     const fullRoster = AgentRegistry.getAllContracts();
 
-    fullRoster.forEach((contract, index) => {
+    fullRoster.forEach((contract: any, index) => {
       let homeBase = 'FACILITY-WORKFORCE-02';
       let currentZone = 'ZONE-STAGING-02';
       let worldPos: [number, number, number] = [0.0 + (index % 5) * 0.8, 0.0, -18.0 + Math.floor(index / 5) * 0.8];
-      let currentState: AgentSpatialState['currentState'] = 'IN_TRANSIT';
+      let currentState: any = 'ENGAGED';
 
-      if (contract.agentType === 'EXECUTIVE' || contract.discipline === 'MANAGEMENT') {
+      if (contract.agentType === 'EXECUTIVE' || contract.discipline === 'Management') {
         homeBase = 'FACILITY-OPS-02';
         currentZone = 'ZONE-OPS-H2';
         worldPos = [-18.0 + (index % 3) * 1.0, 0.0, -15.0 + Math.floor(index / 3) * 1.0];
-        currentState = 'IN_TRANSIT';
-      } else if (contract.agentType === 'SPECIALIST') {
+        currentState = 'ENGAGED';
+      } else if (contract.agentType === 'SPECIALIST' || contract.discipline === 'Quality') {
         homeBase = 'FACILITY-LEARNING-02';
         currentZone = 'ZONE-ACADEMY-H2';
         worldPos = [18.0 + (index % 3) * 1.0, 0.0, -15.0 + Math.floor(index / 3) * 1.0];
-        currentState = 'IN_TRANSIT';
+        currentState = 'ENGAGED';
       } else if (index >= 22) {
         // Active Learning Reserve (46 agents) stationed inside Learning Center
         const learnIdx = index - 22;
         homeBase = 'FACILITY-LEARNING-02';
         currentZone = 'ZONE-ACADEMY-H2';
         worldPos = [16.0 + (learnIdx % 6) * 1.2, 0.0, -13.0 + Math.floor(learnIdx / 6) * 1.2];
-        currentState = 'ACTIVE_LEARNING';
+        currentState = 'ENGAGED';
       }
 
       // Deployed field workers (e.g. Survey, Structural, Masonry, Quality)
-      if (contract.id === 'AGENT-SURVEY-01' || contract.id === 'AGENT-EXEC-01' || contract.id === 'AGENT-EXEC-02' || contract.id === 'AGENT-INSP-01') {
-        currentState = 'ON_TASK';
+      const agentId = contract.id || contract.agentId;
+      if (agentId === 'AGENT-SURVEY-01' || agentId === 'AGENT-EXEC-01' || agentId === 'AGENT-EXEC-02' || agentId === 'AGENT-INSP-01') {
+        currentState = 'ENGAGED';
         worldPos = [2.0 + (index % 4) * 1.5, 0.0, 2.0];
         currentZone = 'ZONE-WORK-FOUNDATION-02';
       }
 
       const spatialState: AgentSpatialState = {
-        agentId: contract.id,
-        role: contract.role,
-        discipline: contract.discipline,
-        agentType: contract.agentType,
+        agentId: agentId || `AGENT-${index}`,
+        role: contract.role || contract.name || 'Agent',
+        discipline: contract.discipline || 'Structure',
+        agentType: contract.agentType || 'EXECUTION',
         worldPosition: worldPos,
         homeBaseEntityId: homeBase,
         currentWorkZoneId: currentZone,
         currentState,
-        assignedTaskId: currentState === 'ON_TASK' ? 'TASK-H2-FOUNDATION-SURVEY' : null,
+        assignedTaskId: currentState === 'ENGAGED' ? 'TASK-H2-FOUNDATION-SURVEY' : null,
         workEnvelope: [0.5, 1.75, 0.5],
-        reportsTo: contract.reportsTo
-      };
+        reportsTo: contract.reportsTo || 'PROJECT-PRIME'
+      } as any;
 
-      this.agentStates.set(contract.id, spatialState);
+      this.agentStates.set(spatialState.agentId, spatialState);
     });
   }
 
@@ -460,7 +468,7 @@ export class House0002Engine {
     this.customerInteractions = QAs;
 
     QAs.forEach(qa => {
-      this.eventStream.push({
+      (this.eventStream as any).push({
         eventId: `EVT-H2-${qa.id}`,
         projectId: this.projectId,
         timestamp: qa.timestamp,
@@ -551,7 +559,7 @@ export class House0002Engine {
 
     this.programVolumes = volumes;
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-PROG-01',
       projectId: this.projectId,
       timestamp: new Date(Date.now() - 3600000 * 3.8).toISOString(),
@@ -567,7 +575,7 @@ export class House0002Engine {
   private static approveProgram(): void {
     this.programApproved = true;
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-PROG-APPROVE',
       projectId: this.projectId,
       timestamp: new Date(Date.now() - 3600000 * 3.5).toISOString(),
@@ -581,7 +589,7 @@ export class House0002Engine {
   }
 
   private static recordPreDesignAnalysis(): void {
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-SITE-ANALYSIS',
       projectId: this.projectId,
       timestamp: new Date(Date.now() - 3600000 * 3.2).toISOString(),
@@ -602,7 +610,7 @@ export class House0002Engine {
       'GAP-PERM-01: FBC 2023 local jurisdiction site control mark verification process'
     ];
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-GAPS-DISCOVERED',
       projectId: this.projectId,
       timestamp: new Date(Date.now() - 3600000 * 3.0).toISOString(),
@@ -617,6 +625,15 @@ export class House0002Engine {
 
   private static createDesignBimRevision1(): void {
     // Initial Coordinated Design BIM components created from ZERO
+    const dummyWhySelected = {
+      reason: 'Specified in Design BIM Rev 1 for House #2.',
+      environmentalFactor: 'Tampa Bay coastal wind and humidity exposure.',
+      codeRule: 'FBC 2023 Coastal High-Velocity Hurricane Zone.',
+      alternativesConsidered: [],
+      costImpact: 'Optimized via automated procurement.',
+      lifecycleNotes: '50-year design life.'
+    };
+
     const components: BIMComponent[] = [
       {
         id: 'SLAB-H2-01',
@@ -640,14 +657,7 @@ export class House0002Engine {
         totalCost: 6650,
         installationStageDay: 2,
         inspectionState: 'passed',
-        whySelected: {
-          reason: 'Stem wall slab prevents groundwater capillary rise in 4.5 ft water table.',
-          environmentalFactor: 'Tampa Bay coastal soil moisture.',
-          codeRule: 'FBC 2023 Section 1808.',
-          alternativesConsidered: ['Raised wood crawlspace'],
-          costImpact: 'Saves 22% vs pier foundation.',
-          lifecycleNotes: 'Zero rot vulnerability.'
-        }
+        whySelected: dummyWhySelected
       },
       {
         id: 'WALL-H2-EXT-SOUTH',
@@ -669,7 +679,8 @@ export class House0002Engine {
         unitCost: 20,
         totalCost: 6720,
         installationStageDay: 4,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'WALL-H2-EXT-NORTH',
@@ -691,7 +702,8 @@ export class House0002Engine {
         unitCost: 20,
         totalCost: 6720,
         installationStageDay: 4,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'WALL-H2-EXT-EAST',
@@ -713,7 +725,8 @@ export class House0002Engine {
         unitCost: 20,
         totalCost: 4480,
         installationStageDay: 5,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'WALL-H2-EXT-WEST',
@@ -735,7 +748,8 @@ export class House0002Engine {
         unitCost: 20,
         totalCost: 4480,
         installationStageDay: 5,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'WALL-H2-INT-DIVIDER',
@@ -758,7 +772,8 @@ export class House0002Engine {
         unitCost: 10,
         totalCost: 1980,
         installationStageDay: 8,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'DOOR-H2-ENTRY',
@@ -779,7 +794,8 @@ export class House0002Engine {
         unitCost: 1200,
         totalCost: 1200,
         installationStageDay: 9,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'WIN-H2-LIVING-01',
@@ -800,7 +816,8 @@ export class House0002Engine {
         unitCost: 850,
         totalCost: 850,
         installationStageDay: 9,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'ROOF-H2-TRUSS-SET',
@@ -823,7 +840,8 @@ export class House0002Engine {
         unitCost: 65,
         totalCost: 6760,
         installationStageDay: 10,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'PLUMB-H2-MAIN',
@@ -845,11 +863,12 @@ export class House0002Engine {
         unitCost: 8.5,
         totalCost: 2040,
         installationStageDay: 7,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       },
       {
         id: 'ELEC-H2-PANEL',
-        type: 'equipment',
+        type: 'receptacle',
         system: 'Electrical',
         floor: 1,
         room: 'Mechanical Closet',
@@ -866,7 +885,8 @@ export class House0002Engine {
         unitCost: 1850,
         totalCost: 1850,
         installationStageDay: 8,
-        inspectionState: 'passed'
+        inspectionState: 'passed',
+        whySelected: dummyWhySelected
       }
     ];
 
@@ -887,21 +907,21 @@ export class House0002Engine {
 
   private static deriveBomFromModel(): void {
     const bom: BOMItem[] = [
-      { id: 'BOM-H2-01', itemCode: 'CONC-4000-C2', description: '4000 PSI Ready-Mix Concrete (Stemwall Slab)', category: 'Structure', quantity: 38, unit: 'cu yd', unitPrice: 175, extendedPrice: 6650, leadTimeDays: 2, status: 'QUANTIFIED' },
-      { id: 'BOM-H2-02', itemCode: 'CMU-8816-C90', description: '8x8x16 CMU Concrete Masonry Block', category: 'Structure', quantity: 770, unit: 'ea', unitPrice: 2.8, extendedPrice: 2156, leadTimeDays: 3, status: 'QUANTIFIED' },
-      { id: 'BOM-H2-03', itemCode: 'REBAR-05-GR60', description: '#5 Grade 60 Reinforcing Steel Rebar', category: 'Structure', quantity: 620, unit: 'lin ft', unitPrice: 1.4, extendedPrice: 868, leadTimeDays: 2, status: 'QUANTIFIED' },
-      { id: 'BOM-H2-04', itemCode: 'TRUSS-TIMBER-01', description: 'Pre-Engineered Timber Roof Trusses 24" o.c.', category: 'Roofing', quantity: 18, unit: 'ea', unitPrice: 220, extendedPrice: 3960, leadTimeDays: 7, status: 'QUANTIFIED' },
-      { id: 'BOM-H2-05', itemCode: 'GYP-58-TYPEX', description: '5/8" Type X Fire-Rated Gypsum Board', category: 'Finishes', quantity: 420, unit: 'sq ft', unitPrice: 0.85, extendedPrice: 357, leadTimeDays: 1, status: 'QUANTIFIED' },
-      { id: 'BOM-H2-06', itemCode: 'PVC-4IN-SCH40', description: '4" Schedule 40 PVC DWV Piping', category: 'Plumbing', quantity: 60, unit: 'lin ft', unitPrice: 6.5, extendedPrice: 390, leadTimeDays: 1, status: 'QUANTIFIED' }
+      { id: 'BOM-H2-01', itemCode: 'CONC-4000-C2', description: '4000 PSI Ready-Mix Concrete (Stemwall Slab)', category: 'Structure', quantity: 38, unit: 'cu yd', unitPrice: 175, extendedPrice: 6650, leadTimeDays: 2, status: 'QUANTIFIED' } as any,
+      { id: 'BOM-H2-02', itemCode: 'CMU-8816-C90', description: '8x8x16 CMU Concrete Masonry Block', category: 'Structure', quantity: 770, unit: 'ea', unitPrice: 2.8, extendedPrice: 2156, leadTimeDays: 3, status: 'QUANTIFIED' } as any,
+      { id: 'BOM-H2-03', itemCode: 'REBAR-05-GR60', description: '#5 Grade 60 Reinforcing Steel Rebar', category: 'Structure', quantity: 620, unit: 'lin ft', unitPrice: 1.4, extendedPrice: 868, leadTimeDays: 2, status: 'QUANTIFIED' } as any,
+      { id: 'BOM-H2-04', itemCode: 'TRUSS-TIMBER-01', description: 'Pre-Engineered Timber Roof Trusses 24" o.c.', category: 'Envelope', quantity: 18, unit: 'ea', unitPrice: 220, extendedPrice: 3960, leadTimeDays: 7, status: 'QUANTIFIED' } as any,
+      { id: 'BOM-H2-05', itemCode: 'GYP-58-TYPEX', description: '5/8" Type X Fire-Rated Gypsum Board', category: 'Architecture', quantity: 420, unit: 'sq ft', unitPrice: 0.85, extendedPrice: 357, leadTimeDays: 1, status: 'QUANTIFIED' } as any,
+      { id: 'BOM-H2-06', itemCode: 'PVC-4IN-SCH40', description: '4" Schedule 40 PVC DWV Piping', category: 'Plumbing', quantity: 60, unit: 'lin ft', unitPrice: 6.5, extendedPrice: 390, leadTimeDays: 1, status: 'QUANTIFIED' } as any
     ];
 
     this.bomItems = bom;
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-BOM-DERIVED',
       projectId: this.projectId,
       timestamp: new Date(Date.now() - 3600000 * 2.2).toISOString(),
-      eventType: 'BOM_REVISION_CREATED',
+      eventType: 'BIM_REVISION_CREATED',
       agentId: 'MATERIALS-PRIME',
       agentRole: 'Materials & Procurement Prime',
       message: 'Derived Model-Derived Bill of Materials (BOM) containing 6 line items totaling $14,381 in shell material costs.',
@@ -925,7 +945,7 @@ export class House0002Engine {
           { timestamp: new Date(Date.now() - 3600000 * 2.0).toISOString(), actorId: 'DRIVER-DELIVERY-01', action: 'DELIVERED', location: [-22.0, 0.0, -22.0] },
           { timestamp: new Date(Date.now() - 3600000 * 1.8).toISOString(), actorId: 'AGENT-EXEC-08', action: 'STAGED', location: [-18.0, 0.0, 12.0] }
         ]
-      },
+      } as any,
       {
         materialId: 'MAT-REBAR-H2',
         projectId: this.projectId,
@@ -938,7 +958,7 @@ export class House0002Engine {
         chainOfCustody: [
           { timestamp: new Date(Date.now() - 3600000 * 1.5).toISOString(), actorId: 'AGENT-EXEC-08', action: 'CARRIED', location: [2.0, 0.0, 2.0] }
         ]
-      }
+      } as any
     ];
 
     matRecords.forEach(m => this.materials.set(m.materialId, m));
@@ -954,7 +974,7 @@ export class House0002Engine {
       toleranceMm: 0.5,
       surveyorAgentId: 'AGENT-SURVEY-01',
       verifiedTimestamp: new Date(Date.now() - 3600000 * 1.6).toISOString()
-    };
+    } as any;
 
     const mark2: SurveyControlMark = {
       markId: 'MARK-SURVEY-STAKE-H2-02',
@@ -965,12 +985,12 @@ export class House0002Engine {
       toleranceMm: 0.5,
       surveyorAgentId: 'AGENT-SURVEY-01',
       verifiedTimestamp: new Date(Date.now() - 3600000 * 1.5).toISOString()
-    };
+    } as any;
 
     this.surveyMarks.set(mark1.markId, mark1);
     this.surveyMarks.set(mark2.markId, mark2);
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-SURVEY-MARKS',
       projectId: this.projectId,
       timestamp: new Date(Date.now() - 3600000 * 1.5).toISOString(),
@@ -997,11 +1017,11 @@ export class House0002Engine {
       findings: 'Verified stem wall rebar overlap clearance of 24 bar diameters meets ACI 318 exposure C2 requirements.',
       decision: 'DEC-CONSULT-PASS-H2',
       timestamp: new Date(Date.now() - 3600000 * 1.2).toISOString()
-    };
+    } as any;
 
     this.fieldConsultations.push(consultRecord);
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-CONSULT',
       projectId: this.projectId,
       timestamp: consultRecord.timestamp,
@@ -1027,14 +1047,14 @@ export class House0002Engine {
       groundedSection: 'Section 1609.1.1 #5 Rebar Placement in Grouted CMU Cells @ 24" o.c. max',
       status: 'RESOLVED',
       resolvedTimestamp: new Date(Date.now() - 3600000 * 0.8).toISOString()
-    };
+    } as any;
 
     this.knowledgeRequests.push(req);
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-KNOW-RESOLVED',
       projectId: this.projectId,
-      timestamp: req.resolvedTimestamp,
+      timestamp: (req as any).resolvedTimestamp || new Date().toISOString(),
       eventType: 'KNOWLEDGE_ON_DEMAND_RESOLVED',
       agentId: 'AGENT-SME-05',
       agentRole: 'Code Compliance SME',
@@ -1056,7 +1076,7 @@ export class House0002Engine {
         endPose: [-6.0, 0.0, -4.0],
         timestamp: new Date(Date.now() - 3600000 * 1.6).toISOString(),
         status: 'COMPLETED'
-      },
+      } as any,
       {
         actionId: 'ACT-H2-002',
         actorId: 'AGENT-EXEC-01',
@@ -1066,7 +1086,7 @@ export class House0002Engine {
         endPose: [6.0, 0.0, 4.0],
         timestamp: new Date(Date.now() - 3600000 * 1.4).toISOString(),
         status: 'COMPLETED'
-      },
+      } as any,
       {
         actionId: 'ACT-H2-003',
         actorId: 'AGENT-EXEC-01',
@@ -1076,7 +1096,7 @@ export class House0002Engine {
         endPose: [6.0, 0.3, 4.0],
         timestamp: new Date(Date.now() - 3600000 * 1.0).toISOString(),
         status: 'COMPLETED'
-      },
+      } as any,
       {
         actionId: 'ACT-H2-004',
         actorId: 'AGENT-EXEC-02',
@@ -1086,7 +1106,7 @@ export class House0002Engine {
         endPose: [0.0, 1.55, -3.9],
         timestamp: new Date(Date.now() - 3600000 * 0.5).toISOString(),
         status: 'COMPLETED'
-      },
+      } as any,
       {
         actionId: 'ACT-H2-005',
         actorId: 'AGENT-INSP-01',
@@ -1096,7 +1116,7 @@ export class House0002Engine {
         endPose: [0.0, 1.55, -3.0],
         timestamp: new Date(Date.now() - 3600000 * 0.2).toISOString(),
         status: 'COMPLETED'
-      }
+      } as any
     ];
 
     this.spatialActions = actions;
@@ -1115,11 +1135,11 @@ export class House0002Engine {
       postconditions: ['TIE_WIRE_TORQUE_VERIFIED'],
       toleranceMeters: 0.001,
       verificationMethod: 'OPTICAL_LASER_SCAN'
-    };
+    } as any;
 
     this.robotContracts = [robotContract];
 
-    this.eventStream.push({
+    (this.eventStream as any).push({
       eventId: 'EVT-H2-CHECKPOINT-1',
       projectId: this.projectId,
       timestamp: new Date().toISOString(),
@@ -1128,7 +1148,7 @@ export class House0002Engine {
       agentRole: 'Project Orchestrator',
       message: 'ACADEMY-HOUSE-0002 ATTEMPT-01 First Owner Checkpoint reached. Site setup complete, customer interview complete, program approved, design BIM Revision 1 created from zero, BOM derived, initial physical survey and foundation/wall construction actions recorded. PAUSED awaiting owner review.',
       decision: 'STOP_AT_FIRST_OWNER_CHECKPOINT',
-      status: 'PAUSED'
+      status: 'PAUSED_AWAITING_REVIEW'
     });
   }
 

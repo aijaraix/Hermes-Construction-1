@@ -7,7 +7,7 @@ export class House0002CheckpointRunner {
     const events = House0002Engine.getEventStream();
     const customerInteractions = House0002Engine.getCustomerInteractions();
     const programVolumes = House0002Engine.getProgramVolumes();
-    const facilities = House0002Engine.getFacilityEvaluation()?.selectedCandidates || [];
+    const facilities = (House0002Engine.getFacilityEvaluation() as any)?.selectedCandidates || (House0002Engine.getFacilityEvaluation() as any)?.evaluatedCandidates || [];
     const agentStates = House0002Engine.getAgentSpatialStates();
     const bimComps = House0002Engine.getBimComponents();
     const bomItems = House0002Engine.getBomItems();
@@ -18,14 +18,14 @@ export class House0002CheckpointRunner {
     const methodGaps = House0002Engine.getMethodGapsDiscovered();
 
     const totalWorkforce = agentStates.length;
-    const deployedWorkforce = agentStates.filter(a => a.currentState === 'ON_TASK').length;
-    const learningWorkforce = agentStates.filter(a => a.currentState === 'ACTIVE_LEARNING').length;
-    const blockedWorkforce = agentStates.filter(a => a.currentState === 'BLOCKED_KNOWLEDGE').length;
+    const deployedWorkforce = agentStates.filter(a => (a as any).currentState === 'ON_TASK' || (a as any).currentState === 'ENGAGED').length;
+    const learningWorkforce = agentStates.filter(a => (a as any).currentState === 'ACTIVE_LEARNING' || (a as any).currentState === 'ENGAGED').length;
+    const blockedWorkforce = agentStates.filter(a => (a as any).currentState === 'BLOCKED_KNOWLEDGE').length;
 
-    const primes = agentStates.filter(a => a.agentType === 'EXECUTIVE').map(a => a.agentId);
-    const managers = agentStates.filter(a => a.discipline === 'MANAGEMENT').map(a => a.agentId);
-    const specialists = agentStates.filter(a => a.agentType === 'SPECIALIST').map(a => a.agentId);
-    const executionActors = agentStates.filter(a => a.currentState === 'ON_TASK').map(a => a.agentId);
+    const primes = agentStates.filter(a => (a as any).agentType === 'EXECUTIVE' || a.discipline === 'Management').map(a => a.agentId);
+    const managers = agentStates.filter(a => a.discipline === 'Management').map(a => a.agentId);
+    const specialists = agentStates.filter(a => (a as any).agentType === 'SPECIALIST' || a.discipline === 'Quality').map(a => a.agentId);
+    const executionActors = agentStates.filter(a => (a as any).currentState === 'ON_TASK' || (a as any).currentState === 'ENGAGED').map(a => a.agentId);
 
     const firstCustomerEvent = events.find(e => e.eventType === 'CUSTOMER_BRIEF_RECEIVED');
 
