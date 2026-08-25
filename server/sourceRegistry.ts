@@ -32,6 +32,18 @@ export class SourceRegistry {
     return this.sources.find(s => s.sourceId === sourceId);
   }
 
+  public static querySources(query: string): AuthoritativeSourceDefinition[] {
+    this.initialize();
+    if (!query) return [...this.sources];
+    const q = query.toLowerCase();
+    return this.sources.filter(s =>
+      s.title?.toLowerCase().includes(q) ||
+      (s.codeStandardRef && s.codeStandardRef.toLowerCase().includes(q)) ||
+      s.publisher?.toLowerCase().includes(q) ||
+      s.discipline?.toLowerCase().includes(q)
+    );
+  }
+
   public static addSource(source: AuthoritativeSourceDefinition): void {
     this.initialize();
     this.sources.push(source);

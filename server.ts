@@ -28,6 +28,13 @@ import { BimCommandEngine } from './server/bimCommandEngine';
 import { BimProofRunner } from './server/bimProofRunner';
 import { StageCBimProofTests } from './server/stageCBimProofTests';
 import { ReferenceBimStore } from './server/referenceBimStore';
+import { WorkforceSchedulerEngine } from './server/workforceSchedulerEngine';
+import { ConstructionMethodEngine } from './server/constructionMethodEngine';
+import { SpatialLogisticsEngine } from './server/spatialLogisticsEngine';
+import { KnowledgeMemoryEngine } from './server/knowledgeMemoryEngine';
+import { ReasoningGatingEngine } from './server/reasoningGatingEngine';
+import { EventReplayEngine } from './server/eventReplayEngine';
+import { CoreProofRunner } from './server/coreProofRunner';
 
 async function startServer() {
   const app = express();
@@ -305,6 +312,88 @@ async function startServer() {
 
   app.get('/api/records/corpus', (req, res) => {
     res.json(primeOrchestrator.getCorpusSources());
+  });
+
+  // HERMES STAGE A-N CORE EXECUTION ENDPOINTS
+  app.get('/api/hermes/readiness-report', (req, res) => {
+    try {
+      const report = CoreProofRunner.runAcceptanceTestSuite();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/workforce-scheduler', (req, res) => {
+    WorkforceSchedulerEngine.initialize();
+    res.json(WorkforceSchedulerEngine.getWorkforceMetrics());
+  });
+
+  app.get('/api/hermes/method-graph', (req, res) => {
+    ConstructionMethodEngine.initialize();
+    res.json({
+      methods: ConstructionMethodEngine.getAllMethods(),
+      spatialActions: ConstructionMethodEngine.getSpatialActions(),
+      count: ConstructionMethodEngine.getAllMethods().length
+    });
+  });
+
+  app.get('/api/hermes/spatial-logistics', (req, res) => {
+    SpatialLogisticsEngine.initialize();
+    res.json({
+      actors: SpatialLogisticsEngine.getAllActors(),
+      workZones: SpatialLogisticsEngine.getWorkZones(),
+      drywallTest: SpatialLogisticsEngine.runDrywallLogisticsTest()
+    });
+  });
+
+  app.get('/api/hermes/knowledge-memory', (req, res) => {
+    KnowledgeMemoryEngine.initialize();
+    res.json({
+      knowledgeCount: KnowledgeMemoryEngine.getKnowledgeMemoryCount(),
+      methodCount: KnowledgeMemoryEngine.getMethodMemoryCount(),
+      experienceCount: KnowledgeMemoryEngine.getExperienceMemoryCount(),
+      experienceMemory: KnowledgeMemoryEngine.getExperienceRecords(),
+      knowledgeRequests: KnowledgeMemoryEngine.getKnowledgeRequests()
+    });
+  });
+
+  app.post('/api/hermes/knowledge-demand', (req, res) => {
+    const { projectId, agentId, agentRole, topic, gapDescription } = req.body || {};
+    const result = KnowledgeMemoryEngine.executeKnowledgeOnDemandRequest(
+      projectId || 'REFERENCE-BIM-0001',
+      agentId || 'AGENT-01',
+      agentRole || 'SPECIALIST-DRYWALL-01',
+      topic || 'FBC 2023 Wind Load Sheathing Attachment',
+      gapDescription || 'Unclear on HVHZ fast edge spacing'
+    );
+    res.json(result);
+  });
+
+  app.get('/api/hermes/reasoning-gating', (req, res) => {
+    res.json({
+      providerStatus: ReasoningGatingEngine.getProviderStatus(),
+      auditLogs: ReasoningGatingEngine.getAuditLogs()
+    });
+  });
+
+  app.get('/api/hermes/event-replay', (req, res) => {
+    const { projectId, sequence } = req.query;
+    const pId = (projectId as string) || 'REFERENCE-BIM-0001';
+    const seq = sequence ? parseInt(sequence as string, 10) : 0;
+    const frame = EventReplayEngine.reconstructProjectAtEvent(pId, seq);
+    res.json(frame);
+  });
+
+  app.post('/api/hermes/event-replay/controls', (req, res) => {
+    const { projectId, action, speedMultiplier, scrubSequence } = req.body || {};
+    const result = EventReplayEngine.setPlaybackControls(
+      projectId || 'REFERENCE-BIM-0001',
+      action || 'PAUSE',
+      speedMultiplier,
+      scrubSequence
+    );
+    res.json(result);
   });
 
   app.get('/api/projects', (req, res) => {

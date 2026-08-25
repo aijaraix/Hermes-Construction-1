@@ -322,6 +322,11 @@ export type PromotionStatus =
 export interface KnowledgeEntity {
   id?: string;
   title?: string;
+  topic?: string;
+  content?: string;
+  source?: string;
+  tags?: string[];
+  createdAt?: string;
   type?: 'MATERIAL' | 'ASSEMBLY' | 'ENVIRONMENT' | 'METHOD' | 'HAZARD' | 'FAILURE_MODE' | 'CODE_REQUIREMENT' | 'PRODUCT' | 'SUPPLIER';
   status?: PromotionStatus;
   provenance?: string;
@@ -1015,6 +1020,7 @@ export interface AuthoritativeSourceDefinition {
   title: string;
   publisher: string;
   agencyOrOrganization: string;
+  codeStandardRef?: string;
   URL: string;
   documentURLIfPermitted?: string;
   discipline: string;
@@ -1315,23 +1321,31 @@ export type ReviewMode =
   | 'PROFESSIONAL_REVIEW';
 
 export interface ManagerReviewRecord {
-  reviewId: string;
+  id?: string;
+  reviewId?: string;
+  projectId?: string;
   managerRoleId: string;
-  agentRoleId: string;
+  agentRoleId?: string;
+  subordinateRoleId?: string;
+  taskId?: string;
+  methodId?: string;
   reviewMode?: ReviewMode;
-  evidenceReviewed: {
-    curriculumCoveragePct: number;
-    studiedSourceIds: string[];
-    knowledgePackVersion: string;
-    latestTestScorePct: number;
-    citedChunkIds: string[];
-    shadowWorkPassed: boolean;
+  evidenceReviewed?: {
+    curriculumCoveragePct?: number;
+    studiedSourceIds?: string[];
+    knowledgePackVersion?: string;
+    latestTestScorePct?: number;
+    citedChunkIds?: string[];
+    shadowWorkPassed?: boolean;
     executionMode?: ExecutionMode;
   };
-  decision: 'APPROVED' | 'APPROVED_WITH_LIMITS' | 'RETRAINING_REQUIRED' | 'MORE_EVIDENCE_REQUIRED' | 'REJECTED' | 'PROFESSIONAL_REVIEW_REQUIRED';
-  reasons: string[];
+  status?: 'APPROVED' | 'REJECTED' | 'REVISED';
+  decision?: 'APPROVED' | 'APPROVED_WITH_LIMITS' | 'RETRAINING_REQUIRED' | 'MORE_EVIDENCE_REQUIRED' | 'REJECTED' | 'PROFESSIONAL_REVIEW_REQUIRED';
+  reviewComments?: string;
+  reasons?: string[];
   limitations?: string[];
-  reviewedAt: string;
+  timestamp?: string;
+  reviewedAt?: string;
 }
 
 export interface AgentAuditTrace {
@@ -2900,6 +2914,243 @@ export interface AssemblySpecification {
   fastenerSpecId?: string;
   fastenerSpacingInches?: number;
 }
+
+// ============================================================
+// HERMES CORE EXECUTION TYPES (STAGES A - N)
+// ============================================================
+
+export type DynamicAgentStatus =
+  | 'ACTIVE_PROJECT_TASK'
+  | 'ACTIVE_KNOWLEDGE_LEARNING'
+  | 'STANDBY'
+  | 'BLOCKED'
+  | 'WAITING_DEPENDENCY'
+  | 'INSPECTION'
+  | 'REVIEW'
+  | 'RETRAINING'
+  | 'DISABLED';
+
+export interface AgentActivationRecord {
+  id: string;
+  roleId: string;
+  projectId: string;
+  timestamp: string;
+  previousStatus: DynamicAgentStatus;
+  newStatus: DynamicAgentStatus;
+  reason: string;
+  queueLane: 'PROJECT_EXECUTION_QUEUE' | 'KNOWLEDGE_LEARNING_QUEUE';
+}
+
+export interface AgentStandbyRecord {
+  id: string;
+  roleId: string;
+  timestamp: string;
+  standbyReason: string;
+  eligibleForLearning: boolean;
+}
+
+export interface AgentLearningAssignmentRecord {
+  id: string;
+  roleId: string;
+  timestamp: string;
+  curriculumTopic: string;
+  knowledgeGapId?: string;
+  sourceId?: string;
+}
+
+export interface AgentEscalationRecord {
+  id: string;
+  projectId: string;
+  escalatingRoleId: string;
+  receivingRoleId: string;
+  issueId: string;
+  reason: string;
+  timestamp: string;
+}
+
+export interface ConstructionOperationRecord {
+  operationId: string;
+  name: string;
+  primitiveAction: string; // e.g., 'GO_TO', 'PLACE', 'FASTEN', 'MEASURE'
+  sequenceOrder: number;
+  assignedActorType: string;
+  targetObjectType?: string;
+  toolsRequired: string[];
+  materialsRequired: string[];
+  tolerances: string;
+  verificationMethod: string;
+}
+
+export interface ConstructionHoldPointRecord {
+  holdPointId: string;
+  operationId: string;
+  description: string;
+  requiredInspectorRole: string;
+  releaseCriteria: string;
+  isMandatory: boolean;
+}
+
+export interface ConstructionVerificationRecord {
+  verificationId: string;
+  operationId: string;
+  parameterName: string;
+  expectedValue: string;
+  tolerance: string;
+  status: 'PENDING' | 'PASSED' | 'FAILED';
+}
+
+export interface ConstructionHandoffRecord {
+  handoffId?: string;
+  fromTradeRole: string;
+  toTradeRole: string;
+  releaseConditions: string[];
+  requiredSignoffRecords: string[];
+}
+
+export interface ConstructionMethodRecord {
+  methodId: string;
+  name: string;
+  scope: string;
+  applicableAssemblies: string[];
+  applicableMaterials: string[];
+  jurisdictionConstraints: string[];
+  environmentalConstraints: string[];
+  prerequisites: {
+    requiredPriorState: string[];
+    requiredSurveyControls: string[];
+    requiredGeometry: string[];
+    requiredInspectionRelease: string[];
+    requiredMaterialState: string[];
+  };
+  resources: {
+    materials: string[];
+    fasteners: string[];
+    tools: string[];
+    equipment: string[];
+    crewRoles: string[];
+    specialistAgents: string[];
+  };
+  spatialRequirements: {
+    workZone: string;
+    installationEnvelope: string;
+    workerEnvelope: string;
+    toolEnvelope: string;
+    accessEnvelope: string;
+    stagingArea: string;
+    safetyClearance: string;
+  };
+  sequence: ConstructionOperationRecord[];
+  holdPoints: ConstructionHoldPointRecord[];
+  verifications: ConstructionVerificationRecord[];
+  handoff: ConstructionHandoffRecord;
+  provenance: {
+    knowledgeSource: string;
+    codeReference: string;
+    manufacturerReference: string;
+    version: string;
+  };
+}
+
+export interface SpatialActorRecord {
+  actorId: string;
+  actorRole: string;
+  assignedAgentId: string;
+  position: [number, number, number];
+  orientation: number; // heading in degrees
+  eyeHeightFt: number;
+  boundingEnvelope: [number, number, number]; // [x, y, z] sizes
+  currentWorkZone: string;
+  assignedOperationId?: string;
+  toolState?: string;
+  carriedMaterial?: {
+    materialId: string;
+    name: string;
+    dimensions: [number, number, number];
+    weightLbs: number;
+  };
+  movementPath?: [number, number, number][];
+}
+
+export interface WorkZoneRecord {
+  zoneId: string;
+  projectId: string;
+  name: string;
+  floor: number;
+  bounds: {
+    min: [number, number, number];
+    max: [number, number, number];
+  };
+  isRestricted: boolean;
+  activeActors: string[];
+}
+
+export interface AccessPathRecord {
+  pathId: string;
+  fromZone: string;
+  toZone: string;
+  waypoints: [number, number, number][];
+  clearanceWidthFt: number;
+  clearanceHeightFt: number;
+  doorwayWidthFt?: number;
+}
+
+export interface MaterialEnvelopeRecord {
+  materialId: string;
+  name: string;
+  lengthFt: number;
+  widthFt: number;
+  thicknessFt: number;
+  weightLbs: number;
+  stiff: boolean;
+}
+
+export interface DrywallLogisticsTestResult {
+  testName: string;
+  materialEnvelope: MaterialEnvelopeRecord;
+  route: {
+    stagingArea: string;
+    corridorWidthFt: number;
+    doorwayWidthFt: number;
+    targetRoom: string;
+  };
+  pathFound: boolean;
+  pathLengthFt: number;
+  minimumClearanceFt: number;
+  orientationChanges: number;
+  collisionPoints: [number, number, number][];
+  status: 'PATH_FOUND' | 'LOGISTICS_CLASH';
+  clashReason?: string;
+  alternativeOptions?: string[];
+}
+
+export interface DiagnosticItem {
+  name: string;
+  expected: string;
+  observed: string;
+  evidence: string;
+  diagnosis: string;
+  status: 'PASS' | 'FAIL';
+}
+
+export interface CoreProofSuiteReport {
+  timestamp: string;
+  totalTests: number;
+  passed: number;
+  failed: number;
+  results: DiagnosticItem[];
+  workforceMetrics: {
+    active: number;
+    standby: number;
+    learning: number;
+  };
+  methodCount: number;
+  operationCount: number;
+  spatialLogisticsComplete: boolean;
+  drywallTestResult: DrywallLogisticsTestResult;
+  eventSourcedReplayComplete: boolean;
+  llmProviderStatus: 'OFFLINE' | 'ONLINE' | 'DEFERRED';
+}
+
 
 
 
