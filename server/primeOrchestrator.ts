@@ -34,6 +34,7 @@ import { KnowledgeIngestionEngine } from './knowledgeIngestionEngine';
 
 import { AutonomousBuildEngine } from './autonomousBuildEngine';
 import { ReferenceBimStore } from './referenceBimStore';
+import { House0002Engine } from './house0002Engine';
 
 class HermesPrimeOrchestrator {
   private systemState: HermesSystemState;
@@ -461,6 +462,15 @@ class HermesPrimeOrchestrator {
 
     this.systemState.total_heartbeat_count++;
     const targetId = projectId || this.activeProjectId;
+
+    if (targetId === 'ACADEMY-HOUSE-0002') {
+      const stepRes = House0002Engine.stepAutonomousExecution();
+      this.addLog('HOUSE-0002 ENGINE', `Stepped ACADEMY-HOUSE-0002 step #${stepRes.step} (${stepRes.eventCount} total events)`, 'info');
+      if (stepRes.newEvent) {
+        sqliteAdapter.insertProjectEventRecord(stepRes.newEvent);
+      }
+    }
+
     const project = this.projects.get(targetId);
 
     if (!project) {

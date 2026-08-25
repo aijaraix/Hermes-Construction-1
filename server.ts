@@ -402,6 +402,39 @@ async function startServer() {
     }
   });
 
+  app.post('/api/hermes/house0002-step', (req, res) => {
+    try {
+      House0002Engine.initialize();
+      const result = House0002Engine.stepAutonomousExecution();
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/house0002-recover', (req, res) => {
+    try {
+      House0002Engine.initialize();
+      House0002Engine.setPaused(false);
+      const results: any[] = [];
+      // Execute 25 real autonomous execution steps
+      for (let i = 0; i < 25; i++) {
+        const stepRes = House0002Engine.stepAutonomousExecution();
+        results.push(stepRes);
+      }
+      const report = House0002CheckpointRunner.executeCheckpointReport();
+      res.json({
+        success: true,
+        recoveredSteps: results.length,
+        totalEventsInLedger: House0002Engine.getEventStream().length,
+        latestEvent: results[results.length - 1]?.newEvent,
+        checkpointReport: report
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
   app.get('/api/hermes/test-project-switching', (req, res) => {
     try {
       const report = ProjectSwitchingTester.runAllTests();

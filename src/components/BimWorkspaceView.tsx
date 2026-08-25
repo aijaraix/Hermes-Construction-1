@@ -228,6 +228,49 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [isPlayingTimeline, setIsPlayingTimeline] = useState<boolean>(false);
   const [replaySpeed, setReplaySpeed] = useState<number>(1);
 
+  // Timeline Playback Interval Engine
+  useEffect(() => {
+    if (!isPlayingTimeline || replayEvents.length === 0) return;
+    const intervalMs = Math.max(80, Math.floor(1000 / replaySpeed));
+    const timer = setInterval(() => {
+      setCurrentEventIndex((prev) => {
+        if (prev >= replayEvents.length - 1) {
+          setIsPlayingTimeline(false);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [isPlayingTimeline, replayEvents.length, replaySpeed]);
+
+  // Continuous Live World Polling Hook (3s interval)
+  useEffect(() => {
+    if (activeProjectId !== 'ACADEMY-HOUSE-0002') return;
+
+    let isMounted = true;
+    const pollWorld = async () => {
+      try {
+        const res = await fetch('/api/hermes/house0002-spatial-world');
+        if (res.ok && isMounted) {
+          const worldData = await res.json();
+          if (worldData.events && worldData.events.length > 0) {
+            setReplayEvents(worldData.events);
+            setHouse0002RawData(worldData);
+          }
+        }
+      } catch (err) {
+        console.error('Failed live world polling:', err);
+      }
+    };
+
+    const interval = setInterval(pollWorld, 3000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [activeProjectId]);
+
   // Diagnostics & IFC Parsing State
   const [debugMaterialMode, setDebugMaterialMode] = useState<boolean>(false);
   const [forceAllVisible, setForceAllVisible] = useState<boolean>(false);
@@ -1801,7 +1844,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             {activeReplayEvent && (
               <div className="hidden md:flex items-center gap-2 text-xs font-bold text-blue-900 bg-blue-50 px-3 py-1 rounded-xl border border-blue-200 max-w-sm truncate">
                 <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span className="truncate">{activeReplayEvent.title || activeReplayEvent.questionOrTopic}</span>
+                <span className="truncate">{activeReplayEvent.message || activeReplayEvent.decision || activeReplayEvent.title || activeReplayEvent.questionOrTopic || activeReplayEvent.eventType}</span>
               </div>
             )}
           </>
