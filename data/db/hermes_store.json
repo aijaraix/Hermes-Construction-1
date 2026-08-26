@@ -7,14 +7,14 @@
     "overall_training_score": 91.2,
     "total_projects_started": 3,
     "total_projects_completed": 1,
-    "total_heartbeat_count": 151,
+    "total_heartbeat_count": 290,
     "total_failures_detected": 18,
     "total_failures_repaired": 16,
     "total_components_created": 145,
     "total_materials_learned": 92,
     "total_knowledge_entities": 3,
-    "last_heartbeat_at": "2026-08-26T20:19:58.791Z",
-    "next_heartbeat_at": "2026-08-26T20:20:08.791Z",
+    "last_heartbeat_at": "2026-08-26T20:49:39.067Z",
+    "next_heartbeat_at": "2026-08-26T20:49:49.068Z",
     "model_quota_state": "HEALTHY",
     "compute_quota_state": "OPTIMAL",
     "pause_controls": {
@@ -2005,7 +2005,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-2"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-2",
@@ -2020,7 +2020,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-3"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-3",
@@ -2035,7 +2035,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-4"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-4",
@@ -2050,7 +2050,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-5"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-5",
@@ -2065,7 +2065,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-6"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-6",
@@ -2080,7 +2080,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-7"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-7",
@@ -2095,7 +2095,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-8"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-8",
@@ -2110,7 +2110,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-9"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-9",
@@ -2125,7 +2125,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-10"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-10",
@@ -2140,7 +2140,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-11"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-11",
@@ -2155,7 +2155,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-12"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-12",
@@ -2170,7 +2170,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-13"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-13",
@@ -2185,7 +2185,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-14"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-14",
@@ -2200,7 +2200,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-15"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-15",
@@ -2215,7 +2215,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-16"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-16",
@@ -2230,7 +2230,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-17"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-17",
@@ -2245,7 +2245,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-18"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-18",
@@ -2260,7 +2260,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-19"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-19",
@@ -2275,7 +2275,7 @@
         "unlocksTaskIds": [
           "TASK-RESIDENCE-TAMPA-001-20"
         ],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       },
       {
         "id": "TASK-RESIDENCE-TAMPA-001-20",
@@ -2288,7 +2288,7 @@
           "TASK-RESIDENCE-TAMPA-001-19"
         ],
         "unlocksTaskIds": [],
-        "created_at": "2026-08-26T20:19:42.428Z"
+        "created_at": "2026-08-26T20:26:10.280Z"
       }
     ],
     "HOTEL-FL-00127": [
@@ -2303,7 +2303,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-2"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-2",
@@ -2318,7 +2318,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-3"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-3",
@@ -2333,7 +2333,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-4"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-4",
@@ -2348,7 +2348,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-5"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-5",
@@ -2363,7 +2363,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-6"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-6",
@@ -2378,7 +2378,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-7"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-7",
@@ -2393,7 +2393,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-8"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-8",
@@ -2408,7 +2408,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-9"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-9",
@@ -2423,7 +2423,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-10"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-10",
@@ -2438,7 +2438,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-11"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-11",
@@ -2453,7 +2453,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-12"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-12",
@@ -2468,7 +2468,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-13"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-13",
@@ -2483,7 +2483,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-14"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-14",
@@ -2498,7 +2498,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-15"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-15",
@@ -2513,7 +2513,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-16"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-16",
@@ -2528,7 +2528,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-17"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-17",
@@ -2543,7 +2543,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-18"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-18",
@@ -2558,7 +2558,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-19"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-19",
@@ -2573,7 +2573,7 @@
         "unlocksTaskIds": [
           "TASK-HOTEL-FL-00127-20"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-HOTEL-FL-00127-20",
@@ -2586,7 +2586,7 @@
           "TASK-HOTEL-FL-00127-19"
         ],
         "unlocksTaskIds": [],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       }
     ],
     "TOWN-IN-00201": [
@@ -2601,7 +2601,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-2"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-2",
@@ -2616,7 +2616,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-3"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-3",
@@ -2631,7 +2631,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-4"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-4",
@@ -2646,7 +2646,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-5"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-5",
@@ -2661,7 +2661,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-6"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-6",
@@ -2676,7 +2676,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-7"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-7",
@@ -2691,7 +2691,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-8"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-8",
@@ -2706,7 +2706,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-9"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-9",
@@ -2721,7 +2721,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-10"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-10",
@@ -2736,7 +2736,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-11"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-11",
@@ -2751,7 +2751,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-12"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-12",
@@ -2766,7 +2766,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-13"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-13",
@@ -2781,7 +2781,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-14"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-14",
@@ -2796,7 +2796,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-15"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-15",
@@ -2811,7 +2811,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-16"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-16",
@@ -2826,7 +2826,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-17"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-17",
@@ -2841,7 +2841,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-18"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-18",
@@ -2856,7 +2856,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-19"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-19",
@@ -2871,7 +2871,7 @@
         "unlocksTaskIds": [
           "TASK-TOWN-IN-00201-20"
         ],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       },
       {
         "id": "TASK-TOWN-IN-00201-20",
@@ -2884,7 +2884,7 @@
           "TASK-TOWN-IN-00201-19"
         ],
         "unlocksTaskIds": [],
-        "created_at": "2026-08-26T20:19:42.429Z"
+        "created_at": "2026-08-26T20:26:10.281Z"
       }
     ]
   },
@@ -2987,24 +2987,563 @@
   "assemblyPatterns": [],
   "activityLogs": [
     {
-      "id": "LOG-1787775598811-1077",
-      "timestamp": "2026-08-26T20:19:58.811Z",
+      "id": "LOG-1787777379083-3061",
+      "timestamp": "2026-08-26T20:49:39.083Z",
       "swarm": "HERMES PRIME",
       "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
       "type": "warning"
     },
     {
-      "id": "LOG-1787775598793-3065",
-      "timestamp": "2026-08-26T20:19:58.793Z",
+      "id": "LOG-1787777379068-9759",
+      "timestamp": "2026-08-26T20:49:39.068Z",
       "swarm": "HOUSE-0002 ENGINE",
-      "message": "Stepped ACADEMY-HOUSE-0002 step #1 (17 total events)",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #140 (156 total events)",
       "type": "info"
     },
     {
-      "id": "LOG-1787775582429-9392",
-      "timestamp": "2026-08-26T20:19:42.429Z",
+      "id": "LOG-1787777369074-3395",
+      "timestamp": "2026-08-26T20:49:29.074Z",
       "swarm": "HERMES PRIME",
-      "message": "Initialized HERMES Autonomous Construction Intelligence & Digital Building System.",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777369064-9224",
+      "timestamp": "2026-08-26T20:49:29.064Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #139 (155 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777359070-2557",
+      "timestamp": "2026-08-26T20:49:19.070Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777359062-4899",
+      "timestamp": "2026-08-26T20:49:19.062Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #138 (154 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777349079-4473",
+      "timestamp": "2026-08-26T20:49:09.079Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777349060-4512",
+      "timestamp": "2026-08-26T20:49:09.060Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #137 (153 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777339073-5137",
+      "timestamp": "2026-08-26T20:48:59.073Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777339059-6315",
+      "timestamp": "2026-08-26T20:48:59.059Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #136 (152 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777329069-3600",
+      "timestamp": "2026-08-26T20:48:49.069Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777329058-3723",
+      "timestamp": "2026-08-26T20:48:49.058Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #135 (151 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777319089-554",
+      "timestamp": "2026-08-26T20:48:39.089Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777319057-5162",
+      "timestamp": "2026-08-26T20:48:39.057Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #134 (150 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777309059-1116",
+      "timestamp": "2026-08-26T20:48:29.059Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777309050-1160",
+      "timestamp": "2026-08-26T20:48:29.050Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #133 (149 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777299059-9602",
+      "timestamp": "2026-08-26T20:48:19.059Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777299049-3859",
+      "timestamp": "2026-08-26T20:48:19.049Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #132 (148 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777289055-2595",
+      "timestamp": "2026-08-26T20:48:09.055Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777289028-570",
+      "timestamp": "2026-08-26T20:48:09.028Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #131 (147 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777279035-8911",
+      "timestamp": "2026-08-26T20:47:59.035Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777279027-413",
+      "timestamp": "2026-08-26T20:47:59.027Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #130 (146 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777269034-1102",
+      "timestamp": "2026-08-26T20:47:49.034Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777269025-2565",
+      "timestamp": "2026-08-26T20:47:49.025Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #129 (145 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777259036-7814",
+      "timestamp": "2026-08-26T20:47:39.036Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777259025-3628",
+      "timestamp": "2026-08-26T20:47:39.025Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #128 (144 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777249033-9198",
+      "timestamp": "2026-08-26T20:47:29.033Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777249024-4664",
+      "timestamp": "2026-08-26T20:47:29.024Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #127 (143 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777239033-41",
+      "timestamp": "2026-08-26T20:47:19.033Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777239024-2072",
+      "timestamp": "2026-08-26T20:47:19.024Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #126 (142 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777229031-7182",
+      "timestamp": "2026-08-26T20:47:09.031Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777229024-2105",
+      "timestamp": "2026-08-26T20:47:09.024Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #125 (141 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777219045-6867",
+      "timestamp": "2026-08-26T20:46:59.045Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777219024-5109",
+      "timestamp": "2026-08-26T20:46:59.024Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #124 (140 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777209029-2444",
+      "timestamp": "2026-08-26T20:46:49.029Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777209023-6042",
+      "timestamp": "2026-08-26T20:46:49.023Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #123 (139 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777199032-8791",
+      "timestamp": "2026-08-26T20:46:39.032Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777199022-8232",
+      "timestamp": "2026-08-26T20:46:39.022Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #122 (138 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777189030-1215",
+      "timestamp": "2026-08-26T20:46:29.030Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777189021-8071",
+      "timestamp": "2026-08-26T20:46:29.021Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #121 (137 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777179025-561",
+      "timestamp": "2026-08-26T20:46:19.025Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777179019-2294",
+      "timestamp": "2026-08-26T20:46:19.019Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #120 (136 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777169026-7903",
+      "timestamp": "2026-08-26T20:46:09.026Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777169018-2100",
+      "timestamp": "2026-08-26T20:46:09.018Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #119 (135 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777159023-2333",
+      "timestamp": "2026-08-26T20:45:59.023Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777159017-3544",
+      "timestamp": "2026-08-26T20:45:59.017Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #118 (134 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777149025-1877",
+      "timestamp": "2026-08-26T20:45:49.025Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777149016-5850",
+      "timestamp": "2026-08-26T20:45:49.016Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #117 (133 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777139028-8140",
+      "timestamp": "2026-08-26T20:45:39.028Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777139015-4549",
+      "timestamp": "2026-08-26T20:45:39.015Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #116 (132 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777129022-7271",
+      "timestamp": "2026-08-26T20:45:29.022Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777129015-5576",
+      "timestamp": "2026-08-26T20:45:29.015Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #115 (131 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777119020-3922",
+      "timestamp": "2026-08-26T20:45:19.020Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777119014-9490",
+      "timestamp": "2026-08-26T20:45:19.014Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #114 (130 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777109026-2923",
+      "timestamp": "2026-08-26T20:45:09.026Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777109013-6037",
+      "timestamp": "2026-08-26T20:45:09.013Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #113 (129 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777099027-8992",
+      "timestamp": "2026-08-26T20:44:59.027Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777099013-3600",
+      "timestamp": "2026-08-26T20:44:59.013Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #112 (128 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777089025-1314",
+      "timestamp": "2026-08-26T20:44:49.025Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777089012-5306",
+      "timestamp": "2026-08-26T20:44:49.012Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #111 (127 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777079020-7490",
+      "timestamp": "2026-08-26T20:44:39.020Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777079011-4924",
+      "timestamp": "2026-08-26T20:44:39.011Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #110 (126 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777069020-434",
+      "timestamp": "2026-08-26T20:44:29.020Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777069010-9237",
+      "timestamp": "2026-08-26T20:44:29.010Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #109 (125 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777059018-3885",
+      "timestamp": "2026-08-26T20:44:19.018Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777059009-7996",
+      "timestamp": "2026-08-26T20:44:19.009Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #108 (124 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777049018-6643",
+      "timestamp": "2026-08-26T20:44:09.018Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777049008-5338",
+      "timestamp": "2026-08-26T20:44:09.008Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #107 (123 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777039017-6624",
+      "timestamp": "2026-08-26T20:43:59.017Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777039007-8053",
+      "timestamp": "2026-08-26T20:43:59.007Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #106 (122 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777029017-4546",
+      "timestamp": "2026-08-26T20:43:49.017Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777029006-3289",
+      "timestamp": "2026-08-26T20:43:49.006Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #105 (121 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777019019-1374",
+      "timestamp": "2026-08-26T20:43:39.019Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777019006-8110",
+      "timestamp": "2026-08-26T20:43:39.006Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #104 (120 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787777009016-426",
+      "timestamp": "2026-08-26T20:43:29.016Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787777009005-6669",
+      "timestamp": "2026-08-26T20:43:29.005Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #103 (119 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787776999009-280",
+      "timestamp": "2026-08-26T20:43:19.009Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787776999003-6654",
+      "timestamp": "2026-08-26T20:43:19.003Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #102 (118 total events)",
+      "type": "info"
+    },
+    {
+      "id": "LOG-1787776989011-2510",
+      "timestamp": "2026-08-26T20:43:09.011Z",
+      "swarm": "HERMES PRIME",
+      "message": "Target project ACADEMY-HOUSE-0002 not found, selecting fallback.",
+      "type": "warning"
+    },
+    {
+      "id": "LOG-1787776989002-8050",
+      "timestamp": "2026-08-26T20:43:09.002Z",
+      "swarm": "HOUSE-0002 ENGINE",
+      "message": "Stepped ACADEMY-HOUSE-0002 step #101 (117 total events)",
       "type": "info"
     }
   ]

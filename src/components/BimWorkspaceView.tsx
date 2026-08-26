@@ -401,16 +401,21 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           name: 'LIVE-WORLD-GENESIS-TEST-001 (Genesis Live Proof)',
           buildingType: 'Single-Family Residence (Live Genesis)',
         };
+        const ownerGenesisEntry = {
+          id: 'PHASE1-OWNER-GENESIS-PROOF-001',
+          name: 'PHASE1-OWNER-GENESIS-PROOF-001 (Owner Genesis Proof)',
+          buildingType: 'Single-Family Residence (Owner Proof)',
+        };
         const prehouseEntry = {
           id: 'PREHOUSE-SPATIAL-PROOF-0001',
           name: 'PREHOUSE-SPATIAL-PROOF-0001 (Pre-House Site World)',
           buildingType: 'Pre-House Site World',
         };
         if (Array.isArray(data)) {
-          const filtered = data.filter((p) => p.id !== 'PREHOUSE-SPATIAL-PROOF-0001' && p.id !== 'ACADEMY-HOUSE-0002' && p.id !== 'LIVE-WORLD-GENESIS-TEST-001');
-          setAllProjectsList([house2Entry, genesisEntry, prehouseEntry, ...filtered]);
+          const filtered = data.filter((p) => p.id !== 'PREHOUSE-SPATIAL-PROOF-0001' && p.id !== 'ACADEMY-HOUSE-0002' && p.id !== 'LIVE-WORLD-GENESIS-TEST-001' && p.id !== 'PHASE1-OWNER-GENESIS-PROOF-001');
+          setAllProjectsList([house2Entry, genesisEntry, ownerGenesisEntry, prehouseEntry, ...filtered]);
         } else {
-          setAllProjectsList([house2Entry, genesisEntry, prehouseEntry]);
+          setAllProjectsList([house2Entry, genesisEntry, ownerGenesisEntry, prehouseEntry]);
         }
       })
       .catch(() => {
@@ -424,6 +429,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             id: 'LIVE-WORLD-GENESIS-TEST-001',
             name: 'LIVE-WORLD-GENESIS-TEST-001 (Genesis Live Proof)',
             buildingType: 'Single-Family Residence (Live Genesis)',
+          },
+          {
+            id: 'PHASE1-OWNER-GENESIS-PROOF-001',
+            name: 'PHASE1-OWNER-GENESIS-PROOF-001 (Owner Genesis Proof)',
+            buildingType: 'Single-Family Residence (Owner Proof)',
           },
           {
             id: 'PREHOUSE-SPATIAL-PROOF-0001',
@@ -774,7 +784,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           setProjectData(normalizedProj);
           setLoading(false);
-        } else if (activeProjectId.startsWith('LIVE-WORLD-GENESIS')) {
+        } else if (activeProjectId.startsWith('LIVE-WORLD-GENESIS') || activeProjectId.startsWith('PHASE1-OWNER-GENESIS')) {
           const gRes = await fetch(`/api/hermes/genesis-spatial-world?projectId=${activeProjectId}`);
           if (!gRes.ok || !gRes.headers.get('content-type')?.includes('application/json')) {
             throw new Error(`HTTP ${gRes.status} loading genesis project state`);
