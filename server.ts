@@ -39,6 +39,8 @@ import { PrehouseSpatialEngine } from './server/prehouseSpatialEngine';
 import { PrehouseSpatialProofRunner } from './server/prehouseSpatialProofRunner';
 import { House0002Engine } from './server/house0002Engine';
 import { House0002CheckpointRunner } from './server/house0002CheckpointRunner';
+import { GenesisProjectEngine } from './server/genesisProjectEngine';
+import { Phase1DiagnosticRunner } from './server/phase1DiagnosticRunner';
 import { ProjectSwitchingTester } from './server/projectSwitchingTests';
 
 async function startServer() {
@@ -481,6 +483,28 @@ async function startServer() {
     }
   });
 
+  app.get('/api/hermes/phase1-diagnostics', (req, res) => {
+    try {
+      const report = Phase1DiagnosticRunner.runPhase1Diagnostics();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/genesis-spatial-world', (req, res) => {
+    try {
+      const projectId = (req.query.projectId as string) || 'LIVE-WORLD-GENESIS-TEST-001';
+      let state = GenesisProjectEngine.getProject(projectId);
+      if (!state) {
+        state = GenesisProjectEngine.createGenesisProject(projectId, `${projectId} (Live Genesis Proof)`);
+      }
+      res.json(state);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
   app.get('/api/hermes/house0002-replay-frame', (req, res) => {
     try {
       const eventIndex = parseInt((req.query.eventIndex as string) || '0', 10);
@@ -596,7 +620,32 @@ async function startServer() {
 
   app.get('/api/projects', (req, res) => {
     const includeArchived = req.query.includeArchived === 'true';
-    res.json(primeOrchestrator.getAllProjects(includeArchived));
+    const projects = primeOrchestrator.getAllProjects(includeArchived);
+    const summaries = projects.map((p) => ({
+      id: p.id,
+      name: p.name,
+      buildingType: p.buildingType,
+      status: p.status,
+      overallCompletionPct: p.overallCompletionPct,
+      classification: (p as any).classification,
+    }));
+
+    // Ensure Genesis Test Project is included
+    if (!summaries.some(p => p.id === 'LIVE-WORLD-GENESIS-TEST-001')) {
+      const genesisState = GenesisProjectEngine.getProject('LIVE-WORLD-GENESIS-TEST-001');
+      if (genesisState) {
+        summaries.push({
+          id: genesisState.projectId,
+          name: genesisState.projectName,
+          buildingType: genesisState.buildingType,
+          status: 'planning',
+          overallCompletionPct: 0,
+          classification: 'GENESIS_LIVE',
+        });
+      }
+    }
+
+    res.json(summaries);
   });
 
   app.get('/api/projects/:id', (req, res) => {
@@ -1418,8 +1467,12 @@ async function startServer() {
   ContinuousAcademyEngine.initializeAndUnlock()
     .then(async ({ unlocked }) => {
       if (unlocked) {
-        console.log('[SERVER BOOT] Phase 3.18B Continuous Academy Unlocked! Running initial 20 autonomous heartbeats...');
-        await ContinuousAcademyEngine.run20HeartbeatCycles();
+        console.log('[SERVER BOOT] Phase 3.18B Continuous Academy Unlocked! Scheduling initial 20 autonomous heartbeats...');
+        setTimeout(() => {
+          ContinuousAcademyEngine.run20HeartbeatCycles().catch((err) => {
+            console.error('[BACKGROUND 20 HEARTBEATS ERROR]:', err?.message || err);
+          });
+        }, 3000);
       }
     })
     .catch((err) => {

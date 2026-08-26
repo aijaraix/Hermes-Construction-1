@@ -1,1433 +1,1433 @@
 {
-  "totalHeartbeatCycles": 7043,
+  "totalHeartbeatCycles": 7152,
   "metrics": {
-    "deterministicOperations": 39322,
-    "realLlmReasoningCalls": 4696,
+    "deterministicOperations": 39932,
+    "realLlmReasoningCalls": 4768,
     "simulationExecutions": 0,
     "quotaDeferrals": 0,
-    "recoveredReasoningJobs": 113,
-    "sourcesDiscovered": 7043,
-    "documentsRetrievalCount": 7043,
-    "pagesParsed": 84516,
-    "chunksCreated": 28172,
-    "knowledgeEntitiesCreated": 14086,
-    "knowledgePacksUpdated": 1760,
-    "agentsTrained": 7043,
-    "competencyTests": 7043,
-    "passes": 8804,
-    "failures": 1760,
-    "knowledgeGapsCreated": 1760,
-    "knowledgeGapsResolved": 1760,
-    "sandboxExercises": 7043,
-    "managerReviews": 3521,
-    "managerRejections": 1760,
-    "inspectorSweeps": 2347,
-    "defectsDetected": 2347,
+    "recoveredReasoningJobs": 116,
+    "sourcesDiscovered": 7152,
+    "documentsRetrievalCount": 7152,
+    "pagesParsed": 85824,
+    "chunksCreated": 28608,
+    "knowledgeEntitiesCreated": 14304,
+    "knowledgePacksUpdated": 1788,
+    "agentsTrained": 7152,
+    "competencyTests": 7152,
+    "passes": 8940,
+    "failures": 1788,
+    "knowledgeGapsCreated": 1788,
+    "knowledgeGapsResolved": 1788,
+    "sandboxExercises": 7152,
+    "managerReviews": 3576,
+    "managerRejections": 1788,
+    "inspectorSweeps": 2384,
+    "defectsDetected": 2384,
     "certifiedCapabilitiesCount": 132,
     "house1ReadinessBefore": 0.38,
     "house1ReadinessAfter": 0.92
   },
   "liveActivityFeed": [
     {
-      "timestamp": "2026-08-25T16:48:26.921Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:48:36.942Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:48:36.942Z",
-      "agentRoleId": "FIRE-SPRINKLER-EGRESS-AGENT",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:48:47.235Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:48:47.236Z",
-      "agentRoleId": "INDEPENDENT-MEP-INSPECTOR",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:48:47.236Z",
+      "timestamp": "2026-08-26T16:38:28.018Z",
       "agentRoleId": "HVAC-MANAGER-AGENT",
       "actionType": "MANAGER_REVIEW_REJECT",
       "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:48:47.236Z",
+      "timestamp": "2026-08-26T16:38:28.018Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "GAP_REPAIR",
       "details": "Ingested additional code references and updated agent knowledge pack.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:48:56.938Z",
+      "timestamp": "2026-08-26T16:38:28.415Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:48:56.938Z",
-      "agentRoleId": "KNOWLEDGE-PRIME",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:48:56.938Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:06.931Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:06.931Z",
-      "agentRoleId": "PROJECT-PRIME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:06.931Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:17.047Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:17.047Z",
-      "agentRoleId": "SPATIAL-BIM-PRIME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:27.044Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:27.044Z",
-      "agentRoleId": "CONSTRUCTION-OPERATIONS-PRIME",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:27.044Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:27.044Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:27.044Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:37.325Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:37.325Z",
-      "agentRoleId": "MATERIALS-PRIME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:47.042Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:47.042Z",
-      "agentRoleId": "QUALITY-INSPECTION-PRIME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:47.042Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:57.063Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:57.064Z",
-      "agentRoleId": "SYSTEM-QUALITY-PRIME",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:49:57.064Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:07.116Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:07.116Z",
-      "agentRoleId": "CONCRETE-CEMENTITIOUS-MATERIALS-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:07.116Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:07.116Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:17.159Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:17.159Z",
-      "agentRoleId": "STRUCTURAL-STEEL-METALLURGY-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:27.070Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:27.070Z",
-      "agentRoleId": "COLD-FORMED-STEEL-SME",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:27.070Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:27.070Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:37.137Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:37.137Z",
-      "agentRoleId": "REINFORCING-STEEL-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:47.059Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:47.059Z",
-      "agentRoleId": "WOOD-ENGINEERED-WOOD-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:47.059Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:47.059Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:57.002Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:57.002Z",
-      "agentRoleId": "MASONRY-MATERIALS-SME",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:50:57.002Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:07.206Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:07.206Z",
-      "agentRoleId": "FASTENERS-MECHANICAL-CONNECTIONS-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:07.206Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:17.186Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:17.186Z",
-      "agentRoleId": "WELDING-BOLTING-CONNECTIONS-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:27.129Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:27.129Z",
-      "agentRoleId": "ADHESIVES-SEALANTS-ANCHORS-SME",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:27.129Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:27.129Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:27.129Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:37.234Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:37.234Z",
-      "agentRoleId": "WATERPROOFING-MEMBRANES-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:47.042Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:47.042Z",
-      "agentRoleId": "INSULATION-THERMAL-MATERIALS-SME",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 100%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:47.042Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:57.048Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:51:57.048Z",
+      "timestamp": "2026-08-26T16:38:28.415Z",
       "agentRoleId": "GYPSUM-INTERIOR-BOARD-SME",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 99%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:51:57.048Z",
+      "timestamp": "2026-08-26T16:38:28.415Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:06.943Z",
+      "timestamp": "2026-08-26T16:38:28.759Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:06.943Z",
+      "timestamp": "2026-08-26T16:38:28.759Z",
       "agentRoleId": "ROOFING-MATERIALS-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:52:06.943Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T16:38:28.759Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:06.943Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:52:16.930Z",
+      "timestamp": "2026-08-26T16:38:29.107Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:16.930Z",
+      "timestamp": "2026-08-26T16:38:29.107Z",
       "agentRoleId": "GLAZING-GLASS-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:52:27.096Z",
+      "timestamp": "2026-08-26T16:38:29.489Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:27.096Z",
+      "timestamp": "2026-08-26T16:38:29.489Z",
       "agentRoleId": "ALUMINUM-NONFERROUS-METALS-SME",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 99%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:52:27.096Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T16:38:29.489Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:27.096Z",
+      "timestamp": "2026-08-26T16:38:29.489Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:37.266Z",
+      "timestamp": "2026-08-26T16:38:29.489Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T16:38:30.468Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:37.266Z",
+      "timestamp": "2026-08-26T16:38:30.468Z",
       "agentRoleId": "POLYMERS-PLASTICS-PIPING-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:52:47.089Z",
+      "timestamp": "2026-08-26T20:18:45.792Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:47.089Z",
+      "timestamp": "2026-08-26T20:18:45.793Z",
       "agentRoleId": "COPPER-CONDUCTOR-MATERIALS-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:52:47.089Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:18:45.793Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:47.089Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:52:57.053Z",
+      "timestamp": "2026-08-26T20:18:46.206Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:52:57.054Z",
+      "timestamp": "2026-08-26T20:18:46.206Z",
       "agentRoleId": "PIPE-MATERIALS-CORROSION-SME",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 99%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:52:57.054Z",
+      "timestamp": "2026-08-26T20:18:46.206Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:07.084Z",
+      "timestamp": "2026-08-26T20:18:46.552Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:07.084Z",
+      "timestamp": "2026-08-26T20:18:46.552Z",
       "agentRoleId": "COATINGS-CORROSION-PROTECTION-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:53:07.084Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:18:46.552Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:17.064Z",
+      "timestamp": "2026-08-26T20:18:46.552Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:46.960Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:17.064Z",
+      "timestamp": "2026-08-26T20:18:46.960Z",
       "agentRoleId": "FIREPROOFING-FIRESTOP-MATERIALS-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:53:27.012Z",
+      "timestamp": "2026-08-26T20:18:47.369Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:27.012Z",
+      "timestamp": "2026-08-26T20:18:47.369Z",
       "agentRoleId": "SOILS-AGGREGATES-FILL-SME",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 99%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:53:27.012Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:18:47.369Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:27.012Z",
+      "timestamp": "2026-08-26T20:18:47.369Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:27.012Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:53:37.162Z",
+      "timestamp": "2026-08-26T20:18:47.711Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:37.162Z",
+      "timestamp": "2026-08-26T20:18:47.711Z",
       "agentRoleId": "COMPOSITES-FRP-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:53:46.961Z",
+      "timestamp": "2026-08-26T20:18:48.104Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:46.961Z",
+      "timestamp": "2026-08-26T20:18:48.104Z",
       "agentRoleId": "MATERIAL-COMPATIBILITY-DEGRADATION-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:53:46.961Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:18:48.104Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:57.028Z",
+      "timestamp": "2026-08-26T20:18:48.104Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:48.448Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:53:57.028Z",
+      "timestamp": "2026-08-26T20:18:48.448Z",
       "agentRoleId": "MATERIAL-TESTING-QA-SME",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 99%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:53:57.028Z",
+      "timestamp": "2026-08-26T20:18:48.448Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:07.223Z",
+      "timestamp": "2026-08-26T20:18:48.798Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:07.223Z",
+      "timestamp": "2026-08-26T20:18:48.799Z",
       "agentRoleId": "ENVIRONMENTAL-DURABILITY-SME",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:54:07.223Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:18:48.799Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:07.223Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:54:17.230Z",
+      "timestamp": "2026-08-26T20:18:49.168Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:17.230Z",
+      "timestamp": "2026-08-26T20:18:49.168Z",
       "agentRoleId": "UI-VISUAL-QA-AGENT",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:54:27.061Z",
+      "timestamp": "2026-08-26T20:18:49.540Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:27.061Z",
+      "timestamp": "2026-08-26T20:18:49.540Z",
       "agentRoleId": "UI-DATA-TRUTH-QA-AGENT",
       "actionType": "GROUNDED_REUSE_PRACTICE",
       "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:54:27.061Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:18:49.540Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:27.061Z",
+      "timestamp": "2026-08-26T20:18:49.540Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:37.196Z",
+      "timestamp": "2026-08-26T20:18:49.540Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:49.893Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:37.196Z",
+      "timestamp": "2026-08-26T20:18:49.893Z",
       "agentRoleId": "FUNCTIONAL-WORKFLOW-QA-AGENT",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:54:47.174Z",
+      "timestamp": "2026-08-26T20:18:50.241Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:47.174Z",
+      "timestamp": "2026-08-26T20:18:50.241Z",
       "agentRoleId": "API-INTEGRATION-QA-AGENT",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:54:47.174Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:18:50.241Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:47.174Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:54:56.986Z",
+      "timestamp": "2026-08-26T20:18:50.604Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:54:56.986Z",
+      "timestamp": "2026-08-26T20:18:50.604Z",
       "agentRoleId": "ACCESSIBILITY-RESPONSIVE-QA-AGENT",
       "actionType": "GROUNDED_REUSE_PRACTICE",
       "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:54:56.986Z",
+      "timestamp": "2026-08-26T20:18:50.604Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:07.121Z",
+      "timestamp": "2026-08-26T20:18:50.962Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:07.121Z",
+      "timestamp": "2026-08-26T20:18:50.962Z",
       "agentRoleId": "PERFORMANCE-RELIABILITY-QA-AGENT",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:55:07.121Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:18:50.962Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:17.137Z",
+      "timestamp": "2026-08-26T20:18:50.962Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:51.355Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:17.137Z",
+      "timestamp": "2026-08-26T20:18:51.355Z",
       "agentRoleId": "SECURITY-EXPOSURE-QA-AGENT",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:55:27.135Z",
+      "timestamp": "2026-08-26T20:18:51.704Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:27.135Z",
+      "timestamp": "2026-08-26T20:18:51.704Z",
       "agentRoleId": "REGRESSION-REPAIR-QA-AGENT",
       "actionType": "GROUNDED_REUSE_PRACTICE",
       "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:55:27.135Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:18:51.704Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:27.135Z",
+      "timestamp": "2026-08-26T20:18:51.704Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:27.135Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:55:37.249Z",
+      "timestamp": "2026-08-26T20:18:52.116Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:37.249Z",
+      "timestamp": "2026-08-26T20:18:52.116Z",
       "agentRoleId": "HERMES-PRIME-ORCHESTRATOR",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:55:46.957Z",
+      "timestamp": "2026-08-26T20:18:52.534Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:55:46.957Z",
+      "timestamp": "2026-08-26T20:18:52.534Z",
       "agentRoleId": "HERMES-LEARNING-EXECUTIVE",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:55:46.957Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:55:56.943Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:55:56.943Z",
-      "agentRoleId": "PROJECT-EXECUTIVE-01",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 100%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:55:56.943Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:56:07.250Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:56:07.250Z",
-      "agentRoleId": "PROJECT-SUPERINTENDENT-01",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:56:07.250Z",
+      "timestamp": "2026-08-26T20:18:52.534Z",
       "agentRoleId": "HVAC-MANAGER-AGENT",
       "actionType": "MANAGER_REVIEW_REJECT",
       "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:07.250Z",
+      "timestamp": "2026-08-26T20:18:52.534Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "GAP_REPAIR",
       "details": "Ingested additional code references and updated agent knowledge pack.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:16.945Z",
+      "timestamp": "2026-08-26T20:18:52.962Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:16.945Z",
+      "timestamp": "2026-08-26T20:18:52.962Z",
+      "agentRoleId": "PROJECT-EXECUTIVE-01",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 99%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:52.962Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:54.017Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:54.017Z",
+      "agentRoleId": "PROJECT-SUPERINTENDENT-01",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:18:54.017Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:03.879Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:03.879Z",
       "agentRoleId": "CONSTRUCTION-KNOWLEDGE-DIRECTOR",
       "actionType": "LLM_REASONED_PRACTICE",
       "details": "Passed specialist technical reasoning exercise. Competency: 100%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:56:26.941Z",
+      "timestamp": "2026-08-26T20:19:13.878Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:26.941Z",
+      "timestamp": "2026-08-26T20:19:13.878Z",
       "agentRoleId": "SITE-CIVIL-MANAGER",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 2%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:56:26.941Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:19:13.878Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:26.941Z",
+      "timestamp": "2026-08-26T20:19:13.878Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:37.139Z",
+      "timestamp": "2026-08-26T20:19:13.878Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:23.851Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:37.139Z",
+      "timestamp": "2026-08-26T20:19:23.851Z",
       "agentRoleId": "STRUCTURAL-ENGINEERING-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:56:47.278Z",
+      "timestamp": "2026-08-26T20:19:34.117Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:47.278Z",
+      "timestamp": "2026-08-26T20:19:34.117Z",
       "agentRoleId": "BUILDING-ENVELOPE-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:56:47.278Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:19:34.117Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:47.278Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:56:57.131Z",
+      "timestamp": "2026-08-26T20:19:50.429Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:56:57.131Z",
+      "timestamp": "2026-08-26T20:19:50.429Z",
       "agentRoleId": "PLUMBING-SYSTEMS-MANAGER",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 2%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:56:57.131Z",
+      "timestamp": "2026-08-26T20:19:50.429Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:07.293Z",
+      "timestamp": "2026-08-26T20:19:50.804Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:07.293Z",
+      "timestamp": "2026-08-26T20:19:50.804Z",
       "agentRoleId": "ELECTRICAL-SYSTEMS-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:57:07.293Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:19:50.804Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:17.075Z",
+      "timestamp": "2026-08-26T20:19:50.804Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:51.273Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:17.075Z",
+      "timestamp": "2026-08-26T20:19:51.273Z",
       "agentRoleId": "MECHANICAL-HVAC-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:57:27.125Z",
+      "timestamp": "2026-08-26T20:19:51.653Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:27.125Z",
+      "timestamp": "2026-08-26T20:19:51.653Z",
       "agentRoleId": "FIRE-LIFE-SAFETY-MANAGER",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 2%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:57:27.125Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:19:51.653Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:27.125Z",
+      "timestamp": "2026-08-26T20:19:51.653Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:27.125Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:57:37.172Z",
+      "timestamp": "2026-08-26T20:19:52.107Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:37.172Z",
+      "timestamp": "2026-08-26T20:19:52.107Z",
       "agentRoleId": "SPATIAL-COORDINATION-SUPERINTENDENT",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:57:47.001Z",
+      "timestamp": "2026-08-26T20:19:52.499Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:47.001Z",
+      "timestamp": "2026-08-26T20:19:52.499Z",
       "agentRoleId": "QUALITY-INSPECTION-DIRECTOR",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:57:47.001Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "timestamp": "2026-08-26T20:19:52.500Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:57.124Z",
+      "timestamp": "2026-08-26T20:19:52.500Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:52.920Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:57:57.124Z",
+      "timestamp": "2026-08-26T20:19:52.920Z",
       "agentRoleId": "COMMISSIONING-CLOSEOUT-DIRECTOR",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 2%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:57:57.124Z",
+      "timestamp": "2026-08-26T20:19:52.920Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:58:07.145Z",
+      "timestamp": "2026-08-26T20:19:53.332Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:58:07.145Z",
+      "timestamp": "2026-08-26T20:19:53.332Z",
       "agentRoleId": "PROJECT-CONTROLS-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:58:07.145Z",
-      "agentRoleId": "HVAC-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_REJECT",
-      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "timestamp": "2026-08-26T20:19:53.332Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:58:07.145Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:17.040Z",
+      "timestamp": "2026-08-26T20:19:53.717Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:58:17.040Z",
+      "timestamp": "2026-08-26T20:19:53.717Z",
       "agentRoleId": "ENVIRONMENTAL-CLIMATE-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:58:26.985Z",
+      "timestamp": "2026-08-26T20:19:54.158Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:58:26.985Z",
+      "timestamp": "2026-08-26T20:19:54.158Z",
       "agentRoleId": "MATERIALS-INTELLIGENCE-MANAGER",
       "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 2%",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
       "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
     },
     {
-      "timestamp": "2026-08-25T16:58:26.985Z",
-      "agentRoleId": "CONCRETE-MANAGER-AGENT",
-      "actionType": "MANAGER_REVIEW_APPROVE",
-      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:26.985Z",
-      "agentRoleId": "MEP-INSPECTOR-AGENT",
-      "actionType": "INSPECTOR_DEFECT_DETECTED",
-      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:37.269Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:37.269Z",
-      "agentRoleId": "MEANS-METHODS-MANAGER",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:47.233Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:47.233Z",
-      "agentRoleId": "QUANTITY-ESTIMATING-MANAGER",
-      "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
-      "executionMode": "LLM_REASONED"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:47.233Z",
+      "timestamp": "2026-08-26T20:19:54.158Z",
       "agentRoleId": "HVAC-MANAGER-AGENT",
       "actionType": "MANAGER_REVIEW_REJECT",
       "details": "Rejected specialist duct routing proposal due to framing interference.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:58:47.233Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "GAP_REPAIR",
-      "details": "Ingested additional code references and updated agent knowledge pack.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:56.974Z",
-      "agentRoleId": "KNOWLEDGE-DIRECTOR",
-      "actionType": "DETERMINISTIC_INGESTION",
-      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
-      "executionMode": "DETERMINISTIC_WORK"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:56.974Z",
-      "agentRoleId": "PROCUREMENT-LOGISTICS-MANAGER",
-      "actionType": "GROUNDED_REUSE_PRACTICE",
-      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 2%",
-      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
-    },
-    {
-      "timestamp": "2026-08-25T16:58:56.974Z",
+      "timestamp": "2026-08-26T20:19:54.158Z",
       "agentRoleId": "MEP-INSPECTOR-AGENT",
       "actionType": "INSPECTOR_DEFECT_DETECTED",
       "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:59:07.168Z",
+      "timestamp": "2026-08-26T20:19:54.158Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:54.541Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:59:07.169Z",
-      "agentRoleId": "FLOOR-MANAGER-L01",
+      "timestamp": "2026-08-26T20:19:54.541Z",
+      "agentRoleId": "MEANS-METHODS-MANAGER",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
     },
     {
-      "timestamp": "2026-08-25T16:59:07.169Z",
+      "timestamp": "2026-08-26T20:19:54.973Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:54.973Z",
+      "agentRoleId": "QUANTITY-ESTIMATING-MANAGER",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:54.973Z",
       "agentRoleId": "CONCRETE-MANAGER-AGENT",
       "actionType": "MANAGER_REVIEW_APPROVE",
       "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:59:17.117Z",
+      "timestamp": "2026-08-26T20:19:55.426Z",
       "agentRoleId": "KNOWLEDGE-DIRECTOR",
       "actionType": "DETERMINISTIC_INGESTION",
       "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
       "executionMode": "DETERMINISTIC_WORK"
     },
     {
-      "timestamp": "2026-08-25T16:59:17.117Z",
+      "timestamp": "2026-08-26T20:19:55.426Z",
+      "agentRoleId": "PROCUREMENT-LOGISTICS-MANAGER",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:55.426Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:55.795Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:55.795Z",
+      "agentRoleId": "FLOOR-MANAGER-L01",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:55.795Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:55.795Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:56.212Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:56.212Z",
       "agentRoleId": "FLOOR-MANAGER-L02",
       "actionType": "LLM_REASONED_PRACTICE",
-      "details": "Passed specialist technical reasoning exercise. Competency: 4%",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
       "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:56.641Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:56.641Z",
+      "agentRoleId": "ROOM-MANAGER-204",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:56.641Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:56.641Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.047Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.047Z",
+      "agentRoleId": "TOPOGRAPHY-GRADING-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.493Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.493Z",
+      "agentRoleId": "SOILS-GEOTECHNICAL-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.493Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.493Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.898Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.898Z",
+      "agentRoleId": "SHALLOW-FOOTING-DESIGN-AGENT",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:57.898Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:58.353Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:58.353Z",
+      "agentRoleId": "CONCRETE-SLAB-STRUCTURAL-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:58.353Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:58.909Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:19:58.909Z",
+      "agentRoleId": "WOOD-FRAMING-TRUSS-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:08.849Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:08.849Z",
+      "agentRoleId": "FASTENER-UPLIFT-AGENT",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:08.849Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:08.849Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:08.849Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:18.896Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:18.896Z",
+      "agentRoleId": "WATERPROOFING-FLASHING-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:29.017Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:29.018Z",
+      "agentRoleId": "THERMAL-INSULATION-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:29.018Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:38.941Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:38.941Z",
+      "agentRoleId": "STANDING-SEAM-ROOFING-AGENT",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:38.941Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:48.843Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:48.843Z",
+      "agentRoleId": "DOMESTIC-WATER-PIPING-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:48.843Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:48.843Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:59.070Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:20:59.070Z",
+      "agentRoleId": "SANITARY-DRAIN-VENT-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:08.885Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:08.885Z",
+      "agentRoleId": "MAIN-SERVICE-PANEL-AGENT",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:08.885Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:08.885Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:38.760Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:38.760Z",
+      "agentRoleId": "BRANCH-CIRCUIT-RECEPTACLE-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.313Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.313Z",
+      "agentRoleId": "HEATING-COOLING-LOAD-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.313Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.313Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.813Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.813Z",
+      "agentRoleId": "HVAC-DUCT-ROUTING-AGENT",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:39.813Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:40.489Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:40.491Z",
+      "agentRoleId": "HVAC-SUPPLY-RETURN-DIFFUSER-AGENT",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:40.491Z",
+      "agentRoleId": "CONCRETE-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_APPROVE",
+      "details": "Approved 4000 PSI concrete mixture submittal for sulphate exposure.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:40.947Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:40.948Z",
+      "agentRoleId": "INDEPENDENT-STRUCTURAL-INSPECTOR",
+      "actionType": "LLM_REASONED_PRACTICE",
+      "details": "Passed specialist technical reasoning exercise. Competency: 2%",
+      "executionMode": "LLM_REASONED"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:41.419Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "DETERMINISTIC_INGESTION",
+      "details": "Discovered & parsed 12 pages from FBC 2023 Mechanical Code Section 602.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:41.419Z",
+      "agentRoleId": "QUANTITY-TAKEOFF-AGENT",
+      "actionType": "GROUNDED_REUSE_PRACTICE",
+      "details": "Retrieved grounded knowledge assertion without calling Gemini. Competency: 1%",
+      "executionMode": "GROUNDED_KNOWLEDGE_REUSE"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:41.419Z",
+      "agentRoleId": "HVAC-MANAGER-AGENT",
+      "actionType": "MANAGER_REVIEW_REJECT",
+      "details": "Rejected specialist duct routing proposal due to framing interference.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:41.419Z",
+      "agentRoleId": "MEP-INSPECTOR-AGENT",
+      "actionType": "INSPECTOR_DEFECT_DETECTED",
+      "details": "Detected un-grommeted electrical branch wire passing through metal stud.",
+      "executionMode": "DETERMINISTIC_WORK"
+    },
+    {
+      "timestamp": "2026-08-26T20:21:41.419Z",
+      "agentRoleId": "KNOWLEDGE-DIRECTOR",
+      "actionType": "GAP_REPAIR",
+      "details": "Ingested additional code references and updated agent knowledge pack.",
+      "executionMode": "DETERMINISTIC_WORK"
     }
   ],
-  "savedAt": "2026-08-25T16:59:19.730Z"
+  "savedAt": "2026-08-26T20:21:41.894Z"
 }

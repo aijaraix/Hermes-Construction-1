@@ -15729,6 +15729,1482 @@
         "repairAgentAssigned": "WOOD-FRAMING-AGENT",
         "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
         "timestamp": "2026-08-25T16:59:25.088Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T19:59:16.973Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T19:59:31.974Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T19:59:46.974Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:00:01.974Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:00:16.975Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:00:31.976Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:00:46.977Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:01:01.977Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:01:16.978Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:01:31.978Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:01:46.979Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:02:01.980Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:02:16.980Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:02:31.981Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:02:46.982Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:03:01.983Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:03:16.984Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:03:31.983Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:03:46.984Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:04:01.985Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:04:16.985Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:04:31.986Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:04:46.986Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:05:01.987Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:05:16.988Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:05:31.989Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:05:46.990Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:06:01.991Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:06:16.992Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:06:31.993Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:06:46.993Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:07:01.993Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:07:16.994Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:07:31.996Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:07:46.997Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:08:01.998Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:08:16.998Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:08:31.999Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:08:47.000Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:09:02.001Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:09:17.002Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:09:32.003Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:09:47.004Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:10:02.005Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:10:17.005Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:10:32.006Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:10:47.007Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:11:02.008Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:11:17.010Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:11:32.011Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:11:47.011Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:12:02.013Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:12:17.014Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:12:32.015Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:12:47.016Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:13:02.017Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:13:17.018Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:13:32.019Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:13:47.020Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:14:02.021Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:14:17.022Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:14:32.022Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:14:47.023Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:15:02.024Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:15:17.025Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:15:32.026Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:15:47.027Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:16:02.027Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:16:17.028Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:16:32.028Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:16:47.028Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:17:02.029Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:17:17.029Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:17:32.030Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:17:47.031Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:18:02.032Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:18:17.033Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:18:32.034Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:18:54.470Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:19:09.470Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:19:24.642Z"
+      },
+      {
+        "id": "TICKET-BATH-INSPECT-001",
+        "projectId": "GYM-BATHROOM-0001",
+        "inspectorAgent": "INDEPENDENT-INSPECTOR",
+        "severity": "high",
+        "affectedComponentIds": [
+          "WALL-BATH-NORTH-001",
+          "PLUMB-DWV-STACK-001"
+        ],
+        "location": "North Wall Stud #3 Plumbing Notch",
+        "problem": "3-inch PVC soil stack cuts through 2x4 stud leaving less than 50% stud depth without steel nail protection plate",
+        "requiredStandard": "FBC 2023 Section 2308.5.8 / IRC R602.6 Drilling and Notching of Studs",
+        "actualCondition": "Plumbing notch exceeds 40% stud width without 16-gauge steel shoe or nail plate installed",
+        "status": "open",
+        "repairAgentAssigned": "WOOD-FRAMING-AGENT",
+        "proposedRepair": "Install 16-gauge steel stud shoe / nail protection plate over notched stud face",
+        "timestamp": "2026-08-26T20:19:59.462Z"
       }
     ],
     "crossTradeRequests": [],
@@ -25755,6 +27231,1072 @@
         ],
         "createdTimestamp": "2026-08-25T16:59:25.088Z",
         "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T19:59:16.973Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T19:59:31.974Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T19:59:46.974Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:00:01.974Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:00:16.975Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:00:31.976Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:00:46.977Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:01:01.977Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:01:16.978Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:01:31.978Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:01:46.979Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:02:01.980Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:02:16.980Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:02:31.981Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:02:46.982Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:03:01.983Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:03:16.984Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:03:31.983Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:03:46.984Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:04:01.985Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:04:16.985Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:04:31.986Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:04:46.986Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:05:01.987Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:05:16.988Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:05:31.989Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:05:46.990Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:06:01.991Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:06:16.992Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:06:31.993Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:06:46.993Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:07:01.993Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:07:16.994Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:07:31.996Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:07:46.997Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:08:01.998Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:08:16.998Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:08:31.999Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:08:47.000Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:09:02.001Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:09:17.002Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:09:32.003Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:09:47.004Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:10:02.005Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:10:17.005Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:10:32.006Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:10:47.007Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:11:02.008Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:11:17.010Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:11:32.011Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:11:47.011Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:12:02.013Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:12:17.014Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:12:32.015Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:12:47.016Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:13:02.017Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:13:17.018Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:13:32.019Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:13:47.020Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:14:02.021Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:14:17.022Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:14:32.022Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:14:47.023Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:15:02.024Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:15:17.025Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:15:32.026Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:15:47.027Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:16:02.027Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:16:17.028Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:16:32.028Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:16:47.028Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:17:02.029Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:17:17.029Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:17:32.030Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:17:47.031Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:18:02.032Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:18:17.033Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:18:32.034Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:18:54.470Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:19:09.470Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:19:24.642Z",
+        "status": "UNRESOLVED"
+      },
+      {
+        "gapId": "GAP-STUD-NOTCH-PROTECTION-01",
+        "agentId": "WOOD-FRAMING-AGENT",
+        "role": "Wood Framing Specialist",
+        "topic": "Structural Stud Notch Steel Protection Plates",
+        "missingInformation": "Required 1/16 in (16 gauge) steel protection plate specifications when plumbing pipe notches exceed 25% of stud depth.",
+        "sourceRequirements": [
+          "IRC 2024 Section R602.6.1",
+          "FBC 2023 Wood Construction Manual"
+        ],
+        "createdTimestamp": "2026-08-26T20:19:59.462Z",
+        "status": "UNRESOLVED"
       }
     ],
     "agentAssignments": [
@@ -25881,14 +28423,14 @@
   },
   "metrics": {
     "completedAgentTasks": 5,
-    "failedAgentTasks": 771,
+    "failedAgentTasks": 853,
     "crossTradeConsultations": 0,
     "clashesFound": 0,
     "clashesResolved": 0,
-    "inspectionDefects": 771,
+    "inspectionDefects": 853,
     "repairsExecuted": 0,
-    "knowledgeGapsCreated": 771,
+    "knowledgeGapsCreated": 853,
     "retrainingCycles": 0
   },
-  "savedAt": "2026-08-25T16:59:25.088Z"
+  "savedAt": "2026-08-26T20:19:59.462Z"
 }

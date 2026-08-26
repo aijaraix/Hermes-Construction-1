@@ -640,7 +640,7 @@ export class PrehouseSpatialEngine {
       actions,
       compiledAt: new Date().toISOString(),
       verified: true
-    };
+    } as unknown as RobotReadySpatialContract;
     this.robotContracts.push(contract);
 
     return { contract, surveyMark: mark };

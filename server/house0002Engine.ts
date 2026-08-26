@@ -95,6 +95,24 @@ export class House0002Engine {
     this.methodGapsDiscovered = [];
     this.communicationEvents = [];
 
+    this.robotContracts = [
+      {
+        contractId: 'RRSC-H2-REBAR-TIE-001',
+        actorAbstraction: 'UNIVERSAL_ACTOR',
+        worldFrameId: 'FRAME-ACADEMY-HOUSE-0002-ROOT',
+        startPose: [2.0, 0.3, 2.0],
+        targetPose: [2.0, 0.3, 2.0],
+        path: [[2.0, 0.0, 2.0], [2.0, 0.3, 2.0]],
+        targetEntityId: 'SLAB-H2-01',
+        toolId: 'REBAR-TIER-AUTOMATED-01',
+        actionType: 'REBAR_TIE',
+        preconditions: ['STEMWALL_REBAR_POSITIONED', 'CLEARANCE_VERIFIED_24_BAR_DIA'],
+        postconditions: ['TIE_WIRE_TORQUE_VERIFIED'],
+        toleranceMeters: 0.001,
+        verificationMethod: 'OPTICAL_LASER_SCAN'
+      } as any
+    ];
+
     // 1. CALCULATE TEMPORARY FACILITY PLACEMENT FOR HOUSE #2 PARCEL
     this.facilityEvaluation = this.evaluateFacilityPlacements();
 
@@ -1408,6 +1426,7 @@ export class House0002Engine {
     const robotContract: RobotReadySpatialContract = {
       contractId: 'RRSC-H2-REBAR-TIE-001',
       actorAbstraction: 'UNIVERSAL_ACTOR',
+      worldFrameId: 'FRAME-ACADEMY-HOUSE-0002-ROOT',
       startPose: [2.0, 0.3, 2.0],
       targetPose: [2.0, 0.3, 2.0],
       path: [[2.0, 0.0, 2.0], [2.0, 0.3, 2.0]],
@@ -2382,25 +2401,25 @@ export class House0002Engine {
   }
 
   public static getProjectId() { return this.projectId; }
-  public static getAttemptId() { return this.attemptId; }
-  public static getProjectType() { return this.projectType; }
-  public static getStartTime() { return this.startTime; }
-  public static getSpatialEntities() { return Array.from(this.spatialEntities.values()); }
-  public static getAgentSpatialStates() { return Array.from(this.agentStates.values()); }
-  public static getMaterials() { return Array.from(this.materials.values()); }
-  public static getSpatialActions() { return this.spatialActions; }
-  public static getSurveyMarks() { return Array.from(this.surveyMarks.values()); }
-  public static getFieldConsultations() { return this.fieldConsultations; }
-  public static getKnowledgeRequests() { return this.knowledgeRequests; }
-  public static getCommunicationEvents() { return this.communicationEvents; }
-  public static getEventStream() { return this.eventStream; }
-  public static getFacilityEvaluation() { return this.facilityEvaluation; }
-  public static getRobotContracts() { return this.robotContracts; }
-  public static getCustomerInteractions() { return this.customerInteractions; }
-  public static getProgramVolumes() { return this.programVolumes; }
-  public static getBimComponents() { return this.bimComponents; }
-  public static getBomItems() { return this.bomItems; }
-  public static getMethodGapsDiscovered() { return this.methodGapsDiscovered; }
+  public static getAttemptId() { this.initialize(); return this.attemptId; }
+  public static getProjectType() { this.initialize(); return this.projectType; }
+  public static getStartTime() { this.initialize(); return this.startTime; }
+  public static getSpatialEntities() { this.initialize(); return Array.from(this.spatialEntities.values()); }
+  public static getAgentSpatialStates() { this.initialize(); return Array.from(this.agentStates.values()); }
+  public static getMaterials() { this.initialize(); return Array.from(this.materials.values()); }
+  public static getSpatialActions() { this.initialize(); return this.spatialActions; }
+  public static getSurveyMarks() { this.initialize(); return Array.from(this.surveyMarks.values()); }
+  public static getFieldConsultations() { this.initialize(); return this.fieldConsultations; }
+  public static getKnowledgeRequests() { this.initialize(); return this.knowledgeRequests; }
+  public static getCommunicationEvents() { this.initialize(); return this.communicationEvents || []; }
+  public static getEventStream() { this.initialize(); return this.eventStream; }
+  public static getFacilityEvaluation() { this.initialize(); return this.facilityEvaluation; }
+  public static getRobotContracts() { this.initialize(); return this.robotContracts; }
+  public static getCustomerInteractions() { this.initialize(); return this.customerInteractions; }
+  public static getProgramVolumes() { this.initialize(); return this.programVolumes; }
+  public static getBimComponents() { this.initialize(); return this.bimComponents; }
+  public static getBomItems() { this.initialize(); return this.bomItems; }
+  public static getMethodGapsDiscovered() { this.initialize(); return this.methodGapsDiscovered; }
   public static isProgramApproved() { return this.programApproved; }
   public static getStructuralSystemSelected() { return this.structuralSystemSelected; }
   public static getStructuralSystemReason() { return this.structuralSystemReason; }

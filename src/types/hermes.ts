@@ -3226,6 +3226,88 @@ export interface SpatialEntityRecord {
   sourceRecordId?: string;
   revisionId?: string;
   timestamp: string;
+  truthOrigin?: TruthOrigin;
+  frameId?: string;
+  parentFrameId?: string;
+  creationEventId?: string;
+  lastMutationEventId?: string;
+}
+
+export type TruthOrigin =
+  | 'MEASURED'
+  | 'CALCULATED'
+  | 'RULE_DERIVED'
+  | 'MODEL_GENERATED'
+  | 'LLM_REASONED'
+  | 'IMPORTED_REFERENCE'
+  | 'SIMULATED'
+  | 'ASSUMED';
+
+export type CanonicalProjectStatus =
+  | 'NEW'
+  | 'INTERVIEWING'
+  | 'PLANNING'
+  | 'DESIGNING'
+  | 'PROCUREMENT'
+  | 'SITE_SETUP'
+  | 'CONSTRUCTING'
+  | 'INSPECTING'
+  | 'BLOCKED'
+  | 'WAITING_OWNER'
+  | 'PAUSED'
+  | 'COMPLETE';
+
+export interface ProjectWorldFrame {
+  projectWorldFrameId: string;
+  projectId: string;
+  surveyOrigin: [number, number, number]; // [lat/northing, lon/easting, elevation] or metric local datum
+  groundDatum: number; // elevation in meters
+  coordinateReference: string; // e.g. "UTM / LOCAL METRIC WORLD FRAME"
+  lengthUnit: 'METERS';
+  rotationUnit: 'RADIANS' | 'QUATERNION';
+  timeReference: string; // UTC ISO String
+}
+
+export type RobotActorType = 'HUMAN_WORKER' | 'TRACKED_WORKER' | 'ROBOT';
+
+export interface RobotReadySpatialContract {
+  contractId: string;
+  projectId: string;
+  worldFrameId: string;
+  actorId: string;
+  actorType: RobotActorType;
+  methodId: string;
+  startPose: {
+    position: [number, number, number];
+    rotation: [number, number, number];
+  };
+  targetPose: {
+    position: [number, number, number];
+    rotation: [number, number, number];
+  };
+  path: [number, number, number][];
+  targetEntityId: string;
+  toolId?: string;
+  action: SpatialActionPrimitive;
+  tolerance: number; // in meters, e.g. 0.005 (5mm)
+  preconditions: string[];
+  postconditions: string[];
+  verificationMethod: string;
+  createdEventId: string;
+  truthOrigin: TruthOrigin;
+  actions: SpatialActionRecord[];
+  compiledAt: string;
+  verified: boolean;
+}
+
+export interface RuntimeClockState {
+  mode: 'LIVE' | 'REPLAY';
+  realTimeMs: number;
+  simulationTimeMs: number;
+  replayTimeMs: number;
+  timeScale: number; // 1x, 2x, 5x, 10x
+  currentEventIndex: number;
+  totalEvents: number;
 }
 
 export type SpatialActionPrimitive =
