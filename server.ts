@@ -456,6 +456,7 @@ async function startServer() {
         surveyMarks: House0002Engine.getSurveyMarks(),
         fieldConsultations: House0002Engine.getFieldConsultations(),
         knowledgeRequests: House0002Engine.getKnowledgeRequests(),
+        communicationEvents: House0002Engine.getCommunicationEvents(),
         facilityEvaluation: House0002Engine.getFacilityEvaluation(),
         robotContracts: House0002Engine.getRobotContracts(),
         spatialActions: House0002Engine.getSpatialActions(),
@@ -466,6 +467,25 @@ async function startServer() {
         bomItems: House0002Engine.getBomItems(),
         methodGaps: House0002Engine.getMethodGapsDiscovered()
       });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/spatial-truth-tests', (req, res) => {
+    try {
+      const report = House0002CheckpointRunner.executeCheckpointReport();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/house0002-replay-frame', (req, res) => {
+    try {
+      const eventIndex = parseInt((req.query.eventIndex as string) || '0', 10);
+      const frame = House0002Engine.getReplayFrameAtEvent(eventIndex);
+      res.json(frame);
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });
     }

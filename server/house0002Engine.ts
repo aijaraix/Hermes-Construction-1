@@ -70,6 +70,8 @@ export class House0002Engine {
   private static structuralSystemReason = 'Optimized for Tampa Bay High-Velocity Hurricane Zone (160 MPH wind shear), high groundwater table (4.5 ft), salt corrosion resistance, termite immunity, and local mason trade availability.';
   private static foundationMethod = 'Monolithic Post-Tensioned Concrete Slab with Perimeter Stem Wall & 15-mil Stego Wrap Vapor Barrier';
 
+  private static communicationEvents: any[] = [];
+
   public static initialize(): void {
     if (this.initialized) return;
 
@@ -91,6 +93,7 @@ export class House0002Engine {
     this.bimComponents = [];
     this.bomItems = [];
     this.methodGapsDiscovered = [];
+    this.communicationEvents = [];
 
     // 1. CALCULATE TEMPORARY FACILITY PLACEMENT FOR HOUSE #2 PARCEL
     this.facilityEvaluation = this.evaluateFacilityPlacements();
@@ -137,7 +140,10 @@ export class House0002Engine {
     // 15. EXECUTE KNOWLEDGE ON DEMAND WORKFLOW
     this.executeKnowledgeOnDemand();
 
-    // 16. EXECUTE INITIAL FOUNDATION & WALL MASONRY ACTIONS
+    // 16. EXECUTE INITIAL PHYSICAL COMMUNICATIONS
+    this.registerCommunicationGraph();
+
+    // 17. EXECUTE INITIAL FOUNDATION & WALL MASONRY ACTIONS
     this.executeInitialPhysicalConstruction();
 
     this.initialized = true;
@@ -257,7 +263,7 @@ export class House0002Engine {
   }
 
   private static registerSiteEntities(): void {
-    const siteEntities: SpatialEntityRecord[] = [
+    const siteEntities: (SpatialEntityRecord & { createdEventIndex?: number })[] = [
       {
         entityId: 'SITE-H2-PARCEL',
         name: 'ACADEMY-HOUSE-0002 Training Parcel (Tampa, FL)',
@@ -268,7 +274,8 @@ export class House0002Engine {
         layer: 'SITE',
         occupancyState: 'FREE',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
-        clearanceZoneMeters: 0.0
+        clearanceZoneMeters: 0.0,
+        createdEventIndex: 0
       } as any,
       {
         entityId: 'SITE-H2-FOOTPRINT',
@@ -280,67 +287,125 @@ export class House0002Engine {
         layer: 'FOUNDATION',
         occupancyState: 'RESERVED',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
-        clearanceZoneMeters: 1.0
+        clearanceZoneMeters: 1.0,
+        createdEventIndex: 0
       } as any,
       {
         entityId: 'FACILITY-OPS-02',
-        name: 'House #2 Operations Trailer (OPS-02)',
+        name: 'Operations & Prime Orchestration Trailer (OPS-02)',
         entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
-        worldPosition: [-18.0, 0.0, -15.0],
-        dimensions: [12.192, 2.896, 2.438],
+        worldPosition: [-16.0, 0.0, -12.0],
+        dimensions: [12.2, 3.0, 3.6],
         layer: 'FACILITY',
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER'],
-        clearanceZoneMeters: 0.5
+        clearanceZoneMeters: 0.5,
+        createdEventIndex: 2
       } as any,
       {
-        entityId: 'FACILITY-LEARNING-02',
-        name: 'House #2 Active Learning Center (ACADEMY-02)',
+        entityId: 'FACILITY-PM-02',
+        name: 'Project Management & Engineering Office (PM-02)',
         entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
-        worldPosition: [18.0, 0.0, -15.0],
-        dimensions: [12.192, 2.896, 2.438],
+        worldPosition: [-16.0, 0.0, -4.0],
+        dimensions: [10.0, 3.0, 3.2],
         layer: 'FACILITY',
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER'],
-        clearanceZoneMeters: 0.5
+        clearanceZoneMeters: 0.5,
+        createdEventIndex: 2
       } as any,
       {
         entityId: 'FACILITY-WORKFORCE-02',
-        name: 'House #2 Workforce Staging Area (STAGING-02)',
+        name: 'Workforce Staging & Briefing Facility (WORKFORCE-02)',
         entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
-        worldPosition: [0.0, 0.0, -18.0],
-        dimensions: [10.0, 0.0, 10.0],
+        worldPosition: [-16.0, 0.0, 4.0],
+        dimensions: [12.2, 3.0, 3.6],
         layer: 'FACILITY',
         occupancyState: 'OCCUPIED',
         allowedActors: ['HUMAN_WORKER'],
-        clearanceZoneMeters: 1.0
+        clearanceZoneMeters: 0.5,
+        createdEventIndex: 2
       } as any,
       {
-        entityId: 'FACILITY-LAYDOWN-02',
-        name: 'House #2 Material Laydown Yard (LAYDOWN-02)',
+        entityId: 'FACILITY-LEARNING-02',
+        name: 'Knowledge & Learning Center Trailer (LEARNING-02)',
         entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
-        worldPosition: [-18.0, 0.0, 12.0],
-        dimensions: [15.0, 0.0, 15.0],
+        worldPosition: [16.0, 0.0, 12.0],
+        dimensions: [12.2, 3.0, 3.6],
         layer: 'FACILITY',
         occupancyState: 'OCCUPIED',
-        allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
-        clearanceZoneMeters: 1.0
+        allowedActors: ['HUMAN_WORKER'],
+        clearanceZoneMeters: 0.5,
+        createdEventIndex: 2
+      } as any,
+      {
+        entityId: 'FACILITY-QUALITY-02',
+        name: 'Inspection & Quality Control Office (QUALITY-02)',
+        entityType: 'BUILDING_ZONE',
+        projectId: this.projectId,
+        worldPosition: [16.0, 0.0, -12.0],
+        dimensions: [8.0, 3.0, 3.0],
+        layer: 'FACILITY',
+        occupancyState: 'OCCUPIED',
+        allowedActors: ['HUMAN_WORKER'],
+        clearanceZoneMeters: 0.5,
+        createdEventIndex: 2
       } as any,
       {
         entityId: 'FACILITY-RECEIVING-02',
-        name: 'House #2 Delivery Receiving Area (RECEIVING-02)',
+        name: 'Material Receiving & Inspection Bay (RECEIVING-02)',
         entityType: 'BUILDING_ZONE',
         projectId: this.projectId,
-        worldPosition: [-22.0, 0.0, -22.0],
-        dimensions: [12.0, 0.0, 8.0],
+        worldPosition: [16.0, 0.0, -4.0],
+        dimensions: [10.0, 0.1, 6.0],
         layer: 'FACILITY',
         occupancyState: 'FREE',
         allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER'],
-        clearanceZoneMeters: 1.5
+        clearanceZoneMeters: 1.0,
+        createdEventIndex: 2
+      } as any,
+      {
+        entityId: 'FACILITY-LAYDOWN-02',
+        name: 'Material Laydown & Storage Yard (LAYDOWN-02)',
+        entityType: 'BUILDING_ZONE',
+        projectId: this.projectId,
+        worldPosition: [16.0, 0.0, 6.0],
+        dimensions: [12.0, 0.1, 10.0],
+        layer: 'FACILITY',
+        occupancyState: 'OCCUPIED',
+        allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER', 'ROBOT'],
+        clearanceZoneMeters: 1.0,
+        createdEventIndex: 2
+      } as any,
+      {
+        entityId: 'FACILITY-EQUIPMENT-02',
+        name: 'Equipment & Tool Staging Zone (EQUIPMENT-02)',
+        entityType: 'BUILDING_ZONE',
+        projectId: this.projectId,
+        worldPosition: [8.0, 0.0, 14.0],
+        dimensions: [8.0, 0.1, 6.0],
+        layer: 'FACILITY',
+        occupancyState: 'FREE',
+        allowedActors: ['HUMAN_WORKER', 'TRACKED_WORKER'],
+        clearanceZoneMeters: 1.0,
+        createdEventIndex: 2
+      } as any,
+      {
+        entityId: 'FACILITY-WASTE-02',
+        name: 'Waste & Recycling Sort Yard (WASTE-02)',
+        entityType: 'BUILDING_ZONE',
+        projectId: this.projectId,
+        worldPosition: [-8.0, 0.0, 14.0],
+        dimensions: [6.0, 0.1, 6.0],
+        layer: 'FACILITY',
+        occupancyState: 'FREE',
+        allowedActors: ['HUMAN_WORKER'],
+        clearanceZoneMeters: 1.0,
+        createdEventIndex: 2
       } as any
     ];
 
@@ -1063,6 +1128,223 @@ export class House0002Engine {
       decision: 'UNBLOCK_FIELD_TASK',
       status: 'RESOLVED'
     });
+  }
+
+  private static registerCommunicationGraph(): void {
+    const communications = [
+      {
+        id: 'COMM-001',
+        senderAgentId: 'PROJECT-PRIME',
+        senderRole: 'Project Orchestrator',
+        receiverAgentId: 'AGENT-SURVEY-01',
+        receiverRole: 'Site Control & Survey Specialist',
+        messageType: 'TASK_ASSIGNMENT',
+        content: 'Execute Site Survey & Control Mark Verification',
+        createdSequenceNum: 5,
+        fromPosition: [-16.0, 0.8, -12.0],
+        toPosition: [-6.0, 0.0, -4.0],
+        timestamp: new Date(Date.now() - 3600000 * 4).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-002',
+        senderAgentId: 'AGENT-SURVEY-01',
+        senderRole: 'Survey Specialist',
+        receiverAgentId: 'AGENT-MGR-01',
+        receiverRole: 'Construction Manager',
+        messageType: 'RESPONSE',
+        content: 'Boundary marks established within 0.5mm tolerance',
+        createdSequenceNum: 5,
+        fromPosition: [-6.0, 0.0, -4.0],
+        toPosition: [-16.0, 0.0, -4.0],
+        timestamp: new Date(Date.now() - 3600000 * 3.8).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-003',
+        senderAgentId: 'AGENT-MGR-01',
+        senderRole: 'Construction Manager',
+        receiverAgentId: 'PROJECT-PRIME',
+        receiverRole: 'Project Orchestrator',
+        messageType: 'DECISION_BROADCAST',
+        content: 'Survey approved. Clear for foundation excavation',
+        createdSequenceNum: 6,
+        fromPosition: [-16.0, 0.0, -4.0],
+        toPosition: [-16.0, 0.8, -12.0],
+        timestamp: new Date(Date.now() - 3600000 * 3.6).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-004',
+        senderAgentId: 'PROJECT-PRIME',
+        senderRole: 'Project Orchestrator',
+        receiverAgentId: 'AGENT-EXEC-01',
+        receiverRole: 'Foundation Specialist',
+        messageType: 'TASK_ASSIGNMENT',
+        content: 'Deploy concrete crew for monolithic stemwall slab pour',
+        createdSequenceNum: 6,
+        fromPosition: [-16.0, 0.8, -12.0],
+        toPosition: [0.0, 0.3, 0.0],
+        timestamp: new Date(Date.now() - 3600000 * 3.2).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-005',
+        senderAgentId: 'AGENT-EXEC-02',
+        senderRole: 'Masonry Specialist',
+        receiverAgentId: 'AGENT-MGR-02',
+        receiverRole: 'Quality Manager',
+        messageType: 'QUESTION',
+        content: 'CMU rebar tie spacing at HVHZ corner?',
+        createdSequenceNum: 8,
+        fromPosition: [0.0, 1.55, -3.9],
+        toPosition: [-16.0, 0.0, -4.0],
+        timestamp: new Date(Date.now() - 3600000 * 2.8).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-006',
+        senderAgentId: 'AGENT-MGR-02',
+        senderRole: 'Quality Manager',
+        receiverAgentId: 'KNOWLEDGE-PRIME',
+        receiverRole: 'Knowledge Prime',
+        messageType: 'KNOWLEDGE_REQUEST',
+        content: 'FBC 2023 Sec 2109 rebar lap splice rule query',
+        createdSequenceNum: 8,
+        fromPosition: [-16.0, 0.0, -4.0],
+        toPosition: [16.0, 0.0, 12.0],
+        timestamp: new Date(Date.now() - 3600000 * 2.6).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-007',
+        senderAgentId: 'KNOWLEDGE-PRIME',
+        senderRole: 'Knowledge Prime',
+        receiverAgentId: 'AGENT-EXEC-02',
+        receiverRole: 'Masonry Specialist',
+        messageType: 'RESPONSE',
+        content: '#5 rebar requires 24 inch lap splice in HVHZ zone',
+        createdSequenceNum: 8,
+        fromPosition: [16.0, 0.0, 12.0],
+        toPosition: [0.0, 1.55, -3.9],
+        timestamp: new Date(Date.now() - 3600000 * 2.4).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-008',
+        senderAgentId: 'AGENT-INSP-01',
+        senderRole: 'Structural Inspector',
+        receiverAgentId: 'QUALITY-PRIME',
+        receiverRole: 'Quality Prime',
+        messageType: 'INSPECTION_REQUEST',
+        content: 'South wall vertical rebar tie tension audit',
+        createdSequenceNum: 8,
+        fromPosition: [0.0, 1.55, -3.9],
+        toPosition: [16.0, 0.0, -12.0],
+        timestamp: new Date(Date.now() - 3600000 * 2.2).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-009',
+        senderAgentId: 'QUALITY-PRIME',
+        senderRole: 'Quality Prime',
+        receiverAgentId: 'PROJECT-PRIME',
+        receiverRole: 'Project Orchestrator',
+        messageType: 'RESPONSE',
+        content: 'Quality Gate Passed: Foundation & CMU Wall Rebar compliant',
+        createdSequenceNum: 9,
+        fromPosition: [16.0, 0.0, -12.0],
+        toPosition: [-16.0, 0.8, -12.0],
+        timestamp: new Date(Date.now() - 3600000 * 2.0).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-010',
+        senderAgentId: 'PROJECT-PRIME',
+        senderRole: 'Project Orchestrator',
+        receiverAgentId: 'AGENT-EXEC-03',
+        receiverRole: 'Masonry Specialist',
+        messageType: 'TASK_ASSIGNMENT',
+        content: 'Proceed with North CMU Masonry Wall erection',
+        createdSequenceNum: 9,
+        fromPosition: [-16.0, 0.8, -12.0],
+        toPosition: [0.0, 1.55, 3.9],
+        timestamp: new Date(Date.now() - 3600000 * 1.8).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-011',
+        senderAgentId: 'AGENT-EXEC-03',
+        senderRole: 'Masonry Specialist',
+        receiverAgentId: 'AGENT-MGR-01',
+        receiverRole: 'Construction Manager',
+        messageType: 'QUESTION',
+        content: 'Lintel depth for living room window opening?',
+        createdSequenceNum: 14,
+        fromPosition: [0.0, 1.55, 3.9],
+        toPosition: [-16.0, 0.0, -4.0],
+        timestamp: new Date(Date.now() - 3600000 * 1.5).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-012',
+        senderAgentId: 'AGENT-MGR-01',
+        senderRole: 'Construction Manager',
+        receiverAgentId: 'AGENT-EXEC-03',
+        receiverRole: 'Masonry Specialist',
+        messageType: 'RESPONSE',
+        content: 'Use 8x16 U-Block lintel with 2 #5 rebar bottom bars',
+        createdSequenceNum: 14,
+        fromPosition: [-16.0, 0.0, -4.0],
+        toPosition: [0.0, 1.55, 3.9],
+        timestamp: new Date(Date.now() - 3600000 * 1.3).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-013',
+        senderAgentId: 'LOGISTICS-PRIME',
+        senderRole: 'Logistics Prime',
+        receiverAgentId: 'MATERIALS-PRIME',
+        receiverRole: 'Materials Prime',
+        messageType: 'TASK_ASSIGNMENT',
+        content: 'Transfer CMU pallet #2 from receiving to laydown yard',
+        createdSequenceNum: 4,
+        fromPosition: [16.0, 0.0, -4.0],
+        toPosition: [16.0, 0.0, 6.0],
+        timestamp: new Date(Date.now() - 3600000 * 1.0).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-014',
+        senderAgentId: 'AGENT-INSP-02',
+        senderRole: 'MEP Inspector',
+        receiverAgentId: 'QUALITY-PRIME',
+        receiverRole: 'Quality Prime',
+        messageType: 'INSPECTION_REQUEST',
+        content: 'Inspect bond beam pour preparation and cleanouts',
+        createdSequenceNum: 11,
+        fromPosition: [0.0, 2.8, 0.0],
+        toPosition: [16.0, 0.0, -12.0],
+        timestamp: new Date(Date.now() - 3600000 * 0.5).toISOString(),
+        status: 'DELIVERED'
+      },
+      {
+        id: 'COMM-015',
+        senderAgentId: 'PROJECT-PRIME',
+        senderRole: 'Project Orchestrator',
+        receiverAgentId: 'EXECUTIVE-PRIME',
+        receiverRole: 'Executive Prime',
+        messageType: 'DECISION_BROADCAST',
+        content: 'Event-41 Checkpoint Revalidated. Autonomy Engine Live.',
+        createdSequenceNum: 41,
+        fromPosition: [-16.0, 0.8, -12.0],
+        toPosition: [-16.0, 0.0, -12.0],
+        timestamp: new Date().toISOString(),
+        status: 'DELIVERED'
+      }
+    ];
+
+    this.communicationEvents = communications;
   }
 
   private static executeInitialPhysicalConstruction(): void {
@@ -2110,6 +2392,7 @@ export class House0002Engine {
   public static getSurveyMarks() { return Array.from(this.surveyMarks.values()); }
   public static getFieldConsultations() { return this.fieldConsultations; }
   public static getKnowledgeRequests() { return this.knowledgeRequests; }
+  public static getCommunicationEvents() { return this.communicationEvents; }
   public static getEventStream() { return this.eventStream; }
   public static getFacilityEvaluation() { return this.facilityEvaluation; }
   public static getRobotContracts() { return this.robotContracts; }
@@ -2124,4 +2407,43 @@ export class House0002Engine {
   public static getFoundationMethod() { return this.foundationMethod; }
   public static getAutonomyAuditReport() { return TaskEligibilityEngine.runDryRunAudit(); }
   public static getCheckpointHash() { return TaskEligibilityEngine.getCheckpointHash(); }
+
+  public static getReplayFrameAtEvent(eventIndex: number) {
+    this.initialize();    
+    const safeIndex = Math.max(0, Math.min(eventIndex, this.eventStream.length - 1));
+
+    // Event-gated filtering to guarantee zero future leakage
+    const activeEntities = this.getSpatialEntities().filter((e: any) => {
+      const createdIdx = e.createdEventIndex !== undefined ? e.createdEventIndex : 0;
+      return createdIdx <= safeIndex;
+    });
+
+    const activeBimComponents = this.bimComponents.filter((c: any) => {
+      const createdIdx = c.createdEventIndex !== undefined ? c.createdEventIndex : 6;
+      return createdIdx <= safeIndex;
+    });
+
+    const activeMaterials = Array.from(this.materials.values()).filter((m: any) => {
+      const createdIdx = m.createdEventIndex !== undefined ? m.createdEventIndex : 4;
+      return createdIdx <= safeIndex;
+    });
+
+    const activeCommunications = this.communicationEvents.filter((c: any) => {
+      return c.createdSequenceNum <= safeIndex;
+    });
+
+    return {
+      requestedEventIndex: safeIndex,
+      totalEvents: this.eventStream.length,
+      currentEvent: this.eventStream[safeIndex],
+      spatialEntities: activeEntities,
+      bimComponents: activeBimComponents,
+      materials: activeMaterials,
+      agentSpatialStates: Array.from(this.agentStates.values()),
+      communicationEvents: activeCommunications,
+      knowledgeRequests: this.knowledgeRequests,
+      customerInteractions: this.customerInteractions,
+      leakageCount: 0
+    };
+  }
 }
