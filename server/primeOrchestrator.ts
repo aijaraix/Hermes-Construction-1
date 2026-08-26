@@ -44,7 +44,7 @@ class HermesPrimeOrchestrator {
   private knowledgeEntities: KnowledgeEntity[] = [];
   private learnedLessons: LearnedLesson[] = [];
   private assemblyPatterns: AssemblyPattern[] = [];
-  private activeProjectId: string = 'REFERENCE-BIM-0001';
+  private activeProjectId: string = 'ACADEMY-HOUSE-0002';
   private isHeartbeatLocked: boolean = false;
   private competencyMatrix: CompetencyMatrix = {
     siteGrading: 92.0,
@@ -91,7 +91,7 @@ class HermesPrimeOrchestrator {
         this.tasksMap.set(id, tList);
       });
 
-      this.activeProjectId = Array.from(this.projects.keys())[0] || 'RESIDENCE-TAMPA-001';
+      this.activeProjectId = this.projects.has('ACADEMY-HOUSE-0002') ? 'ACADEMY-HOUSE-0002' : Array.from(this.projects.keys())[0] || 'ACADEMY-HOUSE-0002';
 
       this.addLog('HERMES PERSISTENCE', `Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: ${this.systemState.total_heartbeat_count}`, 'success');
     } else {
@@ -375,7 +375,8 @@ class HermesPrimeOrchestrator {
     if (includeArchived) return allProjects;
 
     // Customer-facing UI retains strictly: REFERENCE-BIM-0001 (and ACADEMY-HOUSE-0002 once created in Stage 6)
-    return allProjects.filter(p => p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
+    const filtered = allProjects.filter(p => p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
+    return filtered.sort((a, b) => (a.id === 'ACADEMY-HOUSE-0002' ? -1 : b.id === 'ACADEMY-HOUSE-0002' ? 1 : 0));
   }
 
   public getProject(id: string): DigitalTwinProject | undefined {
@@ -467,7 +468,7 @@ class HermesPrimeOrchestrator {
       const stepRes = House0002Engine.stepAutonomousExecution();
       this.addLog('HOUSE-0002 ENGINE', `Stepped ACADEMY-HOUSE-0002 step #${stepRes.step} (${stepRes.eventCount} total events)`, 'info');
       if (stepRes.newEvent) {
-        sqliteAdapter.insertProjectEventRecord(stepRes.newEvent);
+        sqliteAdapter.insertProjectEvent(stepRes.newEvent);
       }
     }
 

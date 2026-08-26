@@ -18,6 +18,7 @@ import { AgentRegistry } from './agentRegistry';
 import { ConstructionMethodEngine } from './constructionMethodEngine';
 import { KnowledgeMemoryEngine } from './knowledgeMemoryEngine';
 import { SpatialLogisticsEngine } from './spatialLogisticsEngine';
+import { TaskEligibilityEngine } from './taskEligibilityEngine';
 
 export interface CustomerInteractionRecord {
   id: string;
@@ -2121,4 +2122,6 @@ export class House0002Engine {
   public static getStructuralSystemSelected() { return this.structuralSystemSelected; }
   public static getStructuralSystemReason() { return this.structuralSystemReason; }
   public static getFoundationMethod() { return this.foundationMethod; }
+  public static getAutonomyAuditReport() { return TaskEligibilityEngine.runDryRunAudit(); }
+  public static getCheckpointHash() { return TaskEligibilityEngine.getCheckpointHash(); }
 }

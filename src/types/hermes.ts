@@ -510,6 +510,10 @@ export type ProjectEventType =
   | 'DELIVERY_RECORD_CREATED'
   | 'ISSUE_RECORD_CREATED'
   | 'REPAIR_RECORD_CREATED'
+  | 'INSPECTION_RECORD_CREATED'
+  | 'SPATIAL_SURVEY_COMPLETED'
+  | 'TASK_STARTED'
+  | 'FIELD_CONSULTATION_COMPLETED'
   | 'CLASH_FOUND'
   | 'CLASH_RESOLVED'
   | 'TASK_COMPLETED'
@@ -3281,6 +3285,7 @@ export interface AgentSpatialState {
   worldPosition: [number, number, number]; // [x, y, z] in METERS
   worldRotation: [number, number, number];
   currentZone?: string;
+  currentWorkZoneId?: string;
   currentStorey?: string;
   currentRoom?: string;
   homeBaseEntityId?: string;

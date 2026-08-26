@@ -41,20 +41,20 @@ export default function App() {
   const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
 
   const defaultFallbackProject: DigitalTwinProject = {
-    id: 'RESIDENCE-TAMPA-001',
-    name: 'House #1: Tampa Coastal 2-Story Residence',
-    buildingType: 'Residential Single-Family',
+    id: 'ACADEMY-HOUSE-0002',
+    name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
+    buildingType: 'Single-Family Residence (Tampa HVHZ)',
     gymLevel: 3,
     iterationNumber: 1,
-    overallCompletionPct: 85.0,
-    status: 'inspecting',
+    overallCompletionPct: 15.0,
+    status: 'planning',
     environment: {
       latitude: 27.9506,
       longitude: -82.4572,
       locationName: 'Tampa Bay Coastal Corridor, Florida',
       jurisdiction: 'City of Tampa / Hillsborough County',
       climateZone: 'Zone 2A (Hot-Humid)',
-      coastalProximityMiles: 1.2,
+      coastalProximityMiles: 1.5,
       saltExposureRisk: 'High',
       windSpeedMph: 160,
       rainfallInchesYear: 51.5,
@@ -62,12 +62,12 @@ export default function App() {
       minTempF: 38,
       maxTempF: 96,
       freezeThawCycles: 0,
-      seismicCategory: 'Category A (Low Risk)',
+      seismicCategory: 'Category A',
       wildfireRisk: 'Low',
       floodZone: 'AE (Base Flood Elev 11 ft)',
       soilBearingCapacityPsf: 2200,
       groundwaterTableFt: 4.5,
-      utilitiesAvailable: ['Municipal Water', 'Sanitary Sewer', 'Underground Electric 240V', 'Fiber Optic'],
+      utilitiesAvailable: ['Municipal Water', 'Sanitary Sewer', '240V Electric', 'Fiber Optic'],
       localCodeVersion: 'Florida Building Code 8th Edition (2023)',
     },
     components: [],
@@ -77,39 +77,39 @@ export default function App() {
     schedule: [],
     changeOrderRisks: [],
     score: {
-      overall: 88.5,
-      completeness: 94.0,
-      structuralValidation: 96.0,
+      overall: 95.0,
+      completeness: 35.0,
+      structuralValidation: 98.0,
       mepConnectivity: 85.0,
-      clashFreePercentage: 92.0,
-      codeValidation: 90.0,
-      environmentalAppropriateness: 96.0,
-      materialCompleteness: 91.0,
-      inspectionSuccess: 88.0,
-      constructability: 90.0,
-      costConfidence: 92.0,
-      changeOrderRisk: 84.0,
+      clashFreePercentage: 100.0,
+      codeValidation: 100.0,
+      environmentalAppropriateness: 100.0,
+      materialCompleteness: 90.0,
+      inspectionSuccess: 100.0,
+      constructability: 96.0,
+      costConfidence: 94.0,
+      changeOrderRisk: 95.0,
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
   const defaultFallbackHeartbeat: PrimeHeartbeatState = {
-    activeProjectId: 'RESIDENCE-TAMPA-001',
-    activeProjectName: 'House #1: Tampa Coastal 2-Story Residence',
+    activeProjectId: 'ACADEMY-HOUSE-0002',
+    activeProjectName: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
     gymLevel: 3,
-    overallCompletionPct: 85.0,
+    overallCompletionPct: 15.0,
     heartbeatCount: 1,
     lastHeartbeatTime: new Date().toISOString(),
-    statusMessage: 'HERMES Construction OS Initialized',
-    activeSwarmAgent: 'Prime Orchestrator',
+    statusMessage: 'ACADEMY-HOUSE-0002 ATTEMPT-01 Active: First Owner Checkpoint Reached (PAUSED)',
+    activeSwarmAgent: 'HERMES PRIME ORCHESTRATOR',
     unresolvedQuestions: 0,
     inspectionFailuresCount: 0,
     openClashesCount: 0,
     missingMaterialSpecsCount: 0,
     missingPriceEvidenceCount: 0,
     changeOrderRisksCount: 0,
-    projectScore: 88.5,
+    projectScore: 95.0,
     recentLogs: [],
   };
 
@@ -140,7 +140,8 @@ export default function App() {
         const projData: DigitalTwinProject[] = await projRes.json().catch(() => []);
         if (projData && projData.length > 0) {
           setAllProjects(projData);
-          setCurrentProject((prev) => prev || projData[0]);
+          const house2 = projData.find((p) => p.id === 'ACADEMY-HOUSE-0002');
+          setCurrentProject(house2 || projData[0]);
         }
       }
       if (lessonsRes && lessonsRes.ok) {

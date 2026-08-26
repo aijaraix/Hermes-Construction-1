@@ -1279,7 +1279,7 @@ async function startServer() {
   // Phase 3.17B Reality & Data Truth Swarm Endpoints
   app.get('/api/reality/audit', (req, res) => {
     const hb = primeOrchestrator.getHeartbeatState();
-    const proj = primeOrchestrator.getProject(hb.activeProjectId || 'RESIDENCE-TAMPA-001');
+    const proj = primeOrchestrator.getProject(hb.activeProjectId || 'ACADEMY-HOUSE-0002');
     const bomTotal = proj?.bom?.reduce((acc, curr) => acc + curr.estimatedTotalCost, 0) || 0;
     const bomCount = proj?.bom?.length || 0;
     const tickets = proj?.inspectionTickets?.length || 0;
@@ -1287,13 +1287,17 @@ async function startServer() {
     const audit = RealitySwarmEngine.runFullSwarmAudit({
       agentCount: AgentRegistry.getAllContracts().length,
       activeProjectCount: primeOrchestrator.getAllProjects().length,
-      activeProjectId: hb.activeProjectId || 'RESIDENCE-TAMPA-001',
+      activeProjectId: hb.activeProjectId || 'ACADEMY-HOUSE-0002',
       heartbeatCount: hb.heartbeatCount || 0,
       bomTotalValue: bomTotal,
       bomItemCount: bomCount,
       inspectionTicketCount: tickets,
     });
     res.json(audit);
+  });
+
+  app.get('/api/hermes/house0002-autonomy-audit', (req, res) => {
+    res.json(House0002Engine.getAutonomyAuditReport());
   });
 
   app.get('/api/reality/repairs', (req, res) => {
