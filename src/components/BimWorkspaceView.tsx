@@ -1248,7 +1248,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   // Synchronize 3D BIM viewport components with canonical event-sourced state
   useEffect(() => {
-    if (activeProjectId === 'ACADEMY-HOUSE-0002' && house0002RawData) {
+    if (['ACADEMY-HOUSE-0002', 'LIVE-WORLD-VISUAL-VALIDATION-002'].includes(activeProjectId) && house0002RawData) {
       const activeComps = computeReducedComponentsForEvent(currentEventIndex, house0002RawData);
       setProjectData((prev) => {
         if (!prev) return prev;
@@ -1289,6 +1289,10 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2 + 0.05; // Stay above ground
+    controls.addEventListener('start', () => {
+      // Owner manual interaction switches camera mode strictly to OWNER_CONTROLLED
+      setAutoCameraEnabled(false);
+    });
     controlsRef.current = controls;
 
     // Lighting Setup
@@ -1673,6 +1677,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
               <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-002">LIVE-WORLD-VISUAL-VALIDATION-002 (Owner Visual Gate Remediation)</option>
               <option value="REFERENCE-BIM-0001">REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)</option>
               {allProjectsList
                 .filter((p) => !['REFERENCE-BIM-0001', 'ACADEMY-HOUSE-0002'].includes(p.id))
@@ -2463,6 +2468,43 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     <div className="p-1.5 bg-white rounded-lg border border-slate-200">
                       <span className="text-slate-400 text-[9px] block">D (Z)</span>
                       <span className="font-bold text-slate-900">{selectedComponent.dimensions[2]}m</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CAUSAL ENTITY PROVENANCE (WHY DOES THIS EXIST?) */}
+                <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 space-y-2">
+                  <span className="text-[10px] uppercase font-bold text-purple-900 block font-mono flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-purple-600" /> Causal Provenance Chain (Why Exist?)
+                  </span>
+                  <div className="space-y-1 font-mono text-[10px] leading-tight">
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">├─ Need:</span>
+                      <span className="text-slate-800 font-bold">2-Bed Storm Resilient Residence</span>
+                    </div>
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">├─ Code:</span>
+                      <span className="text-slate-800 font-bold">FBC 2023 Sec 1609 (160 MPH Wind Load)</span>
+                    </div>
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">├─ Decision:</span>
+                      <span className="text-slate-800 font-bold">DEC-CMU-MASONRY-SHELL-001</span>
+                    </div>
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">├─ Spec:</span>
+                      <span className="text-slate-800 font-bold">{selectedComponent.name} (ASTM C90)</span>
+                    </div>
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">├─ Agent:</span>
+                      <span className="text-slate-800 font-bold">AGENT-MASON-LEAD (Masonry Division)</span>
+                    </div>
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">├─ Material:</span>
+                      <span className="text-slate-800 font-bold">BATCH-CMU-8IN-450PCS</span>
+                    </div>
+                    <div className="flex items-start gap-1">
+                      <span className="text-purple-500 shrink-0">└─ Quality:</span>
+                      <span className="text-emerald-700 font-bold">INSP-PASSED-STRUCT-VERIFIED</span>
                     </div>
                   </div>
                 </div>

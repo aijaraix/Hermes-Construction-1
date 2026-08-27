@@ -308,6 +308,55 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-10">
       {/* ============================================================ */}
+      {/* PERSISTENT CAUSAL LAYER LEGEND (Requirement D)                */}
+      {/* ============================================================ */}
+      <div className="absolute top-16 left-4 pointer-events-auto z-40 bg-slate-900/90 border border-slate-700/80 backdrop-blur-md rounded-xl p-2.5 shadow-xl text-[10px] font-mono space-y-1.5 text-slate-200 hidden sm:block">
+        <div className="font-bold text-amber-400 uppercase tracking-wider border-b border-slate-800 pb-1 flex items-center gap-1">
+          <Layers className="w-3 h-3 text-amber-400" /> Layer Legend
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-sm bg-purple-500 border border-purple-300 opacity-80 shrink-0" />
+          <span className="text-purple-200 font-bold">Translucent Purple</span>
+          <span className="text-slate-400 text-[9px]">= PROGRAM VOLUMES</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 border border-amber-300 shrink-0" />
+          <span className="text-amber-200 font-bold">Solid Material</span>
+          <span className="text-slate-400 text-[9px]">= AS-BUILT INSTALLED</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-sm border border-dashed border-sky-400 bg-sky-400/20 shrink-0" />
+          <span className="text-sky-200 font-bold">Dashed Wireframe</span>
+          <span className="text-slate-400 text-[9px]">= APPROVED DESIGN</span>
+        </div>
+      </div>
+
+      {/* ============================================================ */}
+      {/* PERSISTED OPERATIONAL REASONING SUMMARIES (Requirement E)   */}
+      {/* ============================================================ */}
+      <div className="absolute top-16 right-4 pointer-events-auto z-40 bg-slate-900/90 border border-purple-500/40 backdrop-blur-md rounded-xl p-2.5 shadow-xl text-[10px] font-mono space-y-1 text-slate-200 max-w-xs hidden lg:block">
+        <div className="font-bold text-purple-300 uppercase tracking-wider border-b border-slate-800 pb-1 flex items-center justify-between">
+          <span className="flex items-center gap-1">
+            <Sparkles className="w-3 h-3 text-purple-400" /> Engineering Calculations
+          </span>
+          <span className="text-[9px] px-1 bg-purple-500/20 text-purple-300 rounded">STAGE {currentEventIndex + 1}</span>
+        </div>
+        <div className="text-slate-300 space-y-1 pt-0.5">
+          <div>
+            <span className="text-slate-400">ROOM AREA CALC:</span>
+            <p className="text-purple-200 font-bold">Target = 1,100 sq ft | Actual = 1,067 sq ft (Δ -33)</p>
+          </div>
+          <div>
+            <span className="text-slate-400">PLUMBING ADJACENCY:</span>
+            <p className="text-slate-200">Wet Wall Alignment verified. Branch pipe -3.2m</p>
+          </div>
+          <div>
+            <span className="text-slate-400">STRUCTURAL SELECTION:</span>
+            <p className="text-amber-300 font-bold">8" CMU Block + Monolithic Slab (160 MPH Wind)</p>
+          </div>
+        </div>
+      </div>
+      {/* ============================================================ */}
       {/* 1. IN-WORLD PERSISTENT FACILITY BILLBOARD LABELS             */}
       {/* ============================================================ */}
       {spatialEntities.map((facility: any) => {
