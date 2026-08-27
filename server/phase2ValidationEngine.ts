@@ -749,7 +749,21 @@ export class Phase2ValidationEngine {
       summary: 'Project Genesis initialized for LIVE-WORLD-PHASE2-VALIDATION-001 (Live Phase 2 Organizational World)',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'NONE',
-      stateAfter: 'NEW'
+      stateAfter: 'NEW',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0000`,
+        eventType: 'PROJECT_CREATED',
+        actorIds: ['AGENT-PRIME-ORCHESTRATOR'],
+        sourceEntityIds: ['FACILITY-OPS-01'],
+        startWorldPosition: [-18.0, 0.0, -18.0],
+        endWorldPosition: [-18.0, 0.0, -18.0],
+        startTime: nowISO,
+        duration: 2.0,
+        visualizationType: 'SPAWN',
+        cameraRecommendation: { targetPosition: [-18, 0, -18], cameraPosition: [-8, 12, -8], lookAt: [-18, 0, -18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 1. Customer Arrived
@@ -763,7 +777,21 @@ export class Phase2ValidationEngine {
       summary: 'Customer MOCK-CUSTOMER-PHASE2-001 arrived at Briefing Pavilion FACILITY-INTAKE-01',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'OUTSIDE_PARCEL',
-      stateAfter: 'AT_INTAKE_PAVILION'
+      stateAfter: 'AT_INTAKE_PAVILION',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0001`,
+        eventType: 'CUSTOMER_ARRIVED',
+        actorIds: ['MOCK-CUSTOMER-PHASE2-001'],
+        sourceEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-30.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 300000).toISOString(),
+        duration: 3.5,
+        visualizationType: 'MOVE',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-10, 8, 28], lookAt: [-18, 0, 18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 2. Project Prime Assigned
@@ -777,7 +805,22 @@ export class Phase2ValidationEngine {
       summary: 'Project Prime assigned to direct intake briefing at Briefing Pavilion',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'AVAILABLE',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0002`,
+        eventType: 'PROJECT_PRIME_ASSIGNED',
+        actorIds: ['PROJECT-PRIME'],
+        sourceEntityIds: ['FACILITY-OPS-01'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, -18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 280000).toISOString(),
+        duration: 3.0,
+        visualizationType: 'MOVE',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-10, 8, 28], lookAt: [-18, 0, 18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 3. Briefing Started
@@ -791,7 +834,21 @@ export class Phase2ValidationEngine {
       summary: 'Customer Briefing started between Customer and Project Prime',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'ASSIGNED',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0003`,
+        eventType: 'BRIEFING_STARTED',
+        actorIds: ['PROJECT-PRIME', 'MOCK-CUSTOMER-PHASE2-001'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 260000).toISOString(),
+        duration: 2.0,
+        visualizationType: 'MEET',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-14, 4, 24], lookAt: [-18, 0, 18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 4. Question Asked
@@ -828,7 +885,27 @@ export class Phase2ValidationEngine {
       summary: 'Prime asked initial project parameter question to Customer',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'MEETING',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0004`,
+        eventType: 'QUESTION_ASKED',
+        actorIds: ['PROJECT-PRIME', 'MOCK-CUSTOMER-PHASE2-001'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 240000).toISOString(),
+        duration: 4.0,
+        visualizationType: 'QUESTION',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-14, 4, 24], lookAt: [-18, 0, 18] },
+        inspectorPayload: {
+          questionId: q1Id,
+          speaker: 'PRIME (Project Prime)',
+          recipient: 'CUSTOMER (Project Owner)',
+          text: 'What is your primary building type, square footage requirement, and hurricane resilience target?'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 5. Customer Responded
@@ -864,7 +941,28 @@ export class Phase2ValidationEngine {
       summary: 'Customer specified 1,200 sq ft, 2 Bed / 2 Bath, Primary Suite, and High Hurricane Resilience',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'MEETING',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0005`,
+        eventType: 'CUSTOMER_RESPONDED',
+        actorIds: ['MOCK-CUSTOMER-PHASE2-001', 'PROJECT-PRIME'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 220000).toISOString(),
+        duration: 4.0,
+        visualizationType: 'ANSWER',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-14, 4, 24], lookAt: [-18, 0, 18] },
+        inspectorPayload: {
+          answerId: 'INT-002',
+          speaker: 'CUSTOMER (Project Owner)',
+          recipient: 'PRIME (Project Prime)',
+          text: 'I want a 1,200 sq ft single-family residence with 2 bedrooms, 2 bathrooms, primary suite, and high hurricane resilience for Tampa, FL.',
+          requirementGenerated: 'BuildingType & Resilience Target'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 6. Requirement Updated
@@ -878,7 +976,21 @@ export class Phase2ValidationEngine {
       summary: 'Requirement field BuildingType set to 1,200 sq ft Single-Family Residence',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'MEETING',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0006`,
+        eventType: 'REQUIREMENT_UPDATED',
+        actorIds: ['PROJECT-PRIME'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 210000).toISOString(),
+        duration: 2.0,
+        visualizationType: 'STATE_CHANGE',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-14, 4, 24], lookAt: [-18, 0, 18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 7. Dynamic Follow-up Question Engine
@@ -915,7 +1027,27 @@ export class Phase2ValidationEngine {
       summary: 'Prime dynamically triggered primary suite sub-requirement question',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'MEETING',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0007`,
+        eventType: 'DYNAMIC_FOLLOWUP_ASKED',
+        actorIds: ['PROJECT-PRIME', 'MOCK-CUSTOMER-PHASE2-001'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 200000).toISOString(),
+        duration: 4.0,
+        visualizationType: 'QUESTION',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-14, 4, 24], lookAt: [-18, 0, 18] },
+        inspectorPayload: {
+          questionId: q2Id,
+          speaker: 'PRIME (Project Prime)',
+          recipient: 'CUSTOMER (Project Owner)',
+          text: 'For your primary suite, do you require a walk-in closet, dual vanity, and private toilet compartment?'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 8. Customer Responded to Follow-up
@@ -939,7 +1071,28 @@ export class Phase2ValidationEngine {
       summary: 'Customer confirmed walk-in closet and dual vanity for primary suite',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'MEETING',
-      stateAfter: 'MEETING'
+      stateAfter: 'MEETING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0008`,
+        eventType: 'CUSTOMER_RESPONDED',
+        actorIds: ['MOCK-CUSTOMER-PHASE2-001', 'PROJECT-PRIME'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 180000).toISOString(),
+        duration: 4.0,
+        visualizationType: 'ANSWER',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-14, 4, 24], lookAt: [-18, 0, 18] },
+        inspectorPayload: {
+          answerId: 'INT-004',
+          speaker: 'CUSTOMER (Project Owner)',
+          recipient: 'PRIME (Project Prime)',
+          text: 'Yes, I require a walk-in closet and dual vanity. A private toilet compartment is optional.',
+          requirementGenerated: 'PrimarySuiteFeatures'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 9. Digital Manager Consultation Request
@@ -970,7 +1123,28 @@ export class Phase2ValidationEngine {
       summary: 'Prime sent digital consultation request to Architecture, Structural, and Civil Managers',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'MEETING',
-      stateAfter: 'CONSULTING'
+      stateAfter: 'CONSULTING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0009`,
+        eventType: 'PRIME_CONSULTATION_REQUESTED',
+        actorIds: ['PROJECT-PRIME', 'AGENT-ARCH-MANAGER', 'AGENT-STRUCT-MANAGER', 'AGENT-CIVIL-MANAGER'],
+        sourceEntityIds: ['FACILITY-INTAKE-01'],
+        targetEntityIds: ['FACILITY-ARCH-01', 'FACILITY-STRUCT-01', 'FACILITY-CIVIL-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 0.0],
+        startTime: new Date(Date.now() - 160000).toISOString(),
+        duration: 3.0,
+        visualizationType: 'COMMUNICATE',
+        cameraRecommendation: { targetPosition: [-18, 0, 9], cameraPosition: [-32, 18, 9], lookAt: [-18, 0, 9] },
+        inspectorPayload: {
+          messageId: `COMM-${projectId}-001`,
+          sender: 'PRIME',
+          recipients: 'ARCH, STRUCT, CIVIL MANAGERS',
+          text: 'Evaluate structural masonry vs framing options for 140mph wind resilience and flood risk mitigation under 1,200 sq ft budget constraints.'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 10. Digital Manager Responses
@@ -1001,7 +1175,28 @@ export class Phase2ValidationEngine {
       summary: 'Architecture Manager responded with compact wind-resistant envelope strategy',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'CONSULTING',
-      stateAfter: 'CONSULTING'
+      stateAfter: 'CONSULTING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0010`,
+        eventType: 'MANAGER_RESPONDED',
+        actorIds: ['AGENT-ARCH-MANAGER', 'PROJECT-PRIME'],
+        sourceEntityIds: ['FACILITY-ARCH-01'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 0.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 140000).toISOString(),
+        duration: 3.0,
+        visualizationType: 'COMMUNICATE',
+        cameraRecommendation: { targetPosition: [-18, 0, 9], cameraPosition: [-32, 18, 9], lookAt: [-18, 0, 9] },
+        inspectorPayload: {
+          messageId: `COMM-${projectId}-002`,
+          sender: 'ARCH MANAGER',
+          recipients: 'PRIME',
+          text: 'Recommending a compact 30ft x 40ft footprint with 4:12 roof pitch for high wind performance.'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 11. Physical Consultation Assigned
@@ -1031,7 +1226,28 @@ export class Phase2ValidationEngine {
       summary: 'Assigned AGENT-STRUCT-WORKER-01 for physical site briefing consultation',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'AVAILABLE',
-      stateAfter: 'ASSIGNED'
+      stateAfter: 'ASSIGNED',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0011`,
+        eventType: 'AGENT_ASSIGNED',
+        actorIds: ['AGENT-STRUCT-MANAGER', 'AGENT-STRUCT-WORKER-01'],
+        sourceEntityIds: ['FACILITY-STRUCT-01'],
+        targetEntityIds: ['FACILITY-STRUCT-01'],
+        startWorldPosition: [-18.0, 0.0, 8.0],
+        endWorldPosition: [-18.0, 0.0, 8.0],
+        startTime: new Date(Date.now() - 120000).toISOString(),
+        duration: 2.0,
+        visualizationType: 'COMMUNICATE',
+        cameraRecommendation: { targetPosition: [-18, 0, 8], cameraPosition: [-28, 10, 8], lookAt: [-18, 0, 8] },
+        inspectorPayload: {
+          messageId: `COMM-${projectId}-003`,
+          sender: 'STRUCT MANAGER',
+          recipients: 'AGENT-STRUCT-WORKER-01',
+          text: 'Report to Briefing Pavilion FACILITY-INTAKE-01 to confirm footing & CMU tie-beam details directly with Prime.'
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 12. Physical Agent Travel Started
@@ -1045,7 +1261,22 @@ export class Phase2ValidationEngine {
       summary: 'AGENT-STRUCT-WORKER-01 started physical travel from FACILITY-STRUCT-01 to FACILITY-INTAKE-01',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'ASSIGNED',
-      stateAfter: 'TRAVELING'
+      stateAfter: 'TRAVELING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0012`,
+        eventType: 'AGENT_TRAVEL_STARTED',
+        actorIds: ['AGENT-STRUCT-WORKER-01'],
+        sourceEntityIds: ['FACILITY-STRUCT-01'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 8.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 100000).toISOString(),
+        duration: 4.0,
+        visualizationType: 'EXIT_FACILITY',
+        cameraRecommendation: { targetPosition: [-18, 0, 13], cameraPosition: [-28, 12, 13], lookAt: [-18, 0, 13] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 13. Physical Agent Arrived at Briefing Pavilion
@@ -1059,7 +1290,21 @@ export class Phase2ValidationEngine {
       summary: 'AGENT-STRUCT-WORKER-01 arrived at Briefing Pavilion and entered in-person consultation state',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'TRAVELING',
-      stateAfter: 'CONSULTING'
+      stateAfter: 'CONSULTING',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0013`,
+        eventType: 'AGENT_ARRIVED',
+        actorIds: ['AGENT-STRUCT-WORKER-01', 'PROJECT-PRIME', 'MOCK-CUSTOMER-PHASE2-001'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 80000).toISOString(),
+        duration: 3.0,
+        visualizationType: 'ENTER_FACILITY',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-12, 4, 24], lookAt: [-18, 0, 18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 14. Prime Structured Decision Created
@@ -1114,7 +1359,27 @@ export class Phase2ValidationEngine {
       summary: 'Prime Decision DEC-LIVE-WORLD-PHASE2-VALIDATION-001-001 recorded: Monolithic Slab + CMU Masonry selected',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'CONSULTING',
-      stateAfter: 'DECIDED'
+      stateAfter: 'DECIDED',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0014`,
+        eventType: 'DECISION_CREATED',
+        actorIds: ['PROJECT-PRIME'],
+        sourceEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 60000).toISOString(),
+        duration: 4.0,
+        visualizationType: 'DECIDE',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-12, 4, 24], lookAt: [-18, 0, 18] },
+        inspectorPayload: {
+          decisionId: `DEC-${projectId}-001`,
+          selectedOption: 'Monolithic Concrete Slab + Reinforced CMU Masonry + Wind Strapping',
+          rationale: 'Monolithic reinforced concrete slab on grade with 8-inch CMU exterior walls and engineered truss hurricane strapping selected for 140mph wind speed compliance.',
+          confidence: 0.98
+        },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 15. Physical Agent Returning Home
@@ -1128,7 +1393,22 @@ export class Phase2ValidationEngine {
       summary: 'AGENT-STRUCT-WORKER-01 concluded consultation and returned home to FACILITY-STRUCT-01',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'CONSULTING',
-      stateAfter: 'HOME'
+      stateAfter: 'HOME',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0015`,
+        eventType: 'AGENT_RETURNING_HOME',
+        actorIds: ['AGENT-STRUCT-WORKER-01'],
+        sourceEntityIds: ['FACILITY-INTAKE-01'],
+        targetEntityIds: ['FACILITY-STRUCT-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 8.0],
+        startTime: new Date(Date.now() - 40000).toISOString(),
+        duration: 3.0,
+        visualizationType: 'MOVE',
+        cameraRecommendation: { targetPosition: [-18, 0, 13], cameraPosition: [-28, 12, 13], lookAt: [-18, 0, 13] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     // 16. Briefing Completed
@@ -1142,7 +1422,21 @@ export class Phase2ValidationEngine {
       summary: 'Customer Briefing concluded. 0 BIM components produced.',
       truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'DECIDED',
-      stateAfter: 'INTAKE_COMPLETE'
+      stateAfter: 'INTAKE_COMPLETE',
+      visualizationContract: {
+        eventId: `EVT-${projectId}-0016`,
+        eventType: 'BRIEFING_COMPLETED',
+        actorIds: ['PROJECT-PRIME', 'MOCK-CUSTOMER-PHASE2-001'],
+        targetEntityIds: ['FACILITY-INTAKE-01'],
+        startWorldPosition: [-18.0, 0.0, 18.0],
+        endWorldPosition: [-18.0, 0.0, 18.0],
+        startTime: new Date(Date.now() - 20000).toISOString(),
+        duration: 2.0,
+        visualizationType: 'STATE_CHANGE',
+        cameraRecommendation: { targetPosition: [-18, 0, 18], cameraPosition: [-12, 4, 24], lookAt: [-18, 0, 18] },
+        truthOrigin: 'SIMULATED',
+        visuallyReplayable: true
+      }
     });
 
     return {

@@ -520,6 +520,42 @@ export type ProjectEventType =
   | 'PROJECT_STAGE_CHANGED'
   | 'PROJECT_COMPLETED';
 
+export type EventVisualizationType =
+  | 'SPAWN'
+  | 'DESPAWN'
+  | 'MOVE'
+  | 'MEET'
+  | 'COMMUNICATE'
+  | 'QUESTION'
+  | 'ANSWER'
+  | 'THINK'
+  | 'DECIDE'
+  | 'INSPECT'
+  | 'STATE_CHANGE'
+  | 'ENTER_FACILITY'
+  | 'EXIT_FACILITY';
+
+export interface EventVisualizationContract {
+  eventId: string;
+  eventType: string;
+  actorIds: string[];
+  sourceEntityIds?: string[];
+  targetEntityIds?: string[];
+  startWorldPosition?: [number, number, number];
+  endWorldPosition?: [number, number, number];
+  startTime: string;
+  duration: number;
+  visualizationType: EventVisualizationType;
+  cameraRecommendation?: {
+    targetPosition: [number, number, number];
+    cameraPosition: [number, number, number];
+    lookAt: [number, number, number];
+  };
+  inspectorPayload?: any;
+  truthOrigin: TruthOrigin;
+  visuallyReplayable: boolean;
+}
+
 export interface ProjectEventRecord {
   eventId: string;
   projectId: string;
@@ -527,6 +563,7 @@ export interface ProjectEventRecord {
   timestamp: string;
   eventType: ProjectEventType;
   agentId: string;
+  actorId?: string;
   agentRole?: string;
   managerId?: string;
   taskId?: string;
@@ -537,14 +574,19 @@ export interface ProjectEventRecord {
   storeyId?: string;
   position?: [number, number, number];
   message: string;
+  summary?: string;
   decision?: string;
   status?: string;
   evidence?: string;
   codeRule?: string;
+  truthOrigin?: string;
+  stateBefore?: string;
+  stateAfter?: string;
   costImpact?: number;
   scheduleImpactDays?: number;
   durationMs?: number;
   payload?: Record<string, any>;
+  visualizationContract?: EventVisualizationContract;
 }
 
 export interface CustomerInteractionRecord {

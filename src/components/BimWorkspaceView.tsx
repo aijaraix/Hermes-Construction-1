@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import * as WebIFC from 'web-ifc';
+import { Phase2WorldOverlay } from './Phase2WorldOverlay';
 import {
   Layers,
   Search,
@@ -234,6 +235,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [currentEventIndex, setCurrentEventIndex] = useState<number>(0);
   const [isPlayingTimeline, setIsPlayingTimeline] = useState<boolean>(false);
   const [replaySpeed, setReplaySpeed] = useState<number>(1);
+  const [autoCameraEnabled, setAutoCameraEnabled] = useState<boolean>(true);
 
   // Spatial Operations World & Truth Test State
   const [truthTestReport, setTruthTestReport] = useState<any>(null);
@@ -1841,6 +1843,26 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         {/* CENTER WebGL BIM VIEWPORT */}
         <div className="flex-1 min-h-[450px] relative bg-slate-50">
           <div ref={containerRef} className="w-full h-full min-h-[450px] relative overflow-hidden" />
+
+          {/* Phase 2 Live World In-World Labels, Action Overlay & Event HUD */}
+          <Phase2WorldOverlay
+            camera={cameraPerspRef.current}
+            controls={controlsRef.current}
+            containerRef={containerRef}
+            activeProjectId={activeProjectId}
+            house0002RawData={house0002RawData}
+            replayEvents={replayEvents}
+            currentEventIndex={currentEventIndex}
+            isPlayingTimeline={isPlayingTimeline}
+            setIsPlayingTimeline={setIsPlayingTimeline}
+            setCurrentEventIndex={setCurrentEventIndex}
+            replaySpeed={replaySpeed}
+            setReplaySpeed={setReplaySpeed}
+            autoCameraEnabled={autoCameraEnabled}
+            setAutoCameraEnabled={setAutoCameraEnabled}
+            scene={sceneRef.current}
+            onSelectComponent={(id) => setSelectedCompId(id)}
+          />
 
           {/* Floating Canvas Indicator */}
           <div className="absolute top-3 left-4 z-10 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-extrabold text-slate-900 shadow-xs flex items-center gap-2 pointer-events-none">
