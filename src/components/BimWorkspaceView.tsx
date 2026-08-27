@@ -230,6 +230,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
 
   const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
   const isVal004 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004';
+  const isVal005 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005';
   const eventStream = rawData.events || [];
 
   const getEntityEventIdx = (entity: any, fallbackMin: number): number => {
@@ -410,7 +411,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   initialSelectedComponentId = null,
 }) => {
   // Synchronized active project state
-  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'LIVE-WORLD-VISUAL-VALIDATION-003');
+  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'LIVE-WORLD-VISUAL-VALIDATION-005');
 
   useEffect(() => {
     if (propActiveProjectId && propActiveProjectId !== activeProjectId) {
@@ -1042,8 +1043,10 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           setProjectData(normalizedProj);
           setLoading(false);
-        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
-          const endpoint = activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
+        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
+          const endpoint = activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
+            ? '/api/hermes/validation005-spatial-world'
+            : activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
             ? '/api/hermes/validation004-spatial-world'
             : '/api/hermes/validation003-spatial-world';
           const vRes = await fetch(endpoint);
@@ -1062,7 +1065,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           const normalizedProj: ReferenceBimProject = {
             projectId: vData.projectId,
             name: vData.projectName,
-            description: vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
+            description: vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
+              ? 'Clean-Room Live World Visual Validation Project 005'
+              : vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
               ? 'Clean-Room Live World Visual Validation Project 004'
               : 'Clean-Room Live World Visual Validation Project 003',
             classification: 'GENESIS_LIVE',
@@ -1753,7 +1758,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               onChange={(e) => handleSwitchProject(e.target.value)}
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-003">LIVE-WORLD-VISUAL-VALIDATION-003 (Clean-Room Live World Validation)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-005">LIVE-WORLD-VISUAL-VALIDATION-005 (Master Spec Causal Validation)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-004">LIVE-WORLD-VISUAL-VALIDATION-004 (Clean-Room Validation 004)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-003">LIVE-WORLD-VISUAL-VALIDATION-003 (Clean-Room Validation 003)</option>
               <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Historical Regression Fixture)</option>
               <option value="LIVE-WORLD-VISUAL-VALIDATION-002">LIVE-WORLD-VISUAL-VALIDATION-002 (Attempt 02)</option>
               <option value="REFERENCE-BIM-0001">REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)</option>

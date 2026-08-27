@@ -165,10 +165,18 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
         } catch (err: any) {
           lastError = err;
           const responseTimestamp = new Date().toISOString();
-          const isQuotaError =
+          const isTransientOrQuota =
             err?.status === 'RESOURCE_EXHAUSTED' ||
+            err?.status === 'UNAVAILABLE' ||
             err?.code === 429 ||
+            err?.code === 503 ||
+            err?.code === 500 ||
+            err?.code === 502 ||
+            err?.code === 504 ||
             String(err?.message || '').includes('429') ||
+            String(err?.message || '').includes('503') ||
+            String(err?.message || '').includes('UNAVAILABLE') ||
+            String(err?.message || '').includes('high demand') ||
             String(err?.message || '').includes('Quota exceeded');
 
           QuotaIntegrityEngine.recordProviderAttempt({
@@ -180,28 +188,39 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
             attemptNumber: attemptCount,
             requestTimestamp,
             responseTimestamp,
-            httpStatus: isQuotaError ? 429 : 500,
-            quotaStatus: isQuotaError,
+            httpStatus: isTransientOrQuota ? (err?.code || 503) : 500,
+            quotaStatus: isTransientOrQuota,
             success: false,
             reason: err?.message || String(err)
           });
 
-          if (isQuotaError) {
-            console.log(`[REASONING PROVIDER] Model ${modelCandidate} rate limit / quota reached (429). Trying next tier model.`);
+          if (isTransientOrQuota) {
+            console.log(`[REASONING PROVIDER] Model ${modelCandidate} rate limit / unavailable (${err?.code || err?.status || '503'}). Trying next tier model.`);
           } else {
             console.warn(`[REASONING PROVIDER] Model ${modelCandidate} call error:`, err?.message || String(err));
           }
         }
       }
 
-      // If all Gemini models failed due to quota / rate limit
-      const isQuotaError =
+      // If simulation fallback is permitted, fall back to simulation proposal
+      if (params.allowSimulationFallback) {
+        console.warn('[REASONING PROVIDER] All Gemini models unavailable or rate limited. Using deterministic simulation fallback.');
+        return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, `Gemini API Unavailable (${lastError?.message || '503/429 Error'}) - Simulation Fallback`);
+      }
+
+      // If all Gemini models failed due to quota / rate limit / 503 high demand
+      const isTransientOrQuota =
         lastError?.status === 'RESOURCE_EXHAUSTED' ||
+        lastError?.status === 'UNAVAILABLE' ||
         lastError?.code === 429 ||
+        lastError?.code === 503 ||
         String(lastError?.message || '').includes('429') ||
+        String(lastError?.message || '').includes('503') ||
+        String(lastError?.message || '').includes('UNAVAILABLE') ||
+        String(lastError?.message || '').includes('high demand') ||
         String(lastError?.message || '').includes('Quota exceeded');
 
-      if (isQuotaError) {
+      if (isTransientOrQuota) {
         // Enqueue real reasoning job in Deferred Reasoning Queue
         QuotaIntegrityEngine.enqueueDeferredJob({
           agentRoleId: params.agentRole.roleId,
@@ -209,13 +228,13 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
           knowledgePackId: params.knowledgePack.packId,
           retrievedChunkIds: params.retrievedChunks.map((c) => c.chunkId),
           discipline: params.agentRole.discipline,
-          lastErrorReason: `429 RESOURCE_EXHAUSTED: ${lastError?.message || 'Quota exceeded across all Gemini models'}`
+          lastErrorReason: `DEFERRED_UNAVAILABLE: ${lastError?.message || 'High demand / quota exceeded across Gemini models'}`
         });
 
-        console.log('[REASONING PROVIDER] All Gemini reasoning models rate limited / quota exhausted. Reasoning job queued as DEFERRED_QUOTA.');
+        console.log('[REASONING PROVIDER] All Gemini reasoning models rate limited / unavailable. Reasoning job queued as DEFERRED_QUOTA.');
 
         return {
-          rawResponse: `[EXECUTION_DEFERRED_QUOTA] All Gemini reasoning models rate limited or quota exhausted (429). Real reasoning job queued for automatic replay upon capacity recovery. Last error: ${lastError?.message || '429 Quota Exceeded'}`,
+          rawResponse: `[EXECUTION_DEFERRED_QUOTA] All Gemini reasoning models rate limited or unavailable (${lastError?.code || '503/429'}). Real reasoning job queued for automatic replay upon capacity recovery. Last error: ${lastError?.message || '503/429 Error'}`,
           structuredProposal: {},
           citations: [],
           providerName: this.providerName,

@@ -46,6 +46,7 @@ import { Phase2ValidationEngine } from './server/phase2ValidationEngine';
 import { Phase2DiagnosticRunner } from './server/phase2DiagnosticRunner';
 import { Validation003Engine } from './server/validation003Engine';
 import { Validation004Engine } from './server/validation004Engine';
+import { Validation005Engine } from './server/validation005Engine';
 
 async function startServer() {
   const app = express();
@@ -523,6 +524,31 @@ async function startServer() {
     try {
       Validation004Engine.initialize();
       const result = Validation004Engine.advanceLiveWorldOneStep();
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/validation005-spatial-world', (req, res) => {
+    try {
+      const stepAll = req.query.stepAll !== 'false';
+      let state = Validation005Engine.initialize();
+      if (stepAll) {
+        state = Validation005Engine.runFullSimulation();
+        res.json(state);
+      } else {
+        res.json(state);
+      }
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation005-step', (req, res) => {
+    try {
+      const state = Validation005Engine.initialize();
+      const result = Validation005Engine.advanceOneStep(state);
       res.json(result);
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });

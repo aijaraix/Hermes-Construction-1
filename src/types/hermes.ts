@@ -3408,6 +3408,8 @@ export interface RobotReadySpatialContract {
 
 export type DetailedAgentState =
   | 'HOME'
+  | 'IDLE_AT_HOME_FACILITY'
+  | 'ENTERING_SITE'
   | 'AVAILABLE'
   | 'LEARNING'
   | 'MEETING'
@@ -3581,6 +3583,178 @@ export interface SurveyControlMark {
   verificationStatus: 'PENDING' | 'VERIFIED' | 'FAILED';
 }
 
+export interface SiteRealityModel {
+  projectId: string;
+  siteId: string;
+  parcelBoundary: [number, number][]; // Polygon 2D coordinates [x, z]
+  parcelAreaSqMeters: number;
+  coordinateReference: string;
+  worldFrameId: string;
+  surveyDatum: string;
+  terrainMesh: {
+    vertices: [number, number, number][]; // [x, y, z]
+    indices: number[];
+  };
+  elevationPoints: Array<{ pointId: string; position: [number, number, number]; source: string }>;
+  elevationContours: Array<{ elevation: number; path: [number, number, number][] }>;
+  slopeMap: Array<{ zoneId: string; averageSlopeDegrees: number; maxSlopeDegrees: number }>;
+  highPoint: [number, number, number];
+  lowPoint: [number, number, number];
+  drainageVectors: Array<{ start: [number, number, number]; direction: [number, number, number]; rate: number }>;
+  existingGrade: number; // Avg Y
+  proposedGrade?: number;
+  existingStructures: string[];
+  existingRoads: string[];
+  siteAccess: { entryPoint: [number, number, number]; clearWidthMeters: number };
+  utilities: Array<{ utilityType: string; connectionPoint: [number, number, number]; status: string }>;
+  easements: Array<{ easementId: string; boundary: [number, number][] }>;
+  setbacks: { frontMeters: number; rearMeters: number; leftMeters: number; rightMeters: number };
+  wetlands: boolean;
+  floodInformation: { floodZone: string; baseFloodElevation: number };
+  groundwaterInformation: { depthToWaterMeters: number; riskLevel: string };
+  soilLayers: Array<{ depthTopMeters: number; depthBottomMeters: number; soilType: string; description: string }>;
+  soilBearingInformation: { allowableBearingCapacityKpa: number; testMethod: string; status: 'UNKNOWN' | 'ASSUMED' | 'SIMULATED' | 'REQUIRES_SURVEY' | 'REQUIRES_GEOTECH' | 'VERIFIED' };
+  rockDepthMeters?: number;
+  vegetation: string;
+  adjacentConstraints: string[];
+  truthOrigins: TruthOrigin[];
+  sourceRecords: string[];
+  confidenceScore: number;
+  unresolvedQuestions: string[];
+}
+
+export interface BuildableEnvelopeRecord {
+  envelopeId: string;
+  projectId: string;
+  siteId: string;
+  boundaryPolygon: [number, number][]; // [x, z]
+  maxBuildingFootprintSqM: number;
+  maxBuildingHeightMeters: number;
+  setbackOffsets: { front: number; rear: number; left: number; right: number };
+  terrainConstraints: { maxSlope: number; cutFillStrategy: 'CUT' | 'FILL' | 'CUT_AND_FILL' | 'STEPPED_FOUNDATION' | 'RAISED_SLAB' };
+  derivedFromSiteModelId: string;
+  createdAt: string;
+  truthOrigin: TruthOrigin;
+}
+
+export interface WorkMissionRecord {
+  missionId: string;
+  projectId: string;
+  title: string;
+  objective: string;
+  assignedAgentId: string;
+  crewMemberAgentIds: string[];
+  workZoneId: string;
+  targetPosition: [number, number, number];
+  status: 'PLANNED' | 'ASSIGNED' | 'IN_PROGRESS' | 'BLOCKED' | 'COMPLETED' | 'CANCELLED';
+  localActionQueue: SpatialActionRecord[];
+  currentActionIndex: number;
+  toolsOnHand: string[];
+  materialsOnHand: string[];
+  blockers: string[];
+  missionProgressPct: number;
+  returnToBaseAllowed: boolean;
+  returnToBaseReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type RealityViewMode = 'DESIGN' | 'LIVE_BUILD' | 'DESIGN_AND_BUILD' | 'SUPPLY_LOGISTICS';
+
+export type LayerADesignLifecycle = 'PROPOSED' | 'UNDER_ANALYSIS' | 'REVISED' | 'ENGINEERING_VALIDATED' | 'CUSTOMER_APPROVED' | 'APPROVED_DESIGN' | 'PROCUREMENT_READY';
+
+export type LayerBSupplyLifecycle = 'REQUIRED' | 'QUANTIFIED' | 'APPROVED_FOR_PROCUREMENT' | 'RFQ' | 'ORDERED' | 'IN_TRANSIT' | 'RECEIVED' | 'STAGED' | 'RESERVED' | 'PICKED' | 'IN_USE' | 'INSTALLED' | 'CONSUMED' | 'WASTE' | 'RETURNED';
+
+export type LayerCPhysicalLifecycle = 'PLANNED' | 'RELEASED_FOR_CONSTRUCTION' | 'MOBILIZED' | 'INSTALLING' | 'INSTALLED_PENDING_INSPECTION' | 'REWORK_REQUIRED' | 'ACCEPTED_AS_BUILT';
+
+export interface Validation005EvidencePackage {
+  checkpointId: string;
+  label: string;
+  eventId: string;
+  eventIndex: number;
+  worldStateHash: string;
+  visibleEntityCount: number;
+  physicalBimComponentCount: number;
+  designComponentCount: number;
+  materialPackageCount: number;
+  activeAgentCount: number;
+  agentPositions: Array<{ agentId: string; role: string; position: [number, number, number]; status: string }>;
+  currentMissions: Array<{ missionId: string; title: string; assignedAgentId: string; status: string }>;
+  terrainStateHash: string;
+  siteElevationRange: [number, number]; // [minY, maxY]
+  inventoryTotals: {
+    ordered: number;
+    received: number;
+    staged: number;
+    installed: number;
+  };
+}
+
+export interface Validation005Report {
+  projectId: 'LIVE-WORLD-VISUAL-VALIDATION-005';
+  projectName: string;
+  description: string;
+  genesisTimestamp: string;
+  lastEventTimestamp: string;
+  currentStepIndex: number;
+  totalEventsCount: number;
+  realityViewMode: RealityViewMode;
+  siteRealityModel: SiteRealityModel;
+  buildableEnvelope?: BuildableEnvelopeRecord;
+  requirementDecisions: RequirementDecisionRecord[];
+  activeMissions: WorkMissionRecord[];
+  evidencePackage: Validation005EvidencePackage[];
+  truthGates: {
+    GENESIS_EMPTY_PROJECT_SITE: 'PASS' | 'FAIL';
+    OPERATIONS_CAMPUS_VISIBLE: 'PASS' | 'FAIL';
+    CANONICAL_WORKFORCE_VISIBLE: 'PASS' | 'FAIL';
+    FACILITIES_LABELED: 'PASS' | 'FAIL';
+    CUSTOMER_VISIBLE: 'PASS' | 'FAIL';
+    PRIME_VISIBLE: 'PASS' | 'FAIL';
+    PRIME_TRAVEL_VISIBLE: 'PASS' | 'FAIL';
+    CUSTOMER_CONVERSATION_VISIBLE: 'PASS' | 'FAIL';
+    REQUIREMENTS_PERSISTED: 'PASS' | 'FAIL';
+    SITE_INVESTIGATION_VISIBLE: 'PASS' | 'FAIL';
+    SURVEY_AGENT_MOVEMENT_VISIBLE: 'PASS' | 'FAIL';
+    TERRAIN_ELEVATION_REALITY_VISIBLE: 'PASS' | 'FAIL';
+    BUILDABLE_ENVELOPE_DERIVED: 'PASS' | 'FAIL';
+    DESIGN_EVOLUTION_VISIBLE: 'PASS' | 'FAIL';
+    DESIGN_ASBUILT_SEPARATION: 'PASS' | 'FAIL';
+    APPROVED_DESIGN_CAUSES_BOM: 'PASS' | 'FAIL';
+    PROCUREMENT_CAUSALITY: 'PASS' | 'FAIL';
+    MATERIAL_DELIVERY_VISIBLE: 'PASS' | 'FAIL';
+    MATERIAL_STAGING_VISIBLE: 'PASS' | 'FAIL';
+    MATERIAL_CONSERVATION: 'PASS' | 'FAIL';
+    MISSION_CONTINUITY: 'PASS' | 'FAIL';
+    NO_UNNECESSARY_RETURN_TO_BASE: 'PASS' | 'FAIL';
+    EARTHWORK_VISIBLE: 'PASS' | 'FAIL';
+    TERRAIN_GEOMETRY_CHANGES: 'PASS' | 'FAIL';
+    FOUNDATION_PREPARATION_VISIBLE: 'PASS' | 'FAIL';
+    FOUNDATION_PLACEMENT_VISIBLE: 'PASS' | 'FAIL';
+    FOUNDATION_SUPPORTED_BY_TERRAIN: 'PASS' | 'FAIL';
+    FOUNDATION_INSPECTION_VISIBLE: 'PASS' | 'FAIL';
+    FOUNDATION_ACCEPTED_AS_BUILT: 'PASS' | 'FAIL';
+    AGENT_MOVEMENT_EVENT_ACCURATE: 'PASS' | 'FAIL';
+    NO_AGENT_TELEPORTATION: 'PASS' | 'FAIL';
+    NO_MATERIAL_TELEPORTATION: 'PASS' | 'FAIL';
+    NO_FUTURE_STATE_LEAKAGE: 'PASS' | 'FAIL';
+    NO_PREMATURE_MEP: 'PASS' | 'FAIL';
+    NO_PREMATURE_WALLS: 'PASS' | 'FAIL';
+    CAMERA_OWNER_CONTROL_PERSISTS: 'PASS' | 'FAIL';
+    LIVE_REPLAY_SAME_REDUCER: 'PASS' | 'FAIL';
+    PHYSICAL_EVENT_SCENE_CHANGE_DIAGNOSTIC: 'PASS' | 'FAIL';
+    BACKEND_VISUAL_SPATIAL_PARITY: 'PASS' | 'FAIL';
+  };
+  diagnosticsSummary: {
+    totalGatesChecked: number;
+    passedGatesCount: number;
+    failedGatesCount: number;
+    overallGateStatus: 'PASS' | 'FAIL';
+    ownerVisualAcceptanceStatus: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+    phase3Authorization: 'BLOCKED';
+  };
+}
+
 export interface PrehouseSpatialProofReport {
   prehouseProjectId: 'PREHOUSE-SPATIAL-PROOF-0001';
   worldUnit: 'METERS';
@@ -3628,6 +3802,7 @@ export interface PrehouseSpatialProofReport {
   academyHouse0002Created: 'NO';
   academyHouse0002Started: 'NO';
 }
+
 
 
 

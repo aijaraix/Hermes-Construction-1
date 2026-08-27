@@ -20,7 +20,7 @@ function getGenAIClient(): GoogleGenAI | null {
 }
 
 async function generateWithFallback(ai: GoogleGenAI, contents: string, config?: any): Promise<any> {
-  const models = ['gemini-3.7-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
+  const models = ['gemini-2.5-flash', 'gemini-3.7-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
   let lastError: any = null;
   for (const model of models) {
     try {
@@ -31,11 +31,23 @@ async function generateWithFallback(ai: GoogleGenAI, contents: string, config?: 
       });
     } catch (err: any) {
       lastError = err;
-      const isQuotaError = err?.status === 'RESOURCE_EXHAUSTED' || err?.code === 429 || err?.message?.includes('429');
-      if (isQuotaError) {
-        console.log(`[GEMINI SERVICE] Model ${model} rate-limited/quota-exceeded. Trying fallback...`);
+      const isTransientOrQuotaError =
+        err?.status === 'RESOURCE_EXHAUSTED' ||
+        err?.status === 'UNAVAILABLE' ||
+        err?.code === 429 ||
+        err?.code === 503 ||
+        err?.code === 500 ||
+        err?.code === 502 ||
+        err?.code === 504 ||
+        String(err?.message || '').includes('429') ||
+        String(err?.message || '').includes('503') ||
+        String(err?.message || '').includes('UNAVAILABLE') ||
+        String(err?.message || '').includes('high demand') ||
+        String(err?.message || '').includes('Quota exceeded');
+      if (isTransientOrQuotaError) {
+        console.log(`[GEMINI SERVICE] Model ${model} rate-limited or unavailable (${err?.code || err?.status || '503'}). Trying fallback...`);
       } else {
-        throw err;
+        console.warn(`[GEMINI SERVICE] Model ${model} error:`, err?.message || err);
       }
     }
   }
