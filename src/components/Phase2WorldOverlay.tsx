@@ -686,7 +686,7 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
                   <h3 className="text-base font-bold text-white font-mono">
                     CUSTOMER BRIEFING & REQUIREMENT TRANSCRIPT
                   </h3>
-                  <span className="text-[10px] text-purple-300 font-mono">Project: ACADEMY-HOUSE-0002 • Intake Pavilion</span>
+                  <span className="text-[10px] text-purple-300 font-mono">Project: {activeProjectId} • Intake Pavilion</span>
                 </div>
               </div>
               <button

@@ -397,6 +397,13 @@ export class Validation005Reducer {
 export class Validation005Engine {
   private static instanceState: any = null;
 
+  public static getCanonicalWorldState(): any {
+    if (!this.instanceState) {
+      this.initialize();
+    }
+    return this.instanceState;
+  }
+
   public static getCampusFacilities(): any[] {
     return [
       { facilityId: 'FACILITY-EXEC-05', name: 'HERMES Executive & Prime Orchestration Center', systemCategory: 'Management', worldPosition: [-55.0, 0.0, -15.0], dimensions: [12.0, 3.2, 10.0] },

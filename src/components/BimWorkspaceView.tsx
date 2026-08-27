@@ -1327,7 +1327,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   // Synchronize 3D BIM viewport components with canonical event-sourced state
   useEffect(() => {
-    if (['ACADEMY-HOUSE-0002', 'LIVE-WORLD-VISUAL-VALIDATION-002'].includes(activeProjectId) && house0002RawData) {
+    if (house0002RawData) {
       const activeComps = computeReducedComponentsForEvent(currentEventIndex, house0002RawData);
       setProjectData((prev) => {
         if (!prev) return prev;
@@ -1536,6 +1536,90 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     if (boundingBoxMeshRef.current) {
       scene.remove(boundingBoxMeshRef.current);
       boundingBoxMeshRef.current = null;
+    }
+
+    // 0a. Render Non-Flat Site Reality Terrain Mesh & Contour Overlay
+    if (house0002RawData?.siteRealityModel?.terrainMesh) {
+      const tm = house0002RawData.siteRealityModel.terrainMesh;
+      const tGeom = new THREE.BufferGeometry();
+      
+      const flatPositions: number[] = [];
+      tm.vertices.forEach((v: [number, number, number]) => {
+        flatPositions.push(v[0], v[1], v[2]);
+      });
+      
+      const flatIndices: number[] = [];
+      tm.faces.forEach((f: [number, number, number]) => {
+        flatIndices.push(f[0], f[1], f[2]);
+      });
+
+      tGeom.setAttribute('position', new THREE.Float32BufferAttribute(flatPositions, 3));
+      tGeom.setIndex(flatIndices);
+      tGeom.computeVertexNormals();
+
+      // Vertex height coloring: green valleys to earthy tan ridges
+      const colors: number[] = [];
+      const posAttr = tGeom.getAttribute('position');
+      for (let i = 0; i < posAttr.count; i++) {
+        const y = posAttr.getY(i);
+        const t = Math.min(Math.max(y / 4.0, 0), 1);
+        const r = 0.2 + t * 0.45;
+        const g = 0.5 - t * 0.15;
+        const b = 0.2;
+        colors.push(r, g, b);
+      }
+      tGeom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const terrainMat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.85,
+        metalness: 0.05,
+        side: THREE.DoubleSide,
+      });
+
+      const terrainMesh = new THREE.Mesh(tGeom, terrainMat);
+      terrainMesh.receiveShadow = true;
+      terrainMesh.userData = { compId: 'SITE-TERRAIN-MESH-005' };
+      if (ifcGroupRef.current) {
+        ifcGroupRef.current.add(terrainMesh);
+      }
+      meshesMapRef.current.set('SITE-TERRAIN-MESH-005', terrainMesh);
+
+      // Wireframe contour lines for explicit visual proof of elevation
+      const wireGeom = new THREE.WireframeGeometry(tGeom);
+      const wireMat = new THREE.LineBasicMaterial({ color: 0x15803d, linewidth: 1, transparent: true, opacity: 0.35 });
+      const wireLine = new THREE.LineSegments(wireGeom, wireMat);
+      terrainMesh.add(wireLine);
+    }
+
+    // 0b. Render Parcel Boundary Polyline & Corner Survey Markers
+    if (house0002RawData?.siteRealityModel?.boundary) {
+      const boundaryPoints = house0002RawData.siteRealityModel.boundary;
+      const polyPoints: THREE.Vector3[] = [];
+      boundaryPoints.forEach((pt: [number, number]) => {
+        polyPoints.push(new THREE.Vector3(pt[0], 0.15, pt[1]));
+      });
+      if (boundaryPoints.length > 0) {
+        polyPoints.push(new THREE.Vector3(boundaryPoints[0][0], 0.15, boundaryPoints[0][1]));
+      }
+
+      const bGeom = new THREE.BufferGeometry().setFromPoints(polyPoints);
+      const bMat = new THREE.LineBasicMaterial({ color: 0x0284c7, linewidth: 3 });
+      const bLine = new THREE.LineSegments(bGeom, bMat);
+      if (ifcGroupRef.current) {
+        ifcGroupRef.current.add(bLine);
+      }
+
+      boundaryPoints.forEach((pt: [number, number], idx: number) => {
+        const stakeGeom = new THREE.CylinderGeometry(0.12, 0.12, 1.8, 8);
+        stakeGeom.translate(pt[0], 0.9, pt[1]);
+        const stakeMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 });
+        const stakeMesh = new THREE.Mesh(stakeGeom, stakeMat);
+        stakeMesh.userData = { compId: `CORNER-STAKE-${idx}` };
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(stakeMesh);
+        }
+      });
     }
 
     projectData.components.forEach((comp) => {

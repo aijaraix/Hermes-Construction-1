@@ -723,7 +723,23 @@ async function startServer() {
       }
     }
 
-    res.json(summaries);
+    // Ensure LIVE-WORLD-VISUAL-VALIDATION-005 is included and sorted FIRST
+    if (!summaries.some(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005')) {
+      const v5State = Validation005Engine.getCanonicalWorldState();
+      if (v5State) {
+        summaries.unshift({
+          id: v5State.projectId,
+          name: v5State.projectName,
+          buildingType: 'Single-Family Residential',
+          status: 'planning',
+          overallCompletionPct: 0,
+          classification: 'GENESIS_LIVE',
+        });
+      }
+    }
+
+    const sortedSummaries = summaries.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? 1 : 0));
+    res.json(sortedSummaries);
   });
 
   app.get('/api/projects/:id', (req, res) => {

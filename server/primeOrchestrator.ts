@@ -44,7 +44,7 @@ class HermesPrimeOrchestrator {
   private knowledgeEntities: KnowledgeEntity[] = [];
   private learnedLessons: LearnedLesson[] = [];
   private assemblyPatterns: AssemblyPattern[] = [];
-  private activeProjectId: string = 'ACADEMY-HOUSE-0002';
+  private activeProjectId: string = 'LIVE-WORLD-VISUAL-VALIDATION-005';
   private isHeartbeatLocked: boolean = false;
   private competencyMatrix: CompetencyMatrix = {
     siteGrading: 92.0,
@@ -91,7 +91,9 @@ class HermesPrimeOrchestrator {
         this.tasksMap.set(id, tList);
       });
 
-      this.activeProjectId = this.projects.has('ACADEMY-HOUSE-0002') ? 'ACADEMY-HOUSE-0002' : Array.from(this.projects.keys())[0] || 'ACADEMY-HOUSE-0002';
+      this.activeProjectId = this.projects.has('LIVE-WORLD-VISUAL-VALIDATION-005')
+        ? 'LIVE-WORLD-VISUAL-VALIDATION-005'
+        : Array.from(this.projects.keys())[0] || 'LIVE-WORLD-VISUAL-VALIDATION-005';
 
       this.addLog('HERMES PERSISTENCE', `Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: ${this.systemState.total_heartbeat_count}`, 'success');
     } else {
@@ -374,9 +376,9 @@ class HermesPrimeOrchestrator {
     const allProjects = Array.from(this.projects.values());
     if (includeArchived) return allProjects;
 
-    // Customer-facing UI retains strictly: REFERENCE-BIM-0001 (and ACADEMY-HOUSE-0002 once created in Stage 6)
-    const filtered = allProjects.filter(p => p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
-    return filtered.sort((a, b) => (a.id === 'ACADEMY-HOUSE-0002' ? -1 : b.id === 'ACADEMY-HOUSE-0002' ? 1 : 0));
+    // Include LIVE-WORLD-VISUAL-VALIDATION-005 as top active validation project
+    const filtered = allProjects.filter(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' || p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
+    return filtered.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? 1 : 0));
   }
 
   public getProject(id: string): DigitalTwinProject | undefined {

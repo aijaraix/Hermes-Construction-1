@@ -41,17 +41,17 @@ export default function App() {
   const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
 
   const defaultFallbackProject: DigitalTwinProject = {
-    id: 'ACADEMY-HOUSE-0002',
-    name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
-    buildingType: 'Single-Family Residence (Tampa HVHZ)',
+    id: 'LIVE-WORLD-VISUAL-VALIDATION-005',
+    name: 'LIVE-WORLD-VISUAL-VALIDATION-005 (Master Spec Causal Validation)',
+    buildingType: 'Single-Family Residential (Clean-Room Validation 005)',
     gymLevel: 3,
     iterationNumber: 1,
-    overallCompletionPct: 15.0,
+    overallCompletionPct: 0.0,
     status: 'planning',
     environment: {
       latitude: 27.9506,
       longitude: -82.4572,
-      locationName: 'Tampa Bay Coastal Corridor, Florida',
+      locationName: 'Validation-005 Clean-Room Site, Florida',
       jurisdiction: 'City of Tampa / Hillsborough County',
       climateZone: 'Zone 2A (Hot-Humid)',
       coastalProximityMiles: 1.5,
@@ -64,7 +64,7 @@ export default function App() {
       freezeThawCycles: 0,
       seismicCategory: 'Category A',
       wildfireRisk: 'Low',
-      floodZone: 'AE (Base Flood Elev 11 ft)',
+      floodZone: 'Zone X',
       soilBearingCapacityPsf: 2200,
       groundwaterTableFt: 4.5,
       utilitiesAvailable: ['Municipal Water', 'Sanitary Sewer', '240V Electric', 'Fiber Optic'],
@@ -77,31 +77,31 @@ export default function App() {
     schedule: [],
     changeOrderRisks: [],
     score: {
-      overall: 95.0,
-      completeness: 35.0,
-      structuralValidation: 98.0,
-      mepConnectivity: 85.0,
+      overall: 100.0,
+      completeness: 0.0,
+      structuralValidation: 100.0,
+      mepConnectivity: 100.0,
       clashFreePercentage: 100.0,
       codeValidation: 100.0,
       environmentalAppropriateness: 100.0,
-      materialCompleteness: 90.0,
+      materialCompleteness: 100.0,
       inspectionSuccess: 100.0,
-      constructability: 96.0,
-      costConfidence: 94.0,
-      changeOrderRisk: 95.0,
+      constructability: 100.0,
+      costConfidence: 100.0,
+      changeOrderRisk: 100.0,
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
   const defaultFallbackHeartbeat: PrimeHeartbeatState = {
-    activeProjectId: 'ACADEMY-HOUSE-0002',
-    activeProjectName: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
+    activeProjectId: 'LIVE-WORLD-VISUAL-VALIDATION-005',
+    activeProjectName: 'LIVE-WORLD-VISUAL-VALIDATION-005 (Master Spec Causal Validation)',
     gymLevel: 3,
-    overallCompletionPct: 15.0,
+    overallCompletionPct: 0.0,
     heartbeatCount: 1,
     lastHeartbeatTime: new Date().toISOString(),
-    statusMessage: 'ACADEMY-HOUSE-0002 ATTEMPT-01 Active: First Owner Checkpoint Reached (PAUSED)',
+    statusMessage: 'LIVE-WORLD-VISUAL-VALIDATION-005 Genesis (Event 0) Active: Checkpoint 1 Reached (PAUSED FOR OWNER REVIEW)',
     activeSwarmAgent: 'HERMES PRIME ORCHESTRATOR',
     unresolvedQuestions: 0,
     inspectionFailuresCount: 0,
@@ -109,7 +109,7 @@ export default function App() {
     missingMaterialSpecsCount: 0,
     missingPriceEvidenceCount: 0,
     changeOrderRisksCount: 0,
-    projectScore: 95.0,
+    projectScore: 100.0,
     recentLogs: [],
   };
 
@@ -140,8 +140,8 @@ export default function App() {
         const projData: DigitalTwinProject[] = await projRes.json().catch(() => []);
         if (projData && projData.length > 0) {
           setAllProjects(projData);
-          const house2 = projData.find((p) => p.id === 'ACADEMY-HOUSE-0002');
-          setCurrentProject(house2 || projData[0]);
+          const v5 = projData.find((p) => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005');
+          setCurrentProject(v5 || projData[0]);
         }
       }
       if (lessonsRes && lessonsRes.ok) {
