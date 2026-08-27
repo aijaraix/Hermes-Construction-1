@@ -45,6 +45,7 @@ import { ProjectSwitchingTester } from './server/projectSwitchingTests';
 import { Phase2ValidationEngine } from './server/phase2ValidationEngine';
 import { Phase2DiagnosticRunner } from './server/phase2DiagnosticRunner';
 import { Validation003Engine } from './server/validation003Engine';
+import { Validation004Engine } from './server/validation004Engine';
 
 async function startServer() {
   const app = express();
@@ -500,6 +501,29 @@ async function startServer() {
     try {
       Validation003Engine.initialize();
       res.json(Validation003Engine.getFullWorldState());
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/validation004-spatial-world', (req, res) => {
+    try {
+      Validation004Engine.initialize();
+      const stepAll = req.query.stepAll !== 'false';
+      if (stepAll) {
+        Validation004Engine.runAllSteps();
+      }
+      res.json(Validation004Engine.getFullWorldState());
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation004-step', (req, res) => {
+    try {
+      Validation004Engine.initialize();
+      const result = Validation004Engine.advanceLiveWorldOneStep();
+      res.json(result);
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });
     }

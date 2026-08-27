@@ -229,12 +229,23 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
   });
 
   const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
+  const isVal004 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004';
+  const eventStream = rawData.events || [];
+
+  const getEntityEventIdx = (entity: any, fallbackMin: number): number => {
+    if (entity.createdEventId) {
+      const idx = eventStream.findIndex((e: any) => e.eventId === entity.createdEventId);
+      if (idx !== -1) return idx;
+    }
+    if (entity.createdEventIndex !== undefined) return entity.createdEventIndex;
+    return fallbackMin;
+  };
 
   // 3. Survey Marks
-  const surveyMinIdx = isVal003 ? 14 : 4;
-  if (eventIndex >= surveyMinIdx) {
-    const surveyMarks = rawData.surveyMarks || [];
-    surveyMarks.forEach((sm: any) => {
+  const surveyMarks = rawData.surveyMarks || [];
+  surveyMarks.forEach((sm: any) => {
+    const smIdx = isVal004 ? getEntityEventIdx(sm, 20) : (isVal003 ? 14 : 4);
+    if (eventIndex >= smIdx) {
       components.push({
         id: sm.markId || `SURVEY-MARK-${sm.id}`,
         name: `Survey Stake (${sm.markType})`,
@@ -263,14 +274,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           license: 'HERMES',
         },
       });
-    });
-  }
+    }
+  });
 
   // 4. 3D Program Room Volumes
-  const programMinIdx = isVal003 ? 18 : 5;
-  if (eventIndex >= programMinIdx) {
-    const programVolumes = rawData.programVolumes || [];
-    programVolumes.forEach((pv: any) => {
+  const programVolumes = rawData.programVolumes || [];
+  programVolumes.forEach((pv: any) => {
+    const pvIdx = isVal004 ? getEntityEventIdx(pv, 27) : (isVal003 ? 18 : 5);
+    if (eventIndex >= pvIdx) {
       components.push({
         id: pv.id,
         name: pv.name,
@@ -299,33 +310,33 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           license: 'HERMES',
         },
       });
-    });
-  }
+    }
+  });
 
   // 5. Materials in Staging Yard
-  const matMinIdx = isVal003 ? 28 : 6;
-  if (eventIndex >= matMinIdx) {
-    const materials = rawData.materials || [];
-    materials.forEach((m: any) => {
+  const materials = rawData.materials || [];
+  materials.forEach((m: any) => {
+    const mIdx = isVal004 ? getEntityEventIdx(m, 31) : (isVal003 ? 28 : 6);
+    if (eventIndex >= mIdx) {
       components.push({
-        id: m.materialId,
-        name: m.materialType,
-        ifcGuid: `GUID-${m.materialId}`,
+        id: m.materialId || m.id,
+        name: m.name || m.materialType || 'Material',
+        ifcGuid: `GUID-${m.materialId || m.id}`,
         ifcType: 'IfcElementAssembly',
         category: 'Structure',
         storeyId: 'STOREY-GROUND',
         storeyName: 'Ground Level (0.00m Datum)',
         dimensions: m.dimensions || [1.2, 1.2, 2.4],
-        position: m.currentPosition || [0, 0, 0],
+        position: m.storagePosition || m.currentPosition || [0, 0, 0],
         orientationDegrees: 0,
         materialSpecIds: ['CMU-8IN-MASONRY'],
         propertySets: [
           {
             name: 'Pset_MaterialState',
             properties: {
-              Stage: m.stage,
-              WeightKg: m.weightKg,
-              ClearanceMeters: m.clearanceMeters,
+              Stage: m.status || m.stage || 'STAGED',
+              Quantity: m.quantity,
+              Unit: m.unit,
             },
           },
         ],
@@ -339,10 +350,10 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           license: 'HERMES',
         },
       });
-    });
-  }
+    }
+  });
 
-  // 6. BIM Components (Gated by createdEventIndex <= eventIndex)
+  // 6. BIM Components (Gated by createdEventId / createdEventIndex <= eventIndex)
   const bimComps = rawData.bimComponents || [];
   const eventBimMap: Record<string, number> = {
     'SLAB-H2-01': 7,
@@ -361,28 +372,27 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
   };
 
   bimComps.forEach((comp: any) => {
-    const createdIdx =
-      eventBimMap[comp.id] !== undefined
+    const createdIdx = isVal004
+      ? getEntityEventIdx(comp, 35)
+      : (eventBimMap[comp.id] !== undefined
         ? eventBimMap[comp.id]
-        : comp.createdEventIndex !== undefined
-        ? comp.createdEventIndex
-        : 7;
+        : (comp.createdEventIndex !== undefined ? comp.createdEventIndex : 7));
 
     if (eventIndex >= createdIdx) {
       components.push({
         ...comp,
+        position: comp.position || comp.geometry?.position || [0, 0, 0],
+        dimensions: comp.dimensions || comp.geometry?.dimensions || [1, 1, 1],
         storeyId: 'STOREY-GROUND',
         storeyName: 'Ground Level (0.00m Datum)',
-        position: comp.geometry?.position || [0, 0, 0],
-        dimensions: comp.geometry?.dimensions || [1, 1, 1],
         propertySets: [
           {
             name: 'Pset_ComponentDetails',
             properties: {
-              System: comp.system,
-              Assembly: comp.assembly,
-              FireRating: comp.fireRatingHours,
-              InspectionState: comp.inspectionState,
+              System: comp.system || comp.category,
+              Assembly: comp.assembly || comp.name,
+              InspectionState: comp.inspectionStatus || 'PASSED',
+              SupportChainValid: comp.supportChainValid ?? true,
             },
           },
         ],
@@ -1032,10 +1042,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           setProjectData(normalizedProj);
           setLoading(false);
-        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
-          const vRes = await fetch(`/api/hermes/validation003-spatial-world`);
+        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
+          const endpoint = activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
+            ? '/api/hermes/validation004-spatial-world'
+            : '/api/hermes/validation003-spatial-world';
+          const vRes = await fetch(endpoint);
           if (!vRes.ok || !vRes.headers.get('content-type')?.includes('application/json')) {
-            throw new Error(`HTTP ${vRes.status} loading validation 003 project state`);
+            throw new Error(`HTTP ${vRes.status} loading validation project state`);
           }
           const vData = await vRes.json();
           if (!mounted) return;
@@ -1049,7 +1062,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           const normalizedProj: ReferenceBimProject = {
             projectId: vData.projectId,
             name: vData.projectName,
-            description: 'Clean-Room Live World Visual Validation Project 003',
+            description: vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
+              ? 'Clean-Room Live World Visual Validation Project 004'
+              : 'Clean-Room Live World Visual Validation Project 003',
             classification: 'GENESIS_LIVE',
             immutableSource: false,
             academyWritable: true,
