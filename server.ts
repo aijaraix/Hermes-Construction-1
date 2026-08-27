@@ -42,6 +42,8 @@ import { House0002CheckpointRunner } from './server/house0002CheckpointRunner';
 import { GenesisProjectEngine } from './server/genesisProjectEngine';
 import { Phase1DiagnosticRunner } from './server/phase1DiagnosticRunner';
 import { ProjectSwitchingTester } from './server/projectSwitchingTests';
+import { Phase2ValidationEngine } from './server/phase2ValidationEngine';
+import { Phase2DiagnosticRunner } from './server/phase2DiagnosticRunner';
 
 async function startServer() {
   const app = express();
@@ -52,6 +54,7 @@ async function startServer() {
   MaterialsKnowledgeEngine.initialize();
   ReferenceBimStore.initialize();
   PrehouseSpatialEngine.initialize();
+  Phase2ValidationEngine.initialize();
 
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -645,13 +648,54 @@ async function startServer() {
       }
     }
 
+    // Ensure Phase 2 Validation Project is included
+    if (!summaries.some(p => p.id === 'LIVE-WORLD-PHASE2-VALIDATION-001')) {
+      const p2State = Phase2ValidationEngine.getProject('LIVE-WORLD-PHASE2-VALIDATION-001');
+      if (p2State) {
+        summaries.push({
+          id: p2State.projectId,
+          name: p2State.projectName,
+          buildingType: p2State.buildingType,
+          status: 'planning',
+          overallCompletionPct: 0,
+          classification: 'GENESIS_LIVE',
+        });
+      }
+    }
+
     res.json(summaries);
   });
 
   app.get('/api/projects/:id', (req, res) => {
+    if (req.params.id === 'LIVE-WORLD-PHASE2-VALIDATION-001') {
+      const p2State = Phase2ValidationEngine.getProject('LIVE-WORLD-PHASE2-VALIDATION-001');
+      if (p2State) return res.json(p2State);
+    }
     const p = primeOrchestrator.getProject(req.params.id);
     if (!p) return res.status(404).json({ error: 'Project not found' });
     res.json(p);
+  });
+
+  app.get('/api/phase2/diagnostics', (req, res) => {
+    const report = Phase2DiagnosticRunner.runPhase2Diagnostics();
+    res.json(report);
+  });
+
+  app.get('/api/phase2/hud', (req, res) => {
+    const projectId = (req.query.projectId as string) || 'LIVE-WORLD-PHASE2-VALIDATION-001';
+    const hud = Phase2ValidationEngine.getWorkforceHUD(projectId);
+    res.json(hud);
+  });
+
+  app.get('/api/phase2/chain/:agentId', (req, res) => {
+    const chain = Phase2ValidationEngine.getManagementChain(req.params.agentId);
+    res.json(chain);
+  });
+
+  app.get('/api/phase2/replay/:eventIndex', (req, res) => {
+    const idx = parseInt(req.params.eventIndex, 10) || 0;
+    const frame = Phase2ValidationEngine.getReplayFrameAtEvent(idx);
+    res.json(frame);
   });
 
   app.post('/api/projects/set-active', (req, res) => {

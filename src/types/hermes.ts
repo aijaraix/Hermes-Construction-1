@@ -559,13 +559,27 @@ export interface CustomerInteractionRecord {
 
 export interface PrimeDecisionRecord {
   id: string;
+  decisionId?: string;
   projectId: string;
-  attemptId?: string;
   timestamp: string;
   primeRole: string;
   decisionType: string;
   rationale: string;
   affectedDisciplines: string[];
+  question?: string;
+  candidateOptions?: string[];
+  evidenceIds?: string[];
+  requirementIds?: string[];
+  managerResponses?: Array<{ managerId: string; response: string }>;
+  constraints?: string[];
+  blockers?: string[];
+  selectedOption?: string;
+  rejectedOptions?: string[];
+  rejectionReasons?: string[];
+  confidence?: number;
+  truthOrigin?: TruthOrigin;
+  approvedBy?: string;
+  createdEventId?: string;
   codeGrounding?: string;
 }
 
@@ -3204,33 +3218,40 @@ export type SpatialEntityType =
   | 'ACCESS_PATH'
   | 'WASTE_ZONE'
   | 'SAFETY_ZONE'
-  | 'SURVEY_MARK';
+  | 'SURVEY_MARK'
+  | 'OPERATIONS_FACILITY'
+  | 'AGENT_AVATAR'
+  | 'SITE_PARCEL';
 
 export interface SpatialEntityRecord {
   entityId: string;
   entityType: SpatialEntityType;
   projectId: string;
   name: string;
-  worldPosition: [number, number, number]; // [x, y, z] in METERS
-  worldRotation: [number, number, number]; // degrees or radians
-  dimensions: [number, number, number]; // [length, width, height] in METERS
-  boundingEnvelope: { min: [number, number, number]; max: [number, number, number] };
-  collisionEnvelope?: { min: [number, number, number]; max: [number, number, number] };
-  clearanceEnvelope?: { min: [number, number, number]; max: [number, number, number] };
+  worldPosition?: [number, number, number]; // [x, y, z] in METERS
+  positionXYZ?: [number, number, number]; // alias
+  rotation?: [number, number, number];
+  worldRotation?: [number, number, number]; // degrees or radians
+  dimensions?: [number, number, number]; // [length, width, height] in METERS
+  dimensionsXYZ?: [number, number, number]; // alias
+  boundingEnvelope: { min: [number, number, number]; max: [number, number, number] } | [number, number, number, number, number, number] | any;
+  collisionEnvelope?: { min: [number, number, number]; max: [number, number, number] } | any;
+  clearanceEnvelope?: { min: [number, number, number]; max: [number, number, number] } | any;
   currentZoneId?: string;
   storeyId?: string;
-  roomId?: string;
-  parentEntityId?: string;
-  mobilityType: 'STATIC' | 'MOBILE' | 'PORTABLE';
-  state: string;
-  sourceRecordId?: string;
-  revisionId?: string;
-  timestamp: string;
-  truthOrigin?: TruthOrigin;
   frameId?: string;
   parentFrameId?: string;
   creationEventId?: string;
   lastMutationEventId?: string;
+  currentState?: string;
+  truthOrigin?: TruthOrigin;
+  roomId?: string;
+  parentEntityId?: string;
+  mobilityType?: 'STATIC' | 'MOBILE' | 'PORTABLE';
+  state?: string;
+  sourceRecordId?: string;
+  revisionId?: string;
+  timestamp?: string;
 }
 
 export type TruthOrigin =
@@ -3344,17 +3365,83 @@ export interface RobotReadySpatialContract {
 }
 
 export type DetailedAgentState =
-  | 'ACTIVE_PROJECT_TASK'
+  | 'HOME'
   | 'AVAILABLE'
-  | 'ACTIVE_KNOWLEDGE_LEARNING'
+  | 'LEARNING'
+  | 'MEETING'
+  | 'ASSIGNED'
   | 'TRAVELING'
-  | 'WAITING_DEPENDENCY'
-  | 'BLOCKED_KNOWLEDGE'
-  | 'MANAGER_REVIEW'
+  | 'WORKING'
   | 'INSPECTING'
+  | 'CONSULTING'
+  | 'BLOCKED_KNOWLEDGE'
+  | 'BLOCKED_MATERIAL'
+  | 'BLOCKED_ACCESS'
+  | 'RETURNING'
+  | 'OFFLINE'
+  | 'ACTIVE_PROJECT_TASK'
+  | 'ACTIVE_KNOWLEDGE_LEARNING'
+  | 'WAITING_DEPENDENCY'
+  | 'MANAGER_REVIEW'
   | 'REWORKING'
   | 'RETRAINING'
-  | 'RETURNING';
+  | 'ENGAGED';
+
+export interface AgentCommunicationRecord {
+  messageId: string;
+  projectId: string;
+  timestamp: string;
+  simulationTimestamp?: string;
+  senderAgentId: string;
+  recipientAgentIds: string[];
+  communicationType:
+    | 'CUSTOMER_INTERACTION'
+    | 'QUESTION'
+    | 'RESPONSE'
+    | 'TASK_ASSIGNMENT'
+    | 'MANAGER_REQUEST'
+    | 'MANAGER_RESPONSE'
+    | 'ESCALATION'
+    | 'CONSULTATION'
+    | 'DECISION_REQUEST'
+    | 'DECISION_RESPONSE';
+  taskId?: string;
+  meetingId?: string;
+  worldLocation?: [number, number, number];
+  summary: string;
+  messageContent: string;
+  responseToMessageId?: string;
+  resultingDecisionIds?: string[];
+  resultingTaskIds?: string[];
+  relatedRequirementIds?: string[];
+  truthOrigin: TruthOrigin;
+  eventId: string;
+}
+
+export interface RequirementQuestionRecord {
+  questionId: string;
+  projectId: string;
+  category: string;
+  requirementField: string;
+  questionText: string;
+  askedByAgentId: string;
+  timestamp: string;
+  status: 'OPEN' | 'ANSWERED' | 'SKIPPED';
+  followUpQuestionIds?: string[];
+  dependsOnQuestionId?: string;
+}
+
+export interface RequirementDecisionRecord {
+  decisionId: string;
+  projectId: string;
+  requirementField: string;
+  selectedOption: string;
+  rationale: string;
+  consultedAgentIds: string[];
+  approvedByCustomer: boolean;
+  timestamp: string;
+  truthOrigin: TruthOrigin;
+}
 
 export interface AgentSpatialState {
   agentId: string;

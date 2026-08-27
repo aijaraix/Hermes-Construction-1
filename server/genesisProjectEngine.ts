@@ -77,7 +77,7 @@ export class GenesisProjectEngine {
       eventType: 'PROJECT_CREATED',
       actorId: 'PRIME-EXECUTIVE',
       summary: `Project Genesis initialized for ${name}`,
-      truthOrigin: 'MEASURED' as TruthOrigin,
+      truthOrigin: 'SIMULATED' as TruthOrigin,
       stateBefore: 'NONE',
       stateAfter: 'NEW'
     };
@@ -110,7 +110,7 @@ export class GenesisProjectEngine {
           creationEventId: genesisEvent.eventId,
           lastMutationEventId: genesisEvent.eventId,
           currentState: 'ACTIVE',
-          truthOrigin: 'MEASURED' as TruthOrigin
+          truthOrigin: 'SIMULATED' as TruthOrigin
         }
       ],
       activeTasks: [],
