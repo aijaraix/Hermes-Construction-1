@@ -84,6 +84,7 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
   const [screenCoords, setScreenCoords] = useState<Record<string, { x: number; y: number; inFrustum: boolean }>>({});
   const [dimensions, setDimensions] = useState({ width: 1000, height: 700 });
   const [selectedInspectorEvent, setSelectedInspectorEvent] = useState<ProjectEventRecord | null>(null);
+  const [showTranscriptModal, setShowTranscriptModal] = useState(false);
   const [eventProgress, setEventProgress] = useState(1.0);
   const [followActiveAgent, setFollowActiveAgent] = useState(false);
 
@@ -427,6 +428,16 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
 
           {/* Right: Controls */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Customer Transcript Button */}
+            <button
+              onClick={() => setShowTranscriptModal(true)}
+              title="View Customer Briefing & Interview Transcript"
+              className="p-1.5 rounded-lg border border-purple-500/50 bg-purple-500/20 text-purple-300 font-mono text-xs font-bold transition-all flex items-center gap-1 hover:bg-purple-500/30"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-purple-300" />
+              <span className="hidden sm:inline">TRANSCRIPT</span>
+            </button>
+
             {/* Auto Camera Toggle */}
             <button
               onClick={() => setAutoCameraEnabled(!autoCameraEnabled)}
@@ -607,6 +618,108 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
                 className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs"
               >
                 Close Inspector
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* 6. FULL CUSTOMER BRIEFING & INTERVIEW TRANSCRIPT MODAL        */}
+      {/* ============================================================ */}
+      {showTranscriptModal && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 pointer-events-auto">
+          <div className="bg-slate-900 border border-purple-500/40 text-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl flex flex-col gap-4 font-sans max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-purple-400" />
+                <div>
+                  <h3 className="text-base font-bold text-white font-mono">
+                    CUSTOMER BRIEFING & REQUIREMENT TRANSCRIPT
+                  </h3>
+                  <span className="text-[10px] text-purple-300 font-mono">Project: ACADEMY-HOUSE-0002 • Intake Pavilion</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowTranscriptModal(false)}
+                className="text-slate-400 hover:text-white text-sm font-bold px-2.5 py-1 bg-slate-800 rounded-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Original Customer Briefing */}
+            <div className="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-xl space-y-1">
+              <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider block">
+                Initial Customer Briefing
+              </span>
+              <p className="text-xs text-slate-200 italic leading-relaxed">
+                "I want to build a modest, practical, durable single-family home in the Tampa, Florida area. I need two bedrooms and two bathrooms. I would like approximately 1,000 to 1,200 square feet, good storm resilience, reasonable construction cost, and an efficient layout."
+              </p>
+            </div>
+
+            {/* Structured Interview Q&A Cards */}
+            <div className="space-y-3 text-xs">
+              <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
+                Structured Interview & Requirement Decisions (5 Records)
+              </span>
+
+              {(house0002RawData?.customerInteractions || [
+                {
+                  id: 'CI-H2-001',
+                  speaker: 'PROJECT-PRIME',
+                  category: 'CUSTOMER_PREFERENCE',
+                  questionOrTopic: 'Target Floor Area & Single vs Multi-Story',
+                  response: 'Customer confirms preference for a single-story layout of ~1,000 to 1,100 sq ft to optimize storm safety, eliminate stairs, and simplify roofline.'
+                },
+                {
+                  id: 'CI-H2-002',
+                  speaker: 'PROJECT-PRIME',
+                  category: 'CUSTOMER_PREFERENCE',
+                  questionOrTopic: 'Bedrooms & Bathrooms Configuration',
+                  response: 'Customer requests 2 Bedrooms (Primary Suite + Guest/Office) and 2 Full Bathrooms (Primary ensuite + Hall bath).'
+                },
+                {
+                  id: 'CI-H2-003',
+                  speaker: 'PROJECT-PRIME',
+                  category: 'ENGINEERING_DECISION',
+                  questionOrTopic: 'Storm Resilience & Shell Structure Selection',
+                  response: 'Project Prime selects 8" Reinforced CMU block masonry walls + Monolithic Stem-Wall Slab to withstand 160 MPH coastal hurricane wind loads.'
+                },
+                {
+                  id: 'CI-H2-004',
+                  speaker: 'PROJECT-PRIME',
+                  category: 'CODE_REQUIREMENT',
+                  questionOrTopic: 'Florida Building Code 2023 (HVHZ / Wind Risk)',
+                  response: 'Grounded against FBC 2023 Section 1609 & 2508. Wind exposure risk category II, 160 MPH ultimate design wind speed.'
+                },
+                {
+                  id: 'CI-H2-005',
+                  speaker: 'PROJECT-PRIME',
+                  category: 'ACADEMY_ASSUMPTION',
+                  questionOrTopic: 'Simulated Tampa Training Parcel Site Assumptions',
+                  response: 'Simulated parcel located in Tampa Bay region (27.9506° N, 82.4572° W), 4.5 ft groundwater table, municipal water/sewer tap available.'
+                }
+              ]).map((qa: any, idx: number) => (
+                <div key={qa.id || idx} className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-1 font-mono">
+                  <div className="flex items-center justify-between text-[10px]">
+                    <span className="font-bold text-purple-400">{qa.speaker || 'PROJECT-PRIME'}</span>
+                    <span className="px-1.5 py-0.2 bg-purple-500/20 text-purple-300 rounded border border-purple-500/30 text-[9px]">
+                      {qa.category}
+                    </span>
+                  </div>
+                  <div className="font-bold text-slate-100 font-sans text-xs">{qa.questionOrTopic}</div>
+                  <p className="text-slate-300 font-sans text-xs leading-snug">{qa.response}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end pt-2 border-t border-slate-800">
+              <button
+                onClick={() => setShowTranscriptModal(false)}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs"
+              >
+                Close Transcript
               </button>
             </div>
           </div>

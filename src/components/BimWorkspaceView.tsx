@@ -68,7 +68,7 @@ export interface ReferenceBimComponent {
   ifcGuid: string;
   ifcType: string;
   name: string;
-  category: 'Architecture' | 'Structure' | 'Plumbing' | 'HVAC' | 'Electrical' | 'Site';
+  category: 'Architecture' | 'Structure' | 'Plumbing' | 'HVAC' | 'Electrical' | 'Site' | 'Workforce';
   storeyId: string;
   storeyName: string;
   spaceId?: string;
@@ -145,6 +145,247 @@ interface BimWorkspaceViewProps {
   onSelectProject?: (projectId: string) => void;
   onOpenSystemDrawer?: () => void;
   initialSelectedComponentId?: string | null;
+}
+
+function computeReducedComponentsForEvent(eventIndex: number, rawData: any): ReferenceBimComponent[] {
+  if (!rawData) return [];
+
+  const components: ReferenceBimComponent[] = [];
+
+  // 1. Facilities (Genesis eventIndex = 0)
+  const facilities = rawData.spatialEntities?.filter((e: any) => e.entityType === 'OPERATIONS_FACILITY') || [];
+  facilities.forEach((fac: any) => {
+    components.push({
+      id: fac.entityId,
+      name: fac.name,
+      ifcGuid: `GUID-${fac.entityId}`,
+      ifcType: 'IfcSiteFacility',
+      category: 'Site',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: fac.dimensionsXYZ || [12.19, 2.44, 2.89],
+      position: fac.positionXYZ || [0, 0, 0],
+      orientationDegrees: 0,
+      materialSpecIds: ['STEEL-CONTAINER'],
+      propertySets: [
+        {
+          name: 'Pset_FacilityDetails',
+          properties: {
+            FacilityId: fac.entityId,
+            FacilityType: fac.entityType,
+            Capacity: fac.maxOccupancy || 8,
+          },
+        },
+      ],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: {
+        source: 'ACADEMY_SPATIAL_ENGINE',
+        creator: 'HERMES_LIVE_WORLD',
+        verifiedDate: new Date().toISOString(),
+        license: 'HERMES',
+      },
+    });
+  });
+
+  // 2. Workforce Agents (68 agents, Genesis eventIndex = 0)
+  const agentStates = rawData.agentSpatialStates || [];
+  agentStates.forEach((agent: any) => {
+    components.push({
+      id: `AGENT-${agent.agentId}`,
+      name: `${agent.role} (${agent.agentId})`,
+      ifcGuid: `GUID-AGENT-${agent.agentId}`,
+      ifcType: 'IfcActor',
+      category: 'Workforce',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [0.5, 1.75, 0.5],
+      position: agent.worldPosition || [0, 0, 0],
+      orientationDegrees: 0,
+      materialSpecIds: ['WORKFORCE-AGENT'],
+      propertySets: [
+        {
+          name: 'Pset_AgentDetails',
+          properties: {
+            AgentId: agent.agentId,
+            Role: agent.role,
+            Discipline: agent.discipline,
+            State: agent.currentState,
+            HomeBase: agent.homeBaseEntityId,
+          },
+        },
+      ],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: {
+        source: 'WORKFORCE_ROSTER',
+        creator: 'HERMES_LIVE_WORLD',
+        verifiedDate: new Date().toISOString(),
+        license: 'HERMES',
+      },
+    });
+  });
+
+  // 3. Survey Marks (Event 4+)
+  if (eventIndex >= 4) {
+    const surveyMarks = rawData.surveyMarks || [];
+    surveyMarks.forEach((sm: any) => {
+      components.push({
+        id: sm.markId || `SURVEY-MARK-${sm.id}`,
+        name: `Survey Stake (${sm.markType})`,
+        ifcGuid: `GUID-SURVEY-${sm.id}`,
+        ifcType: 'IfcSurveyMark',
+        category: 'Site',
+        storeyId: 'STOREY-GROUND',
+        storeyName: 'Ground Level (0.00m Datum)',
+        dimensions: [0.15, 1.2, 0.15],
+        position: sm.coordinatesXYZ || [0, 0, 0],
+        orientationDegrees: 0,
+        materialSpecIds: ['HIGH-VIS-STAKE'],
+        propertySets: [
+          {
+            name: 'Pset_SurveyDetails',
+            properties: { MarkType: sm.markType, Elevation: sm.elevationMeters },
+          },
+        ],
+        connectedComponentIds: [],
+        openings: [],
+        inspectionStatus: 'PASSED',
+        provenance: {
+          source: 'SURVEY_ENGINE',
+          creator: 'AGENT-SURVEY-LEAD',
+          verifiedDate: new Date().toISOString(),
+          license: 'HERMES',
+        },
+      });
+    });
+  }
+
+  // 4. 3D Program Room Volumes (Event 5+)
+  if (eventIndex >= 5) {
+    const programVolumes = rawData.programVolumes || [];
+    programVolumes.forEach((pv: any) => {
+      components.push({
+        id: pv.id,
+        name: pv.name,
+        ifcGuid: `GUID-${pv.id}`,
+        ifcType: 'IfcSpace',
+        category: 'Architecture',
+        storeyId: 'STOREY-GROUND',
+        storeyName: 'Ground Level (0.00m Datum)',
+        dimensions: pv.dimensionsMeters || [4.0, 2.8, 4.0],
+        position: pv.worldPositionMeters || [0, 0, 0],
+        orientationDegrees: 0,
+        materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
+        propertySets: [
+          {
+            name: 'Pset_SpaceDetails',
+            properties: { TargetAreaSqFt: pv.targetAreaSqFt, RoomType: pv.roomType },
+          },
+        ],
+        connectedComponentIds: [],
+        openings: [],
+        inspectionStatus: 'PASSED',
+        provenance: {
+          source: 'ARCHITECTURAL_ENGINE',
+          creator: 'AGENT-ARCH-LEAD',
+          verifiedDate: new Date().toISOString(),
+          license: 'HERMES',
+        },
+      });
+    });
+  }
+
+  // 5. Materials in Staging Yard (Event 6+)
+  if (eventIndex >= 6) {
+    const materials = rawData.materials || [];
+    materials.forEach((m: any) => {
+      components.push({
+        id: m.materialId,
+        name: m.materialType,
+        ifcGuid: `GUID-${m.materialId}`,
+        ifcType: 'IfcElementAssembly',
+        category: 'Structure',
+        storeyId: 'STOREY-GROUND',
+        storeyName: 'Ground Level (0.00m Datum)',
+        dimensions: m.dimensions || [1.2, 1.2, 2.4],
+        position: m.currentPosition || [0, 0, 0],
+        orientationDegrees: 0,
+        materialSpecIds: ['CMU-8IN-MASONRY'],
+        propertySets: [
+          {
+            name: 'Pset_MaterialState',
+            properties: {
+              Stage: m.stage,
+              WeightKg: m.weightKg,
+              ClearanceMeters: m.clearanceMeters,
+            },
+          },
+        ],
+        connectedComponentIds: [],
+        openings: [],
+        inspectionStatus: 'PASSED',
+        provenance: {
+          source: 'SPATIAL_LOGISTICS_ENGINE',
+          creator: 'MATERIAL_MANAGER',
+          verifiedDate: new Date().toISOString(),
+          license: 'HERMES',
+        },
+      });
+    });
+  }
+
+  // 6. BIM Components (Gated by createdEventIndex <= eventIndex)
+  const bimComps = rawData.bimComponents || [];
+  const eventBimMap: Record<string, number> = {
+    'SLAB-H2-01': 7,
+    'WALL-H2-EXT-SOUTH': 8,
+    'WALL-H2-EXT-NORTH': 8,
+    'WALL-H2-EXT-EAST': 9,
+    'WALL-H2-EXT-WEST': 9,
+    'WALL-H2-INT-BED1': 10,
+    'WALL-H2-INT-BATH1': 10,
+    'ROOF-H2-TRUSS': 11,
+    'ROOF-H2-DECK': 12,
+    'DOOR-H2-ENTRY': 13,
+    'WIN-H2-LIVING-01': 13,
+    'PLUMB-H2-STACK': 14,
+    'ELEC-H2-PANEL': 15,
+  };
+
+  bimComps.forEach((comp: any) => {
+    const createdIdx =
+      eventBimMap[comp.id] !== undefined
+        ? eventBimMap[comp.id]
+        : comp.createdEventIndex !== undefined
+        ? comp.createdEventIndex
+        : 7;
+
+    if (eventIndex >= createdIdx) {
+      components.push({
+        ...comp,
+        storeyId: 'STOREY-GROUND',
+        storeyName: 'Ground Level (0.00m Datum)',
+        position: comp.geometry?.position || [0, 0, 0],
+        dimensions: comp.geometry?.dimensions || [1, 1, 1],
+        propertySets: [
+          {
+            name: 'Pset_ComponentDetails',
+            properties: {
+              System: comp.system,
+              Assembly: comp.assembly,
+              FireRating: comp.fireRatingHours,
+              InspectionState: comp.inspectionState,
+            },
+          },
+        ],
+      });
+    }
+  });
+
+  return components;
 }
 
 export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
@@ -1005,6 +1246,20 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     };
   }, [activeProjectId]);
 
+  // Synchronize 3D BIM viewport components with canonical event-sourced state
+  useEffect(() => {
+    if (activeProjectId === 'ACADEMY-HOUSE-0002' && house0002RawData) {
+      const activeComps = computeReducedComponentsForEvent(currentEventIndex, house0002RawData);
+      setProjectData((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          components: activeComps,
+        };
+      });
+    }
+  }, [currentEventIndex, house0002RawData, activeProjectId]);
+
   // Three.js Scene Setup (Mount Once)
   useEffect(() => {
     if (!containerRef.current) return;
@@ -1267,21 +1522,50 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         return;
       }
 
-      if (comp.ifcType === 'IfcSpace') {
+      if (comp.ifcType === 'IfcSurveyMark' || comp.id.startsWith('SURVEY-MARK-')) {
+        // SURVEY STAKE: High-vis cylinder stake + bright yellow flag
+        const group = new THREE.Group();
+
+        const stakeGeom = new THREE.CylinderGeometry(0.04, 0.04, h, 8);
+        stakeGeom.translate(0, h / 2, 0);
+        const stakeMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : 0xef4444, // Red stake
+          roughness: 0.3,
+        });
+        const stakeMesh = new THREE.Mesh(stakeGeom, stakeMat);
+        group.add(stakeMesh);
+
+        const flagGeom = new THREE.BoxGeometry(0.3, 0.2, 0.02);
+        flagGeom.translate(0.15, h - 0.1, 0);
+        const flagMat = new THREE.MeshStandardMaterial({ color: 0xeab308, roughness: 0.2 }); // High-vis yellow flag
+        const flagMesh = new THREE.Mesh(flagGeom, flagMat);
+        group.add(flagMesh);
+
+        group.position.set(px, py, pz);
+        group.userData = { compId: comp.id };
+
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(group);
+        }
+        meshesMapRef.current.set(comp.id, stakeMesh);
+        return;
+      }
+
+      if (comp.ifcType === 'IfcSpace' || comp.id.startsWith('PROG-VOL-')) {
         // 3D PROGRAM VOLUME ROOM BLOCK
         const boxGeom = new THREE.BoxGeometry(w, h, d);
         boxGeom.translate(px, py + h / 2, pz);
 
         const spaceMat = new THREE.MeshStandardMaterial({
-          color: isSelected ? 0x0284c7 : 0x38bdf8,
+          color: isSelected ? 0x0284c7 : 0xa855f7,
           transparent: true,
-          opacity: 0.2,
+          opacity: 0.3,
           side: THREE.DoubleSide,
         });
 
         mesh = new THREE.Mesh(boxGeom, spaceMat);
         const edges = new THREE.EdgesGeometry(boxGeom);
-        const lineMat = new THREE.LineBasicMaterial({ color: 0x0284c7, linewidth: 2 });
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xc084fc, linewidth: 2 });
         mesh.add(new THREE.LineSegments(edges, lineMat));
       } else if (comp.id.startsWith('FACILITY-')) {
         // TEMPORARY SITE FACILITY CONTAINER
@@ -1890,7 +2174,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         </div>
 
         {/* RIGHT CONTEXT INSPECTOR SIDEBAR */}
-        <div className={`${rightInspectorOpen ? 'w-full sm:w-96' : 'w-0'} bg-white border-l border-slate-200 transition-all duration-200 ease-in-out flex flex-col shrink-0 z-10 overflow-hidden shadow-2xs`}>
+        <div className={`${rightInspectorOpen ? 'w-full sm:w-96 fixed sm:static inset-x-0 bottom-0 max-h-[85vh] sm:max-h-none border-t sm:border-t-0 border-l border-slate-200 z-40' : 'w-0 hidden sm:flex'} bg-white transition-all duration-200 ease-in-out flex flex-col shrink-0 overflow-hidden shadow-2xl sm:shadow-2xs`}>
           {/* Inspector Header */}
           <div className="p-3 border-b border-slate-200 flex items-center justify-between gap-2 bg-slate-50">
             <div className="flex items-center gap-2">
