@@ -228,8 +228,11 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   });
 
-  // 3. Survey Marks (Event 4+)
-  if (eventIndex >= 4) {
+  const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
+
+  // 3. Survey Marks
+  const surveyMinIdx = isVal003 ? 14 : 4;
+  if (eventIndex >= surveyMinIdx) {
     const surveyMarks = rawData.surveyMarks || [];
     surveyMarks.forEach((sm: any) => {
       components.push({
@@ -263,8 +266,9 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   }
 
-  // 4. 3D Program Room Volumes (Event 5+)
-  if (eventIndex >= 5) {
+  // 4. 3D Program Room Volumes
+  const programMinIdx = isVal003 ? 18 : 5;
+  if (eventIndex >= programMinIdx) {
     const programVolumes = rawData.programVolumes || [];
     programVolumes.forEach((pv: any) => {
       components.push({
@@ -298,8 +302,9 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   }
 
-  // 5. Materials in Staging Yard (Event 6+)
-  if (eventIndex >= 6) {
+  // 5. Materials in Staging Yard
+  const matMinIdx = isVal003 ? 28 : 6;
+  if (eventIndex >= matMinIdx) {
     const materials = rawData.materials || [];
     materials.forEach((m: any) => {
       components.push({
@@ -395,7 +400,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   initialSelectedComponentId = null,
 }) => {
   // Synchronized active project state
-  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'ACADEMY-HOUSE-0002');
+  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'LIVE-WORLD-VISUAL-VALIDATION-003');
 
   useEffect(() => {
     if (propActiveProjectId && propActiveProjectId !== activeProjectId) {
@@ -1027,6 +1032,60 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           setProjectData(normalizedProj);
           setLoading(false);
+        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
+          const vRes = await fetch(`/api/hermes/validation003-spatial-world`);
+          if (!vRes.ok || !vRes.headers.get('content-type')?.includes('application/json')) {
+            throw new Error(`HTTP ${vRes.status} loading validation 003 project state`);
+          }
+          const vData = await vRes.json();
+          if (!mounted) return;
+
+          setHouse0002RawData(vData);
+          setReplayEvents(vData.events || []);
+          setCurrentEventIndex(0);
+
+          const initialComps = computeReducedComponentsForEvent(0, vData);
+
+          const normalizedProj: ReferenceBimProject = {
+            projectId: vData.projectId,
+            name: vData.projectName,
+            description: 'Clean-Room Live World Visual Validation Project 003',
+            classification: 'GENESIS_LIVE',
+            immutableSource: false,
+            academyWritable: true,
+            hermesGenerated: true,
+            referenceModel: false,
+            license: 'HERMES OpenBIM License',
+            sourceUri: `hermes://${vData.projectId}`,
+            spatialHierarchy: {
+              projectId: vData.projectId,
+              ifcGuid: `GUID-${vData.projectId}`,
+              siteId: `SITE-${vData.projectId}`,
+              siteGuid: `SITE-GUID-${vData.projectId}`,
+              buildingId: vData.projectName,
+              buildingGuid: `BUILDING-GUID-${vData.projectId}`,
+              storeys: [
+                {
+                  id: 'STOREY-GROUND',
+                  ifcGuid: `STOREY-GROUND-GUID-${vData.projectId}`,
+                  name: 'Ground Level (0.00m Datum)',
+                  elevationMeters: 0,
+                  heightMeters: 3.0,
+                  spaces: [],
+                },
+              ],
+            },
+            components: initialComps,
+            relationships: {
+              containedInStorey: {},
+              containedInSpace: {},
+              hostsOpening: {},
+              systemConnectivity: {},
+            },
+          };
+
+          setProjectData(normalizedProj);
+          setLoading(false);
         } else if (activeProjectId.startsWith('LIVE-WORLD-GENESIS') || activeProjectId.startsWith('PHASE1-OWNER-GENESIS')) {
           const gRes = await fetch(`/api/hermes/genesis-spatial-world?projectId=${activeProjectId}`);
           if (!gRes.ok || !gRes.headers.get('content-type')?.includes('application/json')) {
@@ -1400,6 +1459,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   // Camera Framing Utility
   const fitModelToCamera = () => {
+    // STAGE 2: If owner has interacted or disabled auto-camera, DO NOT RECENTER!
+    if (!autoCameraEnabled) return;
+
     const cam = cameraPerspRef.current;
     const controls = controlsRef.current;
     if (!cam || !controls) return;
@@ -1676,8 +1738,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               onChange={(e) => handleSwitchProject(e.target.value)}
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
-              <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)</option>
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-002">LIVE-WORLD-VISUAL-VALIDATION-002 (Owner Visual Gate Remediation)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-003">LIVE-WORLD-VISUAL-VALIDATION-003 (Clean-Room Live World Validation)</option>
+              <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Historical Regression Fixture)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-002">LIVE-WORLD-VISUAL-VALIDATION-002 (Attempt 02)</option>
               <option value="REFERENCE-BIM-0001">REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)</option>
               {allProjectsList
                 .filter((p) => !['REFERENCE-BIM-0001', 'ACADEMY-HOUSE-0002'].includes(p.id))

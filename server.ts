@@ -44,6 +44,7 @@ import { Phase1DiagnosticRunner } from './server/phase1DiagnosticRunner';
 import { ProjectSwitchingTester } from './server/projectSwitchingTests';
 import { Phase2ValidationEngine } from './server/phase2ValidationEngine';
 import { Phase2DiagnosticRunner } from './server/phase2DiagnosticRunner';
+import { Validation003Engine } from './server/validation003Engine';
 
 async function startServer() {
   const app = express();
@@ -490,6 +491,15 @@ async function startServer() {
     try {
       const report = Phase1DiagnosticRunner.runPhase1Diagnostics();
       res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/validation003-spatial-world', (req, res) => {
+    try {
+      Validation003Engine.initialize();
+      res.json(Validation003Engine.getFullWorldState());
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });
     }
