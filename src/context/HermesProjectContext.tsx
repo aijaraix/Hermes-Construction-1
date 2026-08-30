@@ -17,8 +17,12 @@ export interface HermesWorldState {
   projectId: string;
   projectName: string;
   currentCheckpoint: number;
+  currentStepIndex?: number;
   revision: number;
   status: string;
+  overallCompletionPct?: number;
+  currentTask?: string;
+  eventStream?: any[];
   diagnostics?: {
     checkpointName?: string;
     entityCount?: number;
@@ -64,6 +68,8 @@ export interface HermesProjectContextType {
   stepForward: () => Promise<void>;
   runAll: () => Promise<void>;
   resetWorld: () => Promise<void>;
+  submitIntakeBrief: (brief: any) => Promise<void>;
+  simulateScenario: (params: any) => Promise<any>;
   setPlaybackState: (state: PlaybackState) => void;
   setPlaybackSpeed: (speed: number) => void;
   setCameraZone: (zone: CameraZone) => void;
@@ -200,6 +206,40 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
     }
   };
 
+  const submitIntakeBrief = async (brief: any) => {
+    try {
+      setConnectionStatus('SYNCING');
+      const res = await fetch(`/api/hermes/projects/${activeProjectId}/intake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(brief)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setWorldState(data.state || data);
+      setConnectionStatus('CONNECTED');
+    } catch (err) {
+      console.error('Submit intake error:', err);
+      setConnectionStatus('ERROR');
+    }
+  };
+
+  const simulateScenario = async (params: any) => {
+    try {
+      const res = await fetch(`/api/hermes/projects/${activeProjectId}/simulate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      return data.state;
+    } catch (err) {
+      console.error('Simulation error:', err);
+      return null;
+    }
+  };
+
   const createLiveProject = (newProj: Partial<LiveProjectMeta>) => {
     const id = `HERMES-LIVE-HOUSE-${String(liveProjects.length + 1).padStart(3, '0')}`;
     const fullProj: LiveProjectMeta = {
@@ -240,6 +280,8 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
         stepForward,
         runAll,
         resetWorld,
+        submitIntakeBrief,
+        simulateScenario,
         setPlaybackState,
         setPlaybackSpeed,
         setCameraZone,

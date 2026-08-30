@@ -794,15 +794,22 @@ export interface PrimeHeartbeatState {
 }
 
 export interface ProposedRevision {
-  description: string;
-  visualChanges: string[];
-  structuralImpact: string;
-  mepImpact: string;
-  costDelta: number;
-  scheduleDeltaDays: number;
-  materialChanges: string[];
-  procurementImpact: string;
-  codeImpact: string;
+  id?: string;
+  projectId?: string;
+  userPrompt?: string;
+  proposedBy?: string;
+  impactSummary?: string;
+  status?: string;
+  changes?: any[];
+  description?: string;
+  visualChanges?: string[];
+  structuralImpact?: string;
+  mepImpact?: string;
+  costDelta?: number;
+  scheduleDeltaDays?: number;
+  materialChanges?: string[];
+  procurementImpact?: string;
+  codeImpact?: string;
 }
 
 export interface HeartbeatRecord {

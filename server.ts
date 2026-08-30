@@ -848,16 +848,42 @@ async function startServer() {
     }
   });
 
+  app.post('/api/hermes/projects/:projectId/intake', (req, res) => {
+    try {
+      const brief = req.body || {};
+      const state = HermesLiveHouseEngine.submitCustomerIntakeBrief(brief);
+      res.json({
+        state,
+        message: 'Customer brief registered successfully. Autonomous Task Engine engaged.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/projects/:projectId/simulate', (req, res) => {
+    try {
+      const params = req.body || {};
+      const state = HermesLiveHouseEngine.simulateScenario(params);
+      res.json({
+        state,
+        message: 'Parameter causality simulation executed successfully.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
   app.get('/api/hermes/projects/:projectId/events', (req, res) => {
     try {
       const { projectId } = req.params;
       let events = [];
       if (projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
-        const state = Validation007Engine.getCanonicalWorldState();
-        events = state.events || [];
+        const state: any = Validation007Engine.getCanonicalWorldState();
+        events = state.events || state.eventStream || [];
       } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
-        const state = Validation006Engine.getCanonicalWorldState();
-        events = state.events || [];
+        const state: any = Validation006Engine.getCanonicalWorldState();
+        events = state.events || state.eventStream || [];
       } else {
         const state = HermesLiveHouseEngine.getCanonicalWorldState();
         events = state.events || [];
