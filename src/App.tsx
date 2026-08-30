@@ -41,9 +41,9 @@ export default function App() {
   const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
 
   const defaultFallbackProject: DigitalTwinProject = {
-    id: 'LIVE-WORLD-VISUAL-VALIDATION-006',
-    name: 'LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)',
-    buildingType: 'Single-Family Residential (Clean-Room Validation 006)',
+    id: 'HERMES-LIVE-HOUSE-001',
+    name: 'HERMES-LIVE-HOUSE-001 (Canonical Live Construction World — Clean Project 001)',
+    buildingType: 'Single-Family Residential (Canonical Live Project 001)',
     gymLevel: 3,
     iterationNumber: 1,
     overallCompletionPct: 0.0,
@@ -95,13 +95,13 @@ export default function App() {
   };
 
   const defaultFallbackHeartbeat: PrimeHeartbeatState = {
-    activeProjectId: 'LIVE-WORLD-VISUAL-VALIDATION-006',
-    activeProjectName: 'LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)',
+    activeProjectId: 'HERMES-LIVE-HOUSE-001',
+    activeProjectName: 'HERMES-LIVE-HOUSE-001 (Canonical Live Construction World — Clean Project 001)',
     gymLevel: 3,
     overallCompletionPct: 0.0,
     heartbeatCount: 1,
     lastHeartbeatTime: new Date().toISOString(),
-    statusMessage: 'LIVE-WORLD-VISUAL-VALIDATION-006 Genesis (Checkpoint 0) Active: AUTORUN = FALSE (PAUSED AWAITING OWNER REVIEW)',
+    statusMessage: 'HERMES-LIVE-HOUSE-001 Genesis (Checkpoint 0) Active: AUTORUN = FALSE (PAUSED AWAITING OPERATOR STEP)',
     activeSwarmAgent: 'HERMES PRIME ORCHESTRATOR',
     unresolvedQuestions: 0,
     inspectionFailuresCount: 0,

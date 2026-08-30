@@ -153,12 +153,264 @@ interface BimWorkspaceViewProps {
 function computeReducedComponentsForEvent(eventIndex: number, rawData: any): ReferenceBimComponent[] {
   if (!rawData) return [];
 
+  const isLiveHouse = rawData.projectId === 'HERMES-LIVE-HOUSE-001';
   const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
   const isVal004 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004';
   const isVal005 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005';
   const isVal006 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006';
+  const isVal007 = rawData.projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007';
 
   const components: ReferenceBimComponent[] = [];
+
+  if (isLiveHouse) {
+    // 1. Facilities (17 facilities)
+    (rawData.spatialEntities || []).forEach((fac: any) => {
+      const created = fac.createdCheckpoint ?? 0;
+      if (eventIndex >= created) {
+        components.push({
+          id: fac.entityId,
+          name: fac.name,
+          ifcGuid: `GUID-${fac.entityId}`,
+          ifcType: 'IfcSiteFacility',
+          category: 'Site',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: fac.dimensionsXYZ || [12.19, 2.44, 2.89],
+          position: fac.positionXYZ || [0, 0, 0],
+          orientationDegrees: 0,
+          materialSpecIds: ['STEEL-CONTAINER'],
+          propertySets: [{ name: 'Pset_FacilityDetails', properties: { FacilityId: fac.entityId, Capacity: fac.maxOccupancy || 8 } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'HERMES_LIVE_ENGINE', creator: 'HERMES_LIVE_WORLD', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    // 2. Workforce Agents (69 actors)
+    (rawData.agentSpatialStates || []).forEach((agent: any) => {
+      const created = agent.createdCheckpoint ?? 0;
+      if (eventIndex >= created) {
+        const isCustomer = agent.agentId === 'CUSTOMER-001';
+        let pos = agent.worldPosition || [0, 0, 0];
+        if (isCustomer) {
+          pos = eventIndex < 1 ? [-35.0, 0.0, 25.0] : [-28.0, 0.0, 0.0];
+        } else if (agent.agentId === 'PROJECT-PRIME') {
+          pos = eventIndex < 1 ? [-55.0, 0.0, -15.0] : [-28.0, 0.0, 0.0];
+        } else if (agent.agentId === 'AGENT-SURVEY-001') {
+          pos = eventIndex < 3 ? [-40.0, 0.0, -15.0] : eventIndex === 3 ? [-27.5, 0.25, -15.0] : [15.0, 2.8, -15.0];
+        } else if (agent.agentId === 'AGENT-GEOTECH-001') {
+          pos = eventIndex < 4 ? [-40.0, 0.0, -15.0] : eventIndex === 4 ? [-17.5, 0.9, -5.0] : [5.0, 1.8, 5.0];
+        }
+
+        components.push({
+          id: isCustomer ? 'CUSTOMER-001' : `AGENT-${agent.agentId}`,
+          name: isCustomer ? 'Project Customer / Owner (CUSTOMER-001)' : `${agent.role} (${agent.agentId})`,
+          ifcGuid: `GUID-${agent.agentId}`,
+          ifcType: 'IfcActor',
+          category: isCustomer ? 'Customer' : 'Workforce',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [0.5, 1.75, 0.5],
+          position: pos,
+          orientationDegrees: 0,
+          materialSpecIds: [isCustomer ? 'CUSTOMER-ACTOR' : 'WORKFORCE-AGENT'],
+          propertySets: [{ name: 'Pset_AgentDetails', properties: { AgentId: agent.agentId, Role: agent.role, Discipline: agent.discipline || 'Management', State: agent.currentState || 'ACTIVE' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'WORKFORCE_ROSTER', creator: 'HERMES_LIVE_WORLD', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    // 3. In-World Requirements Board (Checkpoint 1+)
+    if (eventIndex >= 1) {
+      components.push({
+        id: 'BOARD-REQUIREMENTS-LIVE-001',
+        name: 'In-World Requirements Board (14 Autonomous Room & Site Records)',
+        ifcGuid: 'GUID-BOARD-REQ-LIVE-001',
+        ifcType: 'IfcElementAssembly',
+        category: 'Requirements',
+        storeyId: 'STOREY-GROUND',
+        storeyName: 'Ground Level (0.00m Datum)',
+        dimensions: [2.5, 1.8, 0.1],
+        position: [-28.0, 2.0, 0.0],
+        orientationDegrees: 0,
+        materialSpecIds: ['REQUIREMENTS-BOARD-DISPLAY'],
+        propertySets: [{ name: 'Pset_RequirementsDetails', properties: { BuildingType: 'Single Family Residential', Footprint: '263 sq m (2,835 sq ft)', Bedrooms: '3 Bedrooms', Bathrooms: '2 Bathrooms', Budget: '$425,000 USD', WindRating: '160 MPH Wind Load', Foundation: 'Monolithic Post-Tensioned Slab', CustomerApproved: true, TotalRecords: 14 } }],
+        connectedComponentIds: [],
+        openings: [],
+        inspectionStatus: 'PASSED',
+        provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'PROJECT-PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+      });
+    }
+
+    // 4. Survey Marks & Geotech
+    (rawData.surveyMarks || []).forEach((sm: any) => {
+      const created = sm.createdCheckpoint ?? 3;
+      if (eventIndex >= created) {
+        components.push({
+          id: sm.markId || sm.id,
+          name: sm.name || `Survey Stake (${sm.markId})`,
+          ifcGuid: `GUID-${sm.markId || sm.id}`,
+          ifcType: 'IfcSurveyMark',
+          category: 'Site',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [0.15, 1.2, 0.15],
+          position: sm.worldPosition || sm.coordinatesXYZ || [0, 0, 0],
+          orientationDegrees: 0,
+          materialSpecIds: ['WOODEN-CONTROL-STAKE'],
+          propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: sm.markId, Elevation: sm.measuredElevationMeters, Verification: 'RTK GPS Verified' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'SURVEY_ENGINE', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    (rawData.boringSamples || []).forEach((bs: any) => {
+      const created = bs.createdCheckpoint ?? 4;
+      if (eventIndex >= created) {
+        components.push({
+          id: bs.sampleId || bs.id,
+          name: bs.name || 'Geotechnical Soil Boring Sample (SPT-001)',
+          ifcGuid: `GUID-${bs.sampleId || bs.id}`,
+          ifcType: 'IfcGeotechTest',
+          category: 'Geotechnical',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [0.8, 0.2, 0.8],
+          position: bs.worldPosition || [5.0, 1.8, 5.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['SOIL-BORING-SAMPLE'],
+          propertySets: [{ name: 'Pset_GeotechDetails', properties: { BearingCapacity: `${bs.allowableBearingPsf || 3960} PSF`, SoilType: bs.soilType || 'Stiff Clay Loam' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'GEOTECH_LAB', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    // 5. Buildable Envelope
+    if (rawData.buildableEnvelope) {
+      const env = rawData.buildableEnvelope;
+      const created = env.createdCheckpoint ?? 5;
+      if (eventIndex >= created) {
+        components.push({
+          id: env.envelopeId,
+          name: env.name,
+          ifcGuid: `GUID-${env.envelopeId}`,
+          ifcType: 'IfcBuildableEnvelope',
+          category: 'Design',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: env.dimensionsXYZ || [22.0, 9.0, 22.0],
+          position: env.positionXYZ || [0, 0, 0],
+          orientationDegrees: 0,
+          materialSpecIds: ['CONSTRAINT-OVERLAY-FRAME'],
+          propertySets: [{ name: 'Pset_EnvelopeDetails', properties: { MaxFootprintSqM: env.maxFootprintSqM, MaxHeightMeters: env.maxHeightMeters, Setbacks: env.setbacks } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    }
+
+    // 6. Program Volumes
+    (rawData.programVolumes || []).forEach((pv: any) => {
+      const created = pv.createdCheckpoint ?? 6;
+      if (eventIndex >= created) {
+        components.push({
+          id: pv.volumeId || pv.id,
+          name: pv.name,
+          ifcGuid: `GUID-${pv.volumeId || pv.id}`,
+          ifcType: 'IfcSpace',
+          category: 'Architecture',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: pv.dimensionsXYZ || [4.0, 3.0, 4.0],
+          position: pv.positionXYZ || [0, 0, 0],
+          orientationDegrees: 0,
+          materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
+          propertySets: [{ name: 'Pset_SpaceDetails', properties: { TargetAreaSqFt: pv.targetAreaSqFt, RoomType: pv.name } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'ARCHITECTURAL_ENGINE', creator: 'AGENT-ARCH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    // 7. Materials Onsite
+    (rawData.materialsOnsite || []).forEach((m: any) => {
+      const created = m.createdCheckpoint ?? 10;
+      if (eventIndex >= created) {
+        components.push({
+          id: m.materialId || m.id,
+          name: m.materialType || m.name,
+          ifcGuid: `GUID-${m.materialId || m.id}`,
+          ifcType: 'IfcElementAssembly',
+          category: 'Structure',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [2.0, 1.5, 2.0],
+          position: m.currentPosition || [18.0, 0.0, -12.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['DELIVERED-MATERIAL-SPEC'],
+          propertySets: [{ name: 'Pset_MaterialState', properties: { Stage: m.stage, WeightKg: m.weightKg } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'SPATIAL_LOGISTICS_ENGINE', creator: 'MATERIAL_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    // 8. Building Components (Structural & MEP)
+    (rawData.buildingComponents || []).forEach((comp: any) => {
+      const created = comp.createdCheckpoint ?? 12;
+      if (eventIndex >= created) {
+        let pos = comp.positionXYZ || comp.position;
+        let status = comp.inspectionStatus || 'PASSED';
+        if (comp.componentId === 'COMP-PLUMB-MAIN') {
+          if (eventIndex === 19) {
+            pos = [-7.5, 0.3, 0.0];
+            status = 'FAILED_CLASH_DETECTED';
+          } else if (eventIndex >= 20) {
+            pos = [-7.5, 0.3, 0.4];
+            status = 'PASSED';
+          }
+        }
+
+        components.push({
+          id: comp.componentId || comp.id,
+          ifcGuid: `GUID-${comp.componentId || comp.id}`,
+          ifcType: comp.ifcType || (comp.category === 'Foundation' ? 'IfcSlab' : comp.category === 'Roofing' ? 'IfcRoof' : comp.discipline === 'Plumbing' ? 'IfcFlowSegment' : comp.discipline === 'Electrical' ? 'IfcElectricDistributionBoard' : comp.discipline === 'HVAC' ? 'IfcUnitaryEquipment' : 'IfcWall'),
+          name: comp.name,
+          category: comp.category,
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          position: pos,
+          dimensions: comp.dimensionsXYZ || comp.dimensions,
+          orientationDegrees: 0,
+          materialSpecIds: [comp.material || 'GENERIC-SPEC'],
+          propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: status as any,
+          provenance: comp.provenance || { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    return components;
+  }
 
   // 1. Facilities (Genesis eventIndex = 0)
   const facilities = rawData.spatialEntities?.filter((e: any) => e.entityType === 'OPERATIONS_FACILITY') || [];
@@ -202,7 +454,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
   agentStates.forEach((agent: any) => {
     const isCustomer = agent.agentId === 'CUSTOMER-001';
     let pos = agent.worldPosition || [0, 0, 0];
-    if (isVal005 || isVal006) {
+    if (isVal005 || isVal006 || isVal007) {
       if (agent.agentId === 'CUSTOMER-001') {
         pos = eventIndex < 2 ? [-35.0, 0.0, 25.0] : [-28.0, 0.0, 0.0];
       } else if (agent.agentId === 'PROJECT-PRIME') {
@@ -261,12 +513,12 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     return fallbackMin;
   };
 
-  // 3. In-World Requirements Board (Validation 005/006 eventIndex >= 6)
-  if ((isVal005 || isVal006) && eventIndex >= 6) {
+  // 3. In-World Requirements Board (Validation 005/006/007 eventIndex >= 1)
+  if (((isVal005 || isVal006) && eventIndex >= 6) || (isVal007 && eventIndex >= 1)) {
     components.push({
-      id: 'BOARD-REQUIREMENTS-006',
-      name: 'In-World Requirements Board (12 Decision Records)',
-      ifcGuid: 'GUID-BOARD-REQ-006',
+      id: isVal007 ? 'BOARD-REQUIREMENTS-007' : 'BOARD-REQUIREMENTS-006',
+      name: isVal007 ? 'In-World Requirements Board (14 Autonomous Room Records)' : 'In-World Requirements Board (12 Decision Records)',
+      ifcGuid: isVal007 ? 'GUID-BOARD-REQ-007' : 'GUID-BOARD-REQ-006',
       ifcType: 'IfcElementAssembly',
       category: 'Requirements',
       storeyId: 'STOREY-GROUND',
@@ -280,15 +532,15 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           name: 'Pset_RequirementsDetails',
           properties: {
             BuildingType: 'Single Family Residential',
-            Footprint: '110 sq m (1,184 sq ft)',
-            Bedrooms: '2 Bedrooms',
-            Bathrooms: '2 Bathrooms',
+            Footprint: isVal007 ? '263 sq m (2,835 sq ft)' : '110 sq m (1,184 sq ft)',
+            Bedrooms: isVal007 ? '3 Bedrooms' : '2 Bedrooms',
+            Bathrooms: isVal007 ? '2 Bathrooms' : '2 Bathrooms',
             Stories: '1 Story',
-            Budget: '$310,000 USD',
+            Budget: isVal007 ? '$425,000 USD' : '$310,000 USD',
             WindRating: '160 MPH Wind Load / Seismic Zone 4',
             Foundation: 'Monolithic Concrete Slab',
             CustomerApproved: true,
-            TotalRecords: 12,
+            TotalRecords: isVal007 ? 14 : 12,
           },
         },
       ],
@@ -575,8 +827,8 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   }
 
-  // 5. Materials in Staging Yard (Checkpoints 11+ for Val 005/006)
-  if ((isVal005 || isVal006) && eventIndex >= 11) {
+  // 5. Materials in Staging Yard (Checkpoints 11+ for Val 005/006/007)
+  if ((isVal005 || isVal006 || isVal007) && eventIndex >= 11) {
     const mOnsite = rawData.materialsOnsite || [
       { materialId: 'MAT-CONCRETE-PALLET', materialType: '3000 PSI Ready-Mix Concrete Batch', weightKg: 12000, currentPosition: [18.0, 0.0, -12.0], stage: 'DELIVERED_STAGED' },
       { materialId: 'MAT-TIMBER-PALLET-01', materialType: 'SYP #2 Framing Lumber (2x4, 2x6, 2x8 Stack)', weightKg: 4500, currentPosition: [22.0, 0.0, -12.0], stage: 'DELIVERED_STAGED' },
@@ -618,9 +870,33 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   }
 
-  // 6. Building Structural Components & MEP (Checkpoints 12+ for Val 005/006)
-  if (isVal005 || isVal006) {
-    if (eventIndex >= 12) {
+  // 6. Building Structural Components & MEP (Checkpoints 12+ for Val 005/006/007)
+  if (isVal005 || isVal006 || isVal007) {
+    if (isVal007 && rawData.buildingComponents) {
+      rawData.buildingComponents.forEach((comp: any) => {
+        const createdIdx = comp.createdEventIndex !== undefined ? comp.createdEventIndex : 6;
+        if (eventIndex >= createdIdx) {
+          components.push({
+            id: comp.componentId || comp.id,
+            ifcGuid: `GUID-${comp.componentId || comp.id}`,
+            ifcType: comp.ifcType || (comp.category === 'Foundation' ? 'IfcSlab' : comp.category === 'Roofing' ? 'IfcRoof' : comp.discipline === 'Plumbing' ? 'IfcFlowSegment' : comp.discipline === 'Electrical' ? 'IfcElectricDistributionBoard' : comp.discipline === 'HVAC' ? 'IfcUnitaryEquipment' : 'IfcWall'),
+            name: comp.name,
+            category: comp.category,
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Level (0.00m Datum)',
+            position: comp.positionXYZ || comp.position,
+            dimensions: comp.dimensionsXYZ || comp.dimensions,
+            orientationDegrees: 0,
+            materialSpecIds: [comp.material || 'GENERIC-SPEC'],
+            propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: comp.inspectionStatus || 'PASSED',
+            provenance: comp.provenance || { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        }
+      });
+    } else if (eventIndex >= 12) {
       const structComps = [
         { componentId: 'COMP-SLAB-01', name: 'Monolithic Post-Tensioned Concrete Slab (110 m²)', category: 'Foundation', discipline: 'Civil', positionXYZ: [-7.5, -0.15, -1.0], dimensionsXYZ: [15.0, 0.3, 16.0], material: 'Concrete 3000 PSI', installationPhase: 'FOUNDATION' },
         { componentId: 'COMP-WALL-EXT-NORTH', name: 'North Exterior Timber Stud Wall Assembly (160mph Rated)', category: 'Framing', discipline: 'Structural', positionXYZ: [-7.5, 1.5, -9.0], dimensionsXYZ: [15.0, 3.0, 0.2], material: 'SYP #2 2x6 Framing', installationPhase: 'SUPERSTRUCTURE' },
@@ -744,7 +1020,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   initialSelectedComponentId = null,
 }) => {
   // Synchronized active project state
-  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'LIVE-WORLD-VISUAL-VALIDATION-006');
+  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'HERMES-LIVE-HOUSE-001');
 
   useEffect(() => {
     if (propActiveProjectId && propActiveProjectId !== activeProjectId) {
@@ -980,11 +1256,14 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   const handleValidation006Step = async (action: 'step' | 'run-all' | 'reset') => {
     try {
+      const isLiveHouse = activeProjectId === 'HERMES-LIVE-HOUSE-001';
+      const is007 = activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007';
+      const baseUrl = isLiveHouse ? '/api/hermes/live-house' : is007 ? '/api/hermes/validation007' : '/api/hermes/validation006';
       const url = action === 'step'
-        ? '/api/hermes/validation006-step'
+        ? (isLiveHouse ? `${baseUrl}/step` : `${baseUrl}-step`)
         : action === 'run-all'
-        ? '/api/hermes/validation006-run-all'
-        : '/api/hermes/validation006-reset';
+        ? (isLiveHouse ? `${baseUrl}/run-all` : `${baseUrl}-run-all`)
+        : (isLiveHouse ? `${baseUrl}/reset` : `${baseUrl}-reset`);
 
       const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
       if (!res.ok) throw new Error(`HTTP ${res.status} performing ${action}`);
@@ -992,259 +1271,20 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       const vData = data.state;
 
       setHouse0002RawData(vData);
-      setReplayEvents(vData.eventStream || []);
+      setReplayEvents(vData.eventStream || vData.events || []);
+      const cp = vData.currentCheckpoint ?? 0;
+      setCurrentEventIndex(cp);
 
-      const components: any[] = [];
-      if (vData.campusFacilities) {
-        vData.campusFacilities.forEach((f: any) => {
-          components.push({
-            id: f.facilityId,
-            ifcGuid: `GUID-${f.facilityId}`,
-            ifcType: 'IfcSiteFacility',
-            name: f.name,
-            category: f.systemCategory,
-            storeyId: 'STOREY-GROUND',
-            storeyName: 'Ground Site Level (0.00m Datum)',
-            position: f.worldPosition,
-            dimensions: f.dimensions,
-            orientationDegrees: 0,
-            materialSpecIds: ['STEEL-FRAME'],
-            propertySets: [{ name: 'Pset_Facility', properties: { Category: f.systemCategory, Label: f.inWorldLabel } }],
-            connectedComponentIds: [],
-            openings: [],
-            inspectionStatus: 'PASSED',
-            provenance: { source: 'OPERATIONS_CAMPUS', creator: 'HERMES_PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-          });
-        });
-      }
-
-      if (vData.agentSpatialStates) {
-        vData.agentSpatialStates.forEach((a: any) => {
-          components.push({
-            id: a.agentId,
-            ifcGuid: `GUID-${a.agentId}`,
-            ifcType: 'IfcWorkforceAgent',
-            name: `${a.role} (${a.agentId})`,
-            category: a.discipline,
-            storeyId: 'STOREY-GROUND',
-            storeyName: 'Ground Site Level (0.00m Datum)',
-            position: a.worldPosition,
-            dimensions: [0.5, 1.75, 0.5],
-            orientationDegrees: 0,
-            materialSpecIds: ['WORKFORCE-HUMAN-SPEC'],
-            propertySets: [{ name: 'Pset_AgentDetails', properties: { Discipline: a.discipline, State: a.currentState, HomeBase: a.homeBaseEntityId, Role: a.role } }],
-            connectedComponentIds: [],
-            openings: [],
-            inspectionStatus: 'PASSED',
-            provenance: { source: 'WORKFORCE_SPATIAL_ENGINE', creator: 'HERMES_ROSTER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-          });
-        });
-      }
-
-      if (vData.surveyMarks) {
-        vData.surveyMarks.forEach((s: any) => {
-          components.push({
-            id: s.markId,
-            ifcGuid: `GUID-${s.markId}`,
-            ifcType: 'IfcBuildingElementProxy',
-            name: s.label || s.markId,
-            category: 'Site',
-            storeyId: 'STOREY-GROUND',
-            storeyName: 'Ground Site Level (0.00m Datum)',
-            position: s.position,
-            dimensions: [0.15, 0.8, 0.15],
-            orientationDegrees: 0,
-            materialSpecIds: ['SURVEY-STAKE-SPEC'],
-            propertySets: [{ name: 'Pset_SurveyControl', properties: { Elevation: s.elevationFt } }],
-            connectedComponentIds: [],
-            openings: [],
-            inspectionStatus: 'PASSED',
-            provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-          });
-        });
-      }
-
-      if (vData.materialsOnsite) {
-        vData.materialsOnsite.forEach((m: any) => {
-          components.push({
-            id: m.materialId,
-            ifcGuid: `GUID-${m.materialId}`,
-            ifcType: 'IfcElementAssembly',
-            name: m.name,
-            category: m.category,
-            storeyId: 'STOREY-GROUND',
-            storeyName: 'Ground Site Level (0.00m Datum)',
-            position: m.positionXYZ,
-            dimensions: m.dimensionsXYZ,
-            orientationDegrees: 0,
-            materialSpecIds: ['MATERIAL-ONSITE-SPEC'],
-            propertySets: [{ name: 'Pset_MaterialState', properties: { Category: m.category, Status: m.status } }],
-            connectedComponentIds: [],
-            openings: [],
-            inspectionStatus: 'PASSED',
-            provenance: { source: 'LOGISTICS_DEPOT', creator: 'AGENT-LOGISTICS-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-          });
-        });
-      }
-
-      // Customer 001 Actor (Checkpoints 2+)
-      if (vData.currentCheckpoint >= 2) {
-        const custLoc = vData.currentCheckpoint >= 3 ? [-28.0, 0.0, 0.0] : [-35.0, 0.0, 25.0];
-        components.push({
-          id: 'CUSTOMER-001',
-          name: 'Project Customer / Owner (CUSTOMER-001)',
-          ifcGuid: 'GUID-CUSTOMER-001',
-          ifcType: 'IfcActor',
-          category: 'Customer',
-          storeyId: 'STOREY-GROUND',
-          storeyName: 'Ground Level (0.00m Datum)',
-          dimensions: [0.5, 1.75, 0.5],
-          position: custLoc,
-          orientationDegrees: 0,
-          materialSpecIds: ['CUSTOMER-ACTOR'],
-          propertySets: [{ name: 'Pset_CustomerDetails', properties: { Role: 'Project Customer / Owner', Status: 'ACTIVE_INTAKE' } }],
-          connectedComponentIds: [],
-          openings: [],
-          inspectionStatus: 'PASSED',
-          provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'HERMES_PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-        });
-      }
-
-      // Requirements Board (Checkpoints 6+)
-      if (vData.currentCheckpoint >= 6 && vData.requirementDecisions?.length > 0) {
-        components.push({
-          id: 'BOARD-REQUIREMENTS-006',
-          name: 'In-World Requirements Board (12 Decision Records)',
-          ifcGuid: 'GUID-BOARD-REQ-006',
-          ifcType: 'IfcElementAssembly',
-          category: 'Requirements',
-          storeyId: 'STOREY-GROUND',
-          storeyName: 'Ground Level (0.00m Datum)',
-          dimensions: [2.5, 1.8, 0.1],
-          position: [-28.0, 2.0, 0.0],
-          orientationDegrees: 0,
-          materialSpecIds: ['REQUIREMENTS-BOARD-DISPLAY'],
-          propertySets: [{ name: 'Pset_RequirementsDetails', properties: { BuildingType: 'Single Family Residential', Footprint: '110 sq m (1,184 sq ft)', Budget: '$310,000 USD', WindRating: '160 MPH', TotalRecords: 12 } }],
-          connectedComponentIds: [],
-          openings: [],
-          inspectionStatus: 'PASSED',
-          provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'PROJECT-PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-        });
-      }
-
-      // Total Station, RTK Rover & Geotech Rig (Checkpoints 7+)
-      if (vData.currentCheckpoint >= 7) {
-        components.push({
-          id: 'EQUIP-TOTAL-STATION-01',
-          name: 'Leica TS16 Robotic Total Station Tripod',
-          ifcGuid: 'GUID-EQUIP-TS16',
-          ifcType: 'IfcEquipment',
-          category: 'Equipment',
-          storeyId: 'STOREY-GROUND',
-          storeyName: 'Ground Level (0.00m Datum)',
-          dimensions: [0.6, 1.5, 0.6],
-          position: [-15.0, 0.5, -15.0],
-          orientationDegrees: 0,
-          materialSpecIds: ['SURVEY-EQUIPMENT'],
-          propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'Total Station', Accuracy: '1mm angular' } }],
-          connectedComponentIds: [],
-          openings: [],
-          inspectionStatus: 'PASSED',
-          provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-        });
-        components.push({
-          id: 'EQUIP-GEOTECH-RIG-01',
-          name: 'Mobile Geotechnical SPT Drill Rig',
-          ifcGuid: 'GUID-EQUIP-RIG',
-          ifcType: 'IfcEquipment',
-          category: 'Equipment',
-          storeyId: 'STOREY-GROUND',
-          storeyName: 'Ground Level (0.00m Datum)',
-          dimensions: [2.0, 3.0, 1.5],
-          position: [5.0, 1.8, 5.0],
-          orientationDegrees: 0,
-          materialSpecIds: ['GEOTECH-DRILL-RIG'],
-          propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'SPT Drill Rig', Method: 'Standard Penetration Test' } }],
-          connectedComponentIds: [],
-          openings: [],
-          inspectionStatus: 'PASSED',
-          provenance: { source: 'CIVIL_DEPOT', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-        });
-      }
-
-      // Buildable Envelope (Checkpoints 8+)
-      if (vData.currentCheckpoint >= 8 && vData.buildableEnvelope) {
-        components.push({
-          id: 'ENVELOPE-V6-001',
-          name: 'Buildable Envelope Site Constraint Overlay (484 m² Max Footprint)',
-          ifcGuid: 'GUID-ENVELOPE-V6-001',
-          ifcType: 'IfcBuildableEnvelope',
-          category: 'Design',
-          storeyId: 'STOREY-GROUND',
-          storeyName: 'Ground Level (0.00m Datum)',
-          dimensions: [22.0, 9.0, 22.0],
-          position: [0.0, 0.5, 0.0],
-          orientationDegrees: 0,
-          materialSpecIds: ['CONSTRAINT-OVERLAY-FRAME'],
-          propertySets: [{ name: 'Pset_EnvelopeDetails', properties: { MaxFootprintSqM: 484.0, Setbacks: '4m Front/Rear/Sides' } }],
-          connectedComponentIds: [],
-          openings: [],
-          inspectionStatus: 'PASSED',
-          provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-        });
-      }
-
-      // 3D Spatial Room Volumes (Checkpoints 9+)
-      if (vData.currentCheckpoint >= 9 && vData.roomVolumes) {
-        vData.roomVolumes.forEach((rv: any) => {
-          components.push({
-            id: rv.roomId,
-            name: rv.name,
-            ifcGuid: `GUID-${rv.roomId}`,
-            ifcType: 'IfcSpace',
-            category: 'Architecture',
-            storeyId: 'STOREY-GROUND',
-            storeyName: 'Ground Level (0.00m Datum)',
-            dimensions: rv.dimensionsXYZ,
-            position: rv.positionXYZ,
-            orientationDegrees: 0,
-            materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
-            propertySets: [{ name: 'Pset_SpaceDetails', properties: { TargetAreaSqFt: rv.areaSqFt, RoomType: rv.name } }],
-            connectedComponentIds: [],
-            openings: [],
-            inspectionStatus: 'PASSED',
-            provenance: { source: 'ARCHITECTURAL_ENGINE', creator: 'AGENT-ARCH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-          });
-        });
-      }
-
-      if (vData.buildingComponents) {
-        vData.buildingComponents.forEach((c: any) => {
-          components.push({
-            id: c.componentId,
-            ifcGuid: `GUID-${c.componentId}`,
-            ifcType: c.category === 'Foundation' ? 'IfcSlab' : c.category === 'Roofing' ? 'IfcRoof' : c.discipline === 'Plumbing' ? 'IfcFlowSegment' : c.discipline === 'Electrical' ? 'IfcElectricDistributionBoard' : c.discipline === 'HVAC' ? 'IfcUnitaryEquipment' : 'IfcWall',
-            name: c.name,
-            category: c.category,
-            storeyId: 'STOREY-GROUND',
-            storeyName: 'Ground Level (0.00m Datum)',
-            position: c.positionXYZ,
-            dimensions: c.dimensionsXYZ,
-            orientationDegrees: 0,
-            materialSpecIds: [c.material || 'GENERIC-SPEC'],
-            propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: c.discipline, InstallationPhase: c.installationPhase } }],
-            connectedComponentIds: [],
-            openings: [],
-            inspectionStatus: 'PASSED',
-            provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
-          });
-        });
-      }
+      const components = computeReducedComponentsForEvent(cp, vData);
 
       const normalizedProj: ReferenceBimProject = {
         projectId: vData.projectId,
         name: vData.projectName,
-        description: 'Master Clean-Room Visual Causality Validation Project 006',
+        description: isLiveHouse
+          ? 'HERMES Clean-Room Autonomous Live Construction OS Project 001'
+          : is007
+          ? 'Master Clean-Room Autonomous Project Generation 007'
+          : 'Master Clean-Room Visual Causality Validation Project 006',
         classification: 'GENESIS_LIVE',
         immutableSource: false,
         academyWritable: true,
@@ -1267,7 +1307,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
       setProjectData(normalizedProj);
     } catch (err: any) {
-      console.error('Failed stepping validation006:', err);
+      console.error('Failed stepping validation:', err);
     }
   };
 
@@ -1361,7 +1401,62 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         setCurrentEventIndex(0);
         setIsPlayingTimeline(false);
 
-        if (activeProjectId === 'ACADEMY-HOUSE-0002') {
+        if (activeProjectId === 'HERMES-LIVE-HOUSE-001') {
+          const vRes = await fetch('/api/hermes/live-house/world');
+          if (!vRes.ok || !vRes.headers.get('content-type')?.includes('application/json')) {
+            throw new Error(`HTTP ${vRes.status} loading live house world`);
+          }
+          const vData = await vRes.json();
+          if (!mounted) return;
+
+          setHouse0002RawData(vData);
+          setReplayEvents(vData.events || []);
+          const curCp = vData.currentCheckpoint ?? 0;
+          setCurrentEventIndex(curCp);
+
+          const initialComps = computeReducedComponentsForEvent(curCp, vData);
+
+          const normalizedProj: ReferenceBimProject = {
+            projectId: vData.projectId,
+            name: vData.projectName,
+            description: 'HERMES Clean-Room Autonomous Live Construction OS Project 001',
+            classification: 'CANONICAL_LIVE_WORLD',
+            immutableSource: false,
+            academyWritable: true,
+            hermesGenerated: true,
+            referenceModel: false,
+            license: 'HERMES OpenBIM License',
+            sourceUri: `hermes://${vData.projectId}`,
+            spatialHierarchy: {
+              projectId: vData.projectId,
+              ifcGuid: `GUID-${vData.projectId}`,
+              siteId: `SITE-${vData.projectId}`,
+              siteGuid: `SITE-GUID-${vData.projectId}`,
+              buildingId: vData.projectName,
+              buildingGuid: `BUILDING-GUID-${vData.projectId}`,
+              storeys: [
+                {
+                  id: 'STOREY-GROUND',
+                  ifcGuid: `STOREY-GROUND-GUID-${vData.projectId}`,
+                  name: 'Ground Level (0.00m Datum)',
+                  elevationMeters: 0,
+                  heightMeters: 3.0,
+                  spaces: [],
+                },
+              ],
+            },
+            components: initialComps,
+            relationships: {
+              containedInStorey: {},
+              containedInSpace: {},
+              hostsOpening: {},
+              systemConnectivity: {},
+            },
+          };
+
+          setProjectData(normalizedProj);
+          setLoading(false);
+        } else if (activeProjectId === 'ACADEMY-HOUSE-0002') {
           const worldRes = await fetch('/api/hermes/house0002-spatial-world');
           if (!worldRes.ok || !worldRes.headers.get('content-type')?.includes('application/json')) {
             throw new Error(`HTTP ${worldRes.status} loading house0002 spatial world`);
@@ -2476,6 +2571,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               onChange={(e) => handleSwitchProject(e.target.value)}
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
+              <option value="HERMES-LIVE-HOUSE-001">HERMES-LIVE-HOUSE-001 (Canonical Live Construction World — Clean Project 001)</option>
+              <option value="LIVE-WORLD-AUTONOMOUS-GENERATION-007">LIVE-WORLD-AUTONOMOUS-GENERATION-007 (Master Autonomous Project Generation 007)</option>
               <option value="LIVE-WORLD-VISUAL-VALIDATION-006">LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)</option>
               <option value="LIVE-WORLD-VISUAL-VALIDATION-005">LIVE-WORLD-VISUAL-VALIDATION-005 (Frozen Fixture - Failed Visual Validation)</option>
               <option value="LIVE-WORLD-VISUAL-VALIDATION-004">LIVE-WORLD-VISUAL-VALIDATION-004 (Clean-Room Validation 004)</option>
@@ -3145,16 +3242,16 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             <span>HERMES BIM SPATIAL WORKSPACE ({activeProjectId})</span>
           </div>
 
-          {/* Validation-006 Causal Step Control Bar */}
-          {activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006' && (
+          {/* Live Construction World & Validation Step Control Bar */}
+          {(activeProjectId === 'HERMES-LIVE-HOUSE-001' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006' || activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') && (
             <div className="absolute top-3 right-4 z-20 bg-slate-900/95 text-white backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-700 shadow-xl flex items-center gap-3 text-xs font-mono">
               <div className="flex flex-col">
                 <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / 14
+                  Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / {activeProjectId === 'HERMES-LIVE-HOUSE-001' ? 30 : activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 17 : 14}
                 </span>
-                <span className="font-bold text-white max-w-[260px] truncate">
-                  {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — WORLD GENESIS'}
+                <span className="font-bold text-white max-w-[280px] truncate">
+                  {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — CLEAN WORLD GENESIS'}
                 </span>
               </div>
 
@@ -3171,7 +3268,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 <button
                   onClick={() => handleValidation006Step('step')}
                   className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold border border-blue-500 text-[11px] shadow-xs transition flex items-center gap-1 disabled:opacity-50"
-                  disabled={house0002RawData?.currentCheckpoint >= 14}
+                  disabled={house0002RawData?.currentCheckpoint >= (activeProjectId === 'HERMES-LIVE-HOUSE-001' ? 30 : activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 17 : 14)}
                 >
                   <span>Step (+1)</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -3182,7 +3279,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                   className="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold border border-purple-500 text-[11px] shadow-xs transition flex items-center gap-1"
                 >
                   <Play className="w-3.5 h-3.5" />
-                  <span>Run All (0→14)</span>
+                  <span>Run All (0→{activeProjectId === 'HERMES-LIVE-HOUSE-001' ? 30 : activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 17 : 14})</span>
                 </button>
               </div>
             </div>

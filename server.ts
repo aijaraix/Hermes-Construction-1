@@ -48,6 +48,8 @@ import { Validation003Engine } from './server/validation003Engine';
 import { Validation004Engine } from './server/validation004Engine';
 import { Validation005Engine } from './server/validation005Engine';
 import { Validation006Engine } from './server/validation006Engine';
+import { Validation007Engine } from './server/validation007Engine';
+import { HermesLiveHouseEngine } from './server/hermesLiveHouseEngine';
 
 async function startServer() {
   const app = express();
@@ -646,6 +648,164 @@ async function startServer() {
     }
   });
 
+  // Validation 007 Endpoints
+  app.get('/api/hermes/validation007-spatial-world', (req, res) => {
+    try {
+      const state = Validation007Engine.getCanonicalWorldState();
+      res.json(state);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation007-step', (req, res) => {
+    try {
+      const targetStep = req.body?.targetStep;
+      const variation = req.body?.variation || 'STANDARD';
+      let state;
+      if (typeof targetStep === 'number') {
+        state = Validation007Engine.advanceToStep(targetStep, variation);
+      } else {
+        const current = Validation007Engine.getCanonicalWorldState();
+        state = Validation007Engine.advanceToStep(current.currentStepIndex + 1, variation);
+      }
+      res.json({
+        state,
+        message: `Validation 007 step advanced to Checkpoint ${state.currentCheckpoint}: ${state.diagnostics.checkpointName}`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation007-run-all', (req, res) => {
+    try {
+      const variation = req.body?.variation || 'STANDARD';
+      const state = Validation007Engine.advanceToStep(17, variation);
+      res.json({
+        state,
+        message: 'Master Clean-Room Autonomous Project Generation sequence executed through Checkpoint 17.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation007-reset', (req, res) => {
+    try {
+      const variation = req.body?.variation || 'STANDARD';
+      const state = Validation007Engine.initialize(variation);
+      res.json({
+        state,
+        message: 'Validation 007 state reset to Checkpoint 0 — Clean Project Initialized.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/validation007-proof-test', (req, res) => {
+    try {
+      const variation = (req.query.variation as any) || 'STANDARD';
+      Validation007Engine.initialize(variation);
+      const run1Matrix: any[] = [];
+      for (let cp = 0; cp <= 17; cp++) {
+        const flag = Validation007Engine.flagCheckpoint(cp);
+        run1Matrix.push(flag);
+      }
+
+      Validation007Engine.initialize(variation);
+      const run2Matrix: any[] = [];
+      for (let cp = 0; cp <= 17; cp++) {
+        const flag = Validation007Engine.flagCheckpoint(cp);
+        run2Matrix.push(flag);
+      }
+
+      let deterministic = true;
+      for (let i = 0; i <= 17; i++) {
+        if (run1Matrix[i].evidence.worldStateHash !== run2Matrix[i].evidence.worldStateHash) {
+          deterministic = false;
+        }
+      }
+
+      const allPassed = run1Matrix.every((r) => r.passed) && deterministic;
+
+      res.json({
+        validationId: 'LIVE-WORLD-AUTONOMOUS-GENERATION-007',
+        classification: allPassed ? 'AUTONOMOUS_GENERATION_VERIFIED' : 'PARTIALLY_VALIDATED',
+        variation,
+        deterministic,
+        allCheckpointsPassed: allPassed,
+        totalCheckpoints: 18,
+        matrix: run1Matrix,
+        timestamp: new Date().toISOString()
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  // HERMES-LIVE-HOUSE-001 Canonical Live Construction OS Endpoints
+  app.get('/api/hermes/live-house/world', (req, res) => {
+    try {
+      const state = HermesLiveHouseEngine.getCanonicalWorldState();
+      res.json(state);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/live-house/step', (req, res) => {
+    try {
+      const targetStep = req.body?.targetStep;
+      let state;
+      if (typeof targetStep === 'number') {
+        state = HermesLiveHouseEngine.advanceToStep(targetStep);
+      } else {
+        state = HermesLiveHouseEngine.advanceOneStep();
+      }
+      res.json({
+        state,
+        message: `HERMES-LIVE-HOUSE-001 advanced to Checkpoint ${state.currentCheckpoint}: ${state.diagnostics.checkpointName}`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/live-house/run-all', (req, res) => {
+    try {
+      const state = HermesLiveHouseEngine.advanceToStep(30);
+      res.json({
+        state,
+        message: 'HERMES-LIVE-HOUSE-001 executed full construction sequence through Checkpoint 30.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/live-house/reset', (req, res) => {
+    try {
+      const state = HermesLiveHouseEngine.resetToGenesis();
+      res.json({
+        state,
+        message: 'HERMES-LIVE-HOUSE-001 reset to Checkpoint 0 — Clean World Genesis.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/live-house/events', (req, res) => {
+    try {
+      const state = HermesLiveHouseEngine.getCanonicalWorldState();
+      res.json(state.events || []);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
   app.get('/api/hermes/genesis-spatial-world', (req, res) => {
     try {
       const projectId = (req.query.projectId as string) || 'LIVE-WORLD-GENESIS-TEST-001';
@@ -814,11 +974,26 @@ async function startServer() {
       }
     }
 
-    // Ensure LIVE-WORLD-VISUAL-VALIDATION-006 is included and sorted FIRST
+    // Ensure LIVE-WORLD-AUTONOMOUS-GENERATION-007 is included and sorted FIRST
+    if (!summaries.some(p => p.id === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007')) {
+      const v7State = Validation007Engine.getCanonicalWorldState();
+      if (v7State) {
+        summaries.unshift({
+          id: v7State.projectId,
+          name: v7State.projectName,
+          buildingType: 'Single-Family Residential (Autonomous Generation 007)',
+          status: 'planning',
+          overallCompletionPct: 0,
+          classification: 'GENESIS_LIVE',
+        });
+      }
+    }
+
+    // Ensure LIVE-WORLD-VISUAL-VALIDATION-006 is included
     if (!summaries.some(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-006')) {
       const v6State = Validation006Engine.getCanonicalWorldState();
       if (v6State) {
-        summaries.unshift({
+        summaries.push({
           id: v6State.projectId,
           name: v6State.projectName,
           buildingType: 'Single-Family Residential (Clean-Room Validation 006)',
@@ -844,11 +1019,20 @@ async function startServer() {
       }
     }
 
-    const sortedSummaries = summaries.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? 1 : 0));
+    const sortedSummaries = summaries.sort((a, b) => (
+      a.id === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? -1 :
+      b.id === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 1 :
+      a.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? -1 :
+      b.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? 1 : 0
+    ));
     res.json(sortedSummaries);
   });
 
   app.get('/api/projects/:id', (req, res) => {
+    if (req.params.id === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
+      const v7State = Validation007Engine.getCanonicalWorldState();
+      if (v7State) return res.json(v7State);
+    }
     if (req.params.id === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
       const v6State = Validation006Engine.getCanonicalWorldState();
       if (v6State) return res.json(v6State);
