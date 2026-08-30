@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import * as WebIFC from 'web-ifc';
+import { useHermesProject } from '../context/HermesProjectContext';
 import { Phase2WorldOverlay } from './Phase2WorldOverlay';
 import {
   Layers,
@@ -1014,19 +1015,23 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
 }
 
 export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
-  activeProjectId: propActiveProjectId,
   onSelectProject,
   onOpenSystemDrawer,
   initialSelectedComponentId = null,
 }) => {
-  // Synchronized active project state
-  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'HERMES-LIVE-HOUSE-001');
+  // Consume canonical project state directly from HermesProjectContext
+  const {
+    activeProjectId,
+    activeProjectMeta,
+    worldState,
+    connectionStatus,
+    stepForward,
+    runAll,
+    resetWorld,
+    setActiveProjectId,
+  } = useHermesProject();
 
-  useEffect(() => {
-    if (propActiveProjectId && propActiveProjectId !== activeProjectId) {
-      setActiveProjectId(propActiveProjectId);
-    }
-  }, [propActiveProjectId]);
+  const [intakeModalOpen, setIntakeModalOpen] = useState<boolean>(false);
 
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [allProjectsList, setAllProjectsList] = useState<Array<{ id: string; name: string; buildingType?: string }>>([]);
@@ -1256,58 +1261,15 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   const handleValidation006Step = async (action: 'step' | 'run-all' | 'reset') => {
     try {
-      const isLiveHouse = activeProjectId === 'HERMES-LIVE-HOUSE-001';
-      const is007 = activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007';
-      const baseUrl = isLiveHouse ? '/api/hermes/live-house' : is007 ? '/api/hermes/validation007' : '/api/hermes/validation006';
-      const url = action === 'step'
-        ? (isLiveHouse ? `${baseUrl}/step` : `${baseUrl}-step`)
-        : action === 'run-all'
-        ? (isLiveHouse ? `${baseUrl}/run-all` : `${baseUrl}-run-all`)
-        : (isLiveHouse ? `${baseUrl}/reset` : `${baseUrl}-reset`);
-
-      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-      if (!res.ok) throw new Error(`HTTP ${res.status} performing ${action}`);
-      const data = await res.json();
-      const vData = data.state;
-
-      setHouse0002RawData(vData);
-      setReplayEvents(vData.eventStream || vData.events || []);
-      const cp = vData.currentCheckpoint ?? 0;
-      setCurrentEventIndex(cp);
-
-      const components = computeReducedComponentsForEvent(cp, vData);
-
-      const normalizedProj: ReferenceBimProject = {
-        projectId: vData.projectId,
-        name: vData.projectName,
-        description: isLiveHouse
-          ? 'HERMES Clean-Room Autonomous Live Construction OS Project 001'
-          : is007
-          ? 'Master Clean-Room Autonomous Project Generation 007'
-          : 'Master Clean-Room Visual Causality Validation Project 006',
-        classification: 'GENESIS_LIVE',
-        immutableSource: false,
-        academyWritable: true,
-        hermesGenerated: true,
-        referenceModel: false,
-        license: 'HERMES OpenBIM License',
-        sourceUri: `hermes://${vData.projectId}`,
-        spatialHierarchy: {
-          projectId: vData.projectId,
-          ifcGuid: `GUID-${vData.projectId}`,
-          siteId: `SITE-${vData.projectId}`,
-          siteGuid: `SITE-GUID-${vData.projectId}`,
-          buildingId: vData.projectName,
-          buildingGuid: `BUILDING-GUID-${vData.projectId}`,
-          storeys: [{ id: 'STOREY-GROUND', ifcGuid: `STOREY-GROUND-GUID-${vData.projectId}`, name: 'Ground Level (0.00m Datum)', elevationMeters: 0, heightMeters: 3.0, spaces: [] }]
-        },
-        components,
-        relationships: { containedInStorey: {}, containedInSpace: {}, hostsOpening: {}, systemConnectivity: {} }
-      };
-
-      setProjectData(normalizedProj);
+      if (action === 'step') {
+        await stepForward();
+      } else if (action === 'run-all') {
+        await runAll();
+      } else if (action === 'reset') {
+        await resetWorld();
+      }
     } catch (err: any) {
-      console.error('Failed stepping validation:', err);
+      console.error('Failed stepping project:', err);
     }
   };
 
@@ -1369,11 +1331,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       });
   }, []);
 
-  // Fetch Project Data & Reset Scene on Active Project Switch
+  // Fetch Project Data & Sync Scene whenever worldState or activeProjectId changes
   useEffect(() => {
     let mounted = true;
 
-    async function loadActiveProjectData() {
+    async function syncWorldState() {
       try {
         setLoading(true);
         setError(null);
@@ -1398,643 +1360,66 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         setIsolatedCompId(null);
         setHiddenCompIds(new Set());
         setIfcLoaded(false);
-        setCurrentEventIndex(0);
-        setIsPlayingTimeline(false);
 
-        if (activeProjectId === 'HERMES-LIVE-HOUSE-001') {
-          const vRes = await fetch('/api/hermes/live-house/world');
-          if (!vRes.ok || !vRes.headers.get('content-type')?.includes('application/json')) {
-            throw new Error(`HTTP ${vRes.status} loading live house world`);
+        let dataToUse = worldState;
+
+        if (!dataToUse || dataToUse.projectId !== activeProjectId) {
+          const res = await fetch(`/api/hermes/projects/${activeProjectId}/world`);
+          if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
+            dataToUse = await res.json();
           }
-          const vData = await vRes.json();
-          if (!mounted) return;
-
-          setHouse0002RawData(vData);
-          setReplayEvents(vData.events || []);
-          const curCp = vData.currentCheckpoint ?? 0;
-          setCurrentEventIndex(curCp);
-
-          const initialComps = computeReducedComponentsForEvent(curCp, vData);
-
-          const normalizedProj: ReferenceBimProject = {
-            projectId: vData.projectId,
-            name: vData.projectName,
-            description: 'HERMES Clean-Room Autonomous Live Construction OS Project 001',
-            classification: 'CANONICAL_LIVE_WORLD',
-            immutableSource: false,
-            academyWritable: true,
-            hermesGenerated: true,
-            referenceModel: false,
-            license: 'HERMES OpenBIM License',
-            sourceUri: `hermes://${vData.projectId}`,
-            spatialHierarchy: {
-              projectId: vData.projectId,
-              ifcGuid: `GUID-${vData.projectId}`,
-              siteId: `SITE-${vData.projectId}`,
-              siteGuid: `SITE-GUID-${vData.projectId}`,
-              buildingId: vData.projectName,
-              buildingGuid: `BUILDING-GUID-${vData.projectId}`,
-              storeys: [
-                {
-                  id: 'STOREY-GROUND',
-                  ifcGuid: `STOREY-GROUND-GUID-${vData.projectId}`,
-                  name: 'Ground Level (0.00m Datum)',
-                  elevationMeters: 0,
-                  heightMeters: 3.0,
-                  spaces: [],
-                },
-              ],
-            },
-            components: initialComps,
-            relationships: {
-              containedInStorey: {},
-              containedInSpace: {},
-              hostsOpening: {},
-              systemConnectivity: {},
-            },
-          };
-
-          setProjectData(normalizedProj);
-          setLoading(false);
-        } else if (activeProjectId === 'ACADEMY-HOUSE-0002') {
-          const worldRes = await fetch('/api/hermes/house0002-spatial-world');
-          if (!worldRes.ok || !worldRes.headers.get('content-type')?.includes('application/json')) {
-            throw new Error(`HTTP ${worldRes.status} loading house0002 spatial world`);
-          }
-          const worldData = await worldRes.json();
-          if (!mounted) return;
-
-          setHouse0002RawData(worldData);
-          const evs = worldData.events || [];
-          setReplayEvents(evs);
-          if (evs.length > 0) {
-            setCurrentEventIndex(evs.length - 1);
-          }
-
-          const components: ReferenceBimComponent[] = [];
-
-          // 1. Facilities (7 Facilities)
-          if (worldData.spatialEntities) {
-            worldData.spatialEntities.forEach((e: any) => {
-              components.push({
-                id: e.entityId,
-                ifcGuid: `GUID-${e.entityId}`,
-                ifcType: 'IfcBuildingElementProxy',
-                name: e.name,
-                category: 'Site',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: e.worldPosition || [0, 0, 0],
-                dimensions: e.dimensions || [12, 2.9, 2.4],
-                orientationDegrees: 0,
-                materialSpecIds: ['SITE-FACILITY-SPEC'],
-                propertySets: [
-                  { name: 'Pset_FacilityDetails', properties: { EntityType: e.entityType, ProjectId: e.projectId, Status: e.status } },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'HOUSE_0002_ENGINE',
-                  creator: 'ACADEMY-HOUSE-0002',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // 2. Program Volumes (3D Room Blocks)
-          if (worldData.programVolumes) {
-            worldData.programVolumes.forEach((p: any) => {
-              components.push({
-                id: p.id,
-                ifcGuid: `GUID-${p.id}`,
-                ifcType: 'IfcSpace',
-                name: `[Program Volume] ${p.name}`,
-                category: 'Architecture',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: p.worldPositionMeters || [0, 0, 0],
-                dimensions: p.dimensionsMeters || [3, 2.8, 3],
-                orientationDegrees: 0,
-                materialSpecIds: ['PROGRAM-VOLUME-SPEC'],
-                propertySets: [
-                  {
-                    name: 'Pset_ProgramDetails',
-                    properties: {
-                      TargetAreaSqFt: p.targetAreaSqFt,
-                      RoomType: p.roomType,
-                      AdjacentRooms: Array.isArray(p.adjacentRooms) ? p.adjacentRooms.join(', ') : '',
-                    },
-                  },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'PRIME_PROGRAM_ENGINE',
-                  creator: 'PROJECT-PRIME',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // 3. Workforce Agents (68 Roster Agents)
-          if (worldData.agentSpatialStates) {
-            worldData.agentSpatialStates.forEach((a: any) => {
-              components.push({
-                id: `AGENT-${a.agentId}`,
-                ifcGuid: `GUID-AGENT-${a.agentId}`,
-                ifcType: 'IfcActor',
-                name: `${a.role} (${a.agentId})`,
-                category: 'Structure',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: a.worldPosition || [0, 0, 0],
-                dimensions: a.workEnvelope || [0.5, 1.75, 0.5],
-                orientationDegrees: 0,
-                materialSpecIds: ['WORKFORCE-HUMAN-SPEC'],
-                propertySets: [
-                  {
-                    name: 'Pset_AgentDetails',
-                    properties: {
-                      Discipline: a.discipline,
-                      State: a.currentState,
-                      HomeBase: a.homeBaseEntityId,
-                      ReportsTo: a.reportsTo || 'PRIME',
-                      Role: a.role,
-                    },
-                  },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'WORKFORCE_SPATIAL_ENGINE',
-                  creator: 'HERMES_ROSTER',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // 4. Survey Control Stakes
-          if (worldData.surveyMarks) {
-            worldData.surveyMarks.forEach((s: any) => {
-              components.push({
-                id: s.markId,
-                ifcGuid: `GUID-${s.markId}`,
-                ifcType: 'IfcBuildingElementProxy',
-                name: s.name,
-                category: 'Site',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: s.worldPosition || [0, 0, 0],
-                dimensions: [0.15, 0.8, 0.15],
-                orientationDegrees: 0,
-                materialSpecIds: ['SURVEY-STAKE-SPEC'],
-                propertySets: [
-                  {
-                    name: 'Pset_SurveyControl',
-                    properties: {
-                      Elevation: s.measuredElevationMeters,
-                      ToleranceMm: s.toleranceMm,
-                      Surveyor: s.surveyorAgentId,
-                    },
-                  },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'SURVEY_ENGINE',
-                  creator: s.surveyorAgentId,
-                  verifiedDate: s.verifiedTimestamp,
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // 5. Design BIM Revision 1 Components (11 Built from ZERO)
-          if (worldData.bimComponents) {
-            worldData.bimComponents.forEach((c: any) => {
-              components.push({
-                id: c.id,
-                ifcGuid: `GUID-${c.id}`,
-                ifcType:
-                  c.type === 'wall'
-                    ? 'IfcWall'
-                    : c.type === 'slab'
-                    ? 'IfcSlab'
-                    : c.type === 'door'
-                    ? 'IfcDoor'
-                    : c.type === 'window'
-                    ? 'IfcWindow'
-                    : c.type === 'roof'
-                    ? 'IfcRoof'
-                    : 'IfcBuildingElementProxy',
-                name: c.assembly,
-                category: (c.system as any) || 'Structure',
-                storeyId: c.floor === 2 ? 'STOREY-ROOF' : 'STOREY-GROUND',
-                storeyName: c.floor === 2 ? 'Roof Level' : 'Ground Level',
-                position: c.geometry.position,
-                dimensions: c.geometry.dimensions,
-                orientationDegrees: 0,
-                materialSpecIds: c.materials ? c.materials.map((m: any) => m.name) : ['CONCRETE-4000PSI'],
-                propertySets: [
-                  {
-                    name: 'Pset_DesignBimDetails',
-                    properties: {
-                      System: c.system,
-                      Room: c.room || 'Main Structure',
-                      FireRatingHours: c.fireRatingHours || 2,
-                      IsExterior: c.isExterior ? 'YES' : 'NO',
-                      InspectionState: c.inspectionState || 'PASSED',
-                    },
-                  },
-                ],
-                connectedComponentIds: c.connectedComponentIds || [],
-                openings: c.openings || [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'DESIGN_BIM_REV1',
-                  creator: 'SPATIAL-BIM-PRIME',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          // 6. Materials
-          if (worldData.materials) {
-            worldData.materials.forEach((m: any) => {
-              components.push({
-                id: m.materialId,
-                ifcGuid: `GUID-${m.materialId}`,
-                ifcType: 'IfcElementAssembly',
-                name: m.materialType,
-                category: 'Structure',
-                storeyId: 'STOREY-GROUND',
-                storeyName: 'Ground Site Level (0.00m Datum)',
-                position: m.currentPosition || [0, 0, 0],
-                dimensions: m.dimensions || [1.2, 1.2, 2.4],
-                orientationDegrees: 0,
-                materialSpecIds: ['CMU-8IN-MASONRY'],
-                propertySets: [
-                  {
-                    name: 'Pset_MaterialState',
-                    properties: {
-                      Stage: m.stage,
-                      WeightKg: m.weightKg,
-                      ClearanceMeters: m.clearanceMeters,
-                    },
-                  },
-                ],
-                connectedComponentIds: [],
-                openings: [],
-                inspectionStatus: 'PASSED',
-                provenance: {
-                  source: 'SPATIAL_LOGISTICS_ENGINE',
-                  creator: 'MATERIAL_MANAGER',
-                  verifiedDate: new Date().toISOString(),
-                  license: 'HERMES',
-                },
-              });
-            });
-          }
-
-          const normalizedProj: ReferenceBimProject = {
-            projectId: 'ACADEMY-HOUSE-0002',
-            name: 'ACADEMY-HOUSE-0002 (Tampa House #2 ATTEMPT-01)',
-            description: 'Autonomous Single-Family House Construction Project (Tampa, FL) - First Owner Checkpoint',
-            classification: 'ACADEMY_AUTONOMOUS_CONSTRUCTION',
-            immutableSource: false,
-            academyWritable: true,
-            hermesGenerated: true,
-            referenceModel: false,
-            license: 'HERMES OpenBIM License',
-            sourceUri: 'hermes://academy-house-0002',
-            spatialHierarchy: {
-              projectId: 'ACADEMY-HOUSE-0002',
-              ifcGuid: 'ACADEMY-HOUSE-0002-GUID',
-              siteId: 'SITE-H2-PARCEL',
-              siteGuid: 'SITE-GUID-H2',
-              buildingId: 'Tampa House #2 Residence',
-              buildingGuid: 'BUILDING-GUID-H2',
-              storeys: [
-                {
-                  id: 'STOREY-GROUND',
-                  ifcGuid: 'STOREY-GROUND-GUID-H2',
-                  name: 'Ground Level (0.00m Datum)',
-                  elevationMeters: 0,
-                  heightMeters: 3.0,
-                  spaces: [
-                    { id: 'ROOM-LIVING', name: 'Living & Dining Great Room', ifcGuid: 'SP-LIVING', areaSqMeters: 28, volumeCuMeters: 78.4 },
-                    { id: 'ROOM-KITCHEN', name: 'Kitchen & Pantry', ifcGuid: 'SP-KITCHEN', areaSqMeters: 13, volumeCuMeters: 36.4 },
-                    { id: 'ROOM-BED1', name: 'Primary Bedroom Suite', ifcGuid: 'SP-BED1', areaSqMeters: 16.7, volumeCuMeters: 46.7 },
-                    { id: 'ROOM-BATH1', name: 'Primary Ensuite Bathroom', ifcGuid: 'SP-BATH1', areaSqMeters: 6.9, volumeCuMeters: 19.3 },
-                    { id: 'ROOM-BED2', name: 'Bedroom 2 / Flex Office', ifcGuid: 'SP-BED2', areaSqMeters: 13.9, volumeCuMeters: 38.9 },
-                    { id: 'ROOM-BATH2', name: 'Bathroom 2 / Guest Bath', ifcGuid: 'SP-BATH2', areaSqMeters: 5.6, volumeCuMeters: 15.6 },
-                  ],
-                },
-                {
-                  id: 'STOREY-ROOF',
-                  ifcGuid: 'STOREY-ROOF-GUID-H2',
-                  name: 'Roof Level (+3.00m Datum)',
-                  elevationMeters: 3.0,
-                  heightMeters: 2.5,
-                  spaces: [{ id: 'SPACE-ROOF', name: 'Pre-Engineered Truss & Roof Deck', ifcGuid: 'SP-ROOF', areaSqMeters: 90, volumeCuMeters: 225 }],
-                },
-              ],
-            },
-            components,
-            relationships: {
-              containedInStorey: {},
-              containedInSpace: {},
-              hostsOpening: {},
-              systemConnectivity: {},
-            },
-          };
-
-          setProjectData(normalizedProj);
-          setLoading(false);
-        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
-          const endpoint = activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006'
-            ? '/api/hermes/validation006-spatial-world'
-            : activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
-            ? '/api/hermes/validation005-spatial-world'
-            : activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
-            ? '/api/hermes/validation004-spatial-world'
-            : '/api/hermes/validation003-spatial-world';
-          const vRes = await fetch(endpoint);
-          if (!vRes.ok || !vRes.headers.get('content-type')?.includes('application/json')) {
-            throw new Error(`HTTP ${vRes.status} loading validation project state`);
-          }
-          const vData = await vRes.json();
-          if (!mounted) return;
-
-          setHouse0002RawData(vData);
-          setReplayEvents(vData.events || []);
-          setCurrentEventIndex(0);
-
-          const initialComps = computeReducedComponentsForEvent(0, vData);
-
-          const normalizedProj: ReferenceBimProject = {
-            projectId: vData.projectId,
-            name: vData.projectName,
-            description: vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006'
-              ? 'Master Clean-Room Visual Causality Validation Project 006'
-              : vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
-              ? 'Clean-Room Live World Visual Validation Project 005'
-              : vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
-              ? 'Clean-Room Live World Visual Validation Project 004'
-              : 'Clean-Room Live World Visual Validation Project 003',
-            classification: 'GENESIS_LIVE',
-            immutableSource: false,
-            academyWritable: true,
-            hermesGenerated: true,
-            referenceModel: false,
-            license: 'HERMES OpenBIM License',
-            sourceUri: `hermes://${vData.projectId}`,
-            spatialHierarchy: {
-              projectId: vData.projectId,
-              ifcGuid: `GUID-${vData.projectId}`,
-              siteId: `SITE-${vData.projectId}`,
-              siteGuid: `SITE-GUID-${vData.projectId}`,
-              buildingId: vData.projectName,
-              buildingGuid: `BUILDING-GUID-${vData.projectId}`,
-              storeys: [
-                {
-                  id: 'STOREY-GROUND',
-                  ifcGuid: `STOREY-GROUND-GUID-${vData.projectId}`,
-                  name: 'Ground Level (0.00m Datum)',
-                  elevationMeters: 0,
-                  heightMeters: 3.0,
-                  spaces: [],
-                },
-              ],
-            },
-            components: initialComps,
-            relationships: {
-              containedInStorey: {},
-              containedInSpace: {},
-              hostsOpening: {},
-              systemConnectivity: {},
-            },
-          };
-
-          setProjectData(normalizedProj);
-          setLoading(false);
-        } else if (activeProjectId.startsWith('LIVE-WORLD-GENESIS') || activeProjectId.startsWith('PHASE1-OWNER-GENESIS')) {
-          const gRes = await fetch(`/api/hermes/genesis-spatial-world?projectId=${activeProjectId}`);
-          if (!gRes.ok || !gRes.headers.get('content-type')?.includes('application/json')) {
-            throw new Error(`HTTP ${gRes.status} loading genesis project state`);
-          }
-          const gData = await gRes.json();
-          if (!mounted) return;
-
-          setHouse0002RawData(gData);
-          setReplayEvents(gData.events || []);
-          setCurrentEventIndex(0);
-
-          const normalizedProj: ReferenceBimProject = {
-            projectId: gData.projectId,
-            name: gData.projectName,
-            description: 'Brand-New Live Genesis Validation Project (0 BIM Components at Genesis)',
-            classification: 'GENESIS_LIVE',
-            immutableSource: false,
-            academyWritable: true,
-            hermesGenerated: true,
-            referenceModel: false,
-            license: 'HERMES OpenBIM License',
-            sourceUri: `hermes://${gData.projectId}`,
-            spatialHierarchy: {
-              projectId: gData.projectId,
-              ifcGuid: `GUID-${gData.projectId}`,
-              siteId: `SITE-${gData.projectId}`,
-              siteGuid: `SITE-GUID-${gData.projectId}`,
-              buildingId: gData.projectName,
-              buildingGuid: `BUILDING-GUID-${gData.projectId}`,
-              storeys: [
-                {
-                  id: 'STOREY-GROUND',
-                  ifcGuid: `STOREY-GROUND-GUID-${gData.projectId}`,
-                  name: 'Ground Level (0.00m Datum)',
-                  elevationMeters: 0,
-                  heightMeters: 3.0,
-                  spaces: [],
-                },
-              ],
-            },
-            components: [], // Zero BIM components at Genesis!
-            relationships: {
-              containedInStorey: {},
-              containedInSpace: {},
-              hostsOpening: {},
-              systemConnectivity: {},
-            },
-          };
-
-          setProjectData(normalizedProj);
-          setLoading(false);
-        } else if (activeProjectId === 'REFERENCE-BIM-0001') {
-          setHouse0002RawData(null);
-          setReplayEvents([]);
-
-          // Fetch reference model JSON & STEP file
-          const metaRes = await fetch('/api/bim/reference-model');
-          if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} loading reference model metadata`);
-          const metaData: ReferenceBimProject = await metaRes.json();
-          if (!mounted) return;
-          setProjectData(metaData);
-
-          // Parse raw IFC via web-ifc WASM
-          try {
-            const ifcRes = await fetch('/api/bim/reference-model.ifc');
-            if (ifcRes.ok) {
-              const buffer = await ifcRes.arrayBuffer();
-              const uint8Array = new Uint8Array(buffer);
-
-              const ifcApi = new WebIFC.IfcAPI();
-              ifcApi.SetWasmPath('/wasm/', true);
-              await ifcApi.Init();
-
-              const modelID = ifcApi.OpenModel(uint8Array);
-              const geomMap = new Map<string, THREE.BufferGeometry>();
-              let meshIndex = 0;
-
-              try {
-                ifcApi.StreamAllMeshes(modelID, (placedMesh) => {
-                  try {
-                    const expressID = placedMesh.expressID;
-                    const numGeom = placedMesh.geometries.size();
-                    const subGeoms: THREE.BufferGeometry[] = [];
-
-                    for (let i = 0; i < numGeom; i++) {
-                      const placedGeom = placedMesh.geometries.get(i);
-                      const geomData = ifcApi.GetGeometry(modelID, placedGeom.geometryExpressID);
-                      const verBuf = ifcApi.GetVertexArray(geomData.GetVertexData(), geomData.GetVertexDataSize());
-                      const idxBuf = ifcApi.GetIndexArray(geomData.GetIndexData(), geomData.GetIndexDataSize());
-
-                      if (verBuf.length === 0 || idxBuf.length === 0) continue;
-                      const numVertices = verBuf.length / 6;
-                      const positions = new Float32Array(numVertices * 3);
-                      const normals = new Float32Array(numVertices * 3);
-
-                      let hasInvalid = false;
-                      for (let v = 0; v < numVertices; v++) {
-                        const x = verBuf[v * 6],
-                          y = verBuf[v * 6 + 1],
-                          z = verBuf[v * 6 + 2];
-                        if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
-                          hasInvalid = true;
-                          break;
-                        }
-                        positions[v * 3] = x;
-                        positions[v * 3 + 1] = y;
-                        positions[v * 3 + 2] = z;
-                        normals[v * 3] = verBuf[v * 6 + 3];
-                        normals[v * 3 + 1] = verBuf[v * 6 + 4];
-                        normals[v * 3 + 2] = verBuf[v * 6 + 5];
-                      }
-                      if (hasInvalid) continue;
-
-                      const geometry = new THREE.BufferGeometry();
-                      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                      geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
-                      geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(idxBuf), 1));
-
-                      if (placedGeom.flatTransformation && placedGeom.flatTransformation.length === 16) {
-                        const matrix = new THREE.Matrix4().fromArray(placedGeom.flatTransformation);
-                        geometry.applyMatrix4(matrix);
-                      }
-                      subGeoms.push(geometry);
-                    }
-
-                    if (subGeoms.length > 0) {
-                      const merged = subGeoms.length === 1 ? subGeoms[0] : mergeGeometries(subGeoms, false) || subGeoms[0];
-                      const compId = `DUPLEX-ELEM-${expressID}`;
-                      let comp = metaData.components.find((c) => c.expressID === expressID || c.id === compId);
-                      if (!comp && meshIndex < metaData.components.length) {
-                        comp = metaData.components[meshIndex];
-                      }
-                      if (comp) {
-                        geomMap.set(comp.id, merged);
-                      }
-                    }
-                    meshIndex++;
-                  } catch (meshErr) {
-                    console.warn('Individual IFC mesh parse warning:', meshErr);
-                  }
-                });
-              } finally {
-                try {
-                  ifcApi.CloseModel(modelID);
-                } catch (_) {}
-              }
-              if (mounted) {
-                ifcGeometriesRef.current = geomMap;
-                setIfcLoaded(true);
-              }
-            }
-          } catch (wasmErr: any) {
-            console.warn('[BIM WORKSPACE] WebAssembly IFC parsing warning, falling back to JSON geometry engine:', wasmErr?.message || wasmErr);
-          }
-          setLoading(false);
-        } else {
-          // Fetch generic project
-          const projRes = await fetch(`/api/projects/${activeProjectId}`);
-          if (!projRes.ok) throw new Error(`HTTP ${projRes.status} loading project`);
-          const rawProj = await projRes.json();
-          if (!mounted) return;
-
-          const normalizedProj: ReferenceBimProject = {
-            projectId: rawProj.id,
-            name: rawProj.name,
-            description: rawProj.description || 'HERMES Autonomous Spatial Building Project',
-            classification: 'HERMES_AUTONOMOUS_BUILD',
-            immutableSource: false,
-            academyWritable: true,
-            hermesGenerated: true,
-            referenceModel: false,
-            license: 'HERMES OpenBIM License',
-            sourceUri: 'hermes://project',
-            spatialHierarchy: {
-              projectId: rawProj.id,
-              ifcGuid: 'GUID-GENERIC-001',
-              siteId: 'SITE-01',
-              siteGuid: 'SITE-GUID-01',
-              buildingId: rawProj.name,
-              buildingGuid: 'BUILDING-GUID-01',
-              storeys: [
-                {
-                  id: 'STOREY-1',
-                  ifcGuid: 'STOREY-1-GUID',
-                  name: 'Ground Level',
-                  elevationMeters: 0,
-                  heightMeters: 3.0,
-                  spaces: [{ id: 'ROOM-1', name: 'Main Area', ifcGuid: 'ROOM-1-GUID', areaSqMeters: 50, volumeCuMeters: 150 }],
-                },
-              ],
-            },
-            components: rawProj.components || [],
-            relationships: {
-              containedInStorey: {},
-              containedInSpace: {},
-              hostsOpening: {},
-              systemConnectivity: {},
-            },
-          };
-
-          setProjectData(normalizedProj);
-          setLoading(false);
         }
+
+        if (!mounted || !dataToUse) return;
+
+        setHouse0002RawData(dataToUse);
+        const evs = dataToUse.eventStream || dataToUse.events || [];
+        setReplayEvents(evs);
+        const curCp = dataToUse.currentCheckpoint ?? dataToUse.currentStepIndex ?? 0;
+        setCurrentEventIndex(curCp);
+
+        const initialComps = computeReducedComponentsForEvent(curCp, dataToUse);
+
+        const normalizedProj: ReferenceBimProject = {
+          projectId: dataToUse.projectId || activeProjectId,
+          name: dataToUse.projectName || activeProjectMeta.name || activeProjectId,
+          description: 'HERMES Clean-Room Autonomous Construction OS Active Project',
+          classification: 'CANONICAL_LIVE_WORLD',
+          immutableSource: false,
+          academyWritable: true,
+          hermesGenerated: true,
+          referenceModel: false,
+          license: 'HERMES OpenBIM License',
+          sourceUri: `hermes://${dataToUse.projectId || activeProjectId}`,
+          spatialHierarchy: {
+            projectId: dataToUse.projectId || activeProjectId,
+            ifcGuid: `GUID-${dataToUse.projectId || activeProjectId}`,
+            siteId: `SITE-${dataToUse.projectId || activeProjectId}`,
+            siteGuid: `SITE-GUID-${dataToUse.projectId || activeProjectId}`,
+            buildingId: dataToUse.projectName || activeProjectId,
+            buildingGuid: `BUILDING-GUID-${dataToUse.projectId || activeProjectId}`,
+            storeys: [
+              {
+                id: 'STOREY-GROUND',
+                ifcGuid: `STOREY-GROUND-GUID-${dataToUse.projectId || activeProjectId}`,
+                name: 'Ground Level (0.00m Datum)',
+                elevationMeters: 0,
+                heightMeters: 3.0,
+                spaces: [],
+              },
+            ],
+          },
+          components: initialComps,
+          relationships: {
+            containedInStorey: {},
+            containedInSpace: {},
+            hostsOpening: {},
+            systemConnectivity: {},
+          },
+        };
+
+        setProjectData(normalizedProj);
+        setLoading(false);
       } catch (e: any) {
         if (mounted) {
           setError(e.message || String(e));
@@ -2043,12 +1428,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       }
     }
 
-    loadActiveProjectData();
+    syncWorldState();
 
     return () => {
       mounted = false;
     };
-  }, [activeProjectId]);
+  }, [worldState, activeProjectId]);
 
   // Synchronize 3D BIM viewport components with canonical event-sourced state
   useEffect(() => {
@@ -2560,34 +1945,39 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 text-slate-900 font-sans overflow-hidden select-none">
+      {/* RUNTIME PROJECT MISMATCH INVARIANT CHECK */}
+      {activeProjectId === 'HERMES-LIVE-HOUSE-001' && worldState && worldState.projectId !== 'HERMES-LIVE-HOUSE-001' && (
+        <div className="bg-red-600 text-white px-4 py-2 font-mono font-bold flex items-center justify-between z-50 shadow-lg animate-pulse">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-yellow-300 shrink-0" />
+            <div>
+              <span className="text-sm font-extrabold">PROJECT STATE MISMATCH DETECTED</span>
+              <p className="text-xs opacity-90">
+                Shell Active: <code className="bg-red-800 px-1 rounded">{activeProjectId}</code> | BIM World State: <code className="bg-red-800 px-1 rounded">{worldState.projectId}</code>
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => resetWorld()}
+            className="px-3 py-1 bg-white text-red-700 font-extrabold text-xs rounded-lg hover:bg-slate-100 transition"
+          >
+            FORCE RESET CANONICAL WORLD
+          </button>
+        </div>
+      )}
+
       {/* 1. TOP CONTROL RIBBON */}
       <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between gap-3 shadow-2xs z-20 shrink-0 flex-wrap">
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Project Switcher Dropdown */}
-          <div className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-3 py-1 rounded-xl text-xs font-mono">
-            <Building className="w-4 h-4 text-blue-600" />
-            <select
-              value={activeProjectId}
-              onChange={(e) => handleSwitchProject(e.target.value)}
-              className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
-            >
-              <option value="HERMES-LIVE-HOUSE-001">HERMES-LIVE-HOUSE-001 (Canonical Live Construction World — Clean Project 001)</option>
-              <option value="LIVE-WORLD-AUTONOMOUS-GENERATION-007">LIVE-WORLD-AUTONOMOUS-GENERATION-007 (Master Autonomous Project Generation 007)</option>
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-006">LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)</option>
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-005">LIVE-WORLD-VISUAL-VALIDATION-005 (Frozen Fixture - Failed Visual Validation)</option>
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-004">LIVE-WORLD-VISUAL-VALIDATION-004 (Clean-Room Validation 004)</option>
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-003">LIVE-WORLD-VISUAL-VALIDATION-003 (Clean-Room Validation 003)</option>
-              <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Historical Regression Fixture)</option>
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-002">LIVE-WORLD-VISUAL-VALIDATION-002 (Attempt 02)</option>
-              <option value="REFERENCE-BIM-0001">REFERENCE-BIM-0001 (Read-Only OpenBIM Reference)</option>
-              {allProjectsList
-                .filter((p) => !['REFERENCE-BIM-0001', 'ACADEMY-HOUSE-0002'].includes(p.id))
-                .map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} ({p.id})
-                  </option>
-                ))}
-            </select>
+          {/* Canonical Active Project Display (No secondary selector) */}
+          <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 px-3 py-1 rounded-xl text-xs font-mono">
+            <Building className="w-4 h-4 text-blue-600 shrink-0" />
+            <span className="font-extrabold text-blue-950 truncate max-w-xs md:max-w-md">
+              {activeProjectMeta.name || activeProjectId}
+            </span>
+            <span className="text-[10px] bg-blue-200 text-blue-900 px-1.5 py-0.5 rounded font-bold">
+              CANONICAL
+            </span>
           </div>
 
           <span className="text-slate-300 hidden sm:inline">|</span>
@@ -3241,6 +2631,39 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
             <span>HERMES BIM SPATIAL WORKSPACE ({activeProjectId})</span>
           </div>
+
+          {/* CHECKPOINT 0: CUSTOMER INTAKE HUD OVERLAY CARD */}
+          {(house0002RawData?.currentCheckpoint ?? 0) === 0 && (
+            <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-white/95 backdrop-blur-md border border-blue-300 shadow-2xl rounded-2xl p-4 max-w-xl w-[92vw] sm:w-full text-slate-900 animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-2 text-blue-700 font-extrabold text-sm">
+                  <Zap className="w-5 h-5 text-blue-600 shrink-0 animate-pulse" />
+                  <span>PROJECT CREATED — Site Investigation & Customer Intake Ready</span>
+                </div>
+                <span className="text-[10px] font-mono bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-bold shrink-0">
+                  GENESIS 0
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                Site parcel in Tampa Bay, FL is clean, surveyed, and primed. HERMES requires the owner's project requirements brief to generate building geometry and commence construction orchestration.
+              </p>
+              <div className="mt-3.5 flex items-center gap-2 flex-wrap">
+                <button
+                  onClick={() => setIntakeModalOpen(true)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-blue-500/20 transition flex items-center gap-2 cursor-pointer"
+                >
+                  <FileText className="w-4 h-4" />
+                  START CUSTOMER INTAKE
+                </button>
+                <button
+                  onClick={() => stepForward()}
+                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer"
+                >
+                  Or Step (+1)
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Top Center: Construction Phase Progress Strip */}
           <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-slate-900/90 text-white backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-700/80 shadow-xl flex items-center gap-2 text-xs font-mono overflow-x-auto max-w-[90vw] sm:max-w-none">
@@ -3916,6 +3339,86 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 className="px-5 py-2 bg-purple-900 hover:bg-purple-800 text-white font-bold text-xs rounded-xl transition"
               >
                 Close Audit Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CUSTOMER INTAKE MODAL */}
+      {intakeModalOpen && (
+        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 text-slate-900 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-600" />
+                <h2 className="text-base font-extrabold text-slate-900">Project Customer Intake Brief</h2>
+              </div>
+              <button onClick={() => setIntakeModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 font-sans text-xs text-slate-700">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Target Stories</label>
+                  <input type="text" defaultValue="1 Story Single-Family" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Target Floor Area</label>
+                  <input type="text" defaultValue="2,400 sq ft (223 m²)" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Bedrooms</label>
+                  <input type="text" defaultValue="3 Bedrooms" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Bathrooms</label>
+                  <input type="text" defaultValue="2 Bathrooms" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Garage</label>
+                  <input type="text" defaultValue="2-Car Attached" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Structural & Wind Rating</label>
+                  <input type="text" defaultValue="160 MPH Category 5 Wind Rating" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-800 mb-1">Target Budget Cap</label>
+                  <input type="text" defaultValue="$425,000 USD Total Cost" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">Jurisdiction & Location</label>
+                <input type="text" defaultValue="Tampa Bay, Florida / Florida Building Code 2023 (8th Edition)" className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-medium" />
+              </div>
+            </div>
+
+            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+              <button
+                onClick={() => setIntakeModalOpen(false)}
+                className="px-4 py-2 border border-slate-300 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-50 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  setIntakeModalOpen(false);
+                  await stepForward();
+                }}
+                className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                Submit Project Brief & Generate BIM (Step +1)
               </button>
             </div>
           </div>

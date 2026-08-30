@@ -129,18 +129,7 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
   const refreshWorldState = async () => {
     try {
       setConnectionStatus('SYNCING');
-      let url = '/api/hermes/live-house/world';
-      if (activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
-        url = '/api/hermes/validation007/world';
-      } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
-        url = '/api/hermes/validation006/world';
-      } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005') {
-        url = '/api/hermes/validation005/world';
-      } else if (activeProjectId === 'ACADEMY-HOUSE-0002') {
-        url = '/api/hermes/house0002-spatial-world';
-      }
-
-      const res = await fetch(url);
+      const res = await fetch(`/api/hermes/projects/${activeProjectId}/world`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setWorldState(data);
@@ -163,11 +152,10 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
   const stepForward = async () => {
     try {
       setConnectionStatus('SYNCING');
-      let url = '/api/hermes/live-house/step';
-      if (activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') url = '/api/hermes/validation007-step';
-      if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') url = '/api/hermes/validation006-step';
-
-      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      const res = await fetch(`/api/hermes/projects/${activeProjectId}/step`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setWorldState(data.state || data);
@@ -181,11 +169,10 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
   const runAll = async () => {
     try {
       setConnectionStatus('SYNCING');
-      let url = '/api/hermes/live-house/run-all';
-      if (activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') url = '/api/hermes/validation007-run-all';
-      if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') url = '/api/hermes/validation006-run-all';
-
-      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      const res = await fetch(`/api/hermes/projects/${activeProjectId}/run`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setWorldState(data.state || data);
@@ -199,11 +186,10 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
   const resetWorld = async () => {
     try {
       setConnectionStatus('SYNCING');
-      let url = '/api/hermes/live-house/reset';
-      if (activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') url = '/api/hermes/validation007-reset';
-      if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') url = '/api/hermes/validation006-reset';
-
-      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      const res = await fetch(`/api/hermes/projects/${activeProjectId}/reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setWorldState(data.state || data);

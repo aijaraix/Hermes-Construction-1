@@ -745,7 +745,130 @@ async function startServer() {
     }
   });
 
-  // HERMES-LIVE-HOUSE-001 Canonical Live Construction OS Endpoints
+  // Generic Canonical Project APIs
+  app.get('/api/hermes/projects/:projectId/world', (req, res) => {
+    try {
+      const { projectId } = req.params;
+      let state;
+      if (projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
+        state = Validation007Engine.getCanonicalWorldState();
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
+        state = Validation006Engine.getCanonicalWorldState();
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005') {
+        state = Validation005Engine.getCanonicalWorldState();
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004') {
+        state = Validation004Engine.getFullWorldState();
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
+        state = Validation003Engine.getFullWorldState();
+      } else if (projectId === 'ACADEMY-HOUSE-0002') {
+        House0002Engine.initialize();
+        state = {
+          projectId: House0002Engine.getProjectId(),
+          projectName: 'Academy House 0002',
+          currentCheckpoint: 0,
+          spatialEntities: House0002Engine.getSpatialEntities(),
+          agentSpatialStates: House0002Engine.getAgentSpatialStates(),
+          buildingComponents: House0002Engine.getBimComponents(),
+          events: House0002Engine.getEventStream(),
+          diagnostics: { checkpointName: 'ACADEMY_HOUSE_0002' }
+        };
+      } else {
+        state = HermesLiveHouseEngine.getCanonicalWorldState();
+      }
+      res.json(state);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/projects/:projectId/step', (req, res) => {
+    try {
+      const { projectId } = req.params;
+      const targetStep = req.body?.targetStep;
+      let state;
+      if (projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
+        const current = Validation007Engine.getCanonicalWorldState();
+        const nextStep = typeof targetStep === 'number' ? targetStep : (current.currentStepIndex || 0) + 1;
+        state = Validation007Engine.advanceToStep(nextStep);
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
+        state = typeof targetStep === 'number'
+          ? Validation006Engine.advanceToStep(targetStep)
+          : Validation006Engine.advanceOneStep();
+      } else {
+        state = typeof targetStep === 'number'
+          ? HermesLiveHouseEngine.advanceToStep(targetStep)
+          : HermesLiveHouseEngine.advanceOneStep();
+      }
+      res.json({
+        state,
+        message: `Project ${projectId} advanced to Checkpoint ${state.currentCheckpoint ?? state.currentStepIndex}`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/projects/:projectId/run', (req, res) => {
+    try {
+      const { projectId } = req.params;
+      let state;
+      if (projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
+        state = Validation007Engine.advanceToStep(17);
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
+        state = Validation006Engine.advanceToStep(14);
+      } else {
+        state = HermesLiveHouseEngine.advanceToStep(30);
+      }
+      res.json({
+        state,
+        message: `Project ${projectId} executed full sequence.`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/projects/:projectId/reset', (req, res) => {
+    try {
+      const { projectId } = req.params;
+      let state;
+      if (projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
+        state = Validation007Engine.initialize('STANDARD');
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
+        state = Validation006Engine.initialize();
+      } else {
+        state = HermesLiveHouseEngine.resetToGenesis();
+      }
+      res.json({
+        state,
+        message: `Project ${projectId} reset to Checkpoint 0 — Genesis.`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/projects/:projectId/events', (req, res) => {
+    try {
+      const { projectId } = req.params;
+      let events = [];
+      if (projectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') {
+        const state = Validation007Engine.getCanonicalWorldState();
+        events = state.events || [];
+      } else if (projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
+        const state = Validation006Engine.getCanonicalWorldState();
+        events = state.events || [];
+      } else {
+        const state = HermesLiveHouseEngine.getCanonicalWorldState();
+        events = state.events || [];
+      }
+      res.json(events);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  // HERMES-LIVE-HOUSE-001 Canonical Live Construction OS Endpoints (Legacy Aliases)
   app.get('/api/hermes/live-house/world', (req, res) => {
     try {
       const state = HermesLiveHouseEngine.getCanonicalWorldState();

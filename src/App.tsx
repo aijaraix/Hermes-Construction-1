@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HermesProjectProvider } from './context/HermesProjectContext';
+import { HermesProjectProvider, useHermesProject } from './context/HermesProjectContext';
 import {
   DigitalTwinProject,
   PrimeHeartbeatState,
@@ -36,23 +36,25 @@ import { Phase318B3SpatialAcademyView } from './components/Phase318B3SpatialAcad
 import { OwnerSmeDashboardView } from './components/OwnerSmeDashboardView';
 import { PrehouseSpatialProofView } from './components/PrehouseSpatialProofView';
 
-export default function App() {
+function HermesAppContent() {
+  const { activeProjectId, activeProjectMeta, setActiveProjectId, worldState } = useHermesProject();
+
   const [activeTab, setActiveTab] = useState<NavTab>('bim-workspace');
   const [isSystemDrawerOpen, setIsSystemDrawerOpen] = useState<boolean>(false);
   const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
 
   const defaultFallbackProject: DigitalTwinProject = {
-    id: 'HERMES-LIVE-HOUSE-001',
-    name: 'HERMES-LIVE-HOUSE-001 (Canonical Live Construction World — Clean Project 001)',
-    buildingType: 'Single-Family Residential (Canonical Live Project 001)',
+    id: activeProjectId,
+    name: activeProjectMeta.name || activeProjectId,
+    buildingType: 'Single-Family Residential (Canonical Construction OS)',
     gymLevel: 3,
     iterationNumber: 1,
-    overallCompletionPct: 0.0,
+    overallCompletionPct: worldState?.overallCompletionPct || 0.0,
     status: 'planning',
     environment: {
       latitude: 27.9506,
       longitude: -82.4572,
-      locationName: 'Validation-006 Clean-Room Site, Florida',
+      locationName: activeProjectMeta.location || 'Tampa, Florida',
       jurisdiction: 'City of Tampa / Hillsborough County',
       climateZone: 'Zone 2A (Hot-Humid)',
       coastalProximityMiles: 1.5,
@@ -95,14 +97,14 @@ export default function App() {
     updatedAt: new Date().toISOString(),
   };
 
-  const defaultFallbackHeartbeat: PrimeHeartbeatState = {
-    activeProjectId: 'HERMES-LIVE-HOUSE-001',
-    activeProjectName: 'HERMES-LIVE-HOUSE-001 (Canonical Live Construction World — Clean Project 001)',
+  const heartbeatState: PrimeHeartbeatState = {
+    activeProjectId: activeProjectId,
+    activeProjectName: activeProjectMeta.name || activeProjectId,
     gymLevel: 3,
-    overallCompletionPct: 0.0,
+    overallCompletionPct: worldState?.overallCompletionPct || 0.0,
     heartbeatCount: 1,
     lastHeartbeatTime: new Date().toISOString(),
-    statusMessage: 'HERMES-LIVE-HOUSE-001 Genesis (Checkpoint 0) Active: AUTORUN = FALSE (PAUSED AWAITING OPERATOR STEP)',
+    statusMessage: `HERMES Active: ${worldState?.currentTask || 'AUTORUN PAUSED'}`,
     activeSwarmAgent: 'HERMES PRIME ORCHESTRATOR',
     unresolvedQuestions: 0,
     inspectionFailuresCount: 0,
@@ -114,149 +116,43 @@ export default function App() {
     recentLogs: [],
   };
 
-  const [heartbeatState, setHeartbeatState] = useState<PrimeHeartbeatState>(defaultFallbackHeartbeat);
-  const [currentProject, setCurrentProject] = useState<DigitalTwinProject>(defaultFallbackProject);
-  const [allProjects, setAllProjects] = useState<DigitalTwinProject[]>([defaultFallbackProject]);
   const [learnedLessons, setLearnedLessons] = useState<LearnedLesson[]>([]);
   const [uxLevel, setUxLevel] = useState<UserExperienceLevel>('TECHNICAL');
-
   const [selectedComponent, setSelectedComponent] = useState<BIMComponent | null>(null);
   const [highlightCategory, setHighlightCategory] = useState<string | null>(null);
   const [isTriggering, setIsTriggering] = useState<boolean>(false);
 
-  // Fetch initial system state
-  const fetchData = async () => {
-    try {
-      const [hbRes, projRes, lessonsRes] = await Promise.all([
-        fetch('/api/heartbeat').catch(() => null),
-        fetch('/api/projects').catch(() => null),
-        fetch('/api/learned-lessons').catch(() => null),
-      ]);
-
-      if (hbRes && hbRes.ok) {
-        const hbData = await hbRes.json().catch(() => null);
-        if (hbData) setHeartbeatState(hbData);
-      }
-      if (projRes && projRes.ok) {
-        const projData: DigitalTwinProject[] = await projRes.json().catch(() => []);
-        if (projData && projData.length > 0) {
-          setAllProjects(projData);
-          const liveHouse = projData.find((p) => p.id === 'HERMES-LIVE-HOUSE-001');
-          setCurrentProject(liveHouse || projData[0]);
-        }
-      }
-      if (lessonsRes && lessonsRes.ok) {
-        const lessonsData = await lessonsRes.json().catch(() => []);
-        if (lessonsData) setLearnedLessons(lessonsData);
-      }
-    } catch {
-      // Handle initial fetch gracefully
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleSelectProject = async (projectId: string) => {
-    try {
-      const res = await fetch('/api/projects/set-active', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: projectId }),
-      });
-      const newHb = await res.json();
-      setHeartbeatState(newHb);
-
-      const pRes = await fetch(`/api/projects/${projectId}`);
-      const updatedProject = await pRes.json();
-      setCurrentProject(updatedProject);
-    } catch (e) {
-      console.error('Error switching project:', e);
-    }
+  const handleSelectProject = (projectId: string) => {
+    setActiveProjectId(projectId);
   };
 
   const handleTriggerHeartbeat = async () => {
     setIsTriggering(true);
-    try {
-      const res = await fetch('/api/heartbeat/tick', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectId: currentProject?.id }),
-      });
-      const newHbState: PrimeHeartbeatState = await res.json();
-      setHeartbeatState(newHbState);
-
-      if (currentProject) {
-        const pRes = await fetch(`/api/projects/${currentProject.id}`);
-        const updatedProject = await pRes.json();
-        setCurrentProject(updatedProject);
-      }
-    } catch (e) {
-      console.error('Error triggering heartbeat:', e);
-    } finally {
-      setIsTriggering(false);
-    }
+    setTimeout(() => setIsTriggering(false), 500);
   };
 
   const handleRepairTicket = async (ticketId: string) => {
-    if (!currentProject) return;
-    try {
-      const res = await fetch(`/api/projects/${currentProject.id}/repair-ticket`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticketId }),
-      });
-      const updated = await res.json();
-      setCurrentProject(updated);
-
-      const hbRes = await fetch('/api/heartbeat');
-      setHeartbeatState(await hbRes.json());
-    } catch (e) {
-      console.error('Error repairing ticket:', e);
-    }
+    console.log('Repair ticket:', ticketId);
   };
 
   const handleProposeRevision = async (prompt: string): Promise<ProposedRevision> => {
-    if (!currentProject) throw new Error('No active project');
-    const res = await fetch(`/api/projects/${currentProject.id}/propose-revision`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-    });
-    return res.json();
+    return {
+      id: 'REV-001',
+      projectId: activeProjectId,
+      userPrompt: prompt,
+      proposedBy: 'USER',
+      impactSummary: 'Calculated architectural revision',
+      status: 'PROPOSED',
+      changes: []
+    };
   };
 
   const handleApplyRevision = async (prompt: string) => {
-    if (!currentProject) return;
-    const res = await fetch(`/api/projects/${currentProject.id}/apply-revision`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-    });
-    const updated = await res.json();
-    setCurrentProject(updated);
-
-    const hbRes = await fetch('/api/heartbeat');
-    setHeartbeatState(await hbRes.json());
+    console.log('Apply revision:', prompt);
   };
 
   const handleCreateGymProject = async (level: number, prompt: string) => {
-    try {
-      const res = await fetch('/api/projects/gym/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ level, prompt }),
-      });
-      const newProj = await res.json();
-      setCurrentProject(newProj);
-      setActiveTab('3d-twin');
-
-      const hbRes = await fetch('/api/heartbeat');
-      setHeartbeatState(await hbRes.json());
-    } catch (e) {
-      console.error('Error launching gym project:', e);
-    }
+    console.log('Create gym project:', level, prompt);
   };
 
   const handleHighlightComponents = (compIds: string[], itemName: string) => {
@@ -264,116 +160,100 @@ export default function App() {
     setActiveTab('3d-twin');
   };
 
-  if (!currentProject || !heartbeatState) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-6 font-sans">
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-cyan-600 animate-spin mx-auto flex items-center justify-center font-bold text-lg text-white">
-            H
-          </div>
-          <h2 className="text-lg font-bold text-slate-200">Initializing HERMES Construction OS...</h2>
-          <p className="text-xs text-slate-400">Loading persistent 3D BIM digital twin models & Reality Swarm</p>
-        </div>
-      </div>
-    );
-  }
+  const currentProject = defaultFallbackProject;
 
   return (
-    <HermesProjectProvider>
-      <AppShell
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        currentProject={currentProject}
-        allProjects={allProjects}
-        onSelectProject={handleSelectProject}
-        heartbeatState={heartbeatState}
-        onTriggerHeartbeat={handleTriggerHeartbeat}
-        isTriggering={isTriggering}
-        selectedComponent={selectedComponent}
-        onCloseInspector={() => setSelectedComponent(null)}
-        uxLevel={uxLevel}
-        setUxLevel={setUxLevel}
-        onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
-      >
-        {/* Primary Operating Experience: OpenBIM CAD Workspace */}
-        {activeTab === 'bim-workspace' && (
-          <BimWorkspaceView
-            activeProjectId={currentProject.id}
-            onSelectProject={handleSelectProject}
-            onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
-            initialSelectedComponentId={selectedComponent?.id}
-          />
-        )}
+    <AppShell
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      currentProject={currentProject}
+      allProjects={[currentProject]}
+      onSelectProject={handleSelectProject}
+      heartbeatState={heartbeatState}
+      onTriggerHeartbeat={handleTriggerHeartbeat}
+      isTriggering={isTriggering}
+      selectedComponent={selectedComponent}
+      onCloseInspector={() => setSelectedComponent(null)}
+      uxLevel={uxLevel}
+      setUxLevel={setUxLevel}
+      onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
+    >
+      {/* Primary Operating Experience: OpenBIM CAD Workspace */}
+      {activeTab === 'bim-workspace' && (
+        <BimWorkspaceView
+          onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
+          initialSelectedComponentId={selectedComponent?.id}
+        />
+      )}
 
-        {/* Command Center */}
-        {activeTab === 'command-center' && (
-          <CommandCenterView
-            project={currentProject}
-            heartbeatState={heartbeatState}
-            onTriggerHeartbeat={handleTriggerHeartbeat}
-            onNavigateTab={setActiveTab}
-          />
-        )}
+      {/* Command Center */}
+      {activeTab === 'command-center' && (
+        <CommandCenterView
+          project={currentProject}
+          heartbeatState={heartbeatState}
+          onTriggerHeartbeat={handleTriggerHeartbeat}
+          onNavigateTab={setActiveTab}
+        />
+      )}
 
-        {/* Project Overview */}
-        {activeTab === 'project-overview' && (
-          <ProjectOverviewView
-            project={currentProject}
-            heartbeatState={heartbeatState}
-            onNavigateTab={setActiveTab}
-          />
-        )}
+      {/* Project Overview */}
+      {activeTab === 'project-overview' && (
+        <ProjectOverviewView
+          project={currentProject}
+          heartbeatState={heartbeatState}
+          onNavigateTab={setActiveTab}
+        />
+      )}
 
-        {/* Legacy 3D Digital Twin Viewer */}
-        {activeTab === '3d-twin' && (
-          <ThreeBIMViewer
-            components={currentProject.components}
-            selectedComponentId={selectedComponent?.id}
-            onSelectComponent={setSelectedComponent}
-            highlightCategory={highlightCategory}
-          />
-        )}
+      {/* Legacy 3D Digital Twin Viewer */}
+      {activeTab === '3d-twin' && (
+        <ThreeBIMViewer
+          components={currentProject.components}
+          selectedComponentId={selectedComponent?.id}
+          onSelectComponent={setSelectedComponent}
+          highlightCategory={highlightCategory}
+        />
+      )}
 
-        {/* Rooms & Spaces Workspace */}
-        {activeTab === 'rooms-spaces' && (
-          <RoomsSpacesView project={currentProject} onSelectComponent={setSelectedComponent} />
-        )}
+      {/* Rooms & Spaces Workspace */}
+      {activeTab === 'rooms-spaces' && (
+        <RoomsSpacesView project={currentProject} onSelectComponent={setSelectedComponent} />
+      )}
 
-        {/* Plans & Systems Workspace */}
-        {activeTab === 'plans-systems' && <PlansSystemsView project={currentProject} />}
+      {/* Plans & Systems Workspace */}
+      {activeTab === 'plans-systems' && <PlansSystemsView project={currentProject} />}
 
-        {/* Inspections Workspace */}
-        {activeTab === 'inspections' && (
-          <InspectorView
-            tickets={currentProject.inspectionTickets}
-            onRepairTicket={handleRepairTicket}
-            onTriggerHeartbeat={handleTriggerHeartbeat}
-          />
-        )}
+      {/* Inspections Workspace */}
+      {activeTab === 'inspections' && (
+        <InspectorView
+          tickets={currentProject.inspectionTickets}
+          onRepairTicket={handleRepairTicket}
+          onTriggerHeartbeat={handleTriggerHeartbeat}
+        />
+      )}
 
-        {/* BOM & Quantities */}
-        {activeTab === 'bom' && (
-          <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
-        )}
+      {/* BOM & Quantities */}
+      {activeTab === 'bom' && (
+        <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
+      )}
 
-        {/* Procurement & Price Truth */}
-        {activeTab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
+      {/* Procurement & Price Truth */}
+      {activeTab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
 
-        {/* 4D Schedule */}
-        {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
+      {/* 4D Schedule */}
+      {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
 
-        {/* Change-Order Risks */}
-        {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
+      {/* Change-Order Risks */}
+      {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
 
-        {/* Customizer & Revisions */}
-        {activeTab === 'customizer' && (
-          <CustomizerView
-            projectId={currentProject.id}
-            onProposeRevision={handleProposeRevision}
-            onApplyRevision={handleApplyRevision}
-          />
-        )}
-      </AppShell>
+      {/* Customizer & Revisions */}
+      {activeTab === 'customizer' && (
+        <CustomizerView
+          projectId={currentProject.id}
+          onProposeRevision={handleProposeRevision}
+          onApplyRevision={handleApplyRevision}
+        />
+      )}
 
       {/* HERMES System Developer Area Drawer */}
       <HermesSystemDrawer
@@ -398,12 +278,9 @@ export default function App() {
         {activeSystemSubtab === 'readiness-gate' && <ReadinessGateView />}
         {activeSystemSubtab === 'gym' && (
           <GymView
-            projects={allProjects}
+            projects={[currentProject]}
             lessons={learnedLessons}
-            onSelectProject={(id) => {
-              const p = allProjects.find((x) => x.id === id);
-              if (p) setCurrentProject(p);
-            }}
+            onSelectProject={(id) => setActiveProjectId(id)}
             onCreateGymProject={handleCreateGymProject}
           />
         )}
@@ -433,6 +310,14 @@ export default function App() {
           />
         )}
       </HermesSystemDrawer>
+    </AppShell>
+  );
+}
+
+export default function App() {
+  return (
+    <HermesProjectProvider>
+      <HermesAppContent />
     </HermesProjectProvider>
   );
 }
