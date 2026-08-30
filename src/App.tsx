@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { HermesProjectProvider } from './context/HermesProjectContext';
 import {
   DigitalTwinProject,
   PrimeHeartbeatState,
@@ -140,8 +141,8 @@ export default function App() {
         const projData: DigitalTwinProject[] = await projRes.json().catch(() => []);
         if (projData && projData.length > 0) {
           setAllProjects(projData);
-          const v5 = projData.find((p) => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005');
-          setCurrentProject(v5 || projData[0]);
+          const liveHouse = projData.find((p) => p.id === 'HERMES-LIVE-HOUSE-001');
+          setCurrentProject(liveHouse || projData[0]);
         }
       }
       if (lessonsRes && lessonsRes.ok) {
@@ -278,7 +279,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <HermesProjectProvider>
       <AppShell
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -432,6 +433,6 @@ export default function App() {
           />
         )}
       </HermesSystemDrawer>
-    </>
+    </HermesProjectProvider>
   );
 }

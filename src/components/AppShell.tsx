@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useHermesProject } from '../context/HermesProjectContext';
+import { RegressionFixturesModal } from './RegressionFixturesModal';
+import { NewProjectModal } from './NewProjectModal';
 import {
   DigitalTwinProject,
   PrimeHeartbeatState,
@@ -32,6 +35,8 @@ import {
   FileSearch,
   Settings,
   Eye,
+  PlusCircle,
+  Radio,
 } from 'lucide-react';
 
 export type NavTab =
@@ -104,6 +109,19 @@ export const AppShell: React.FC<AppShellProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [projectSelectorOpen, setProjectSelectorOpen] = useState(false);
 
+  const {
+    activeProjectId,
+    activeProjectMeta,
+    liveProjects,
+    setActiveProjectId,
+    openRegressionModal,
+    openNewProjectModal,
+    worldState,
+    connectionStatus,
+  } = useHermesProject();
+
+  const isFixtureSelected = activeProjectMeta.isRegressionFixture;
+
   const navItems = [
     {
       group: 'CUSTOMER WORKSPACE',
@@ -135,10 +153,10 @@ export const AppShell: React.FC<AppShellProps> = ({
               <div className="hidden sm:block">
                 <div className="flex items-center gap-2">
                   <h1 className="text-sm font-extrabold text-slate-900 tracking-tight leading-none">
-                    HERMES CONSTRUCTION
+                    HERMES CONSTRUCTION OS
                   </h1>
                   <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
-                    Phase 3.17B • Clean White OS
+                    Phase 3.17B • Clean World
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-500 font-medium">Autonomous Spatial Building System</p>
@@ -146,53 +164,95 @@ export const AppShell: React.FC<AppShellProps> = ({
             </div>
           </div>
 
-          {/* Project Selector Badge */}
+          {/* Unified Operator Active Project Selector */}
           <div className="relative">
             <button
               onClick={() => setProjectSelectorOpen(!projectSelectorOpen)}
-              className="flex items-center gap-2.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-3.5 py-1.5 rounded-xl text-xs transition font-mono shadow-xs"
+              className={`flex items-center gap-2.5 border px-3.5 py-1.5 rounded-xl text-xs transition font-sans shadow-xs ${
+                isFixtureSelected
+                  ? 'bg-amber-50 border-amber-300 text-amber-900'
+                  : 'bg-slate-100 hover:bg-slate-200/80 border-slate-200 text-slate-800'
+              }`}
             >
-              <Building className="w-4 h-4 text-blue-600" />
+              <Building className={`w-4 h-4 ${isFixtureSelected ? 'text-amber-600' : 'text-blue-600'}`} />
               <div className="text-left">
-                <span className="text-[9px] uppercase font-bold text-slate-400 block font-sans">Active Project</span>
-                <span className="font-bold text-slate-800 truncate max-w-[180px] sm:max-w-[260px] block">
-                  {currentProject.name}
+                <span className="text-[9px] uppercase font-bold text-slate-400 block">
+                  {isFixtureSelected ? 'Regression Fixture Active' : 'Active Customer Project'}
+                </span>
+                <span className="font-extrabold text-slate-900 truncate max-w-[180px] sm:max-w-[260px] block">
+                  {activeProjectMeta.name} <span className="font-normal text-slate-500 text-[11px]">({activeProjectMeta.location})</span>
                 </span>
               </div>
               <ChevronDown className="w-3.5 h-3.5 text-slate-500 ml-1" />
             </button>
 
             {projectSelectorOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-2 space-y-1">
-                <div className="px-3 py-1.5 text-[10px] uppercase font-extrabold text-slate-400 tracking-wider font-sans border-b border-slate-100">
-                  Select Project
+              <div className="absolute right-0 mt-2 w-88 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-2 space-y-1">
+                <div className="px-3 py-1.5 text-[10px] uppercase font-extrabold text-slate-400 tracking-wider font-sans border-b border-slate-100 flex items-center justify-between">
+                  <span>Live Projects</span>
+                  <span className="text-blue-600 font-mono text-[9px] font-bold">{liveProjects.length} Active</span>
                 </div>
-                {allProjects.map((p) => (
+                {liveProjects.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => {
+                      setActiveProjectId(p.id);
                       onSelectProject(p.id);
                       setProjectSelectorOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-mono transition flex items-center justify-between ${
-                      p.id === currentProject.id
-                        ? 'bg-blue-50 text-blue-800 border border-blue-200/80 font-bold shadow-xs'
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-sans transition flex items-center justify-between ${
+                      p.id === activeProjectId
+                        ? 'bg-blue-50 text-blue-900 border border-blue-200/80 font-bold shadow-xs'
                         : 'hover:bg-slate-100 text-slate-700'
                     }`}
                   >
                     <div className="truncate">
-                      <div className="truncate font-bold text-slate-900">{p.name}</div>
-                      <div className="text-[10px] text-slate-500">{p.id} • {p.buildingType}</div>
+                      <div className="truncate font-extrabold text-slate-900">{p.name}</div>
+                      <div className="text-[11px] text-slate-500 font-medium">
+                        {p.location} • {p.buildingType} • {p.sqFt} sq ft
+                      </div>
                     </div>
-                    {p.id === currentProject.id && <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />}
+                    {p.id === activeProjectId && <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />}
                   </button>
                 ))}
+
+                <div className="pt-2 border-t border-slate-100 space-y-1">
+                  <button
+                    onClick={() => {
+                      setProjectSelectorOpen(false);
+                      openNewProjectModal();
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-blue-700 hover:bg-blue-50 transition flex items-center gap-2"
+                  >
+                    <PlusCircle className="w-4 h-4" />
+                    <span>+ New Customer Project</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setProjectSelectorOpen(false);
+                      openRegressionModal();
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-amber-700 hover:bg-amber-50 transition flex items-center gap-2 border border-dashed border-amber-300/80"
+                  >
+                    <ShieldAlert className="w-4 h-4 text-amber-600" />
+                    <span>Developer Tools → Regression Fixtures</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Controls: Depth Selector & Heartbeat HUD */}
+          {/* Controls: World Sync Health & Depth Selector */}
           <div className="flex items-center gap-2.5">
+            {/* World Sync Health Badge */}
+            <div className="hidden lg:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-mono">
+              <Radio className={`w-3.5 h-3.5 ${connectionStatus === 'CONNECTED' ? 'text-emerald-500 animate-pulse' : 'text-amber-500'}`} />
+              <span className="font-bold text-slate-700">WORLD LIVE</span>
+              <span className="text-slate-400">•</span>
+              <span className="text-slate-500 font-medium">Rev {worldState?.revision ?? 0}</span>
+            </div>
+
             {/* UX Depth Level Selector */}
             <div className="hidden md:flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-[11px] font-medium">
               <span className="text-slate-500 px-2 text-[10px] uppercase flex items-center gap-1 font-sans font-bold">

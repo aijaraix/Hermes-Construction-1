@@ -153,7 +153,6 @@ interface BimWorkspaceViewProps {
 function computeReducedComponentsForEvent(eventIndex: number, rawData: any): ReferenceBimComponent[] {
   if (!rawData) return [];
 
-  const isLiveHouse = rawData.projectId === 'HERMES-LIVE-HOUSE-001';
   const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
   const isVal004 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004';
   const isVal005 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005';
@@ -162,15 +161,16 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
 
   const components: ReferenceBimComponent[] = [];
 
-  if (isLiveHouse) {
-    // 1. Facilities (17 facilities)
+  // Generic Canonical World State Reduction
+  if (rawData) {
+    // 1. Facilities / Spatial Entities (17 facilities)
     (rawData.spatialEntities || []).forEach((fac: any) => {
       const created = fac.createdCheckpoint ?? 0;
       if (eventIndex >= created) {
         components.push({
-          id: fac.entityId,
-          name: fac.name,
-          ifcGuid: `GUID-${fac.entityId}`,
+          id: fac.entityId || fac.id,
+          name: fac.name || 'Site Facility',
+          ifcGuid: `GUID-${fac.entityId || fac.id}`,
           ifcType: 'IfcSiteFacility',
           category: 'Site',
           storeyId: 'STOREY-GROUND',
@@ -179,7 +179,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: fac.positionXYZ || [0, 0, 0],
           orientationDegrees: 0,
           materialSpecIds: ['STEEL-CONTAINER'],
-          propertySets: [{ name: 'Pset_FacilityDetails', properties: { FacilityId: fac.entityId, Capacity: fac.maxOccupancy || 8 } }],
+          propertySets: [{ name: 'Pset_FacilityDetails', properties: { FacilityId: fac.entityId || fac.id, Capacity: fac.maxOccupancy || 8 } }],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -3242,48 +3242,81 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             <span>HERMES BIM SPATIAL WORKSPACE ({activeProjectId})</span>
           </div>
 
-          {/* Live Construction World & Validation Step Control Bar */}
-          {(activeProjectId === 'HERMES-LIVE-HOUSE-001' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006' || activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007') && (
-            <div className="absolute top-3 right-4 z-20 bg-slate-900/95 text-white backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-700 shadow-xl flex items-center gap-3 text-xs font-mono">
-              <div className="flex flex-col">
-                <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / {activeProjectId === 'HERMES-LIVE-HOUSE-001' ? 30 : activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 17 : 14}
-                </span>
-                <span className="font-bold text-white max-w-[280px] truncate">
-                  {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — CLEAN WORLD GENESIS'}
-                </span>
-              </div>
+          {/* Top Center: Construction Phase Progress Strip */}
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-slate-900/90 text-white backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-700/80 shadow-xl flex items-center gap-2 text-xs font-mono overflow-x-auto max-w-[90vw] sm:max-w-none">
+            {[
+              { id: 'INTAKE', name: 'Intake', range: [0, 1] },
+              { id: 'SURVEY', name: 'Survey & Geotech', range: [2, 4] },
+              { id: 'DESIGN', name: 'Design', range: [5, 7] },
+              { id: 'FOUNDATION', name: 'Foundation', range: [8, 12] },
+              { id: 'FRAMING', name: 'Framing', range: [13, 17] },
+              { id: 'MEP', name: 'MEP Rough-In', range: [18, 22] },
+              { id: 'INSPECTIONS', name: 'Inspections', range: [23, 26] },
+              { id: 'FINISH', name: 'Finishes & Handover', range: [27, 30] },
+            ].map((phase) => {
+              const currentCp = house0002RawData?.currentCheckpoint ?? 0;
+              const isActive = currentCp >= phase.range[0] && currentCp <= phase.range[1];
+              const isPassed = currentCp > phase.range[1];
 
-              <div className="flex items-center gap-1.5 ml-2">
+              return (
                 <button
-                  onClick={() => handleValidation006Step('reset')}
-                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold border border-slate-700 text-[11px] transition flex items-center gap-1"
-                  title="Reset to Checkpoint 0"
-                >
-                  <RotateCcw className="w-3 h-3 text-slate-400" />
-                  <span>Reset</span>
-                </button>
-
-                <button
+                  key={phase.id}
                   onClick={() => handleValidation006Step('step')}
-                  className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold border border-blue-500 text-[11px] shadow-xs transition flex items-center gap-1 disabled:opacity-50"
-                  disabled={house0002RawData?.currentCheckpoint >= (activeProjectId === 'HERMES-LIVE-HOUSE-001' ? 30 : activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 17 : 14)}
+                  className={`px-3 py-1 rounded-xl text-[11px] font-extrabold transition shrink-0 flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 border border-blue-400 font-bold'
+                      : isPassed
+                      ? 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                      : 'bg-slate-950/60 text-slate-500 hover:text-slate-300'
+                  }`}
                 >
-                  <span>Step (+1)</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white animate-pulse' : isPassed ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+                  <span>{phase.name}</span>
                 </button>
+              );
+            })}
+          </div>
 
-                <button
-                  onClick={() => handleValidation006Step('run-all')}
-                  className="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold border border-purple-500 text-[11px] shadow-xs transition flex items-center gap-1"
-                >
-                  <Play className="w-3.5 h-3.5" />
-                  <span>Run All (0→{activeProjectId === 'HERMES-LIVE-HOUSE-001' ? 30 : activeProjectId === 'LIVE-WORLD-AUTONOMOUS-GENERATION-007' ? 17 : 14})</span>
-                </button>
-              </div>
+          {/* Top Right: Player & Camera Control Bar */}
+          <div className="absolute top-3 right-4 z-20 bg-slate-900/95 text-white backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-700 shadow-xl flex items-center gap-3 text-xs font-mono">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / 30
+              </span>
+              <span className="font-bold text-white max-w-[240px] truncate">
+                {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — CLEAN WORLD GENESIS'}
+              </span>
             </div>
-          )}
+
+            <div className="flex items-center gap-1.5 ml-2">
+              <button
+                onClick={() => handleValidation006Step('reset')}
+                className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold border border-slate-700 text-[11px] transition flex items-center gap-1"
+                title="Reset to Checkpoint 0"
+              >
+                <RotateCcw className="w-3 h-3 text-slate-400" />
+                <span>Reset</span>
+              </button>
+
+              <button
+                onClick={() => handleValidation006Step('step')}
+                className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold border border-blue-500 text-[11px] shadow-xs transition flex items-center gap-1 disabled:opacity-50"
+                disabled={(house0002RawData?.currentCheckpoint ?? 0) >= 30}
+              >
+                <span>Step (+1)</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={() => handleValidation006Step('run-all')}
+                className="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold border border-purple-500 text-[11px] shadow-xs transition flex items-center gap-1"
+              >
+                <Play className="w-3.5 h-3.5" />
+                <span>Run All</span>
+              </button>
+            </div>
+          </div>
 
           {/* Active Filter Floating Badge */}
           {(selectedSystem || activeTrace || isolatedCompId) && (
