@@ -176,7 +176,7 @@ export const ThreeBIMViewer: React.FC<ThreeBIMViewerProps> = ({
     meshesMapRef.current.forEach((mesh) => scene.remove(mesh));
     meshesMapRef.current.clear();
 
-    components.forEach((comp) => {
+    (components || []).forEach((comp) => {
       const visibleLayer = activeLayerFilters[comp.system] !== false;
       const visibleTimeline = comp.installationStageDay <= constructionDay;
 

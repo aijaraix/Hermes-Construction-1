@@ -3679,6 +3679,9 @@ export interface Validation005EvidencePackage {
   materialPackageCount: number;
   activeAgentCount: number;
   agentPositions: Array<{ agentId: string; role: string; position: [number, number, number]; status: string }>;
+  visibleEquipmentIds?: string[];
+  surveyMarkCount?: number;
+  buildingBimComponentCount?: number;
   currentMissions: Array<{ missionId: string; title: string; assignedAgentId: string; status: string }>;
   terrainStateHash: string;
   siteElevationRange: [number, number]; // [minY, maxY]
@@ -3750,7 +3753,7 @@ export interface Validation005Report {
     passedGatesCount: number;
     failedGatesCount: number;
     overallGateStatus: 'PASS' | 'FAIL';
-    ownerVisualAcceptanceStatus: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+    ownerVisualAcceptanceStatus: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CONDITIONAL_ACCEPTANCE_CHECKPOINT_2';
     phase3Authorization: 'BLOCKED';
   };
 }

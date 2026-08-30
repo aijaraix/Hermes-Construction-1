@@ -41,9 +41,9 @@ export default function App() {
   const [activeSystemSubtab, setActiveSystemSubtab] = useState<NavTab>('spatial-academy');
 
   const defaultFallbackProject: DigitalTwinProject = {
-    id: 'LIVE-WORLD-VISUAL-VALIDATION-005',
-    name: 'LIVE-WORLD-VISUAL-VALIDATION-005 (Master Spec Causal Validation)',
-    buildingType: 'Single-Family Residential (Clean-Room Validation 005)',
+    id: 'LIVE-WORLD-VISUAL-VALIDATION-006',
+    name: 'LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)',
+    buildingType: 'Single-Family Residential (Clean-Room Validation 006)',
     gymLevel: 3,
     iterationNumber: 1,
     overallCompletionPct: 0.0,
@@ -51,7 +51,7 @@ export default function App() {
     environment: {
       latitude: 27.9506,
       longitude: -82.4572,
-      locationName: 'Validation-005 Clean-Room Site, Florida',
+      locationName: 'Validation-006 Clean-Room Site, Florida',
       jurisdiction: 'City of Tampa / Hillsborough County',
       climateZone: 'Zone 2A (Hot-Humid)',
       coastalProximityMiles: 1.5,
@@ -95,13 +95,13 @@ export default function App() {
   };
 
   const defaultFallbackHeartbeat: PrimeHeartbeatState = {
-    activeProjectId: 'LIVE-WORLD-VISUAL-VALIDATION-005',
-    activeProjectName: 'LIVE-WORLD-VISUAL-VALIDATION-005 (Master Spec Causal Validation)',
+    activeProjectId: 'LIVE-WORLD-VISUAL-VALIDATION-006',
+    activeProjectName: 'LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)',
     gymLevel: 3,
     overallCompletionPct: 0.0,
     heartbeatCount: 1,
     lastHeartbeatTime: new Date().toISOString(),
-    statusMessage: 'LIVE-WORLD-VISUAL-VALIDATION-005 Genesis (Event 0) Active: Checkpoint 1 Reached (PAUSED FOR OWNER REVIEW)',
+    statusMessage: 'LIVE-WORLD-VISUAL-VALIDATION-006 Genesis (Checkpoint 0) Active: AUTORUN = FALSE (PAUSED AWAITING OWNER REVIEW)',
     activeSwarmAgent: 'HERMES PRIME ORCHESTRATOR',
     unresolvedQuestions: 0,
     inspectionFailuresCount: 0,

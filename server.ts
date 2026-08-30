@@ -47,6 +47,7 @@ import { Phase2DiagnosticRunner } from './server/phase2DiagnosticRunner';
 import { Validation003Engine } from './server/validation003Engine';
 import { Validation004Engine } from './server/validation004Engine';
 import { Validation005Engine } from './server/validation005Engine';
+import { Validation006Engine } from './server/validation006Engine';
 
 async function startServer() {
   const app = express();
@@ -550,6 +551,57 @@ async function startServer() {
       const state = Validation005Engine.initialize();
       const result = Validation005Engine.advanceOneStep(state);
       res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.get('/api/hermes/validation006-spatial-world', (req, res) => {
+    try {
+      const state = Validation006Engine.getCanonicalWorldState();
+      res.json(state);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation006-step', (req, res) => {
+    try {
+      const targetStep = req.body?.targetStep;
+      let state;
+      if (typeof targetStep === 'number') {
+        state = Validation006Engine.advanceToStep(targetStep);
+      } else {
+        state = Validation006Engine.advanceOneStep();
+      }
+      res.json({
+        state,
+        message: `Step advanced to Checkpoint ${state.currentCheckpoint}: ${state.diagnostics.checkpointName}`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation006-run-all', (req, res) => {
+    try {
+      const state = Validation006Engine.advanceToStep(14);
+      res.json({
+        state,
+        message: 'Full step-by-step clean-room causal validation sequence executed through Checkpoint 14.'
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
+  app.post('/api/hermes/validation006-reset', (req, res) => {
+    try {
+      const state = Validation006Engine.initialize();
+      res.json({
+        state,
+        message: 'Validation 006 state reset to Checkpoint 0 — World Genesis.'
+      });
     } catch (err: any) {
       res.status(500).json({ error: err.message || String(err) });
     }

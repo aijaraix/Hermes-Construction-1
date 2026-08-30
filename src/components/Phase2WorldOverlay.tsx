@@ -43,6 +43,7 @@ interface Phase2WorldOverlayProps {
 
 // Facility Catalog Mapping with Short Names and Theme Colors
 const FACILITY_CATALOG: Record<string, { shortName: string; category: string; color: string; bgColor: string }> = {
+  // Validation 001/002/003/004 Facilities
   'FACILITY-INTAKE-01': { shortName: 'CUSTOMER BRIEFING', category: 'Executive', color: 'text-amber-600', bgColor: 'bg-amber-500/10 border-amber-500/40 text-amber-300' },
   'FACILITY-OPS-01': { shortName: 'EXECUTIVE & PRIME', category: 'Executive', color: 'text-amber-500', bgColor: 'bg-amber-500/10 border-amber-500/40 text-amber-300' },
   'FACILITY-PM-01': { shortName: 'PM & SCHEDULING', category: 'Management', color: 'text-blue-400', bgColor: 'bg-blue-500/10 border-blue-500/40 text-blue-300' },
@@ -61,6 +62,43 @@ const FACILITY_CATALOG: Record<string, { shortName: string; category: string; co
   'FACILITY-QUALITY-01': { shortName: 'QUALITY & INSPECTION', category: 'Quality', color: 'text-rose-500', bgColor: 'bg-rose-500/10 border-rose-500/40 text-rose-300' },
   'FACILITY-LEARNING-01': { shortName: 'KNOWLEDGE ACADEMY', category: 'Academy', color: 'text-teal-400', bgColor: 'bg-teal-500/10 border-teal-500/40 text-teal-300' },
   'FACILITY-DIAG-01': { shortName: 'SYSTEM DIAGNOSTICS', category: 'Quality', color: 'text-indigo-400', bgColor: 'bg-indigo-500/10 border-indigo-500/40 text-indigo-300' },
+
+  // Validation 005 Campus Facilities (17 Labeled Facilities)
+  'FACILITY-EXEC-05': { shortName: 'EXECUTIVE & PRIME HQ', category: 'Management', color: 'text-amber-400', bgColor: 'bg-amber-500/10 border-amber-500/40 text-amber-300' },
+  'FACILITY-ARCH-05': { shortName: 'ARCHITECTURE LAB', category: 'Architecture', color: 'text-purple-400', bgColor: 'bg-purple-500/10 border-purple-500/40 text-purple-300' },
+  'FACILITY-STRUCT-05': { shortName: 'STRUCTURAL LAB', category: 'Engineering', color: 'text-orange-400', bgColor: 'bg-orange-500/10 border-orange-500/40 text-orange-300' },
+  'FACILITY-CIVIL-05': { shortName: 'CIVIL & SURVEY DEPOT', category: 'Civil', color: 'text-yellow-400', bgColor: 'bg-yellow-500/10 border-yellow-500/40 text-yellow-300' },
+  'FACILITY-FOUND-05': { shortName: 'FOUNDATION CENTER', category: 'Concrete', color: 'text-stone-400', bgColor: 'bg-stone-500/10 border-stone-500/40 text-stone-300' },
+  'FACILITY-MASONRY-05': { shortName: 'MASONRY DEPOT', category: 'Masonry', color: 'text-amber-700', bgColor: 'bg-amber-700/10 border-amber-700/40 text-amber-300' },
+  'FACILITY-ROOF-05': { shortName: 'ROOFING & ENVELOPE', category: 'Roofing', color: 'text-slate-400', bgColor: 'bg-slate-500/10 border-slate-500/40 text-slate-300' },
+  'FACILITY-PLUMB-05': { shortName: 'PLUMBING WORKSHOP', category: 'MEP', color: 'text-blue-400', bgColor: 'bg-blue-500/10 border-blue-500/40 text-blue-300' },
+  'FACILITY-ELEC-05': { shortName: 'ELECTRICAL LAB', category: 'MEP', color: 'text-yellow-300', bgColor: 'bg-yellow-400/10 border-yellow-400/40 text-yellow-200' },
+  'FACILITY-HVAC-05': { shortName: 'HVAC STATION', category: 'MEP', color: 'text-cyan-400', bgColor: 'bg-cyan-500/10 border-cyan-500/40 text-cyan-300' },
+  'FACILITY-FIRE-05': { shortName: 'FIRE SAFETY STATION', category: 'Safety', color: 'text-red-400', bgColor: 'bg-red-500/10 border-red-500/40 text-red-300' },
+  'FACILITY-QUAL-05': { shortName: 'QUALITY & COMPLIANCE HQ', category: 'Quality', color: 'text-rose-400', bgColor: 'bg-rose-500/10 border-rose-500/40 text-rose-300' },
+  'FACILITY-PROCURE-05': { shortName: 'GLOBAL PROCUREMENT', category: 'Logistics', color: 'text-amber-500', bgColor: 'bg-amber-600/10 border-amber-600/40 text-amber-300' },
+  'FACILITY-ACADEMY-05': { shortName: 'SME LEARNING ACADEMY', category: 'Academy', color: 'text-teal-400', bgColor: 'bg-teal-500/10 border-teal-500/40 text-teal-300' },
+  'FACILITY-DIAG-05': { shortName: 'SYSTEM DIAGNOSTICS', category: 'Diagnostics', color: 'text-indigo-400', bgColor: 'bg-indigo-500/10 border-indigo-500/40 text-indigo-300' },
+
+  // Validation 006 Campus Facilities (17 Labeled Facilities)
+  'FACILITY-EXEC-06': { shortName: 'EXECUTIVE & PRIME HQ', category: 'Management', color: 'text-amber-400', bgColor: 'bg-amber-500/10 border-amber-500/40 text-amber-300' },
+  'FACILITY-ARCH-06': { shortName: 'ARCHITECTURE LAB', category: 'Architecture', color: 'text-purple-400', bgColor: 'bg-purple-500/10 border-purple-500/40 text-purple-300' },
+  'FACILITY-STRUCT-06': { shortName: 'STRUCTURAL LAB', category: 'Engineering', color: 'text-orange-400', bgColor: 'bg-orange-500/10 border-orange-500/40 text-orange-300' },
+  'FACILITY-CIVIL-06': { shortName: 'CIVIL & SURVEY DEPOT', category: 'Civil', color: 'text-yellow-400', bgColor: 'bg-yellow-500/10 border-yellow-500/40 text-yellow-300' },
+  'FACILITY-FOUND-06': { shortName: 'FOUNDATION CENTER', category: 'Concrete', color: 'text-stone-400', bgColor: 'bg-stone-500/10 border-stone-500/40 text-stone-300' },
+  'FACILITY-MASONRY-06': { shortName: 'MASONRY DEPOT', category: 'Masonry', color: 'text-amber-700', bgColor: 'bg-amber-700/10 border-amber-700/40 text-amber-300' },
+  'FACILITY-ROOF-06': { shortName: 'ROOFING & ENVELOPE', category: 'Roofing', color: 'text-slate-400', bgColor: 'bg-slate-500/10 border-slate-500/40 text-slate-300' },
+  'FACILITY-PLUMB-06': { shortName: 'PLUMBING WORKSHOP', category: 'MEP', color: 'text-blue-400', bgColor: 'bg-blue-500/10 border-blue-500/40 text-blue-300' },
+  'FACILITY-ELEC-06': { shortName: 'ELECTRICAL LAB', category: 'MEP', color: 'text-yellow-300', bgColor: 'bg-yellow-400/10 border-yellow-400/40 text-yellow-200' },
+  'FACILITY-HVAC-06': { shortName: 'HVAC STATION', category: 'MEP', color: 'text-cyan-400', bgColor: 'bg-cyan-500/10 border-cyan-500/40 text-cyan-300' },
+  'FACILITY-FIRE-06': { shortName: 'FIRE SAFETY STATION', category: 'Safety', color: 'text-red-400', bgColor: 'bg-red-500/10 border-red-500/40 text-red-300' },
+  'FACILITY-QUAL-06': { shortName: 'QUALITY & COMPLIANCE HQ', category: 'Quality', color: 'text-rose-400', bgColor: 'bg-rose-500/10 border-rose-500/40 text-rose-300' },
+  'FACILITY-PROCURE-06': { shortName: 'GLOBAL PROCUREMENT', category: 'Logistics', color: 'text-amber-500', bgColor: 'bg-amber-600/10 border-amber-600/40 text-amber-300' },
+  'FACILITY-ACADEMY-06': { shortName: 'SME LEARNING ACADEMY', category: 'Academy', color: 'text-teal-400', bgColor: 'bg-teal-500/10 border-teal-500/40 text-teal-300' },
+  'FACILITY-DIAG-06': { shortName: 'SYSTEM DIAGNOSTICS', category: 'Diagnostics', color: 'text-indigo-400', bgColor: 'bg-indigo-500/10 border-indigo-500/40 text-indigo-300' },
+
+  'FACILITY-CUSTOMER-BRIEFING': { shortName: 'CUSTOMER BRIEFING PAVILION', category: 'Customer', color: 'text-amber-400', bgColor: 'bg-amber-500/10 border-amber-500/40 text-amber-300' },
+  'FACILITY-CUSTOMER-ENTRANCE': { shortName: 'CAMPUS MAIN ENTRANCE', category: 'Entrance', color: 'text-emerald-400', bgColor: 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300' },
 };
 
 export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({

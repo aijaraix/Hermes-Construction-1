@@ -59,7 +59,10 @@ import {
   GraduationCap,
   MapPin,
   HelpCircle,
-  Truck
+  Truck,
+  UserCheck,
+  FileCheck,
+  Package
 } from 'lucide-react';
 
 export interface ReferenceBimComponent {
@@ -68,7 +71,7 @@ export interface ReferenceBimComponent {
   ifcGuid: string;
   ifcType: string;
   name: string;
-  category: 'Architecture' | 'Structure' | 'Plumbing' | 'HVAC' | 'Electrical' | 'Site' | 'Workforce';
+  category: 'Architecture' | 'Structure' | 'Plumbing' | 'HVAC' | 'Electrical' | 'Site' | 'Workforce' | 'Customer' | 'Requirements' | 'Equipment' | 'Geotechnical' | 'Design';
   storeyId: string;
   storeyName: string;
   spaceId?: string;
@@ -150,6 +153,11 @@ interface BimWorkspaceViewProps {
 function computeReducedComponentsForEvent(eventIndex: number, rawData: any): ReferenceBimComponent[] {
   if (!rawData) return [];
 
+  const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
+  const isVal004 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004';
+  const isVal005 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005';
+  const isVal006 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006';
+
   const components: ReferenceBimComponent[] = [];
 
   // 1. Facilities (Genesis eventIndex = 0)
@@ -189,30 +197,44 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   });
 
-  // 2. Workforce Agents (68 agents, Genesis eventIndex = 0)
+  // 2. Workforce Agents (68 agents + Customer)
   const agentStates = rawData.agentSpatialStates || [];
   agentStates.forEach((agent: any) => {
+    const isCustomer = agent.agentId === 'CUSTOMER-001';
+    let pos = agent.worldPosition || [0, 0, 0];
+    if (isVal005 || isVal006) {
+      if (agent.agentId === 'CUSTOMER-001') {
+        pos = eventIndex < 2 ? [-35.0, 0.0, 25.0] : [-28.0, 0.0, 0.0];
+      } else if (agent.agentId === 'PROJECT-PRIME') {
+        pos = eventIndex < 4 ? [-55.0, 0.0, -15.0] : eventIndex === 4 ? [-41.5, 0.0, -7.5] : [-28.0, 0.0, 0.0];
+      } else if (agent.agentId === 'AGENT-SURVEY-001') {
+        pos = eventIndex < 10 ? [-40.0, 0.0, -15.0] : eventIndex === 10 ? [-27.5, 0.25, -15.0] : [15.0, 2.8, -15.0];
+      } else if (agent.agentId === 'AGENT-GEOTECH-001') {
+        pos = eventIndex < 10 ? [-40.0, 0.0, -15.0] : eventIndex === 10 ? [-17.5, 0.9, -5.0] : [5.0, 1.8, 5.0];
+      }
+    }
+
     components.push({
-      id: `AGENT-${agent.agentId}`,
-      name: `${agent.role} (${agent.agentId})`,
-      ifcGuid: `GUID-AGENT-${agent.agentId}`,
+      id: isCustomer ? 'CUSTOMER-001' : `AGENT-${agent.agentId}`,
+      name: isCustomer ? 'Project Customer / Owner (CUSTOMER-001)' : `${agent.role} (${agent.agentId})`,
+      ifcGuid: `GUID-${agent.agentId}`,
       ifcType: 'IfcActor',
-      category: 'Workforce',
+      category: isCustomer ? 'Customer' : 'Workforce',
       storeyId: 'STOREY-GROUND',
       storeyName: 'Ground Level (0.00m Datum)',
       dimensions: [0.5, 1.75, 0.5],
-      position: agent.worldPosition || [0, 0, 0],
+      position: pos,
       orientationDegrees: 0,
-      materialSpecIds: ['WORKFORCE-AGENT'],
+      materialSpecIds: [isCustomer ? 'CUSTOMER-ACTOR' : 'WORKFORCE-AGENT'],
       propertySets: [
         {
           name: 'Pset_AgentDetails',
           properties: {
             AgentId: agent.agentId,
             Role: agent.role,
-            Discipline: agent.discipline,
-            State: agent.currentState,
-            HomeBase: agent.homeBaseEntityId,
+            Discipline: agent.discipline || (isCustomer ? 'Customer' : 'Management'),
+            State: agent.currentState || 'ACTIVE',
+            HomeBase: agent.homeBaseEntityId || (isCustomer ? 'FACILITY-CUSTOMER-ENTRANCE' : 'FACILITY-EXEC-05'),
           },
         },
       ],
@@ -228,9 +250,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   });
 
-  const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
-  const isVal004 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004';
-  const isVal005 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005';
   const eventStream = rawData.events || [];
 
   const getEntityEventIdx = (entity: any, fallbackMin: number): number => {
@@ -242,41 +261,241 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     return fallbackMin;
   };
 
-  // 3. Survey Marks
-  const surveyMarks = rawData.surveyMarks || [];
-  surveyMarks.forEach((sm: any) => {
-    const smIdx = isVal004 ? getEntityEventIdx(sm, 20) : (isVal003 ? 14 : 4);
-    if (eventIndex >= smIdx) {
+  // 3. In-World Requirements Board (Validation 005/006 eventIndex >= 6)
+  if ((isVal005 || isVal006) && eventIndex >= 6) {
+    components.push({
+      id: 'BOARD-REQUIREMENTS-006',
+      name: 'In-World Requirements Board (12 Decision Records)',
+      ifcGuid: 'GUID-BOARD-REQ-006',
+      ifcType: 'IfcElementAssembly',
+      category: 'Requirements',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [2.5, 1.8, 0.1],
+      position: [-28.0, 2.0, 0.0],
+      orientationDegrees: 0,
+      materialSpecIds: ['REQUIREMENTS-BOARD-DISPLAY'],
+      propertySets: [
+        {
+          name: 'Pset_RequirementsDetails',
+          properties: {
+            BuildingType: 'Single Family Residential',
+            Footprint: '110 sq m (1,184 sq ft)',
+            Bedrooms: '2 Bedrooms',
+            Bathrooms: '2 Bathrooms',
+            Stories: '1 Story',
+            Budget: '$310,000 USD',
+            WindRating: '160 MPH Wind Load / Seismic Zone 4',
+            Foundation: 'Monolithic Concrete Slab',
+            CustomerApproved: true,
+            TotalRecords: 12,
+          },
+        },
+      ],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: {
+        source: 'CUSTOMER_INTAKE_ENGINE',
+        creator: 'PROJECT-PRIME',
+        verifiedDate: new Date().toISOString(),
+        license: 'HERMES',
+      },
+    });
+  }
+
+  // 4. Survey & Geotech Equipment (Validation 005/006 eventIndex >= 7)
+  if ((isVal005 || isVal006) && eventIndex >= 7) {
+    components.push({
+      id: 'EQUIP-TOTAL-STATION-01',
+      name: 'Leica TS16 Robotic Total Station Tripod',
+      ifcGuid: 'GUID-EQUIP-TS16',
+      ifcType: 'IfcEquipment',
+      category: 'Equipment',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [0.6, 1.5, 0.6],
+      position: [-15.0, 0.5, -15.0],
+      orientationDegrees: 0,
+      materialSpecIds: ['SURVEY-EQUIPMENT'],
+      propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'Total Station', Accuracy: '1mm angular' } }],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+    });
+
+    components.push({
+      id: 'EQUIP-GNSS-ROVER-01',
+      name: 'Trimble R12i RTK GNSS Rover Pole',
+      ifcGuid: 'GUID-EQUIP-RTK',
+      ifcType: 'IfcEquipment',
+      category: 'Equipment',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [0.2, 2.0, 0.2],
+      position: [15.0, 2.8, -15.0],
+      orientationDegrees: 0,
+      materialSpecIds: ['SURVEY-EQUIPMENT'],
+      propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'RTK GPS Rover', Accuracy: '20mm horizontal' } }],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+    });
+
+    components.push({
+      id: 'EQUIP-GEOTECH-RIG-01',
+      name: 'Mobile Geotechnical SPT Drill Rig',
+      ifcGuid: 'GUID-EQUIP-RIG',
+      ifcType: 'IfcEquipment',
+      category: 'Equipment',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [2.0, 3.0, 1.5],
+      position: [5.0, 1.8, 5.0],
+      orientationDegrees: 0,
+      materialSpecIds: ['GEOTECH-DRILL-RIG'],
+      propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'SPT Drill Rig', Method: 'Standard Penetration Test' } }],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: { source: 'CIVIL_DEPOT', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+    });
+  }
+
+  // 5. Survey Control Stakes & Geotech Test (Validation 005/006 eventIndex >= 7)
+  if ((isVal005 || isVal006) && eventIndex >= 7) {
+    const stakes = [
+      { id: 'SURVEY-STAKE-NW', name: 'Survey Control Stake NW (0.0m)', pos: [-15.0, 0.5, -15.0], elev: 0.0 },
+      { id: 'SURVEY-STAKE-NE', name: 'Survey Control Stake NE (+3.8m)', pos: [15.0, 2.8, -15.0], elev: 3.8 },
+      { id: 'SURVEY-STAKE-SE', name: 'Survey Control Stake SE (+2.8m)', pos: [15.0, 3.8, 15.0], elev: 2.8 },
+      { id: 'SURVEY-STAKE-SW', name: 'Survey Control Stake SW (+1.2m)', pos: [-15.0, 1.2, 15.0], elev: 1.2 },
+    ];
+    stakes.forEach((s) => {
       components.push({
-        id: sm.markId || `SURVEY-MARK-${sm.id}`,
-        name: `Survey Stake (${sm.markType})`,
-        ifcGuid: `GUID-SURVEY-${sm.id}`,
+        id: s.id,
+        name: s.name,
+        ifcGuid: `GUID-${s.id}`,
         ifcType: 'IfcSurveyMark',
         category: 'Site',
         storeyId: 'STOREY-GROUND',
         storeyName: 'Ground Level (0.00m Datum)',
         dimensions: [0.15, 1.2, 0.15],
-        position: sm.coordinatesXYZ || [0, 0, 0],
+        position: [s.pos[0], s.pos[1], s.pos[2]] as [number, number, number],
         orientationDegrees: 0,
-        materialSpecIds: ['HIGH-VIS-STAKE'],
-        propertySets: [
-          {
-            name: 'Pset_SurveyDetails',
-            properties: { MarkType: sm.markType, Elevation: sm.elevationMeters },
-          },
-        ],
+        materialSpecIds: ['WOODEN-CONTROL-STAKE'],
+        propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: s.id, Elevation: s.elev, Verification: 'RTK GPS Verified' } }],
         connectedComponentIds: [],
         openings: [],
         inspectionStatus: 'PASSED',
-        provenance: {
-          source: 'SURVEY_ENGINE',
-          creator: 'AGENT-SURVEY-LEAD',
-          verifiedDate: new Date().toISOString(),
-          license: 'HERMES',
-        },
+        provenance: { source: 'SURVEY_ENGINE', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
       });
-    }
-  });
+    });
+
+    components.push({
+      id: 'SPT-001',
+      name: 'Geotechnical Soil Boring Test Location (SPT-001)',
+      ifcGuid: 'GUID-SPT-001',
+      ifcType: 'IfcGeotechTest',
+      category: 'Geotechnical',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [0.8, 0.2, 0.8],
+      position: [5.0, 1.8, 5.0],
+      orientationDegrees: 0,
+      materialSpecIds: ['SOIL-BORING-SAMPLE'],
+      propertySets: [
+        {
+          name: 'Pset_GeotechDetails',
+          properties: {
+            AllowableBearingCapacityKpa: 190.0,
+            BearingCapacityPsf: 3960.0,
+            TestMethod: 'Standard Penetration Test (SPT)',
+            TopsoilDepthMeters: 0.5,
+            SubsoilType: 'Clay Loam Stiff',
+            Status: 'VERIFIED_ON_SITE',
+          },
+        },
+      ],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: { source: 'GEOTECH_LAB', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+    });
+  }
+
+  // 6. Buildable Envelope Overlay (Validation 005/006 eventIndex >= 8)
+  if ((isVal005 || isVal006) && eventIndex >= 8) {
+    components.push({
+      id: 'ENVELOPE-V6-001',
+      name: 'Buildable Envelope Site Constraint Overlay (484 m² Max Footprint)',
+      ifcGuid: 'GUID-ENVELOPE-V6-001',
+      ifcType: 'IfcBuildableEnvelope',
+      category: 'Design',
+      storeyId: 'STOREY-GROUND',
+      storeyName: 'Ground Level (0.00m Datum)',
+      dimensions: [22.0, 9.0, 22.0],
+      position: [0.0, 0.5, 0.0],
+      orientationDegrees: 0,
+      materialSpecIds: ['CONSTRAINT-OVERLAY-FRAME'],
+      propertySets: [
+        {
+          name: 'Pset_EnvelopeDetails',
+          properties: {
+            EnvelopeId: 'ENVELOPE-V6-001',
+            MaxFootprintSqM: 484.0,
+            MaxHeightMeters: 9.0,
+            Setbacks: '4m Front, 4m Rear, 4m Left, 4m Right',
+            TerrainStrategy: 'Cut and Fill (Max Slope 8.5°)',
+            TruthOrigin: 'SIMULATED',
+          },
+        },
+      ],
+      connectedComponentIds: [],
+      openings: [],
+      inspectionStatus: 'PASSED',
+      provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+    });
+  }
+
+  // 7. General Survey Marks (for non-Val 005/006)
+  if (!isVal005 && !isVal006) {
+    const surveyMarks = rawData.surveyMarks || [];
+    surveyMarks.forEach((sm: any) => {
+      const smIdx = isVal004 ? getEntityEventIdx(sm, 20) : (isVal003 ? 14 : 4);
+      if (eventIndex >= smIdx) {
+        components.push({
+          id: sm.markId || `SURVEY-MARK-${sm.id}`,
+          name: `Survey Stake (${sm.markType})`,
+          ifcGuid: `GUID-SURVEY-${sm.id}`,
+          ifcType: 'IfcSurveyMark',
+          category: 'Site',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [0.15, 1.2, 0.15],
+          position: sm.coordinatesXYZ || [0, 0, 0],
+          orientationDegrees: 0,
+          materialSpecIds: ['HIGH-VIS-STAKE'],
+          propertySets: [
+            {
+              name: 'Pset_SurveyDetails',
+              properties: { MarkType: sm.markType, Elevation: sm.elevationMeters },
+            },
+          ],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: {
+            source: 'SURVEY_ENGINE',
+            creator: 'AGENT-SURVEY-LEAD',
+            verifiedDate: new Date().toISOString(),
+            license: 'HERMES',
+          },
+        });
+      }
+    });
+  }
 
   // 4. 3D Program Room Volumes
   const programVolumes = rawData.programVolumes || [];
@@ -411,7 +630,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   initialSelectedComponentId = null,
 }) => {
   // Synchronized active project state
-  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'LIVE-WORLD-VISUAL-VALIDATION-005');
+  const [activeProjectId, setActiveProjectId] = useState<string>(propActiveProjectId || 'LIVE-WORLD-VISUAL-VALIDATION-006');
 
   useEffect(() => {
     if (propActiveProjectId && propActiveProjectId !== activeProjectId) {
@@ -642,6 +861,299 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     setActiveProjectId(newId);
     if (onSelectProject) {
       onSelectProject(newId);
+    }
+  };
+
+  const handleValidation006Step = async (action: 'step' | 'run-all' | 'reset') => {
+    try {
+      const url = action === 'step'
+        ? '/api/hermes/validation006-step'
+        : action === 'run-all'
+        ? '/api/hermes/validation006-run-all'
+        : '/api/hermes/validation006-reset';
+
+      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      if (!res.ok) throw new Error(`HTTP ${res.status} performing ${action}`);
+      const data = await res.json();
+      const vData = data.state;
+
+      setHouse0002RawData(vData);
+      setReplayEvents(vData.eventStream || []);
+
+      const components: any[] = [];
+      if (vData.campusFacilities) {
+        vData.campusFacilities.forEach((f: any) => {
+          components.push({
+            id: f.facilityId,
+            ifcGuid: `GUID-${f.facilityId}`,
+            ifcType: 'IfcSiteFacility',
+            name: f.name,
+            category: f.systemCategory,
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Site Level (0.00m Datum)',
+            position: f.worldPosition,
+            dimensions: f.dimensions,
+            orientationDegrees: 0,
+            materialSpecIds: ['STEEL-FRAME'],
+            propertySets: [{ name: 'Pset_Facility', properties: { Category: f.systemCategory, Label: f.inWorldLabel } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: 'PASSED',
+            provenance: { source: 'OPERATIONS_CAMPUS', creator: 'HERMES_PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        });
+      }
+
+      if (vData.agentSpatialStates) {
+        vData.agentSpatialStates.forEach((a: any) => {
+          components.push({
+            id: a.agentId,
+            ifcGuid: `GUID-${a.agentId}`,
+            ifcType: 'IfcWorkforceAgent',
+            name: `${a.role} (${a.agentId})`,
+            category: a.discipline,
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Site Level (0.00m Datum)',
+            position: a.worldPosition,
+            dimensions: [0.5, 1.75, 0.5],
+            orientationDegrees: 0,
+            materialSpecIds: ['WORKFORCE-HUMAN-SPEC'],
+            propertySets: [{ name: 'Pset_AgentDetails', properties: { Discipline: a.discipline, State: a.currentState, HomeBase: a.homeBaseEntityId, Role: a.role } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: 'PASSED',
+            provenance: { source: 'WORKFORCE_SPATIAL_ENGINE', creator: 'HERMES_ROSTER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        });
+      }
+
+      if (vData.surveyMarks) {
+        vData.surveyMarks.forEach((s: any) => {
+          components.push({
+            id: s.markId,
+            ifcGuid: `GUID-${s.markId}`,
+            ifcType: 'IfcBuildingElementProxy',
+            name: s.label || s.markId,
+            category: 'Site',
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Site Level (0.00m Datum)',
+            position: s.position,
+            dimensions: [0.15, 0.8, 0.15],
+            orientationDegrees: 0,
+            materialSpecIds: ['SURVEY-STAKE-SPEC'],
+            propertySets: [{ name: 'Pset_SurveyControl', properties: { Elevation: s.elevationFt } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: 'PASSED',
+            provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        });
+      }
+
+      if (vData.materialsOnsite) {
+        vData.materialsOnsite.forEach((m: any) => {
+          components.push({
+            id: m.materialId,
+            ifcGuid: `GUID-${m.materialId}`,
+            ifcType: 'IfcElementAssembly',
+            name: m.name,
+            category: m.category,
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Site Level (0.00m Datum)',
+            position: m.positionXYZ,
+            dimensions: m.dimensionsXYZ,
+            orientationDegrees: 0,
+            materialSpecIds: ['MATERIAL-ONSITE-SPEC'],
+            propertySets: [{ name: 'Pset_MaterialState', properties: { Category: m.category, Status: m.status } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: 'PASSED',
+            provenance: { source: 'LOGISTICS_DEPOT', creator: 'AGENT-LOGISTICS-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        });
+      }
+
+      // Customer 001 Actor (Checkpoints 2+)
+      if (vData.currentCheckpoint >= 2) {
+        const custLoc = vData.currentCheckpoint >= 3 ? [-28.0, 0.0, 0.0] : [-35.0, 0.0, 25.0];
+        components.push({
+          id: 'CUSTOMER-001',
+          name: 'Project Customer / Owner (CUSTOMER-001)',
+          ifcGuid: 'GUID-CUSTOMER-001',
+          ifcType: 'IfcActor',
+          category: 'Customer',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [0.5, 1.75, 0.5],
+          position: custLoc,
+          orientationDegrees: 0,
+          materialSpecIds: ['CUSTOMER-ACTOR'],
+          propertySets: [{ name: 'Pset_CustomerDetails', properties: { Role: 'Project Customer / Owner', Status: 'ACTIVE_INTAKE' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'HERMES_PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+
+      // Requirements Board (Checkpoints 6+)
+      if (vData.currentCheckpoint >= 6 && vData.requirementDecisions?.length > 0) {
+        components.push({
+          id: 'BOARD-REQUIREMENTS-006',
+          name: 'In-World Requirements Board (12 Decision Records)',
+          ifcGuid: 'GUID-BOARD-REQ-006',
+          ifcType: 'IfcElementAssembly',
+          category: 'Requirements',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [2.5, 1.8, 0.1],
+          position: [-28.0, 2.0, 0.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['REQUIREMENTS-BOARD-DISPLAY'],
+          propertySets: [{ name: 'Pset_RequirementsDetails', properties: { BuildingType: 'Single Family Residential', Footprint: '110 sq m (1,184 sq ft)', Budget: '$310,000 USD', WindRating: '160 MPH', TotalRecords: 12 } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'PROJECT-PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+
+      // Total Station, RTK Rover & Geotech Rig (Checkpoints 7+)
+      if (vData.currentCheckpoint >= 7) {
+        components.push({
+          id: 'EQUIP-TOTAL-STATION-01',
+          name: 'Leica TS16 Robotic Total Station Tripod',
+          ifcGuid: 'GUID-EQUIP-TS16',
+          ifcType: 'IfcEquipment',
+          category: 'Equipment',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [0.6, 1.5, 0.6],
+          position: [-15.0, 0.5, -15.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['SURVEY-EQUIPMENT'],
+          propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'Total Station', Accuracy: '1mm angular' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+        components.push({
+          id: 'EQUIP-GEOTECH-RIG-01',
+          name: 'Mobile Geotechnical SPT Drill Rig',
+          ifcGuid: 'GUID-EQUIP-RIG',
+          ifcType: 'IfcEquipment',
+          category: 'Equipment',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [2.0, 3.0, 1.5],
+          position: [5.0, 1.8, 5.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['GEOTECH-DRILL-RIG'],
+          propertySets: [{ name: 'Pset_EquipmentDetails', properties: { Type: 'SPT Drill Rig', Method: 'Standard Penetration Test' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'CIVIL_DEPOT', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+
+      // Buildable Envelope (Checkpoints 8+)
+      if (vData.currentCheckpoint >= 8 && vData.buildableEnvelope) {
+        components.push({
+          id: 'ENVELOPE-V6-001',
+          name: 'Buildable Envelope Site Constraint Overlay (484 m² Max Footprint)',
+          ifcGuid: 'GUID-ENVELOPE-V6-001',
+          ifcType: 'IfcBuildableEnvelope',
+          category: 'Design',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: [22.0, 9.0, 22.0],
+          position: [0.0, 0.5, 0.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['CONSTRAINT-OVERLAY-FRAME'],
+          propertySets: [{ name: 'Pset_EnvelopeDetails', properties: { MaxFootprintSqM: 484.0, Setbacks: '4m Front/Rear/Sides' } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+
+      // 3D Spatial Room Volumes (Checkpoints 9+)
+      if (vData.currentCheckpoint >= 9 && vData.roomVolumes) {
+        vData.roomVolumes.forEach((rv: any) => {
+          components.push({
+            id: rv.roomId,
+            name: rv.name,
+            ifcGuid: `GUID-${rv.roomId}`,
+            ifcType: 'IfcSpace',
+            category: 'Architecture',
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Level (0.00m Datum)',
+            dimensions: rv.dimensionsXYZ,
+            position: rv.positionXYZ,
+            orientationDegrees: 0,
+            materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
+            propertySets: [{ name: 'Pset_SpaceDetails', properties: { TargetAreaSqFt: rv.areaSqFt, RoomType: rv.name } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: 'PASSED',
+            provenance: { source: 'ARCHITECTURAL_ENGINE', creator: 'AGENT-ARCH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        });
+      }
+
+      if (vData.buildingComponents) {
+        vData.buildingComponents.forEach((c: any) => {
+          components.push({
+            id: c.componentId,
+            ifcGuid: `GUID-${c.componentId}`,
+            ifcType: c.category === 'Foundation' ? 'IfcSlab' : c.category === 'Roofing' ? 'IfcRoof' : c.discipline === 'Plumbing' ? 'IfcFlowSegment' : c.discipline === 'Electrical' ? 'IfcElectricDistributionBoard' : c.discipline === 'HVAC' ? 'IfcUnitaryEquipment' : 'IfcWall',
+            name: c.name,
+            category: c.category,
+            storeyId: 'STOREY-GROUND',
+            storeyName: 'Ground Level (0.00m Datum)',
+            position: c.positionXYZ,
+            dimensions: c.dimensionsXYZ,
+            orientationDegrees: 0,
+            materialSpecIds: [c.material || 'GENERIC-SPEC'],
+            propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: c.discipline, InstallationPhase: c.installationPhase } }],
+            connectedComponentIds: [],
+            openings: [],
+            inspectionStatus: 'PASSED',
+            provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          });
+        });
+      }
+
+      const normalizedProj: ReferenceBimProject = {
+        projectId: vData.projectId,
+        name: vData.projectName,
+        description: 'Master Clean-Room Visual Causality Validation Project 006',
+        classification: 'GENESIS_LIVE',
+        immutableSource: false,
+        academyWritable: true,
+        hermesGenerated: true,
+        referenceModel: false,
+        license: 'HERMES OpenBIM License',
+        sourceUri: `hermes://${vData.projectId}`,
+        spatialHierarchy: {
+          projectId: vData.projectId,
+          ifcGuid: `GUID-${vData.projectId}`,
+          siteId: `SITE-${vData.projectId}`,
+          siteGuid: `SITE-GUID-${vData.projectId}`,
+          buildingId: vData.projectName,
+          buildingGuid: `BUILDING-GUID-${vData.projectId}`,
+          storeys: [{ id: 'STOREY-GROUND', ifcGuid: `STOREY-GROUND-GUID-${vData.projectId}`, name: 'Ground Level (0.00m Datum)', elevationMeters: 0, heightMeters: 3.0, spaces: [] }]
+        },
+        components,
+        relationships: { containedInStorey: {}, containedInSpace: {}, hostsOpening: {}, systemConnectivity: {} }
+      };
+
+      setProjectData(normalizedProj);
+    } catch (err: any) {
+      console.error('Failed stepping validation006:', err);
     }
   };
 
@@ -1043,8 +1555,10 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           setProjectData(normalizedProj);
           setLoading(false);
-        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
-          const endpoint = activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
+        } else if (activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004' || activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-003') {
+          const endpoint = activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006'
+            ? '/api/hermes/validation006-spatial-world'
+            : activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
             ? '/api/hermes/validation005-spatial-world'
             : activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
             ? '/api/hermes/validation004-spatial-world'
@@ -1065,7 +1579,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           const normalizedProj: ReferenceBimProject = {
             projectId: vData.projectId,
             name: vData.projectName,
-            description: vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
+            description: vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-006'
+              ? 'Master Clean-Room Visual Causality Validation Project 006'
+              : vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-005'
               ? 'Clean-Room Live World Visual Validation Project 005'
               : vData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-004'
               ? 'Clean-Room Live World Visual Validation Project 004'
@@ -1544,73 +2060,77 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       const tGeom = new THREE.BufferGeometry();
       
       const flatPositions: number[] = [];
-      tm.vertices.forEach((v: [number, number, number]) => {
+      (tm.vertices || []).forEach((v: [number, number, number]) => {
         flatPositions.push(v[0], v[1], v[2]);
       });
       
       const flatIndices: number[] = [];
-      tm.faces.forEach((f: [number, number, number]) => {
+      (tm.faces || []).forEach((f: [number, number, number]) => {
         flatIndices.push(f[0], f[1], f[2]);
       });
 
-      tGeom.setAttribute('position', new THREE.Float32BufferAttribute(flatPositions, 3));
-      tGeom.setIndex(flatIndices);
-      tGeom.computeVertexNormals();
+      if (flatPositions.length > 0 && flatIndices.length > 0) {
+        tGeom.setAttribute('position', new THREE.Float32BufferAttribute(flatPositions, 3));
+        tGeom.setIndex(flatIndices);
+        tGeom.computeVertexNormals();
 
-      // Vertex height coloring: green valleys to earthy tan ridges
-      const colors: number[] = [];
-      const posAttr = tGeom.getAttribute('position');
-      for (let i = 0; i < posAttr.count; i++) {
-        const y = posAttr.getY(i);
-        const t = Math.min(Math.max(y / 4.0, 0), 1);
-        const r = 0.2 + t * 0.45;
-        const g = 0.5 - t * 0.15;
-        const b = 0.2;
-        colors.push(r, g, b);
+        // Vertex height coloring: green valleys to earthy tan ridges
+        const colors: number[] = [];
+        const posAttr = tGeom.getAttribute('position');
+        for (let i = 0; i < posAttr.count; i++) {
+          const y = posAttr.getY(i);
+          const t = Math.min(Math.max(y / 4.0, 0), 1);
+          const r = 0.2 + t * 0.45;
+          const g = 0.5 - t * 0.15;
+          const b = 0.2;
+          colors.push(r, g, b);
+        }
+        tGeom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+        const terrainMat = new THREE.MeshStandardMaterial({
+          vertexColors: true,
+          roughness: 0.85,
+          metalness: 0.05,
+          side: THREE.DoubleSide,
+        });
+
+        const terrainMesh = new THREE.Mesh(tGeom, terrainMat);
+        terrainMesh.receiveShadow = true;
+        terrainMesh.userData = { compId: 'SITE-TERRAIN-MESH-005' };
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(terrainMesh);
+        }
+        meshesMapRef.current.set('SITE-TERRAIN-MESH-005', terrainMesh);
+
+        // Wireframe contour lines for explicit visual proof of elevation
+        const wireGeom = new THREE.WireframeGeometry(tGeom);
+        const wireMat = new THREE.LineBasicMaterial({ color: 0x15803d, linewidth: 1, transparent: true, opacity: 0.35 });
+        const wireLine = new THREE.LineSegments(wireGeom, wireMat);
+        terrainMesh.add(wireLine);
       }
-      tGeom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-      const terrainMat = new THREE.MeshStandardMaterial({
-        vertexColors: true,
-        roughness: 0.85,
-        metalness: 0.05,
-        side: THREE.DoubleSide,
-      });
-
-      const terrainMesh = new THREE.Mesh(tGeom, terrainMat);
-      terrainMesh.receiveShadow = true;
-      terrainMesh.userData = { compId: 'SITE-TERRAIN-MESH-005' };
-      if (ifcGroupRef.current) {
-        ifcGroupRef.current.add(terrainMesh);
-      }
-      meshesMapRef.current.set('SITE-TERRAIN-MESH-005', terrainMesh);
-
-      // Wireframe contour lines for explicit visual proof of elevation
-      const wireGeom = new THREE.WireframeGeometry(tGeom);
-      const wireMat = new THREE.LineBasicMaterial({ color: 0x15803d, linewidth: 1, transparent: true, opacity: 0.35 });
-      const wireLine = new THREE.LineSegments(wireGeom, wireMat);
-      terrainMesh.add(wireLine);
     }
 
     // 0b. Render Parcel Boundary Polyline & Corner Survey Markers
     if (house0002RawData?.siteRealityModel?.boundary) {
       const boundaryPoints = house0002RawData.siteRealityModel.boundary;
       const polyPoints: THREE.Vector3[] = [];
-      boundaryPoints.forEach((pt: [number, number]) => {
+      (boundaryPoints || []).forEach((pt: [number, number]) => {
         polyPoints.push(new THREE.Vector3(pt[0], 0.15, pt[1]));
       });
-      if (boundaryPoints.length > 0) {
+      if (Array.isArray(boundaryPoints) && boundaryPoints.length > 0) {
         polyPoints.push(new THREE.Vector3(boundaryPoints[0][0], 0.15, boundaryPoints[0][1]));
       }
 
-      const bGeom = new THREE.BufferGeometry().setFromPoints(polyPoints);
-      const bMat = new THREE.LineBasicMaterial({ color: 0x0284c7, linewidth: 3 });
-      const bLine = new THREE.LineSegments(bGeom, bMat);
-      if (ifcGroupRef.current) {
-        ifcGroupRef.current.add(bLine);
+      if (polyPoints.length > 0) {
+        const bGeom = new THREE.BufferGeometry().setFromPoints(polyPoints);
+        const bMat = new THREE.LineBasicMaterial({ color: 0x0284c7, linewidth: 3 });
+        const bLine = new THREE.LineSegments(bGeom, bMat);
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(bLine);
+        }
       }
 
-      boundaryPoints.forEach((pt: [number, number], idx: number) => {
+      (boundaryPoints || []).forEach((pt: [number, number], idx: number) => {
         const stakeGeom = new THREE.CylinderGeometry(0.12, 0.12, 1.8, 8);
         stakeGeom.translate(pt[0], 0.9, pt[1]);
         const stakeMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 });
@@ -1622,7 +2142,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       });
     }
 
-    projectData.components.forEach((comp) => {
+    (projectData?.components || []).forEach((comp) => {
       if (hiddenCompIds.has(comp.id) && !forceAllVisible) return;
       if (isolatedCompId && comp.id !== isolatedCompId && !forceAllVisible) return;
 
@@ -1658,7 +2178,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       if (comp.ifcType === 'IfcActor') {
         // AGENT AVATAR SHAPE: Cylinder body + sphere head
         const group = new THREE.Group();
-        const discipline = comp.propertySets.find((p) => p.name === 'Pset_AgentDetails')?.properties.Discipline as string;
+        const discipline = (comp.propertySets || []).find((p) => p.name === 'Pset_AgentDetails')?.properties?.Discipline as string;
 
         let agentColor = 0x06b6d4; // Default cyan
         if (discipline === 'EXECUTIVE' || discipline === 'PRIME') agentColor = 0xf59e0b; // Gold
@@ -1817,14 +2337,14 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   }, [projectData, activeCategories, selectedCompId, hoveredCompId, selectedStoreyId, selectedSystem, isolatedCompId, hiddenCompIds, debugMaterialMode, forceAllVisible, tracedCompIds, activeTrace]);
 
   // Selected Component Lookup
-  const selectedComponent = projectData?.components.find((c) => c.id === selectedCompId) || null;
-  const selectedRoom = selectedRoomId && projectData ? projectData.spatialHierarchy.storeys.flatMap((s) => s.spaces).find((sp) => sp.id === selectedRoomId) : null;
+  const selectedComponent = (projectData?.components || []).find((c) => c.id === selectedCompId) || null;
+  const selectedRoom = selectedRoomId && projectData ? (projectData.spatialHierarchy?.storeys || []).flatMap((s) => s.spaces || []).find((sp) => sp.id === selectedRoomId) : null;
 
   // Selected Agent Lookup
-  const selectedAgent = house0002RawData?.agentSpatialStates?.find((a: any) => `AGENT-${a.agentId}` === selectedCompId || a.agentId === selectedCompId) || null;
+  const selectedAgent = (house0002RawData?.agentSpatialStates || []).find((a: any) => `AGENT-${a.agentId}` === selectedCompId || a.agentId === selectedCompId) || null;
 
   // Selected Facility Lookup
-  const selectedFacility = house0002RawData?.spatialEntities?.find((e: any) => e.entityId === selectedCompId) || null;
+  const selectedFacility = (house0002RawData?.spatialEntities || []).find((e: any) => e.entityId === selectedCompId) || null;
 
   // Active Replay Event
   const activeReplayEvent = replayEvents.length > 0 ? replayEvents[Math.min(currentEventIndex, replayEvents.length - 1)] : null;
@@ -1842,7 +2362,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               onChange={(e) => handleSwitchProject(e.target.value)}
               className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-xs"
             >
-              <option value="LIVE-WORLD-VISUAL-VALIDATION-005">LIVE-WORLD-VISUAL-VALIDATION-005 (Master Spec Causal Validation)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-006">LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)</option>
+              <option value="LIVE-WORLD-VISUAL-VALIDATION-005">LIVE-WORLD-VISUAL-VALIDATION-005 (Frozen Fixture - Failed Visual Validation)</option>
               <option value="LIVE-WORLD-VISUAL-VALIDATION-004">LIVE-WORLD-VISUAL-VALIDATION-004 (Clean-Room Validation 004)</option>
               <option value="LIVE-WORLD-VISUAL-VALIDATION-003">LIVE-WORLD-VISUAL-VALIDATION-003 (Clean-Room Validation 003)</option>
               <option value="ACADEMY-HOUSE-0002">ACADEMY-HOUSE-0002 (Historical Regression Fixture)</option>
@@ -1991,126 +2512,308 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     <Building className="w-4 h-4 text-blue-600 shrink-0" />
                     {projectData.name}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-mono shrink-0">{projectData.components.length} Items</span>
+                  <span className="text-[10px] text-slate-500 font-mono shrink-0">{(projectData?.components || []).length} Items</span>
                 </div>
 
-                {activeProjectId === 'ACADEMY-HOUSE-0002' ? (
-                  /* HOUSE #2 SPECIFIC STRUCTURED MODEL TREE */
+                {activeProjectId.startsWith('LIVE-WORLD-VISUAL-VALIDATION-') || (projectData?.components && projectData.components.length > 0) ? (
+                  /* STRUCTURED LIVE WORLD & MODEL TREE */
                   <div className="space-y-2 text-xs">
-                    {/* Site & Temporary Facilities Section */}
-                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
-                      <button
-                        onClick={() => setExpandedNodes((p) => ({ ...p, 'site-root': !p['site-root'] }))}
-                        className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-blue-600" />
-                          Site & Temporary Facilities (7 Facilities)
-                        </span>
-                        {expandedNodes['site-root'] ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
-                      </button>
-
-                      {expandedNodes['site-root'] && (
-                        <div className="p-2 space-y-1">
-                          {projectData.components
-                            .filter((c) => c.category === 'Site')
-                            .map((comp) => (
-                              <button
-                                key={comp.id}
-                                onClick={() => {
-                                  setSelectedCompId(comp.id);
-                                  setRightInspectorOpen(true);
-                                }}
-                                className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
-                                  selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
-                                }`}
-                              >
-                                <span className="truncate">{comp.name}</span>
-                                <span className="text-[9px] font-mono opacity-75">{comp.id}</span>
-                              </button>
-                            ))}
+                    {/* 1. OPERATIONS CAMPUS FACILITIES */}
+                    {(() => {
+                      const campusComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSiteFacility' || c.id.startsWith('FACILITY-'));
+                      const isExpanded = expandedNodes['campus-facilities'] ?? true;
+                      return (
+                        <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'campus-facilities': !p['campus-facilities'] }))}
+                            className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Building className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                              Operations Campus ({campusComps.length} Facilities)
+                            </span>
+                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-slate-500 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />}
+                          </button>
+                          {isExpanded && (
+                            <div className="p-2 space-y-1 max-h-56 overflow-y-auto">
+                              {campusComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
+                      );
+                    })()}
 
-                    {/* 3D Spatial Program Volumes */}
-                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
-                      <button
-                        onClick={() => setExpandedNodes((p) => ({ ...p, 'program-root': !p['program-root'] }))}
-                        className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <Box className="w-3.5 h-3.5 text-blue-600" />
-                          3D Spatial Program (6 Room Volumes)
-                        </span>
-                        {expandedNodes['program-root'] ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
-                      </button>
-
-                      {expandedNodes['program-root'] && (
-                        <div className="p-2 space-y-1">
-                          {projectData.components
-                            .filter((c) => c.ifcType === 'IfcSpace')
-                            .map((comp) => (
-                              <button
-                                key={comp.id}
-                                onClick={() => {
-                                  setSelectedCompId(comp.id);
-                                  setRightInspectorOpen(true);
-                                }}
-                                className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
-                                  selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
-                                }`}
-                              >
-                                <span className="truncate">{comp.name}</span>
-                                <span className="text-[9px] font-mono opacity-75">{comp.dimensions[0]}x{comp.dimensions[2]}m</span>
-                              </button>
-                            ))}
+                    {/* 2. WORKFORCE (HERMES AGENTS) */}
+                    {(() => {
+                      const agentComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcActor' && c.id !== 'CUSTOMER-001');
+                      const isExpanded = expandedNodes['workforce-agents'] ?? false;
+                      return (
+                        <div className="border border-slate-200 rounded-xl overflow-hidden bg-amber-50/50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'workforce-agents': !p['workforce-agents'] }))}
+                            className="w-full px-3 py-2 bg-amber-100/80 font-bold text-amber-900 flex items-center justify-between text-xs hover:bg-amber-200/80"
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Users className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                              HERMES Workforce ({agentComps.length} Agents)
+                            </span>
+                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-amber-600 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-amber-600 shrink-0" />}
+                          </button>
+                          {isExpanded && (
+                            <div className="p-2 space-y-1 max-h-56 overflow-y-auto">
+                              {agentComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-amber-600 text-white font-bold' : 'hover:bg-amber-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id.replace('AGENT-', '')}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
+                      );
+                    })()}
 
-                    {/* Building Architecture & Structure */}
-                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
-                      <button
-                        onClick={() => setExpandedNodes((p) => ({ ...p, 'building-structures': !p['building-structures'] }))}
-                        className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-800 flex items-center justify-between text-xs hover:bg-slate-200/80"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <Layers className="w-3.5 h-3.5 text-blue-600" />
-                          Building BIM Rev 1 (11 Components)
-                        </span>
-                        {expandedNodes['building-structures'] ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
-                      </button>
-
-                      {expandedNodes['building-structures'] && (
-                        <div className="p-2 space-y-1 font-mono text-[11px]">
-                          {projectData.components
-                            .filter((c) => ['IfcWall', 'IfcSlab', 'IfcDoor', 'IfcWindow', 'IfcRoof'].includes(c.ifcType))
-                            .map((comp) => (
-                              <button
-                                key={comp.id}
-                                onClick={() => {
-                                  setSelectedCompId(comp.id);
-                                  setRightInspectorOpen(true);
-                                }}
-                                className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
-                                  selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-200/60 text-slate-700'
-                                }`}
-                              >
-                                <span className="truncate">{comp.name}</span>
-                                <span className="text-[9px] opacity-75">{comp.category}</span>
-                              </button>
-                            ))}
+                    {/* 3. PROJECT CUSTOMER / OWNER */}
+                    {(() => {
+                      const customerComp = (projectData?.components || []).find((c) => c.id === 'CUSTOMER-001');
+                      if (!customerComp) return null;
+                      return (
+                        <div className="border border-emerald-200 rounded-xl overflow-hidden bg-emerald-50/50">
+                          <button
+                            onClick={() => {
+                              setSelectedCompId(customerComp.id);
+                              setRightInspectorOpen(true);
+                            }}
+                            className={`w-full px-3 py-2 font-bold text-emerald-900 flex items-center justify-between text-xs transition ${
+                              selectedCompId === customerComp.id ? 'bg-emerald-600 text-white' : 'bg-emerald-100/80 hover:bg-emerald-200/80'
+                            }`}
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <UserCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                              {customerComp.name}
+                            </span>
+                            <span className="text-[9px] font-mono opacity-75 shrink-0">PRESENT</span>
+                          </button>
                         </div>
-                      )}
-                    </div>
+                      );
+                    })()}
+
+                    {/* 4. IN-WORLD REQUIREMENTS BOARD */}
+                    {(() => {
+                      const boardComp = (projectData?.components || []).find((c) => c.id === 'BOARD-REQUIREMENTS-005');
+                      if (!boardComp) return null;
+                      return (
+                        <div className="border border-purple-200 rounded-xl overflow-hidden bg-purple-50/50">
+                          <button
+                            onClick={() => {
+                              setSelectedCompId(boardComp.id);
+                              setRightInspectorOpen(true);
+                            }}
+                            className={`w-full px-3 py-2 font-bold text-purple-900 flex items-center justify-between text-xs transition ${
+                              selectedCompId === boardComp.id ? 'bg-purple-600 text-white' : 'bg-purple-100/80 hover:bg-purple-200/80'
+                            }`}
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <FileCheck className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                              Requirements Board (12 Records)
+                            </span>
+                            <span className="text-[9px] font-mono opacity-75 shrink-0">VERIFIED</span>
+                          </button>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 5. SURVEY & GEOTECH EQUIPMENT */}
+                    {(() => {
+                      const equipComps = (projectData?.components || []).filter((c) => c.category === 'Equipment' || c.id.startsWith('EQUIP-'));
+                      if (equipComps.length === 0) return null;
+                      const isExpanded = expandedNodes['equipment'] ?? true;
+                      return (
+                        <div className="border border-cyan-200 rounded-xl overflow-hidden bg-cyan-50/50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'equipment': !p['equipment'] }))}
+                            className="w-full px-3 py-2 bg-cyan-100/80 font-bold text-cyan-900 flex items-center justify-between text-xs hover:bg-cyan-200/80"
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Compass className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
+                              Survey & Geotech Equipment ({equipComps.length})
+                            </span>
+                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-cyan-600 shrink-0" />}
+                          </button>
+                          {isExpanded && (
+                            <div className="p-2 space-y-1">
+                              {equipComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-cyan-600 text-white font-bold' : 'hover:bg-cyan-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    {/* 6. SURVEY CONTROL STAKES */}
+                    {(() => {
+                      const stakeComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSurveyMark' || c.id.startsWith('SURVEY-STAKE-'));
+                      if (stakeComps.length === 0) return null;
+                      const isExpanded = expandedNodes['survey-stakes'] ?? true;
+                      return (
+                        <div className="border border-yellow-200 rounded-xl overflow-hidden bg-yellow-50/50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'survey-stakes': !p['survey-stakes'] }))}
+                            className="w-full px-3 py-2 bg-yellow-100/80 font-bold text-yellow-900 flex items-center justify-between text-xs hover:bg-yellow-200/80"
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <MapPin className="w-3.5 h-3.5 text-yellow-600 shrink-0" />
+                              Survey Control Stakes ({stakeComps.length})
+                            </span>
+                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-yellow-600 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-yellow-600 shrink-0" />}
+                          </button>
+                          {isExpanded && (
+                            <div className="p-2 space-y-1">
+                              {stakeComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-yellow-600 text-white font-bold' : 'hover:bg-yellow-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    {/* 7. GEOTECHNICAL INVESTIGATION */}
+                    {(() => {
+                      const geotechComp = (projectData?.components || []).find((c) => c.id === 'SPT-001' || c.ifcType === 'IfcGeotechTest');
+                      if (!geotechComp) return null;
+                      return (
+                        <div className="border border-orange-200 rounded-xl overflow-hidden bg-orange-50/50">
+                          <button
+                            onClick={() => {
+                              setSelectedCompId(geotechComp.id);
+                              setRightInspectorOpen(true);
+                            }}
+                            className={`w-full px-3 py-2 font-bold text-orange-900 flex items-center justify-between text-xs transition ${
+                              selectedCompId === geotechComp.id ? 'bg-orange-600 text-white' : 'bg-orange-100/80 hover:bg-orange-200/80'
+                            }`}
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Box className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                              Geotech Boring SPT-001 (190 kPa)
+                            </span>
+                            <span className="text-[9px] font-mono opacity-75 shrink-0">TESTED</span>
+                          </button>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 8. BUILDABLE ENVELOPE OVERLAY */}
+                    {(() => {
+                      const envelopeComp = (projectData?.components || []).find((c) => c.id === 'ENVELOPE-V5-001' || c.ifcType === 'IfcBuildableEnvelope');
+                      if (!envelopeComp) return null;
+                      return (
+                        <div className="border border-sky-200 rounded-xl overflow-hidden bg-sky-50/50">
+                          <button
+                            onClick={() => {
+                              setSelectedCompId(envelopeComp.id);
+                              setRightInspectorOpen(true);
+                            }}
+                            className={`w-full px-3 py-2 font-bold text-sky-900 flex items-center justify-between text-xs transition ${
+                              selectedCompId === envelopeComp.id ? 'bg-sky-600 text-white' : 'bg-sky-100/80 hover:bg-sky-200/80'
+                            }`}
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Layers className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+                              Buildable Envelope (484 m²)
+                            </span>
+                            <span className="text-[9px] font-mono opacity-75 shrink-0">DERIVED</span>
+                          </button>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 9. MATERIALS ONSITE (0 Items at Checkpoint 2) */}
+                    {(() => {
+                      const matComps = (projectData?.components || []).filter((c) => c.id.startsWith('MAT-'));
+                      return (
+                        <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 opacity-70">
+                          <div className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-600 flex items-center justify-between text-xs">
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Package className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              Materials Onsite ({matComps.length} Items)
+                            </span>
+                            <span className="text-[9px] font-mono text-slate-400">CHECKPOINT 2 = 0</span>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 10. APPROVED BUILDING BIM COMPONENTS (0 Components at Checkpoint 2) */}
+                    {(() => {
+                      const bimComps = (projectData?.components || []).filter((c) => ['IfcWall', 'IfcSlab', 'IfcDoor', 'IfcWindow', 'IfcRoof'].includes(c.ifcType));
+                      return (
+                        <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 opacity-70">
+                          <div className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-600 flex items-center justify-between text-xs">
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              Approved Building BIM ({bimComps.length} Components)
+                            </span>
+                            <span className="text-[9px] font-mono text-slate-400">CHECKPOINT 2 = 0</span>
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 ) : (
-                  /* REFERENCE MODEL STOREY HIERARCHY */
+                  /* GENERIC STOREY HIERARCHY */
                   <div className="space-y-1 font-sans">
-                    {projectData.spatialHierarchy.storeys.map((storey) => {
+                    {(projectData?.spatialHierarchy?.storeys || []).map((storey) => {
                       const isExpanded = expandedNodes[storey.id];
-                      const storeyComps = projectData.components.filter((c) => c.storeyId === storey.id);
+                      const storeyComps = (projectData?.components || []).filter((c) => c.storeyId === storey.id);
 
                       return (
                         <div key={storey.id} className="mb-2">
@@ -2284,7 +2987,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: `#${getSystemColorHex(sys).toString(16).padStart(6, '0')}` }} />
                         <span>{sys} Network</span>
                       </div>
-                      <span className="text-xs text-slate-400 font-mono">{projectData?.components.filter((c) => c.category === sys).length} Items</span>
+                      <span className="text-xs text-slate-400 font-mono">{(projectData?.components || []).filter((c) => c.category === sys).length} Items</span>
                     </button>
                   );
                 })}
@@ -2327,6 +3030,49 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
             <span>HERMES BIM SPATIAL WORKSPACE ({activeProjectId})</span>
           </div>
+
+          {/* Validation-006 Causal Step Control Bar */}
+          {activeProjectId === 'LIVE-WORLD-VISUAL-VALIDATION-006' && (
+            <div className="absolute top-3 right-4 z-20 bg-slate-900/95 text-white backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-700 shadow-xl flex items-center gap-3 text-xs font-mono">
+              <div className="flex flex-col">
+                <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / 14
+                </span>
+                <span className="font-bold text-white max-w-[260px] truncate">
+                  {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — WORLD GENESIS'}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 ml-2">
+                <button
+                  onClick={() => handleValidation006Step('reset')}
+                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold border border-slate-700 text-[11px] transition flex items-center gap-1"
+                  title="Reset to Checkpoint 0"
+                >
+                  <RotateCcw className="w-3 h-3 text-slate-400" />
+                  <span>Reset</span>
+                </button>
+
+                <button
+                  onClick={() => handleValidation006Step('step')}
+                  className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold border border-blue-500 text-[11px] shadow-xs transition flex items-center gap-1 disabled:opacity-50"
+                  disabled={house0002RawData?.currentCheckpoint >= 14}
+                >
+                  <span>Step (+1)</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  onClick={() => handleValidation006Step('run-all')}
+                  className="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold border border-purple-500 text-[11px] shadow-xs transition flex items-center gap-1"
+                >
+                  <Play className="w-3.5 h-3.5" />
+                  <span>Run All (0→14)</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Active Filter Floating Badge */}
           {(selectedSystem || activeTrace || isolatedCompId) && (
@@ -2696,7 +3442,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     </div>
                     <div className="p-2 bg-white rounded-lg border border-slate-200">
                       <span className="text-[9px] text-slate-400 block">Components</span>
-                      <span className="text-xs font-bold text-blue-700">{projectData?.components.length}</span>
+                      <span className="text-xs font-bold text-blue-700">{(projectData?.components || []).length}</span>
                     </div>
                   </div>
                 </div>

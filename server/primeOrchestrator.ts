@@ -44,7 +44,7 @@ class HermesPrimeOrchestrator {
   private knowledgeEntities: KnowledgeEntity[] = [];
   private learnedLessons: LearnedLesson[] = [];
   private assemblyPatterns: AssemblyPattern[] = [];
-  private activeProjectId: string = 'LIVE-WORLD-VISUAL-VALIDATION-005';
+  private activeProjectId: string = 'LIVE-WORLD-VISUAL-VALIDATION-006';
   private isHeartbeatLocked: boolean = false;
   private competencyMatrix: CompetencyMatrix = {
     siteGrading: 92.0,
@@ -91,9 +91,9 @@ class HermesPrimeOrchestrator {
         this.tasksMap.set(id, tList);
       });
 
-      this.activeProjectId = this.projects.has('LIVE-WORLD-VISUAL-VALIDATION-005')
-        ? 'LIVE-WORLD-VISUAL-VALIDATION-005'
-        : Array.from(this.projects.keys())[0] || 'LIVE-WORLD-VISUAL-VALIDATION-005';
+      this.activeProjectId = this.projects.has('LIVE-WORLD-VISUAL-VALIDATION-006')
+        ? 'LIVE-WORLD-VISUAL-VALIDATION-006'
+        : Array.from(this.projects.keys())[0] || 'LIVE-WORLD-VISUAL-VALIDATION-006';
 
       this.addLog('HERMES PERSISTENCE', `Hydrated HERMES state from durable store & SQLite DB. Total Heartbeats: ${this.systemState.total_heartbeat_count}`, 'success');
     } else {
@@ -370,15 +370,72 @@ class HermesPrimeOrchestrator {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
+      const val006Project: DigitalTwinProject = {
+        id: 'LIVE-WORLD-VISUAL-VALIDATION-006',
+        name: 'LIVE-WORLD-VISUAL-VALIDATION-006 (Master Clean-Room Visual Causality Validation)',
+        buildingType: 'Single-Family Residence (Clean-Room Validation 006)',
+        gymLevel: 3,
+        iterationNumber: 1,
+        overallCompletionPct: 0.0,
+        status: 'planning',
+        classification: 'ACADEMY_REAL',
+        environment: {
+          latitude: 27.9506,
+          longitude: -82.4572,
+          locationName: 'HERMES Master Validation Site Parcel 006, Florida',
+          jurisdiction: 'City of Tampa / Hillsborough County',
+          climateZone: 'Zone 2A (Hot-Humid)',
+          coastalProximityMiles: 1.5,
+          saltExposureRisk: 'High',
+          windSpeedMph: 160,
+          rainfallInchesYear: 51.5,
+          humidityPctAvg: 74,
+          minTempF: 38,
+          maxTempF: 96,
+          freezeThawCycles: 0,
+          seismicCategory: 'Category A',
+          wildfireRisk: 'Low',
+          floodZone: 'AE (Elev 11 ft)',
+          soilBearingCapacityPsf: 2200,
+          groundwaterTableFt: 4.5,
+          utilitiesAvailable: ['Municipal Water', 'Sanitary Sewer', '240V Electric', 'Fiber Optic'],
+          localCodeVersion: 'Florida Building Code 8th Edition (2023)',
+        },
+        components: [],
+        inspectionTickets: [],
+        bom: [],
+        suppliers: [],
+        schedule: [],
+        changeOrderRisks: [],
+        score: {
+          overall: 100,
+          completeness: 0,
+          structuralValidation: 100,
+          mepConnectivity: 100,
+          clashFreePercentage: 100,
+          codeValidation: 100,
+          environmentalAppropriateness: 100,
+          materialCompleteness: 100,
+          inspectionSuccess: 100,
+          constructability: 100,
+          costConfidence: 100,
+          changeOrderRisk: 100,
+        },
+        projectEvents: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      this.projects.set('LIVE-WORLD-VISUAL-VALIDATION-006', val006Project);
+
       this.projects.set('ACADEMY-HOUSE-0002', house2Project);
     }
 
     const allProjects = Array.from(this.projects.values());
     if (includeArchived) return allProjects;
 
-    // Include LIVE-WORLD-VISUAL-VALIDATION-005 as top active validation project
-    const filtered = allProjects.filter(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' || p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
-    return filtered.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? 1 : 0));
+    // Include LIVE-WORLD-VISUAL-VALIDATION-006 as top active validation project
+    const filtered = allProjects.filter(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' || p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' || p.id === 'REFERENCE-BIM-0001' || p.id === 'ACADEMY-HOUSE-0002' || p.classification === 'ACADEMY_REAL');
+    return filtered.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? 1 : 0));
   }
 
   public getProject(id: string): DigitalTwinProject | undefined {
