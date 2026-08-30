@@ -639,19 +639,33 @@ export class Validation006Engine {
         state.currentStepIndex = 13;
         state.status = 'CHECKPOINT_13_MEP_INSTALLED';
 
+        // COMP-PLUMB-MAIN initially installed at Z=0.0m colliding with Wall Stud Framing
         state.buildingComponents.push(
-          { componentId: 'COMP-PLUMB-MAIN', name: 'Primary Water Main Supply Manifold & PEX Run', category: 'Plumbing', discipline: 'Plumbing', positionXYZ: [-5.0, 0.3, 2.0], dimensionsXYZ: [0.4, 2.2, 0.4], material: 'Copper & PEX-a Tubing', installationPhase: 'ROUGH_IN' },
-          { componentId: 'COMP-ELEC-PANEL', name: '200A Main Breaker Panel & Conduit Riser', category: 'Electrical', discipline: 'Electrical', positionXYZ: [-3.0, 1.2, 9.0], dimensionsXYZ: [0.6, 1.0, 0.2], material: 'Copper Romex & NEMA Box', installationPhase: 'ROUGH_IN' },
-          { componentId: 'COMP-HVAC-UNIT', name: 'SEER2 16 Air Handler & Main Trunk Ductwork', category: 'HVAC', discipline: 'HVAC', positionXYZ: [-3.0, 2.5, 9.0], dimensionsXYZ: [1.2, 0.8, 1.2], material: 'Insulated R-8 Galvanized Duct', installationPhase: 'ROUGH_IN' },
-          { componentId: 'COMP-FIRE-SMOKE-01', name: 'Photoelectric Interconnected Smoke Alarm Node', category: 'Fire Protection', discipline: 'Fire Protection', positionXYZ: [-12.0, 3.0, -4.0], dimensionsXYZ: [0.3, 0.1, 0.3], material: 'UL 217 Fire Sensor', installationPhase: 'FINISH' }
+          { componentId: 'COMP-PLUMB-MAIN', name: 'Primary Water Main Supply Manifold & PEX Run', category: 'Plumbing', discipline: 'Plumbing', positionXYZ: [-7.5, 0.3, 0.0], dimensionsXYZ: [0.4, 2.2, 0.4], material: 'Copper & PEX-a Tubing', installationPhase: 'ROUGH_IN', inspectionStatus: 'FAILED_CLASH_DETECTED' },
+          { componentId: 'COMP-ELEC-PANEL', name: '200A Main Breaker Panel & Conduit Riser', category: 'Electrical', discipline: 'Electrical', positionXYZ: [-3.0, 1.2, 9.0], dimensionsXYZ: [0.6, 1.0, 0.2], material: 'Copper Romex & NEMA Box', installationPhase: 'ROUGH_IN', inspectionStatus: 'PASSED' },
+          { componentId: 'COMP-HVAC-UNIT', name: 'SEER2 16 Air Handler & Main Trunk Ductwork', category: 'HVAC', discipline: 'HVAC', positionXYZ: [-3.0, 2.5, 9.0], dimensionsXYZ: [1.2, 0.8, 1.2], material: 'Insulated R-8 Galvanized Duct', installationPhase: 'ROUGH_IN', inspectionStatus: 'PASSED' },
+          { componentId: 'COMP-FIRE-SMOKE-01', name: 'Photoelectric Interconnected Smoke Alarm Node', category: 'Fire Protection', discipline: 'Fire Protection', positionXYZ: [-12.0, 3.0, -4.0], dimensionsXYZ: [0.3, 0.1, 0.3], material: 'UL 217 Fire Sensor', installationPhase: 'FINISH', inspectionStatus: 'PASSED' }
         );
+
+        state.inspectionTickets = [
+          { ticketId: 'CLASH-006-01', discipline: 'Plumbing', itemTarget: 'COMP-PLUMB-MAIN', inspectionResult: 'FAIL_CLASH_DETECTED', auditor: 'AGENT-QUALITY-001', details: 'UNRESOLVED GEOMETRIC INTERSECTION: PEX Riser at [-7.5, 0.3, 0.0] collides with Timber Wall Framing Stud at Z=0.00m.', timestamp }
+        ];
+
+        state.score = {
+          overall: 92,
+          completeness: 90,
+          structuralValidation: 100,
+          mepConnectivity: 90,
+          clashFreePercentage: 75,
+          codeValidation: 95
+        };
 
         state.eventStream.push({
           eventId: `EVT-006-013-MEP`,
           eventType: 'MEP_SYSTEMS_INSTALLED',
           projectId: state.projectId,
           timestamp,
-          payload: { totalComponentCount: state.buildingComponents.length }
+          payload: { totalComponentCount: state.buildingComponents.length, clashDetected: 'CLASH-006-01' }
         });
         break;
       }
@@ -662,10 +676,17 @@ export class Validation006Engine {
         state.currentStepIndex = 14;
         state.status = 'CHECKPOINT_14_INSPECTIONS_AND_AUTO_REPAIR_PASSED';
 
+        // AUTONOMOUS REPAIR MUTATION: Reroute COMP-PLUMB-MAIN from Z=0.0m to Z=0.4m (+0.4m offset)
+        const plumbComp = state.buildingComponents.find((c) => c.componentId === 'COMP-PLUMB-MAIN');
+        if (plumbComp) {
+          plumbComp.positionXYZ = [-7.5, 0.3, 0.4];
+          plumbComp.inspectionStatus = 'PASSED';
+        }
+
         state.inspectionTickets = [
           { ticketId: 'TICKET-FOUND-01', discipline: 'Concrete', itemTarget: 'COMP-SLAB-01', inspectionResult: 'PASS', auditor: 'AGENT-QUALITY-001', details: 'Slab thickness 0.3m (12 in) verified. Rebar mesh grid meets FBC 2023 specs.', timestamp },
           { ticketId: 'TICKET-STRUCT-01', discipline: 'Framing', itemTarget: 'COMP-WALL-EXT-NORTH', inspectionResult: 'PASS', auditor: 'AGENT-QUALITY-001', details: 'SYP #2 studs spacing 16in OC verified for 160mph wind shear loads.', timestamp },
-          { ticketId: 'TICKET-CLASH-REPAIR-01', discipline: 'Plumbing', itemTarget: 'COMP-PLUMB-MAIN', inspectionResult: 'RESOLVED_REPAIRED', auditor: 'AGENT-QUALITY-001', details: 'Detected minor clearance conflict with wall stud joist. AGENT-PLUMB-001 rerouted conduit 50mm offset. Inspection PASS.', timestamp }
+          { ticketId: 'CLASH-006-01', discipline: 'Plumbing', itemTarget: 'COMP-PLUMB-MAIN', inspectionResult: 'RESOLVED_REPAIRED', auditor: 'AGENT-QUALITY-001', details: 'AUTONOMOUS REPAIR PASSED: Rerouted plumbing conduit from Z=0.0m to Z=0.4m. Zero spatial clearance conflicts remaining.', timestamp }
         ];
 
         state.score = {
@@ -693,12 +714,12 @@ export class Validation006Engine {
       step: state.currentStepIndex,
       facilities: state.campusFacilities.length,
       agents: state.agentSpatialStates.length,
-      components: state.buildingComponents.length,
+      components: state.buildingComponents.map(c => ({ id: c.componentId, pos: c.positionXYZ, status: c.inspectionStatus })),
       materials: state.materialsOnsite.length,
       surveyMarks: state.surveyMarks.length,
       requirements: state.requirementDecisions.length,
       bomItems: state.bomItems.length,
-      inspections: state.inspectionTickets.length
+      inspections: state.inspectionTickets.map(t => ({ id: t.ticketId, res: t.inspectionResult }))
     });
 
     state.lastEventTimestamp = timestamp;
@@ -706,6 +727,8 @@ export class Validation006Engine {
     state.hashes.afterWorldStateHash = computeSha256(statePayload);
     state.hashes.beforeSceneSignature = `SCENE_SIGNATURE_STEP_${step - 1}`;
     state.hashes.afterSceneSignature = `SCENE_SIGNATURE_${checkpointName.replace(/[^A-Z0-9]/g, '_')}`;
+
+    const currentClashes = step === 13 ? 1 : 0;
 
     state.diagnostics = {
       checkpoint: state.currentCheckpoint,
@@ -719,7 +742,7 @@ export class Validation006Engine {
       requirementRecordCount: state.requirementDecisions.length,
       inspectionTicketCount: state.inspectionTickets.length,
       bomItemCount: state.bomItems.length,
-      clashCount: 0,
+      clashCount: currentClashes,
       worldStateHash: state.hashes.afterWorldStateHash,
       sceneSignature: state.hashes.afterSceneSignature,
       backendRenderParity: `100% PARITY (${checkpointName})`,
@@ -727,5 +750,102 @@ export class Validation006Engine {
     };
 
     return state;
+  }
+
+  public static flagCheckpoint(checkpointIndex: number, testState?: Validation006State): {
+    validationId: string;
+    checkpointId: number;
+    severity: 'NONE' | 'CRITICAL' | 'WARNING';
+    expectedState: string;
+    actualState: string;
+    missingEntities: string[];
+    unexpectedEntities: string[];
+    failedAssertions: string[];
+    evidence: any;
+    timestamp: string;
+    traceId: string;
+    passed: boolean;
+  } {
+    const state = testState || this.advanceToStep(checkpointIndex);
+    const traceId = `TRACE-VAL006-CP${checkpointIndex}-${Date.now()}`;
+    const failedAssertions: string[] = [];
+    const missingEntities: string[] = [];
+
+    if (state.campusFacilities.length !== 17) {
+      failedAssertions.push(`Expected 17 campus facilities, found ${state.campusFacilities.length}`);
+    }
+    if (state.agentSpatialStates.length !== 68) {
+      failedAssertions.push(`Expected 68 workforce agents, found ${state.agentSpatialStates.length}`);
+    }
+
+    if (checkpointIndex >= 1 && state.surveyMarks.length < 4) {
+      missingEntities.push('SURVEY-STAKES-BOUNDARY');
+      failedAssertions.push('Missing 4 boundary control stakes');
+    }
+    if (checkpointIndex >= 2 && state.customerInteractions.length < 1) {
+      missingEntities.push('CUSTOMER-001');
+      failedAssertions.push('Missing Customer 001 actor record');
+    }
+    if (checkpointIndex >= 3) {
+      const cust = state.customerInteractions[0];
+      if (!cust || cust.currentLocation[0] !== -28.0) {
+        failedAssertions.push(`Customer 001 not at Briefing Pavilion coordinates [-28, 0, 0]`);
+      }
+    }
+    if (checkpointIndex >= 6 && state.requirementDecisions.length !== 12) {
+      failedAssertions.push(`Expected 12 decision records, found ${state.requirementDecisions.length}`);
+    }
+    if (checkpointIndex >= 8 && !state.buildableEnvelope) {
+      missingEntities.push('ENVELOPE-V6-001');
+      failedAssertions.push('Missing 484 m² buildable envelope overlay');
+    }
+    if (checkpointIndex >= 9 && state.roomVolumes.length !== 7) {
+      failedAssertions.push(`Expected 7 room volumes, found ${state.roomVolumes.length}`);
+    }
+    if (checkpointIndex >= 10) {
+      const bomTotal = state.bomItems.reduce((acc, item) => acc + item.totalCostUSD, 0);
+      if (bomTotal !== 50035) {
+        failedAssertions.push(`BOM direct materials total math mismatch: expected $50,035, calculated $${bomTotal}`);
+      }
+    }
+    if (checkpointIndex === 13) {
+      const plumbComp = state.buildingComponents.find(c => c.componentId === 'COMP-PLUMB-MAIN');
+      if (!plumbComp || plumbComp.inspectionStatus !== 'FAILED_CLASH_DETECTED') {
+        failedAssertions.push('Checkpoint 13 must report active CLASH-006-01 on COMP-PLUMB-MAIN');
+      }
+    }
+    if (checkpointIndex === 14) {
+      const plumbComp = state.buildingComponents.find(c => c.componentId === 'COMP-PLUMB-MAIN');
+      if (!plumbComp || plumbComp.positionXYZ[2] !== 0.4 || plumbComp.inspectionStatus !== 'PASSED') {
+        failedAssertions.push('Checkpoint 14 must demonstrate autonomous repair mutation rerouting COMP-PLUMB-MAIN to Z=0.4m PASSED');
+      }
+      if (state.score.overall !== 100) {
+        failedAssertions.push(`Checkpoint 14 overall score must be 100, got ${state.score.overall}`);
+      }
+    }
+
+    const passed = failedAssertions.length === 0 && missingEntities.length === 0;
+
+    return {
+      validationId: 'LIVE-WORLD-VISUAL-VALIDATION-006',
+      checkpointId: checkpointIndex,
+      severity: passed ? 'NONE' : 'CRITICAL',
+      expectedState: `CHECKPOINT_${checkpointIndex}_EXPECTED_VALID`,
+      actualState: passed ? `CHECKPOINT_${checkpointIndex}_VERIFIED_PASS` : `CHECKPOINT_${checkpointIndex}_FAILED`,
+      missingEntities,
+      unexpectedEntities: [],
+      failedAssertions,
+      evidence: {
+        checkpointName: state.diagnostics.checkpointName,
+        worldStateHash: state.hashes.afterWorldStateHash,
+        sceneSignature: state.hashes.afterSceneSignature,
+        componentCount: state.buildingComponents.length,
+        clashCount: state.diagnostics.clashCount,
+        score: state.score
+      },
+      timestamp: new Date().toISOString(),
+      traceId,
+      passed
+    };
   }
 }

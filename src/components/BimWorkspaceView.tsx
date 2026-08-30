@@ -497,27 +497,34 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   }
 
-  // 4. 3D Program Room Volumes
-  const programVolumes = rawData.programVolumes || [];
-  programVolumes.forEach((pv: any) => {
-    const pvIdx = isVal004 ? getEntityEventIdx(pv, 27) : (isVal003 ? 18 : 5);
-    if (eventIndex >= pvIdx) {
+  // 4. 3D Program Room Volumes (Checkpoints 9+ for Val 005/006)
+  if ((isVal005 || isVal006) && eventIndex >= 9) {
+    const rVolumes = rawData.roomVolumes || [
+      { roomId: 'ROOM-LIVING', name: 'Open Living & Dining Great Room', positionXYZ: [-12.0, 0.0, -8.0], dimensionsXYZ: [10.0, 3.0, 8.0], areaSqFt: 430 },
+      { roomId: 'ROOM-KITCHEN', name: 'Kitchen & Pantry', positionXYZ: [-2.0, 0.0, -8.0], dimensionsXYZ: [6.0, 3.0, 8.0], areaSqFt: 215 },
+      { roomId: 'ROOM-BED-1', name: 'Primary Suite Bedroom', positionXYZ: [-12.0, 0.0, 0.0], dimensionsXYZ: [7.0, 3.0, 6.0], areaSqFt: 240 },
+      { roomId: 'ROOM-BATH-1', name: 'Primary Suite Bathroom', positionXYZ: [-5.0, 0.0, 0.0], dimensionsXYZ: [3.0, 3.0, 6.0], areaSqFt: 110 },
+      { roomId: 'ROOM-BED-2', name: 'Guest Bedroom 2', positionXYZ: [-12.0, 0.0, 6.0], dimensionsXYZ: [6.0, 3.0, 6.0], areaSqFt: 180 },
+      { roomId: 'ROOM-BATH-2', name: 'Guest Bathroom 2', positionXYZ: [-6.0, 0.0, 6.0], dimensionsXYZ: [3.0, 3.0, 6.0], areaSqFt: 100 },
+      { roomId: 'ROOM-UTILITY', name: 'Utility & MEP Closet', positionXYZ: [-3.0, 0.0, 6.0], dimensionsXYZ: [3.0, 3.0, 6.0], areaSqFt: 90 }
+    ];
+    rVolumes.forEach((rv: any) => {
       components.push({
-        id: pv.id,
-        name: pv.name,
-        ifcGuid: `GUID-${pv.id}`,
+        id: rv.roomId || rv.id,
+        name: rv.name,
+        ifcGuid: `GUID-${rv.roomId || rv.id}`,
         ifcType: 'IfcSpace',
         category: 'Architecture',
         storeyId: 'STOREY-GROUND',
         storeyName: 'Ground Level (0.00m Datum)',
-        dimensions: pv.dimensionsMeters || [4.0, 2.8, 4.0],
-        position: pv.worldPositionMeters || [0, 0, 0],
+        dimensions: rv.dimensionsXYZ || rv.dimensionsMeters || [4.0, 3.0, 4.0],
+        position: rv.positionXYZ || rv.worldPositionMeters || [0, 0, 0],
         orientationDegrees: 0,
         materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
         propertySets: [
           {
             name: 'Pset_SpaceDetails',
-            properties: { TargetAreaSqFt: pv.targetAreaSqFt, RoomType: pv.roomType },
+            properties: { TargetAreaSqFt: rv.areaSqFt || rv.targetAreaSqFt, RoomType: rv.name },
           },
         ],
         connectedComponentIds: [],
@@ -530,33 +537,71 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           license: 'HERMES',
         },
       });
-    }
-  });
+    });
+  } else if (!isVal005 && !isVal006) {
+    const programVolumes = rawData.programVolumes || [];
+    programVolumes.forEach((pv: any) => {
+      const pvIdx = isVal004 ? getEntityEventIdx(pv, 27) : (isVal003 ? 18 : 5);
+      if (eventIndex >= pvIdx) {
+        components.push({
+          id: pv.id,
+          name: pv.name,
+          ifcGuid: `GUID-${pv.id}`,
+          ifcType: 'IfcSpace',
+          category: 'Architecture',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: pv.dimensionsMeters || [4.0, 2.8, 4.0],
+          position: pv.worldPositionMeters || [0, 0, 0],
+          orientationDegrees: 0,
+          materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
+          propertySets: [
+            {
+              name: 'Pset_SpaceDetails',
+              properties: { TargetAreaSqFt: pv.targetAreaSqFt, RoomType: pv.roomType },
+            },
+          ],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: {
+            source: 'ARCHITECTURAL_ENGINE',
+            creator: 'AGENT-ARCH-LEAD',
+            verifiedDate: new Date().toISOString(),
+            license: 'HERMES',
+          },
+        });
+      }
+    });
+  }
 
-  // 5. Materials in Staging Yard
-  const materials = rawData.materials || [];
-  materials.forEach((m: any) => {
-    const mIdx = isVal004 ? getEntityEventIdx(m, 31) : (isVal003 ? 28 : 6);
-    if (eventIndex >= mIdx) {
+  // 5. Materials in Staging Yard (Checkpoints 11+ for Val 005/006)
+  if ((isVal005 || isVal006) && eventIndex >= 11) {
+    const mOnsite = rawData.materialsOnsite || [
+      { materialId: 'MAT-CONCRETE-PALLET', materialType: '3000 PSI Ready-Mix Concrete Batch', weightKg: 12000, currentPosition: [18.0, 0.0, -12.0], stage: 'DELIVERED_STAGED' },
+      { materialId: 'MAT-TIMBER-PALLET-01', materialType: 'SYP #2 Framing Lumber (2x4, 2x6, 2x8 Stack)', weightKg: 4500, currentPosition: [22.0, 0.0, -12.0], stage: 'DELIVERED_STAGED' },
+      { materialId: 'MAT-ROOF-PANELS', materialType: 'Standing Seam Galvalume Steel Bundles', weightKg: 3200, currentPosition: [18.0, 0.0, -18.0], stage: 'DELIVERED_STAGED' },
+      { materialId: 'MAT-MEP-CRATES', materialType: 'Plumbing PEX, Electrical Romex & HVAC Conduit Crates', weightKg: 1800, currentPosition: [22.0, 0.0, -18.0], stage: 'DELIVERED_STAGED' }
+    ];
+    mOnsite.forEach((m: any) => {
       components.push({
         id: m.materialId || m.id,
-        name: m.name || m.materialType || 'Material',
+        name: m.materialType || m.name || 'Material Stack',
         ifcGuid: `GUID-${m.materialId || m.id}`,
         ifcType: 'IfcElementAssembly',
         category: 'Structure',
         storeyId: 'STOREY-GROUND',
         storeyName: 'Ground Level (0.00m Datum)',
-        dimensions: m.dimensions || [1.2, 1.2, 2.4],
-        position: m.storagePosition || m.currentPosition || [0, 0, 0],
+        dimensions: [2.0, 1.5, 2.0],
+        position: m.currentPosition || m.storagePosition || [18.0, 0.0, -12.0],
         orientationDegrees: 0,
-        materialSpecIds: ['CMU-8IN-MASONRY'],
+        materialSpecIds: ['DELIVERED-MATERIAL-SPEC'],
         propertySets: [
           {
             name: 'Pset_MaterialState',
             properties: {
-              Stage: m.status || m.stage || 'STAGED',
-              Quantity: m.quantity,
-              Unit: m.unit,
+              Stage: m.stage || 'STAGED',
+              WeightKg: m.weightKg || 3000,
             },
           },
         ],
@@ -570,8 +615,77 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           license: 'HERMES',
         },
       });
+    });
+  }
+
+  // 6. Building Structural Components & MEP (Checkpoints 12+ for Val 005/006)
+  if (isVal005 || isVal006) {
+    if (eventIndex >= 12) {
+      const structComps = [
+        { componentId: 'COMP-SLAB-01', name: 'Monolithic Post-Tensioned Concrete Slab (110 m²)', category: 'Foundation', discipline: 'Civil', positionXYZ: [-7.5, -0.15, -1.0], dimensionsXYZ: [15.0, 0.3, 16.0], material: 'Concrete 3000 PSI', installationPhase: 'FOUNDATION' },
+        { componentId: 'COMP-WALL-EXT-NORTH', name: 'North Exterior Timber Stud Wall Assembly (160mph Rated)', category: 'Framing', discipline: 'Structural', positionXYZ: [-7.5, 1.5, -9.0], dimensionsXYZ: [15.0, 3.0, 0.2], material: 'SYP #2 2x6 Framing', installationPhase: 'SUPERSTRUCTURE' },
+        { componentId: 'COMP-WALL-EXT-SOUTH', name: 'South Exterior Timber Stud Wall Assembly (160mph Rated)', category: 'Framing', discipline: 'Structural', positionXYZ: [-7.5, 1.5, 7.0], dimensionsXYZ: [15.0, 3.0, 0.2], material: 'SYP #2 2x6 Framing', installationPhase: 'SUPERSTRUCTURE' },
+        { componentId: 'COMP-WALL-EXT-WEST', name: 'West Exterior Timber Stud Wall Assembly', category: 'Framing', discipline: 'Structural', positionXYZ: [-15.0, 1.5, -1.0], dimensionsXYZ: [0.2, 3.0, 16.0], material: 'SYP #2 2x6 Framing', installationPhase: 'SUPERSTRUCTURE' },
+        { componentId: 'COMP-WALL-EXT-EAST', name: 'East Exterior Timber Stud Wall Assembly', category: 'Framing', discipline: 'Structural', positionXYZ: [0.0, 1.5, -1.0], dimensionsXYZ: [0.2, 3.0, 16.0], material: 'SYP #2 2x6 Framing', installationPhase: 'SUPERSTRUCTURE' },
+        { componentId: 'COMP-ROOF-TRUSS-01', name: 'Pre-Engineered Timber Roof Truss System', category: 'Roofing', discipline: 'Structural', positionXYZ: [-7.5, 3.75, -1.0], dimensionsXYZ: [15.6, 1.5, 16.6], material: 'Engineered Wood Truss', installationPhase: 'SUPERSTRUCTURE' }
+      ];
+
+      structComps.forEach((comp: any) => {
+        components.push({
+          id: comp.componentId,
+          ifcGuid: `GUID-${comp.componentId}`,
+          ifcType: comp.category === 'Foundation' ? 'IfcSlab' : comp.category === 'Roofing' ? 'IfcRoof' : 'IfcWall',
+          name: comp.name,
+          category: comp.category,
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          position: comp.positionXYZ,
+          dimensions: comp.dimensionsXYZ,
+          orientationDegrees: 0,
+          materialSpecIds: [comp.material],
+          propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      });
     }
-  });
+
+    if (eventIndex >= 13) {
+      // At Checkpoint 13, COMP-PLUMB-MAIN has clash at Z=0.0m. At Checkpoint 14+, rerouted to Z=0.4m PASSED.
+      const plumbZ = eventIndex >= 14 ? 0.4 : 0.0;
+      const plumbStatus = eventIndex >= 14 ? 'PASSED' : 'FAILED_CLASH_DETECTED';
+
+      const mepComps = [
+        { componentId: 'COMP-PLUMB-MAIN', name: 'Primary Water Main Supply Manifold & PEX Run', category: 'Plumbing', discipline: 'Plumbing', positionXYZ: [-7.5, 0.3, plumbZ], dimensionsXYZ: [0.4, 2.2, 0.4], material: 'Copper & PEX-a Tubing', installationPhase: 'ROUGH_IN', status: plumbStatus },
+        { componentId: 'COMP-ELEC-PANEL', name: '200A Main Breaker Panel & Conduit Riser', category: 'Electrical', discipline: 'Electrical', positionXYZ: [-3.0, 1.2, 7.0], dimensionsXYZ: [0.6, 1.0, 0.2], material: 'Copper Romex & NEMA Box', installationPhase: 'ROUGH_IN', status: 'PASSED' },
+        { componentId: 'COMP-HVAC-UNIT', name: 'SEER2 16 Air Handler & Main Trunk Ductwork', category: 'HVAC', discipline: 'HVAC', positionXYZ: [-3.0, 2.5, 7.0], dimensionsXYZ: [1.2, 0.8, 1.2], material: 'Insulated R-8 Galvanized Duct', installationPhase: 'ROUGH_IN', status: 'PASSED' },
+        { componentId: 'COMP-FIRE-SMOKE-01', name: 'Photoelectric Interconnected Smoke Alarm Node', category: 'Fire Protection', discipline: 'Fire Protection', positionXYZ: [-12.0, 3.0, -4.0], dimensionsXYZ: [0.3, 0.1, 0.3], material: 'UL 217 Fire Sensor', installationPhase: 'FINISH', status: 'PASSED' }
+      ];
+
+      mepComps.forEach((comp: any) => {
+        components.push({
+          id: comp.componentId,
+          ifcGuid: `GUID-${comp.componentId}`,
+          ifcType: comp.discipline === 'Plumbing' ? 'IfcFlowSegment' : comp.discipline === 'Electrical' ? 'IfcElectricDistributionBoard' : comp.discipline === 'HVAC' ? 'IfcUnitaryEquipment' : 'IfcAlarm',
+          name: comp.name,
+          category: comp.category,
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          position: comp.positionXYZ,
+          dimensions: comp.dimensionsXYZ,
+          orientationDegrees: 0,
+          materialSpecIds: [comp.material],
+          propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase } }],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: comp.status as any,
+          provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      });
+    }
+  }
 
   // 6. BIM Components (Gated by createdEventId / createdEventIndex <= eventIndex)
   const bimComps = rawData.bimComponents || [];

@@ -607,6 +607,45 @@ async function startServer() {
     }
   });
 
+  app.get('/api/hermes/validation006-proof-test', (req, res) => {
+    try {
+      Validation006Engine.initialize();
+      const run1Matrix: any[] = [];
+      for (let cp = 0; cp <= 14; cp++) {
+        const flag = Validation006Engine.flagCheckpoint(cp);
+        run1Matrix.push(flag);
+      }
+
+      Validation006Engine.initialize();
+      const run2Matrix: any[] = [];
+      for (let cp = 0; cp <= 14; cp++) {
+        const flag = Validation006Engine.flagCheckpoint(cp);
+        run2Matrix.push(flag);
+      }
+
+      let deterministic = true;
+      for (let i = 0; i <= 14; i++) {
+        if (run1Matrix[i].evidence.worldStateHash !== run2Matrix[i].evidence.worldStateHash) {
+          deterministic = false;
+        }
+      }
+
+      const allPassed = run1Matrix.every((r) => r.passed) && deterministic;
+
+      res.json({
+        validationId: 'LIVE-WORLD-VISUAL-VALIDATION-006',
+        classification: allPassed ? 'REGRESSION_LOCKED' : 'PARTIALLY_VALIDATED',
+        deterministic,
+        allCheckpointsPassed: allPassed,
+        totalCheckpoints: 15,
+        matrix: run1Matrix,
+        timestamp: new Date().toISOString()
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || String(err) });
+    }
+  });
+
   app.get('/api/hermes/genesis-spatial-world', (req, res) => {
     try {
       const projectId = (req.query.projectId as string) || 'LIVE-WORLD-GENESIS-TEST-001';
@@ -775,11 +814,26 @@ async function startServer() {
       }
     }
 
-    // Ensure LIVE-WORLD-VISUAL-VALIDATION-005 is included and sorted FIRST
+    // Ensure LIVE-WORLD-VISUAL-VALIDATION-006 is included and sorted FIRST
+    if (!summaries.some(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-006')) {
+      const v6State = Validation006Engine.getCanonicalWorldState();
+      if (v6State) {
+        summaries.unshift({
+          id: v6State.projectId,
+          name: v6State.projectName,
+          buildingType: 'Single-Family Residential (Clean-Room Validation 006)',
+          status: 'planning',
+          overallCompletionPct: 0,
+          classification: 'GENESIS_LIVE',
+        });
+      }
+    }
+
+    // Ensure LIVE-WORLD-VISUAL-VALIDATION-005 is included
     if (!summaries.some(p => p.id === 'LIVE-WORLD-VISUAL-VALIDATION-005')) {
       const v5State = Validation005Engine.getCanonicalWorldState();
       if (v5State) {
-        summaries.unshift({
+        summaries.push({
           id: v5State.projectId,
           name: v5State.projectName,
           buildingType: 'Single-Family Residential',
@@ -790,11 +844,19 @@ async function startServer() {
       }
     }
 
-    const sortedSummaries = summaries.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-005' ? 1 : 0));
+    const sortedSummaries = summaries.sort((a, b) => (a.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? -1 : b.id === 'LIVE-WORLD-VISUAL-VALIDATION-006' ? 1 : 0));
     res.json(sortedSummaries);
   });
 
   app.get('/api/projects/:id', (req, res) => {
+    if (req.params.id === 'LIVE-WORLD-VISUAL-VALIDATION-006') {
+      const v6State = Validation006Engine.getCanonicalWorldState();
+      if (v6State) return res.json(v6State);
+    }
+    if (req.params.id === 'LIVE-WORLD-VISUAL-VALIDATION-005') {
+      const v5State = Validation005Engine.getCanonicalWorldState();
+      if (v5State) return res.json(v5State);
+    }
     if (req.params.id === 'LIVE-WORLD-PHASE2-VALIDATION-001') {
       const p2State = Phase2ValidationEngine.getProject('LIVE-WORLD-PHASE2-VALIDATION-001');
       if (p2State) return res.json(p2State);
