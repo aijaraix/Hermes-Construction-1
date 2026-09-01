@@ -920,9 +920,11 @@ export class HermesLiveHouseEngine {
     try {
       const dir = path.dirname(STORAGE_PATH);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(STORAGE_PATH, JSON.stringify(this.currentState, null, 2), 'utf-8');
-    } catch (err) {
-      console.error('[HERMES Live House Engine] Failed to write state to disk:', err);
+      const tmpPath = `${STORAGE_PATH}.${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
+      fs.writeFileSync(tmpPath, JSON.stringify(this.currentState, null, 2), 'utf-8');
+      fs.renameSync(tmpPath, STORAGE_PATH);
+    } catch (err: any) {
+      console.error('[HERMES Live House Engine] Failed to write state to disk:', err?.message || String(err));
     }
   }
 
