@@ -72,7 +72,7 @@ export interface ReferenceBimComponent {
   ifcGuid: string;
   ifcType: string;
   name: string;
-  category: 'Architecture' | 'Structure' | 'Plumbing' | 'HVAC' | 'Electrical' | 'Site' | 'Workforce' | 'Customer' | 'Requirements' | 'Equipment' | 'Geotechnical' | 'Design';
+  category: 'Architecture' | 'Structure' | 'Envelope' | 'Plumbing' | 'HVAC' | 'Electrical' | 'Site' | 'Workforce' | 'Customer' | 'Requirements' | 'Equipment' | 'Geotechnical' | 'Design';
   storeyId: string;
   storeyName: string;
   spaceId?: string;
@@ -166,7 +166,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
   if (rawData) {
     // 1. Facilities / Spatial Entities (17 facilities)
     (rawData.spatialEntities || []).forEach((fac: any, fIdx: number) => {
-      const created = fac.createdCheckpoint ?? 0;
+      const created = fac.createdCheckpoint ?? (fac.operationalStatus === 'ACTIVE_SITE_FACILITY' ? 2 : Number.MAX_SAFE_INTEGER);
       if (eventIndex >= created) {
         const facId = fac.entityId || fac.id || `FACILITY-${fIdx + 1}`;
         components.push({
@@ -222,7 +222,10 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: pos,
           orientationDegrees: 0,
           materialSpecIds: [isCustomer ? 'CUSTOMER-ACTOR' : 'WORKFORCE-AGENT'],
-          propertySets: [{ name: 'Pset_AgentDetails', properties: { AgentId: agent.agentId || agentId, Role: agent.role, Discipline: agent.discipline || 'Management', State: agent.currentState || 'ACTIVE' } }],
+          propertySets: [
+            { name: 'Pset_AgentDetails', properties: { AgentId: agent.agentId || agentId, Role: agent.role, Discipline: agent.discipline || 'Management', State: agent.currentState || 'ACTIVE', Mission: rawData.activeTaskDetails?.assignedAgentId === agent.agentId ? rawData.activeTaskDetails?.title : 'STANDBY' } },
+            { name: 'Pset_Embodiment', properties: { BodyEnvelope: JSON.stringify(agent.bodyEnvelopeMeters || [0.65, 1.8, 0.65]), ToolEnvelope: JSON.stringify(agent.toolEnvelopeMeters || [0, 0, 0]), PayloadEnvelope: JSON.stringify(agent.payloadEnvelopeMeters || [0, 0, 0]), CombinedEnvelope: JSON.stringify(agent.combinedEnvelopeMeters || agent.bodyEnvelopeMeters || [0.65, 1.8, 0.65]), SafetyClearanceMeters: agent.safetyClearanceMeters ?? 0.35, CarriedMaterial: agent.carriedMaterial?.materialId || 'NONE', BlockedUnsafe: Boolean(agent.blockedUnsafeState) } }
+          ],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -359,7 +362,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
 
     // 7. Machinery & Construction Equipment
     (rawData.equipmentEntities || []).forEach((eq: any, eqIdx: number) => {
-      const created = eq.createdCheckpoint ?? eq.createdEventIndex ?? 0;
+      const created = eq.createdCheckpoint ?? eq.createdEventIndex ?? 2;
       if (eventIndex >= created) {
         const eqId = eq.equipmentId || eq.id || `EQUIP-${eqIdx + 1}`;
         components.push({
@@ -399,7 +402,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
 
     // 8. Materials Onsite & Laydown Staging
     (rawData.materialsOnsite || []).forEach((m: any, mIdx: number) => {
-      const created = m.createdCheckpoint ?? m.createdEventIndex ?? 0;
+      const created = m.createdCheckpoint ?? m.createdEventIndex ?? 2;
       if (eventIndex >= created) {
         const matId = m.materialBatchId || m.materialId || m.id || `MAT-${mIdx + 1}`;
         const isInstalled = m.currentLocation === 'INSTALLED_BUILDING' || m.stagingLocation === 'INSTALLED_BUILDING' || m.verificationStatus === 'INSTALLED';
@@ -466,7 +469,9 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           dimensions: comp.dimensionsXYZ || comp.dimensions || [1, 1, 1],
           orientationDegrees: 0,
           materialSpecIds: [comp.material || 'GENERIC-SPEC'],
-          propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase } }],
+          propertySets: [
+            { name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase, Material: comp.material || 'UNSPECIFIED', SourceTask: comp.sourceTaskId || rawData.events?.find((event: any) => event.entitiesAffected?.includes(compId))?.payload?.taskId || 'DERIVED_FROM_CANONICAL_EVENT', CreatedByAgent: comp.createdByAgentId || rawData.events?.find((event: any) => event.entitiesAffected?.includes(compId))?.actor?.agentId || 'DISCIPLINE_MANAGER', DependencyType: comp.dependencyType || 'LOGICAL', Revision: `EVENT-${created}` } }
+          ],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: status as any,
@@ -1166,6 +1171,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [sectionYValue, setSectionYValue] = useState<number>(3.5);
   const [sectionXEnabled, setSectionXEnabled] = useState<boolean>(false);
   const [sectionXValue, setSectionXValue] = useState<number>(1.0);
+  const [visualMode, setVisualMode] = useState<'ARCHITECTURAL' | 'CONSTRUCTION' | 'XRAY'>('ARCHITECTURAL');
 
   // Timeline & Replay Engine State
   const [replayEvents, setReplayEvents] = useState<any[]>([]);
@@ -1535,6 +1541,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.localClippingEnabled = true;
     rendererRef.current = renderer;
 
     domEl.innerHTML = '';
@@ -2024,6 +2031,20 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         const edges = new THREE.EdgesGeometry(facGeom);
         const lineMat = new THREE.LineBasicMaterial({ color: 0x94a3b8, linewidth: 1 });
         mesh.add(new THREE.LineSegments(edges, lineMat));
+      } else if (comp.ifcType === 'IfcRoof') {
+        const roofGeom = new THREE.ConeGeometry(1, 1, 4);
+        roofGeom.rotateY(Math.PI / 4);
+        roofGeom.scale(w * 0.72, h, d * 0.72);
+        roofGeom.translate(px, py + h / 2, pz);
+        mesh = new THREE.Mesh(roofGeom, new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.42, metalness: 0.5, side: THREE.DoubleSide }));
+      } else if (comp.ifcType === 'IfcWindow') {
+        const windowGeom = new THREE.BoxGeometry(w, h, d);
+        windowGeom.translate(px, py + h / 2, pz);
+        mesh = new THREE.Mesh(windowGeom, new THREE.MeshPhysicalMaterial({ color: 0x93c5fd, roughness: 0.08, metalness: 0.05, transmission: 0.55, transparent: true, opacity: 0.72 }));
+      } else if (comp.ifcType === 'IfcDoor') {
+        const doorGeom = new THREE.BoxGeometry(w, h, d);
+        doorGeom.translate(px, py + h / 2, pz);
+        mesh = new THREE.Mesh(doorGeom, new THREE.MeshStandardMaterial({ color: 0x854d0e, roughness: 0.42 }));
       } else {
         // STANDARD BUILDING / SITE COMPONENT
         if (!geom) {
@@ -2043,11 +2064,20 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         if (debugMaterialMode) {
           material = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide });
         } else {
+          const isSurface = comp.category === 'Architecture' || comp.category === 'Envelope';
+          const xraySurface = visualMode === 'XRAY' && isSurface;
+          const clippingPlanes: THREE.Plane[] = [];
+          if (sectionXEnabled) clippingPlanes.push(new THREE.Plane(new THREE.Vector3(-1, 0, 0), sectionXValue));
+          if (sectionYEnabled) clippingPlanes.push(new THREE.Plane(new THREE.Vector3(0, -1, 0), sectionYValue));
           material = new THREE.MeshStandardMaterial({
             color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : colorHex,
             roughness: comp.category === 'Structure' ? 0.7 : 0.35,
             metalness: comp.category === 'Plumbing' || comp.category === 'HVAC' ? 0.5 : 0.1,
             side: THREE.DoubleSide,
+            transparent: xraySurface,
+            opacity: xraySurface ? 0.18 : 1,
+            depthWrite: !xraySurface,
+            clippingPlanes,
           });
         }
 
@@ -2080,7 +2110,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     });
 
     fitModelToCamera();
-  }, [projectData, activeCategories, selectedCompId, hoveredCompId, selectedStoreyId, selectedSystem, isolatedCompId, hiddenCompIds, debugMaterialMode, forceAllVisible, tracedCompIds, activeTrace]);
+  }, [projectData, activeCategories, selectedCompId, hoveredCompId, selectedStoreyId, selectedSystem, isolatedCompId, hiddenCompIds, debugMaterialMode, forceAllVisible, tracedCompIds, activeTrace, visualMode, sectionXEnabled, sectionXValue, sectionYEnabled, sectionYValue]);
 
   // Selected Component Lookup
   const selectedComponent = (projectData?.components || []).find((c) => c.id === selectedCompId) || null;
@@ -2094,6 +2124,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
   // Active Replay Event
   const activeReplayEvent = replayEvents.length > 0 ? replayEvents[Math.min(currentEventIndex, replayEvents.length - 1)] : null;
+  const totalCanonicalTasks = Math.max(1, house0002RawData?.dynamicTaskIds?.length || house0002RawData?.completedTasks?.length || replayEvents.length - 1 || 1);
+  const workforce = house0002RawData?.agentSpatialStates || [];
+  const activeWorkforceCount = workforce.filter((actor: any) => actor.currentState === 'EXECUTING_IN_WORK_ZONE' || actor.currentState === 'PAYLOAD_STAGED_BEFORE_FUTURE_CLOSURE').length;
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 text-slate-900 font-sans overflow-hidden select-none">
@@ -2156,6 +2189,17 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
         {/* Viewport Tools & Truth Test Suite Button */}
         <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-xl border border-slate-200">
+            {(['ARCHITECTURAL', 'CONSTRUCTION', 'XRAY'] as const).map((mode) => (
+              <button key={mode} onClick={() => setVisualMode(mode)} className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold transition ${visualMode === mode ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-white'}`}>
+                {mode === 'XRAY' ? 'X-RAY' : mode}
+              </button>
+            ))}
+          </div>
+
+          <button onClick={() => setSectionBarOpen((open) => !open)} className={`px-2.5 py-1 rounded-xl border text-xs font-bold transition ${sectionBarOpen ? 'bg-cyan-600 text-white border-cyan-600' : 'bg-white text-slate-700 border-slate-200'}`}>
+            Section / Cutaway
+          </button>
           {/* Phase 1 Specification Audit Trigger */}
           <button
             onClick={handleRunPhase1Audit}
@@ -2713,18 +2757,18 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                       HERMES WORKFORCE ROSTER
                     </span>
                     <span className="bg-amber-200 text-amber-900 font-mono text-[10px] font-bold px-2 py-0.5 rounded-full">
-                      68 AGENTS
+                      {workforce.length} AGENTS
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-1.5 text-center font-mono text-[10px]">
                     <div className="p-1.5 bg-white rounded-lg border border-amber-200">
                       <span className="text-slate-400 block">Deployed / Field</span>
-                      <span className="font-bold text-amber-800 text-xs">10 Active</span>
+                      <span className="font-bold text-amber-800 text-xs">{activeWorkforceCount} Active</span>
                     </div>
                     <div className="p-1.5 bg-white rounded-lg border border-amber-200">
                       <span className="text-slate-400 block">Learning Reserve</span>
-                      <span className="font-bold text-blue-700 text-xs">46 Learning</span>
+                      <span className="font-bold text-blue-700 text-xs">{Math.max(0, workforce.length - activeWorkforceCount)} Available</span>
                     </div>
                   </div>
                 </div>
@@ -2852,6 +2896,17 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         <div className="flex-1 min-h-[450px] relative bg-slate-50">
           <div ref={containerRef} className="w-full h-full min-h-[450px] relative overflow-hidden" />
 
+          {sectionBarOpen && (
+            <div className="absolute left-1/2 top-16 -translate-x-1/2 z-30 rounded-2xl border border-slate-700 bg-slate-900/95 px-4 py-3 text-white shadow-2xl backdrop-blur-md min-w-[330px]">
+              <div className="flex items-center justify-between gap-3 text-[11px] font-bold uppercase tracking-wider">
+                <span>Live section planes</span>
+                <button onClick={() => setSectionBarOpen(false)} className="text-slate-400 hover:text-white"><X className="h-4 w-4" /></button>
+              </div>
+              <label className="mt-2 flex items-center gap-2 text-xs"><input type="checkbox" checked={sectionXEnabled} onChange={(event) => setSectionXEnabled(event.target.checked)} /> X cut <input className="flex-1 accent-cyan-400" type="range" min={-12} max={12} step={0.25} value={sectionXValue} onChange={(event) => setSectionXValue(Number(event.target.value))} /><span className="font-mono">{sectionXValue.toFixed(2)}m</span></label>
+              <label className="mt-2 flex items-center gap-2 text-xs"><input type="checkbox" checked={sectionYEnabled} onChange={(event) => setSectionYEnabled(event.target.checked)} /> Y cut <input className="flex-1 accent-cyan-400" type="range" min={0} max={5} step={0.1} value={sectionYValue} onChange={(event) => setSectionYValue(Number(event.target.value))} /><span className="font-mono">{sectionYValue.toFixed(1)}m</span></label>
+            </div>
+          )}
+
           {/* Phase 2 Live World In-World Labels, Action Overlay & Event HUD */}
           <Phase2WorldOverlay
             camera={cameraPerspRef.current}
@@ -2951,7 +3006,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             <div className="flex flex-col">
               <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / 30
+                Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / {totalCanonicalTasks}
               </span>
               <span className="font-bold text-white max-w-[240px] truncate">
                 {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — CLEAN WORLD GENESIS'}
@@ -2971,7 +3026,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               <button
                 onClick={() => handleValidation006Step('step')}
                 className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold border border-blue-500 text-[11px] shadow-xs transition flex items-center gap-1 disabled:opacity-50"
-                disabled={(house0002RawData?.currentCheckpoint ?? 0) >= 30}
+                disabled={house0002RawData?.status === 'COMPLETED'}
               >
                 <span>Step (+1)</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -3050,10 +3105,10 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 <div className="p-3 bg-purple-50 rounded-2xl border border-purple-200 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-[10px] font-extrabold text-purple-900 bg-white px-2 py-0.5 rounded border border-purple-200">
-                      ACADEMY-HOUSE-0002 / ATTEMPT-01
+                      {activeProjectId} / {house0002RawData?.attemptId || 'ATTEMPT UNASSIGNED'}
                     </span>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">
-                      GATE: PAUSED
+                      {house0002RawData?.status || 'UNVERIFIED'}
                     </span>
                   </div>
                   <div>
@@ -3454,7 +3509,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                 <ShieldCheck className="w-6 h-6 text-emerald-600" />
                 <div>
                   <h2 className="text-lg font-extrabold text-slate-900">Spatial Operations World Truth Test Suite</h2>
-                  <p className="text-xs text-slate-500 font-mono">Stage 25 Automated Visual & Event Parity Gate • ACADEMY-HOUSE-0002</p>
+                  <p className="text-xs text-slate-500 font-mono">Automated Visual & Event Parity Report • {activeProjectId}</p>
                 </div>
               </div>
               <button onClick={() => setIsTruthTestModalOpen(false)} className="p-1.5 hover:bg-slate-100 rounded-xl text-slate-400 hover:text-slate-700">
@@ -3465,7 +3520,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between font-mono">
               <div>
                 <span className="text-xs font-bold text-emerald-800 uppercase block">Overall Status</span>
-                <span className="text-xl font-extrabold text-emerald-900">ALL 25 ACCEPTANCE TESTS PASSED</span>
+                <span className="text-xl font-extrabold text-emerald-900">{truthTestReport.spatialWorldReady === true || truthTestReport.allPassed === true ? 'EVIDENCE-BACKED TESTS PASSED' : 'REPORT GENERATED — REVIEW EVIDENCE'}</span>
               </div>
               <div className="text-right">
                 <span className="text-xs text-emerald-700 block">Pass Rate: 100%</span>

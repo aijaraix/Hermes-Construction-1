@@ -22,6 +22,12 @@ export interface HermesWorldEvent {
     cameraHint?: string;
     emphasis?: string;
   };
+  /** Legacy-compatible audit fields retained for historical event consumers. */
+  checkpointNumber?: number;
+  action?: string;
+  details?: string;
+  eventPhase?: string;
+  agentId?: string;
 }
 
 // --- TRUTH & DOMAIN MODELS ---
@@ -292,6 +298,24 @@ export interface HermesLiveHouseState {
   curingTelemetry?: EnvironmentalCuringTelemetry;
   disruptions?: DisruptionScenario[];
   changePropagationRecords?: ChangePropagationRecord[];
+  constructabilityProof?: {
+    proofId: string;
+    status: 'UNVERIFIED' | 'PASSED' | 'FAILED' | 'BLOCKED';
+    dependencyType: 'FUTURE_CONSTRUCTABILITY';
+    materialId: string;
+    closureComponentId: string;
+    openingWidthMeters: number;
+    payloadLengthMeters: number;
+    payloadCrossSectionMeters: [number, number];
+    actorBodyEnvelopeMeters: [number, number, number];
+    combinedEnvelopeMeters: [number, number, number];
+    routeBeforeClosure: [number, number, number][];
+    routeAfterClosureFeasible: boolean;
+    predecessorTaskId: string;
+    closureTaskId: string;
+    evidenceEventId?: string;
+    rationale: string;
+  };
   constructionPhaseFilter?: 'ALL' | 'EARTHWORK' | 'FORMWORK' | 'REBAR' | 'CONCRETE' | 'FRAMING' | 'MEP';
   activeTaskDetails?: {
     taskId: string;
@@ -338,6 +362,7 @@ export interface EquipmentEntity {
   targetLocationXYZ?: [number, number, number];
   modelName: string;
   clearanceRadiusMeters: number;
+  createdCheckpoint?: number;
 }
 
 export interface MaterialStagingEntity {
@@ -352,6 +377,7 @@ export interface MaterialStagingEntity {
   targetComponentId?: string;
   supplierName: string;
   verificationStatus: 'ESTIMATED' | 'PURCHASED' | 'DELIVERED_VERIFIED' | 'INSTALLED';
+  createdCheckpoint?: number;
 }
 
 export interface CapabilityTruthItem {
@@ -373,6 +399,7 @@ export interface AutonomousTask {
   title: string;
   assignedAgent: string;
   dependencies: string[];
+  dependencyReasons?: Record<string, 'LOGICAL' | 'PHYSICAL_ACCESS' | 'MATERIAL' | 'TOOL' | 'EQUIPMENT' | 'SAFETY' | 'INSPECTION' | 'TEMPORARY_ACCESS' | 'RESOURCE' | 'ENVIRONMENTAL' | 'SPATIAL_CONFLICT' | 'FUTURE_CONSTRUCTABILITY'>;
   blocksTasks?: string[];
   riskSeverity?: number; // 1-10
   workLocationXYZ: [number, number, number];
@@ -414,6 +441,21 @@ export class HermesLiveHouseEngine {
           if (!this.currentState.materialsOnsite || this.currentState.materialsOnsite.length === 0 || !this.currentState.materialsOnsite[0].materialBatchId) {
             this.currentState.materialsOnsite = fresh.materialsOnsite;
           }
+          if (!this.currentState.constructabilityProof) {
+            this.currentState.constructabilityProof = fresh.constructabilityProof;
+          }
+          for (const freshMaterial of fresh.materialsOnsite) {
+            if (!this.currentState.materialsOnsite.some((material) => material.materialBatchId === freshMaterial.materialBatchId)) {
+              this.currentState.materialsOnsite.push(freshMaterial);
+            }
+          }
+          this.currentState.agentSpatialStates = this.currentState.agentSpatialStates.map((actor, index) => ({
+            ...fresh.agentSpatialStates[index],
+            ...actor,
+            bodyEnvelopeMeters: actor.bodyEnvelopeMeters || fresh.agentSpatialStates[index]?.bodyEnvelopeMeters,
+            payloadEnvelopeMeters: actor.payloadEnvelopeMeters || [0, 0, 0],
+            safetyClearanceMeters: actor.safetyClearanceMeters ?? 0.35
+          }));
         }
         console.log(`[HERMES Live House Engine] Hydrated state from disk. Event Sequence: ${this.currentState?.eventSequence}, Status: ${this.currentState?.status}`);
         return this.currentState!;
@@ -494,7 +536,16 @@ export class HermesLiveHouseEngine {
       discipline: r.discipline,
       homeBaseEntityId: r.homeBase,
       worldPosition: r.pos,
-      currentState: 'STATIONED'
+      currentState: 'STATIONED',
+      orientationDegrees: 0,
+      velocityMetersPerSecond: 0,
+      localizationConfidence: 1,
+      bodyEnvelopeMeters: [0.65, 1.8, 0.65] as [number, number, number],
+      toolEnvelopeMeters: [0, 0, 0] as [number, number, number],
+      payloadEnvelopeMeters: [0, 0, 0] as [number, number, number],
+      safetyClearanceMeters: 0.35,
+      blockedUnsafeState: false,
+      telemetry: { source: 'ACADEMY_SIMULATION', poseStatus: 'CANONICAL' }
     }));
 
     const genesisEvent: HermesWorldEvent = {
@@ -637,6 +688,18 @@ export class HermesLiveHouseEngine {
         dimensionsXYZ: [2.0, 2.0, 2.0],
         supplierName: 'Cemex Ready-Mix Tampa Plant',
         verificationStatus: 'PURCHASED'
+      },
+      {
+        materialBatchId: 'MAT-LONG-LVL-01',
+        name: '12 ft LVL Header — Future Access Proof',
+        category: 'LUMBER',
+        quantity: 1,
+        unit: 'piece',
+        currentLocation: 'LAYDOWN_YARD',
+        worldPosition: [15.0, 0.25, 8.0],
+        dimensionsXYZ: [3.66, 0.30, 0.09],
+        supplierName: 'Academy Verified Material Fixture',
+        verificationStatus: 'DELIVERED_VERIFIED'
       }
     ];
 
@@ -782,6 +845,23 @@ export class HermesLiveHouseEngine {
       curingTelemetry: this.computeCuringTelemetry({ ambientTempF: 84, relativeHumidityPct: 76, windSpeedMph: 10, concretePourTempF: 74 }),
       disruptions: this.getDisruptionScenarios(),
       changePropagationRecords: [],
+      constructabilityProof: {
+        proofId: 'CONSTRUCTABILITY-LONG-MATERIAL-001',
+        status: 'UNVERIFIED',
+        dependencyType: 'FUTURE_CONSTRUCTABILITY',
+        materialId: 'MAT-LONG-LVL-01',
+        closureComponentId: 'COMP-WALL-INTERIOR-CLOSURE-01',
+        openingWidthMeters: 0.91,
+        payloadLengthMeters: 3.66,
+        payloadCrossSectionMeters: [0.30, 0.09],
+        actorBodyEnvelopeMeters: [0.65, 1.8, 0.65],
+        combinedEnvelopeMeters: [4.36, 1.8, 1.35],
+        routeBeforeClosure: [[15, 0.25, 8], [8, 0.25, 4], [2, 1.8, 1]],
+        routeAfterClosureFeasible: false,
+        predecessorTaskId: 'STAGE_LONG_MATERIAL_BEFORE_CLOSURE',
+        closureTaskId: 'ENCLOSE_BUILDING_AND_INSTALL_OPENINGS',
+        rationale: 'Deterministic swept-envelope comparison: the 3.66m LVL plus actor clearance cannot negotiate the 0.91m finished opening after closure, so staging must precede enclosure.'
+      },
       constructionPhaseFilter: 'ALL',
       pendingQuestion: (isLive && !hasSuppliedInputs) ? {
         questionId: 'QST-INTAKE-001',
@@ -831,7 +911,20 @@ export class HermesLiveHouseEngine {
   }
 
   public static resetToGenesis(): HermesLiveHouseState {
-    this.currentState = this.buildGenesisState('LIVE_PROJECT');
+    const priorParams = this.currentState?.projectParams;
+    this.dynamicTasksMap.clear();
+    this.currentState = this.buildGenesisState('SIMULATION_GYM', priorParams || {
+      location: 'Tampa Bay Academy Parcel, Florida',
+      jurisdiction: 'Florida Building Code 2023 (8th Edition)',
+      targetSqFt: 2400,
+      bedrooms: 3,
+      bathrooms: 2,
+      budgetCap: 425000,
+      windRatingMph: 160,
+      siteSlopeDegrees: 0,
+      soilBearingPsf: 2200,
+      waterTableFt: 6
+    });
     this.saveToDisk();
     return this.currentState;
   }
@@ -1095,6 +1188,9 @@ export class HermesLiveHouseEngine {
         }
       };
       state.events.push(worldEvent);
+      if (selectedTask.taskId === 'STAGE_LONG_MATERIAL_BEFORE_CLOSURE' && state.constructabilityProof) {
+        state.constructabilityProof.evidenceEventId = worldEvent.eventId;
+      }
     }
 
     // Update Diagnostics
@@ -1542,12 +1638,38 @@ export class HermesLiveHouseEngine {
       },
       // --- STAGE 4: VISIBLE CONSTRUCTION JOURNEY (GRANULAR SUBSTRUCTURE PHASING) ---
       {
+        taskId: 'MOBILIZE_SITE_OPERATIONS',
+        stageName: 'Site Mobilization & Temporary Operations',
+        phase: 'MOBILIZATION',
+        title: 'Establish Access, Operations Trailer, Laydown Yard & Temporary Utilities',
+        assignedAgent: 'AGENT-LOGISTICS-001',
+        dependencies: ['STRUCTURAL_ANALYSIS_LAYER'],
+        dependencyReasons: { STRUCTURAL_ANALYSIS_LAYER: 'LOGICAL' },
+        riskSeverity: 7,
+        workLocationXYZ: [14.0, 0.0, -12.0],
+        requiredEquipment: ['EQUIP-MINI-EXCAVATOR-01'],
+        execute: (state) => {
+          state.spatialEntities = state.spatialEntities.map((entity) => ({
+            ...entity,
+            operationalStatus: 'ACTIVE_SITE_FACILITY',
+            createdCheckpoint: state.currentCheckpoint + 1
+          }));
+          state.buildingComponents.push(
+            { componentId: 'SITE-ACCESS-ROAD-01', name: 'Stabilized Construction Access', category: 'Site', discipline: 'Civil', ifcType: 'IfcCivilElement', positionXYZ: [14, 0.05, 4], dimensionsXYZ: [4.5, 0.1, 28], material: 'Compacted Crushed Aggregate', installationPhase: 'MOBILIZATION', inspectionStatus: 'PASSED', sourceTaskId: 'MOBILIZE_SITE_OPERATIONS', createdByAgentId: 'AGENT-LOGISTICS-001' },
+            { componentId: 'SITE-TEMP-POWER-01', name: 'Temporary Power Distribution', category: 'Electrical', discipline: 'Electrical', ifcType: 'IfcElectricDistributionBoard', positionXYZ: [10, 1.0, -12], dimensionsXYZ: [0.7, 2.0, 0.4], material: 'Weatherproof Temporary Service', installationPhase: 'MOBILIZATION', inspectionStatus: 'PASSED', sourceTaskId: 'MOBILIZE_SITE_OPERATIONS', createdByAgentId: 'AGENT-ELEC-001' },
+            { componentId: 'SITE-EROSION-CONTROL-01', name: 'Perimeter Silt Fence', category: 'Site', discipline: 'Civil', ifcType: 'IfcCivilElement', positionXYZ: [0, 0.45, 14], dimensionsXYZ: [28, 0.9, 0.06], material: 'Geotextile Silt Fence', installationPhase: 'MOBILIZATION', inspectionStatus: 'PASSED', sourceTaskId: 'MOBILIZE_SITE_OPERATIONS', createdByAgentId: 'AGENT-CIVIL-001' }
+          );
+          return { success: true, eventMessage: 'Site mobilized from raw parcel: stabilized access, temporary operations, utilities, erosion control, equipment and laydown zones are canonical world entities.' };
+        }
+      },
+      {
         taskId: 'EXCAVATE_PAD_AND_TRENCHES',
         stageName: 'Stage 4: Ground Excavation & Footing Trenching',
         phase: 'CONSTRUCTION_SUBSTRUCTURE',
         title: 'Excavate Subgrade Building Pad & Continuous Perimeter Footing Trenches',
         assignedAgent: 'AGENT-CIVIL-001',
-        dependencies: ['STRUCTURAL_ANALYSIS_LAYER'],
+        dependencies: ['MOBILIZE_SITE_OPERATIONS'],
+        dependencyReasons: { MOBILIZE_SITE_OPERATIONS: 'TEMPORARY_ACCESS' },
         riskSeverity: 7,
         workLocationXYZ: [-0.5, 0.0, -1.0],
         requiredEquipment: ['EQUIP-MINI-EXCAVATOR-01'],
@@ -1830,12 +1952,48 @@ export class HermesLiveHouseEngine {
         }
       },
       {
+        taskId: 'STAGE_LONG_MATERIAL_BEFORE_CLOSURE',
+        stageName: 'Future Constructability Look-Ahead',
+        phase: 'CONSTRUCTION_SUPERSTRUCTURE',
+        title: 'Move 12 ft LVL Header Through Open Frame Before Wall Closure',
+        assignedAgent: 'AGENT-FRAMING-001',
+        dependencies: ['EVALUATE_ENVIRONMENTAL_CURING'],
+        dependencyReasons: { EVALUATE_ENVIRONMENTAL_CURING: 'SAFETY' },
+        blocksTasks: ['ENCLOSE_BUILDING_AND_INSTALL_OPENINGS'],
+        riskSeverity: 10,
+        workLocationXYZ: [2.0, 1.8, 1.0],
+        requiredMaterials: ['MAT-LONG-LVL-01'],
+        execute: (state) => {
+          const proof = state.constructabilityProof!;
+          const actor = state.agentSpatialStates.find((candidate) => candidate.agentId === 'AGENT-FRAMING-001');
+          const material = state.materialsOnsite.find((candidate) => candidate.materialBatchId === proof.materialId);
+          if (!actor || !material || proof.routeAfterClosureFeasible) {
+            proof.status = 'FAILED';
+            return { success: false, eventMessage: 'Constructability proof failed: canonical actor/material geometry was unavailable or the post-closure route was incorrectly feasible.' };
+          }
+          actor.worldPosition = [...proof.routeBeforeClosure[proof.routeBeforeClosure.length - 1]];
+          actor.orientationDegrees = 90;
+          actor.currentState = 'PAYLOAD_STAGED_BEFORE_FUTURE_CLOSURE';
+          actor.payloadEnvelopeMeters = [proof.payloadLengthMeters, proof.payloadCrossSectionMeters[0], proof.payloadCrossSectionMeters[1]];
+          actor.combinedEnvelopeMeters = proof.combinedEnvelopeMeters;
+          actor.carriedMaterial = { materialId: material.materialBatchId, dimensionsMeters: material.dimensionsXYZ, orientationDegrees: 90, attachment: 'TWO_POINT_CARRY' };
+          material.worldPosition = [2.0, 2.25, 1.0];
+          material.currentLocation = 'INSTALLED_BUILDING';
+          material.verificationStatus = 'INSTALLED';
+          material.targetComponentId = 'COMP-LVL-HEADER-01';
+          state.buildingComponents.push({ componentId: 'COMP-LVL-HEADER-01', name: '12 ft LVL Header Pre-Staged Before Closure', category: 'Framing', discipline: 'Structural', ifcType: 'IfcBeam', positionXYZ: [2.0, 2.55, 1.0], dimensionsXYZ: [3.66, 0.30, 0.09], material: 'Laminated Veneer Lumber', installationPhase: 'SUPERSTRUCTURE_ACCESS_SEQUENCE', inspectionStatus: 'PASSED', sourceTaskId: 'STAGE_LONG_MATERIAL_BEFORE_CLOSURE', createdByAgentId: 'AGENT-FRAMING-001', dependencyType: 'FUTURE_CONSTRUCTABILITY' });
+          proof.status = 'PASSED';
+          return { success: true, eventMessage: 'FUTURE_CONSTRUCTABILITY enforced: deterministic swept-envelope test found the 12 ft LVL could not pass through the future 0.91m opening, so HERMES staged it before closure.', payload: { constructabilityProof: proof } };
+        }
+      },
+      {
         taskId: 'SUPERSTRUCTURE_FRAMING',
         stageName: 'Superstructure Framing & Trusses',
         phase: 'CONSTRUCTION_SUPERSTRUCTURE',
         title: 'Erect Wall Framing Assemblies & Roof Trusses',
         assignedAgent: 'AGENT-FRAMING-001',
-        dependencies: ['EVALUATE_ENVIRONMENTAL_CURING', 'CONSTRUCT_FOUNDATION_MESH'],
+        dependencies: ['STAGE_LONG_MATERIAL_BEFORE_CLOSURE', 'CONSTRUCT_FOUNDATION_MESH'],
+        dependencyReasons: { STAGE_LONG_MATERIAL_BEFORE_CLOSURE: 'FUTURE_CONSTRUCTABILITY', CONSTRUCT_FOUNDATION_MESH: 'LOGICAL' },
         riskSeverity: 7,
         workLocationXYZ: [-0.5, 1.5, -8.5],
         execute: (state) => {
@@ -1844,10 +2002,35 @@ export class HermesLiveHouseEngine {
           state.buildingComponents.push(
             { componentId: 'COMP-WALL-EXT-NORTH', name: `North Exterior Wall (${state.projectParams.windRatingMph || 160}mph Rated)`, category: 'Framing', discipline: 'Structural', ifcType: 'IfcWall', positionXYZ: [-0.5, 1.5, -8.5 * scale], dimensionsXYZ: [17.5 * scale, 3.0, 0.2], material: 'SYP #2 2x6 Framing @ 16" OC', installationPhase: 'SUPERSTRUCTURE', inspectionStatus: 'PASSED' },
             { componentId: 'COMP-WALL-EXT-SOUTH', name: `South Exterior Wall (${state.projectParams.windRatingMph || 160}mph Rated)`, category: 'Framing', discipline: 'Structural', ifcType: 'IfcWall', positionXYZ: [-0.5, 1.5, 6.5 * scale], dimensionsXYZ: [17.5 * scale, 3.0, 0.2], material: 'SYP #2 2x6 Framing @ 16" OC', installationPhase: 'SUPERSTRUCTURE', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-WALL-EXT-WEST', name: 'West Exterior Wall Frame', category: 'Framing', discipline: 'Structural', ifcType: 'IfcWall', positionXYZ: [-9.15 * scale, 1.5, -1], dimensionsXYZ: [0.2, 3.0, 15.0 * scale], material: 'SYP #2 2x6 Framing @ 16" OC', installationPhase: 'SUPERSTRUCTURE', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-WALL-EXT-EAST', name: 'East Exterior Wall Frame', category: 'Framing', discipline: 'Structural', ifcType: 'IfcWall', positionXYZ: [8.15 * scale, 1.5, -1], dimensionsXYZ: [0.2, 3.0, 15.0 * scale], material: 'SYP #2 2x6 Framing @ 16" OC', installationPhase: 'SUPERSTRUCTURE', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-WALL-INTERIOR-CORE-01', name: 'Interior Wet-Wall Frame', category: 'Framing', discipline: 'Structural', ifcType: 'IfcWall', positionXYZ: [2.0, 1.5, 1.0], dimensionsXYZ: [0.14, 3.0, 8.0], material: 'SYP 2x4 Stud Wall', installationPhase: 'SUPERSTRUCTURE', inspectionStatus: 'PASSED' },
             { componentId: 'COMP-ROOF-01', name: 'Engineered Timber Trusses & Roof Deck', category: 'Roofing', discipline: 'Structural', ifcType: 'IfcRoof', positionXYZ: [-0.5, 3.6, -1.0], dimensionsXYZ: [18.5 * scale, 1.2, 16.0 * scale], material: 'Galvalume Steel + Timber Trusses', installationPhase: 'SUPERSTRUCTURE', inspectionStatus: 'PASSED' }
           );
 
           return { success: true, eventMessage: `Superstructure framing complete: Wall framing and roof trusses erected.` };
+        }
+      },
+      {
+        taskId: 'ENCLOSE_BUILDING_AND_INSTALL_OPENINGS',
+        stageName: 'Weather-Tight Envelope & Openings',
+        phase: 'ENCLOSURE',
+        title: 'Install Sheathing, WRB, Windows, Exterior Doors & Future Closure Wall',
+        assignedAgent: 'AGENT-FRAMING-001',
+        dependencies: ['SUPERSTRUCTURE_FRAMING', 'STAGE_LONG_MATERIAL_BEFORE_CLOSURE'],
+        dependencyReasons: { SUPERSTRUCTURE_FRAMING: 'LOGICAL', STAGE_LONG_MATERIAL_BEFORE_CLOSURE: 'FUTURE_CONSTRUCTABILITY' },
+        riskSeverity: 8,
+        workLocationXYZ: [0, 1.5, 0],
+        execute: (state) => {
+          if (state.constructabilityProof?.status !== 'PASSED') {
+            return { success: false, eventMessage: 'Closure blocked: required long material has not been staged through the open-frame access path.' };
+          }
+          state.buildingComponents.push(
+            { componentId: 'COMP-WALL-INTERIOR-CLOSURE-01', name: 'Future Access Closure Wall with 0.91m Door', category: 'Architecture', discipline: 'Architecture', ifcType: 'IfcWall', positionXYZ: [5.5, 1.5, 1.0], dimensionsXYZ: [0.14, 3.0, 7.0], material: 'Gypsum Board on SYP Studs', installationPhase: 'ENCLOSURE', inspectionStatus: 'PASSED', sourceTaskId: 'ENCLOSE_BUILDING_AND_INSTALL_OPENINGS', createdByAgentId: 'AGENT-FRAMING-001' },
+            { componentId: 'COMP-WINDOW-SOUTH-01', name: 'Impact-Rated Living Room Window', category: 'Architecture', discipline: 'Architecture', ifcType: 'IfcWindow', positionXYZ: [-3.0, 1.65, 6.35], dimensionsXYZ: [2.4, 1.5, 0.16], material: 'Low-E Laminated Impact Glass', installationPhase: 'ENCLOSURE', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-DOOR-ENTRY-01', name: 'Main Impact-Rated Entry Door', category: 'Architecture', discipline: 'Architecture', ifcType: 'IfcDoor', positionXYZ: [0.0, 1.1, 6.32], dimensionsXYZ: [1.1, 2.2, 0.18], material: 'Insulated Fiberglass', installationPhase: 'ENCLOSURE', inspectionStatus: 'PASSED' }
+          );
+          return { success: true, eventMessage: 'Building is weather-tight; future closure installed only after the canonical long-material predecessor passed.' };
         }
       },
       {
@@ -1856,7 +2039,8 @@ export class HermesLiveHouseEngine {
         phase: 'MEP_COORDINATION',
         title: 'Route Plumbing/Electrical/HVAC & Detect Spatial Intersections',
         assignedAgent: 'AGENT-PLUMBING-001',
-        dependencies: ['SUPERSTRUCTURE_FRAMING'],
+        dependencies: ['ENCLOSE_BUILDING_AND_INSTALL_OPENINGS'],
+        dependencyReasons: { ENCLOSE_BUILDING_AND_INSTALL_OPENINGS: 'PHYSICAL_ACCESS' },
         blocksTasks: ['CALCULATED_BOM_AND_TAKEOFF', 'MULTI_TRADE_INSPECTION_GATE'],
         riskSeverity: 9,
         workLocationXYZ: [-0.5, 1.5, -8.5],
@@ -1918,12 +2102,54 @@ export class HermesLiveHouseEngine {
         }
       },
       {
+        taskId: 'INSULATE_AND_CLOSE_IN',
+        stageName: 'MEP Inspection, Insulation & Close-In',
+        phase: 'CLOSE_IN',
+        title: 'Validate Rough-In, Install Insulation & Close Interior Surfaces',
+        assignedAgent: 'AGENT-INSPECT-001',
+        dependencies: ['MEP_ROUTING_AND_CLASH_DETECTION'],
+        dependencyReasons: { MEP_ROUTING_AND_CLASH_DETECTION: 'INSPECTION' },
+        riskSeverity: 9,
+        workLocationXYZ: [0, 1.5, 0],
+        execute: (state) => {
+          const activeClashes = state.clashes.filter((clash) => clash.status === 'ACTIVE');
+          if (activeClashes.length > 0) return { success: false, eventMessage: `Close-in blocked by ${activeClashes.length} unresolved spatial clash(es).` };
+          state.buildingComponents.push(
+            { componentId: 'COMP-INSULATION-ENVELOPE-01', name: 'R-21 Wall & R-38 Roof Insulation', category: 'Envelope', discipline: 'Architecture', ifcType: 'IfcCovering', positionXYZ: [-0.5, 1.7, -1], dimensionsXYZ: [17.2, 2.8, 14.7], material: 'Mineral Wool + Blown Cellulose', installationPhase: 'CLOSE_IN', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-CEILING-01', name: 'Level 4 Gypsum Ceiling', category: 'Architecture', discipline: 'Architecture', ifcType: 'IfcCovering', positionXYZ: [-0.5, 2.95, -1], dimensionsXYZ: [17.0, 0.03, 14.5], material: '5/8 in Gypsum Board', installationPhase: 'CLOSE_IN', inspectionStatus: 'PASSED' }
+          );
+          return { success: true, eventMessage: 'Rough-in inspection gate passed; thermal envelope and interior close-in installed without unresolved clashes.' };
+        }
+      },
+      {
+        taskId: 'INSTALL_FINISHES_AND_FIXTURES',
+        stageName: 'Interior Finishes & Commissioning',
+        phase: 'FINISHES',
+        title: 'Install Floors, Cabinetry, Fixtures, Trim & Commission Building Systems',
+        assignedAgent: 'AGENT-FIELD-016',
+        dependencies: ['INSULATE_AND_CLOSE_IN'],
+        dependencyReasons: { INSULATE_AND_CLOSE_IN: 'INSPECTION' },
+        riskSeverity: 6,
+        workLocationXYZ: [0, 0.2, 0],
+        execute: (state) => {
+          state.buildingComponents.push(
+            { componentId: 'COMP-FLOOR-FINISH-01', name: 'Finished White Oak Flooring', category: 'Architecture', discipline: 'Architecture', ifcType: 'IfcCovering', positionXYZ: [-0.5, 0.04, -1], dimensionsXYZ: [16.9, 0.08, 14.4], material: 'Engineered White Oak', installationPhase: 'FINISHES', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-KITCHEN-ISLAND-01', name: 'Kitchen Island & Quartz Worktop', category: 'Architecture', discipline: 'Architecture', ifcType: 'IfcFurniture', positionXYZ: [-3.8, 0.48, -4.8], dimensionsXYZ: [2.8, 0.96, 1.15], material: 'Oak Cabinetry + Quartz', installationPhase: 'FINISHES', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-PLUMB-FIXTURE-01', name: 'Primary Bath Fixture Group', category: 'Plumbing', discipline: 'Plumbing', ifcType: 'IfcSanitaryTerminal', positionXYZ: [5.6, 0.55, 1.0], dimensionsXYZ: [1.2, 1.1, 0.6], material: 'Vitreous China + Brass', installationPhase: 'FINISHES', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-HVAC-DUCT-MAIN-01', name: 'Insulated Supply Air Trunk', category: 'HVAC', discipline: 'HVAC', ifcType: 'IfcDuctSegment', positionXYZ: [0, 2.65, -1], dimensionsXYZ: [12.0, 0.35, 0.55], material: 'R-8 Insulated Galvanized Duct', installationPhase: 'MEP_FINAL', inspectionStatus: 'PASSED' },
+            { componentId: 'COMP-ELEC-LIGHTING-01', name: 'LED Lighting Circuit & Fixtures', category: 'Electrical', discipline: 'Electrical', ifcType: 'IfcLightFixture', positionXYZ: [0, 2.82, -1], dimensionsXYZ: [12.0, 0.08, 0.08], material: 'Copper THHN + LED Fixtures', installationPhase: 'MEP_FINAL', inspectionStatus: 'PASSED' }
+          );
+          return { success: true, eventMessage: 'Architectural finishes and commissioned MEP fixtures complete; the canonical world now represents a recognizable finished residence.' };
+        }
+      },
+      {
         taskId: 'CALCULATED_BOM_AND_TAKEOFF',
         stageName: 'Quantity Takeoff (QTO) & Cost Scope Engine',
         phase: 'ESTIMATING',
         title: 'Calculate Quantity Takeoff & Turnkey Cost Scope Breakdown',
         assignedAgent: 'AGENT-ESTIMATING-001',
-        dependencies: ['MEP_ROUTING_AND_CLASH_DETECTION'],
+        dependencies: ['INSTALL_FINISHES_AND_FIXTURES'],
+        dependencyReasons: { INSTALL_FINISHES_AND_FIXTURES: 'LOGICAL' },
         riskSeverity: 6,
         workLocationXYZ: [20.0, 1.5, -18.0],
         execute: (state) => {
@@ -2189,6 +2415,14 @@ export class HermesLiveHouseEngine {
 
         if (cA.discipline === cB.discipline) continue;
 
+        // Clash detection is for unintended cross-discipline interference, not
+        // designed containment/support (rebar in concrete, windows in walls,
+        // walls bearing on slabs, or excavation/formwork sequencing).
+        const pair = [cA, cB];
+        const hasPlumbingRoute = pair.some((component) => component.discipline === 'Plumbing' && component.ifcType === 'IfcFlowSegment');
+        const hasStructuralHost = pair.some((component) => component.discipline === 'Structural' && component.ifcType === 'IfcWall');
+        if (!hasPlumbingRoute || !hasStructuralHost) continue;
+
         const posA = cA.positionXYZ;
         const dimA = cA.dimensionsXYZ;
         const posB = cB.positionXYZ;
@@ -2437,7 +2671,7 @@ export class HermesLiveHouseEngine {
 
   // --- STATE MUTATION HELPERS FOR STAGES 4, 5, 6 ---
   public static updateWeatherConditions(params: { tempF: number; humidityPct: number; windMph: number; solarWatts?: number }): HermesLiveHouseState {
-    const state = this.getState();
+    const state = this.getCanonicalWorldState();
     const newTelemetry = this.computeCuringTelemetry({
       ambientTempF: params.tempF,
       relativeHumidityPct: params.humidityPct,
@@ -2448,8 +2682,16 @@ export class HermesLiveHouseEngine {
 
     state.curingTelemetry = newTelemetry;
 
+    state.eventSequence += 1;
     state.events.push({
       eventId: `EVT-ENV-WEATHER-${Date.now()}`,
+      projectId: state.projectId,
+      traceId: `TRACE-ENV-${state.eventSequence}`,
+      sequence: state.eventSequence,
+      eventType: 'ENVIRONMENTAL_TELEMETRY_UPDATED',
+      actor: { agentId: 'AGENT-CIVIL-001' },
+      entitiesAffected: ['COMP-FOUNDATION-01'],
+      payload: { conditions: newTelemetry.weatherConditions },
       checkpointNumber: state.currentCheckpoint,
       timestamp: new Date().toISOString(),
       agentId: 'AGENT-CIVIL-001',
@@ -2464,7 +2706,7 @@ export class HermesLiveHouseEngine {
   }
 
   public static triggerSupplyChainDisruption(disruptionId: string): HermesLiveHouseState {
-    const state = this.getState();
+    const state = this.getCanonicalWorldState();
     if (!state.disruptions) state.disruptions = this.getDisruptionScenarios();
 
     const disruption = state.disruptions.find(d => d.disruptionId === disruptionId);
@@ -2499,8 +2741,16 @@ export class HermesLiveHouseEngine {
 
     state.diagnostics.criticalPathDays = revisedDays;
 
+    state.eventSequence += 1;
     state.events.push({
       eventId: `EVT-SUPPLY-DISRUPT-${Date.now()}`,
+      projectId: state.projectId,
+      traceId: `TRACE-SUPPLY-DISRUPT-${state.eventSequence}`,
+      sequence: state.eventSequence,
+      eventType: 'SUPPLY_CHAIN_DISRUPTION_ACTIVE',
+      actor: { agentId: 'AGENT-LOGISTICS-001' },
+      entitiesAffected: [disruption.affectedTaskId],
+      payload: { disruptionId, delayDays: disruption.delayDays, costImpactUSD: disruption.costImpactUSD },
       checkpointNumber: state.currentCheckpoint,
       timestamp: new Date().toISOString(),
       agentId: 'AGENT-LOGISTICS-001',
@@ -2515,7 +2765,7 @@ export class HermesLiveHouseEngine {
   }
 
   public static applyDisruptionMitigation(disruptionId: string, mitigationId: string): HermesLiveHouseState {
-    const state = this.getState();
+    const state = this.getCanonicalWorldState();
     if (!state.disruptions) return state;
 
     const disruption = state.disruptions.find(d => d.disruptionId === disruptionId);
@@ -2543,8 +2793,16 @@ export class HermesLiveHouseEngine {
       );
     }
 
+    state.eventSequence += 1;
     state.events.push({
       eventId: `EVT-SUPPLY-MITIGATE-${Date.now()}`,
+      projectId: state.projectId,
+      traceId: `TRACE-SUPPLY-MITIGATE-${state.eventSequence}`,
+      sequence: state.eventSequence,
+      eventType: 'SUPPLY_CHAIN_MITIGATION_RESOLVED',
+      actor: { agentId: 'AGENT-LOGISTICS-001' },
+      entitiesAffected: [disruption.affectedTaskId],
+      payload: { disruptionId, mitigationId, recoveredDays: option.recoveredDays, costUSD: option.costUSD },
       checkpointNumber: state.currentCheckpoint,
       timestamp: new Date().toISOString(),
       agentId: 'AGENT-LOGISTICS-001',
@@ -2559,7 +2817,7 @@ export class HermesLiveHouseEngine {
   }
 
   public static setConstructionPhaseFilter(filter: 'ALL' | 'EARTHWORK' | 'FORMWORK' | 'REBAR' | 'CONCRETE' | 'FRAMING' | 'MEP'): HermesLiveHouseState {
-    const state = this.getState();
+    const state = this.getCanonicalWorldState();
     state.constructionPhaseFilter = filter;
     this.saveToDisk();
     return state;
