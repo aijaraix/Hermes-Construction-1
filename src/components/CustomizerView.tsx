@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ProposedRevision } from '../types/hermes';
-import { Sparkles, DollarSign, Calendar, Wrench, ShieldCheck, ArrowRight, Check } from 'lucide-react';
+import { Sparkles, DollarSign, Calendar, Wrench, ShieldCheck, ArrowRight, Check, Compass, Layers, Activity } from 'lucide-react';
+import { useHermesProject } from '../context/HermesProjectContext';
 
 interface CustomizerViewProps {
   projectId: string;
@@ -13,11 +14,15 @@ export const CustomizerView: React.FC<CustomizerViewProps> = ({
   onProposeRevision,
   onApplyRevision,
 }) => {
+  const { simulateScenario, worldState, refreshWorldState } = useHermesProject();
   const [promptInput, setPromptInput] = useState<string>('');
   const [proposedRevision, setProposedRevision] = useState<ProposedRevision | null>(null);
   const [isEvaluating, setIsEvaluating] = useState<boolean>(false);
   const [isApplying, setIsApplying] = useState<boolean>(false);
   const [appliedSuccess, setAppliedSuccess] = useState<boolean>(false);
+  const [activeSimResult, setActiveSimResult] = useState<any>(null);
+  const [simScenarioName, setSimScenarioName] = useState<string>('');
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
 
   const presets = [
     '24-Ga Galvalume Standing Seam Metal Roof',
@@ -25,6 +30,47 @@ export const CustomizerView: React.FC<CustomizerViewProps> = ({
     'Contemporary Architectural Facade Package',
     'Reconfigure Level 2 Wall Layout for Master Suite',
   ];
+
+  const scenarios = [
+    {
+      id: 'A',
+      name: 'Scenario A: Baseline Compact',
+      params: { location: 'Tampa, FL', targetSqFt: 2000, bedrooms: 3, bathrooms: 2, siteSlopeDegrees: 0, soilBearingPsf: 2200, waterTableFt: 6.0, windRatingMph: 160 },
+      desc: '2,000 sq ft / 3 Bed / 2 Bath / 0° Slope / 2,200 PSF / 6ft Water Table'
+    },
+    {
+      id: 'B',
+      name: 'Scenario B: Expanded Estate',
+      params: { location: 'Tampa, FL', targetSqFt: 3200, bedrooms: 4, bathrooms: 3, siteSlopeDegrees: 0, soilBearingPsf: 2200, waterTableFt: 6.0, windRatingMph: 160 },
+      desc: '3,200 sq ft / 4 Bed / 3 Bath / 0° Slope / 2,200 PSF / 6ft Water Table'
+    },
+    {
+      id: 'C',
+      name: 'Scenario C: Sloped Terrain',
+      params: { location: 'Tampa, FL', targetSqFt: 2000, bedrooms: 3, bathrooms: 2, siteSlopeDegrees: 10, soilBearingPsf: 2200, waterTableFt: 6.0, windRatingMph: 160 },
+      desc: '2,000 sq ft / 3 Bed / 2 Bath / 10° Slope / 2,200 PSF / Stem-Wall Required'
+    },
+    {
+      id: 'D',
+      name: 'Scenario D: Soft Soil & High Water Table',
+      params: { location: 'Miami, FL (HVHZ)', targetSqFt: 2000, bedrooms: 3, bathrooms: 2, siteSlopeDegrees: 0, soilBearingPsf: 1200, waterTableFt: 2.0, windRatingMph: 175 },
+      desc: '2,000 sq ft / 1,200 PSF Soil / 2ft Water Table / 175 MPH HVHZ / Piles Required'
+    }
+  ];
+
+  const handleRunScenario = async (sc: typeof scenarios[0]) => {
+    setIsSimulating(true);
+    setSimScenarioName(sc.name);
+    try {
+      const res = await simulateScenario(sc.params);
+      setActiveSimResult(res);
+      await refreshWorldState();
+    } catch (e) {
+      console.error('Simulation error:', e);
+    } finally {
+      setIsSimulating(false);
+    }
+  };
 
   const handleEvaluate = async (promptText: string) => {
     setIsEvaluating(true);
@@ -56,6 +102,101 @@ export const CustomizerView: React.FC<CustomizerViewProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Parameter Causality Simulation Gym Section */}
+      <div className="p-6 bg-slate-900 rounded-2xl border border-cyan-800/80 shadow-2xl space-y-4">
+        <div>
+          <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
+            <Compass className="w-5 h-5 text-cyan-400" /> Parameter Causality Simulation Gym (Scenarios A, B, C, D)
+          </h2>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Demonstrate how changes to floor area, bedrooms, terrain slope, soil bearing, and water table dynamically alter task graph decisions, foundation selection, structural load paths, quantity takeoffs, CPM schedule, and SHA-256 world state hash.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {scenarios.map((sc) => (
+            <button
+              key={sc.id}
+              onClick={() => handleRunScenario(sc)}
+              disabled={isSimulating}
+              className={`p-4 rounded-xl border text-left transition flex flex-col justify-between space-y-2 ${
+                simScenarioName === sc.name
+                  ? 'bg-cyan-950/80 border-cyan-500 text-slate-100 shadow-lg shadow-cyan-500/20'
+                  : 'bg-slate-950 hover:bg-slate-800/80 border-slate-800 text-slate-300'
+              }`}
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 block font-mono">
+                  Scenario {sc.id}
+                </span>
+                <h4 className="text-xs font-bold text-slate-100 mt-0.5">{sc.name.split(': ')[1]}</h4>
+                <p className="text-[11px] text-slate-400 mt-1 leading-snug">{sc.desc}</p>
+              </div>
+              <div className="pt-2 border-t border-slate-800/80 text-[10px] font-mono text-cyan-400 flex items-center justify-between">
+                <span>RUN SIMULATION</span>
+                <ArrowRight className="w-3 h-3" />
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Simulation Causality Comparison Panel */}
+        {activeSimResult && (
+          <div className="p-5 bg-slate-950 rounded-xl border border-cyan-500/40 space-y-4 text-xs font-mono animate-fadeIn">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span className="font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5 font-sans">
+                <Activity className="w-4 h-4 text-cyan-400" /> {simScenarioName} Result
+              </span>
+              <span className="text-[10px] text-slate-400">
+                SHA-256 Hash: <span className="text-cyan-400 font-mono">{activeSimResult.diagnostics?.worldStateHash?.slice(0, 16)}...</span>
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                <span className="text-slate-400 text-[10px] uppercase block font-sans">Foundation Decision</span>
+                <span className="text-emerald-400 font-bold block mt-1">
+                  {activeSimResult.foundationSelection?.selectedFoundation?.replace(/_/g, ' ')}
+                </span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">
+                  Cap: {activeSimResult.foundationSelection?.structuralCapacityPsf} PSF • Water Table: {activeSimResult.foundationSelection?.waterTableFt}ft
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                <span className="text-slate-400 text-[10px] uppercase block font-sans">Structural Load & Wind</span>
+                <span className="text-cyan-400 font-bold block mt-1">
+                  q_z = {activeSimResult.structuralEngineering?.windVelocityPressureQz} PSF
+                </span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">
+                  Uplift: {activeSimResult.structuralEngineering?.windUpliftDemandLbs} lbs • Tag: {activeSimResult.structuralEngineering?.complianceTag}
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                <span className="text-slate-400 text-[10px] uppercase block font-sans">Turnkey BOM Total</span>
+                <span className="text-amber-400 font-bold block mt-1">
+                  ${activeSimResult.costScopeBreakdown?.turnkeyTotalUSD?.toLocaleString()} USD
+                </span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">
+                  Materials: ${activeSimResult.costScopeBreakdown?.materialsTotalUSD?.toLocaleString()} • Labor: ${activeSimResult.costScopeBreakdown?.laborTotalUSD?.toLocaleString()}
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                <span className="text-slate-400 text-[10px] uppercase block font-sans">Primavera CPM Duration</span>
+                <span className="text-purple-400 font-bold block mt-1">
+                  {activeSimResult.diagnostics?.criticalPathDays || 135} Days Critical Path
+                </span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">
+                  Completed Tasks: {activeSimResult.completedTasks?.length} / {activeSimResult.dynamicTaskIds?.length}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Header */}
       <div className="p-6 bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl space-y-4">
         <div>

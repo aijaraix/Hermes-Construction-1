@@ -1,0 +1,2303 @@
+{
+  "projectId": "HERMES-LIVE-HOUSE-001",
+  "projectName": "HERMES Tampa Bay Autonomous Residence",
+  "attemptId": "ATTEMPT-1788409036522",
+  "currentCheckpoint": 8,
+  "currentStepIndex": 8,
+  "currentPhase": "CONSTRUCTION_SUBSTRUCTURE",
+  "currentTask": "Construct Substructure Footing & Slab Assembly",
+  "activeAgents": [
+    "AGENT-STRUCT-001",
+    "PROJECT-PRIME"
+  ],
+  "nextTask": "COLLECT_CUSTOMER_BRIEF",
+  "overallCompletionPct": 57,
+  "status": "IN_PROGRESS",
+  "mode": "LIVE_PROJECT",
+  "projectParams": {
+    "location": "Tampa Bay, FL",
+    "jurisdiction": "Florida Building Code 2023 (8th Edition)",
+    "targetSqFt": 2400,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "budgetCap": 425000,
+    "windRatingMph": 160,
+    "siteSlopeDegrees": 0,
+    "soilBearingPsf": 2200,
+    "waterTableFt": 6
+  },
+  "spatialEntities": [
+    {
+      "entityId": "FACILITY-EXEC-HQ",
+      "name": "Executive Headquarters Container",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 12,
+      "worldPosition": [
+        -65,
+        1.5,
+        -30
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-ACADEMY-HQ",
+      "name": "Academy Learning Hub",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 20,
+      "worldPosition": [
+        -65,
+        1.5,
+        -18
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-ARCH-DEPOT",
+      "name": "Architecture Discipline Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 8,
+      "worldPosition": [
+        -65,
+        1.5,
+        -6
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-CIVIL-DEPOT",
+      "name": "Civil & Geotech Engineering Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 8,
+      "worldPosition": [
+        -65,
+        1.5,
+        6
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-STRUCT-DEPOT",
+      "name": "Structural Engineering Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 8,
+      "worldPosition": [
+        -65,
+        1.5,
+        18
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-MEP-DEPOT",
+      "name": "MEP Engineering Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 8,
+      "worldPosition": [
+        -65,
+        1.5,
+        30
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-LOGISTICS-DEPOT",
+      "name": "Logistics & Supply Chain Hub",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 10,
+      "worldPosition": [
+        20,
+        1.5,
+        -30
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-ESTIMATING-DEPOT",
+      "name": "Estimating & Takeoff Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 6,
+      "worldPosition": [
+        20,
+        1.5,
+        -18
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-SCHEDULING-DEPOT",
+      "name": "Scheduling & Primavera P6 Hub",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 6,
+      "worldPosition": [
+        20,
+        1.5,
+        -6
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-SAFETY-HQ",
+      "name": "Quality & Safety Inspection Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 6,
+      "worldPosition": [
+        20,
+        1.5,
+        6
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-GEOTECH-YARD",
+      "name": "Geotechnical Soil Sampling Yard",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 4,
+      "worldPosition": [
+        20,
+        1.5,
+        18
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-SURVEY-DEPOT",
+      "name": "Survey Control Depot",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 4,
+      "worldPosition": [
+        20,
+        1.5,
+        30
+      ],
+      "dimensionsXYZ": [
+        12.19,
+        2.89,
+        2.44
+      ]
+    },
+    {
+      "entityId": "FACILITY-LAYDOWN-YARD",
+      "name": "Staging & Laydown Material Yard",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 15,
+      "worldPosition": [
+        20,
+        0,
+        -12
+      ],
+      "dimensionsXYZ": [
+        20,
+        0.2,
+        16
+      ]
+    },
+    {
+      "entityId": "FACILITY-FAB-SHOP",
+      "name": "Offsite Component Pre-Fab Shop",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 12,
+      "worldPosition": [
+        -45,
+        1.5,
+        -30
+      ],
+      "dimensionsXYZ": [
+        15,
+        3.5,
+        8
+      ]
+    },
+    {
+      "entityId": "FACILITY-DRONE-PORT",
+      "name": "Aerial Survey Drone Port",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 2,
+      "worldPosition": [
+        -45,
+        0.5,
+        30
+      ],
+      "dimensionsXYZ": [
+        4,
+        1,
+        4
+      ]
+    },
+    {
+      "entityId": "FACILITY-CUSTOMER-ENTRANCE",
+      "name": "Customer Welcome & Intake Gate",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 10,
+      "worldPosition": [
+        -35,
+        1.5,
+        25
+      ],
+      "dimensionsXYZ": [
+        6,
+        2.5,
+        4
+      ]
+    },
+    {
+      "entityId": "FACILITY-TRANSFORMER",
+      "name": "Site Electric Utility Pad",
+      "entityType": "OPERATIONS_FACILITY",
+      "maxOccupancy": 0,
+      "worldPosition": [
+        -45,
+        1,
+        15
+      ],
+      "dimensionsXYZ": [
+        3,
+        2,
+        3
+      ]
+    }
+  ],
+  "agentSpatialStates": [
+    {
+      "agentId": "CUSTOMER-001",
+      "role": "Project Owner / Customer",
+      "discipline": "Customer",
+      "homeBaseEntityId": "FACILITY-CUSTOMER-ENTRANCE",
+      "worldPosition": [
+        -35,
+        0,
+        25
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "PROJECT-PRIME",
+      "role": "HERMES Prime Orchestrator",
+      "discipline": "Executive",
+      "homeBaseEntityId": "FACILITY-EXEC-HQ",
+      "worldPosition": [
+        -55,
+        0,
+        -15
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-CIVIL-001",
+      "role": "Lead Civil Engineer",
+      "discipline": "Civil",
+      "homeBaseEntityId": "FACILITY-CIVIL-DEPOT",
+      "worldPosition": [
+        -60,
+        0,
+        6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-SURVEY-001",
+      "role": "Chief Surveyor",
+      "discipline": "Survey",
+      "homeBaseEntityId": "FACILITY-SURVEY-DEPOT",
+      "worldPosition": [
+        22,
+        0,
+        30
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-GEOTECH-001",
+      "role": "Geotechnical Soil Engineer",
+      "discipline": "Geotech",
+      "homeBaseEntityId": "FACILITY-GEOTECH-YARD",
+      "worldPosition": [
+        6,
+        0,
+        5
+      ],
+      "currentState": "EXECUTING_IN_WORK_ZONE"
+    },
+    {
+      "agentId": "AGENT-ARCH-001",
+      "role": "Lead Architect",
+      "discipline": "Architecture",
+      "homeBaseEntityId": "FACILITY-ARCH-DEPOT",
+      "worldPosition": [
+        -0.5,
+        0,
+        0
+      ],
+      "currentState": "EXECUTING_IN_WORK_ZONE"
+    },
+    {
+      "agentId": "AGENT-STRUCT-001",
+      "role": "Lead Structural Engineer",
+      "discipline": "Structural",
+      "homeBaseEntityId": "FACILITY-STRUCT-DEPOT",
+      "worldPosition": [
+        -0.5,
+        0,
+        -1
+      ],
+      "currentState": "EXECUTING_IN_WORK_ZONE"
+    },
+    {
+      "agentId": "AGENT-FRAMING-001",
+      "role": "Framing Master Carpenter",
+      "discipline": "Carpentry",
+      "homeBaseEntityId": "FACILITY-FAB-SHOP",
+      "worldPosition": [
+        -40,
+        0,
+        -30
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-PLUMBING-001",
+      "role": "Master Plumbing Engineer",
+      "discipline": "Plumbing",
+      "homeBaseEntityId": "FACILITY-MEP-DEPOT",
+      "worldPosition": [
+        -60,
+        0,
+        30
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-ELEC-001",
+      "role": "Master Electrical Engineer",
+      "discipline": "Electrical",
+      "homeBaseEntityId": "FACILITY-MEP-DEPOT",
+      "worldPosition": [
+        -58,
+        0,
+        30
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-HVAC-001",
+      "role": "Master HVAC Engineer",
+      "discipline": "HVAC",
+      "homeBaseEntityId": "FACILITY-MEP-DEPOT",
+      "worldPosition": [
+        -56,
+        0,
+        30
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-LOGISTICS-001",
+      "role": "Logistics Manager",
+      "discipline": "Logistics",
+      "homeBaseEntityId": "FACILITY-LOGISTICS-DEPOT",
+      "worldPosition": [
+        22,
+        0,
+        -30
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-ESTIMATING-001",
+      "role": "Chief Estimator",
+      "discipline": "Estimating",
+      "homeBaseEntityId": "FACILITY-ESTIMATING-DEPOT",
+      "worldPosition": [
+        22,
+        0,
+        -18
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-SCHEDULING-001",
+      "role": "P6 Scheduler",
+      "discipline": "Scheduling",
+      "homeBaseEntityId": "FACILITY-SCHEDULING-DEPOT",
+      "worldPosition": [
+        22,
+        0,
+        -6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-INSPECT-001",
+      "role": "Quality & Safety Inspector",
+      "discipline": "Inspection",
+      "homeBaseEntityId": "FACILITY-SAFETY-HQ",
+      "worldPosition": [
+        22,
+        0,
+        6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-016",
+      "role": "Trade Specialist #16",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -13.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-017",
+      "role": "Trade Specialist #17",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -13.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-018",
+      "role": "Trade Specialist #18",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -13.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-019",
+      "role": "Trade Specialist #19",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -13.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-020",
+      "role": "Trade Specialist #20",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -12
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-021",
+      "role": "Trade Specialist #21",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -12
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-022",
+      "role": "Trade Specialist #22",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -12
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-023",
+      "role": "Trade Specialist #23",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -12
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-024",
+      "role": "Trade Specialist #24",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -12
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-025",
+      "role": "Trade Specialist #25",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -10.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-026",
+      "role": "Trade Specialist #26",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -10.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-027",
+      "role": "Trade Specialist #27",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -10.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-028",
+      "role": "Trade Specialist #28",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -10.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-029",
+      "role": "Trade Specialist #29",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -10.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-030",
+      "role": "Trade Specialist #30",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -9
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-031",
+      "role": "Trade Specialist #31",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -9
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-032",
+      "role": "Trade Specialist #32",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -9
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-033",
+      "role": "Trade Specialist #33",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -9
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-034",
+      "role": "Trade Specialist #34",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -9
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-035",
+      "role": "Trade Specialist #35",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -7.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-036",
+      "role": "Trade Specialist #36",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -7.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-037",
+      "role": "Trade Specialist #37",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -7.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-038",
+      "role": "Trade Specialist #38",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -7.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-039",
+      "role": "Trade Specialist #39",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -7.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-040",
+      "role": "Trade Specialist #40",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-041",
+      "role": "Trade Specialist #41",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-042",
+      "role": "Trade Specialist #42",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-043",
+      "role": "Trade Specialist #43",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-044",
+      "role": "Trade Specialist #44",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -6
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-045",
+      "role": "Trade Specialist #45",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -4.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-046",
+      "role": "Trade Specialist #46",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -4.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-047",
+      "role": "Trade Specialist #47",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -4.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-048",
+      "role": "Trade Specialist #48",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -4.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-049",
+      "role": "Trade Specialist #49",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -4.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-050",
+      "role": "Trade Specialist #50",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -3
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-051",
+      "role": "Trade Specialist #51",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -3
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-052",
+      "role": "Trade Specialist #52",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -3
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-053",
+      "role": "Trade Specialist #53",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -3
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-054",
+      "role": "Trade Specialist #54",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -3
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-055",
+      "role": "Trade Specialist #55",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        -1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-056",
+      "role": "Trade Specialist #56",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        -1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-057",
+      "role": "Trade Specialist #57",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        -1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-058",
+      "role": "Trade Specialist #58",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        -1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-059",
+      "role": "Trade Specialist #59",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        -1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-060",
+      "role": "Trade Specialist #60",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        0
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-061",
+      "role": "Trade Specialist #61",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        0
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-062",
+      "role": "Trade Specialist #62",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        0
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-063",
+      "role": "Trade Specialist #63",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        0
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-064",
+      "role": "Trade Specialist #64",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        0
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-065",
+      "role": "Trade Specialist #65",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -62,
+        0,
+        1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-066",
+      "role": "Trade Specialist #66",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -60,
+        0,
+        1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-067",
+      "role": "Trade Specialist #67",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -58,
+        0,
+        1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-068",
+      "role": "Trade Specialist #68",
+      "discipline": "Trades",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -56,
+        0,
+        1.5
+      ],
+      "currentState": "STATIONED"
+    },
+    {
+      "agentId": "AGENT-FIELD-069",
+      "role": "Trade Specialist #69",
+      "discipline": "Operations",
+      "homeBaseEntityId": "FACILITY-ACADEMY-HQ",
+      "worldPosition": [
+        -54,
+        0,
+        1.5
+      ],
+      "currentState": "STATIONED"
+    }
+  ],
+  "surveyMarks": [
+    {
+      "markId": "SURVEY-STAKE-01",
+      "label": "NE Property Corner Stake",
+      "elevationFt": 12.5,
+      "position": [
+        11,
+        0.4,
+        -15
+      ]
+    },
+    {
+      "markId": "SURVEY-STAKE-02",
+      "label": "NW Property Corner Stake",
+      "elevationFt": 12.4,
+      "position": [
+        -11,
+        0.4,
+        -15
+      ]
+    },
+    {
+      "markId": "SURVEY-STAKE-03",
+      "label": "SE Property Corner Stake",
+      "elevationFt": 12.2,
+      "position": [
+        11,
+        0.4,
+        15
+      ]
+    },
+    {
+      "markId": "SURVEY-STAKE-04",
+      "label": "SW Property Corner Stake",
+      "elevationFt": 12.3,
+      "position": [
+        -11,
+        0.4,
+        15
+      ]
+    },
+    {
+      "markId": "SURVEY-STAKE-05",
+      "label": "Site Benchmark Datum (0.00m)",
+      "elevationFt": 12.5,
+      "position": [
+        0,
+        0.4,
+        -20
+      ]
+    }
+  ],
+  "boringSamples": [
+    {
+      "sampleId": "SPT-BORING-001",
+      "depthFt": 20,
+      "soilClass": "Medium Dense Fine Sand over Stiff Clay",
+      "bearingCapacityPsf": 2200,
+      "groundwaterTableFt": 6,
+      "recommendation": "Post-Tensioned Monolithic Slab",
+      "dataOrigin": "VERIFIED_IMPORT"
+    }
+  ],
+  "requirementRecords": [
+    {
+      "recordId": "REQ-001",
+      "category": "Project Scope",
+      "parameter": "Target Floor Area",
+      "value": "2400 sq ft",
+      "status": "APPROVED"
+    },
+    {
+      "recordId": "REQ-002",
+      "category": "Budget Cap",
+      "parameter": "Turnkey Maximum",
+      "value": "$425,000 USD",
+      "status": "APPROVED"
+    },
+    {
+      "recordId": "REQ-003",
+      "category": "Program",
+      "parameter": "Bedrooms / Baths",
+      "value": "3 Bed / 2 Bath",
+      "status": "APPROVED"
+    },
+    {
+      "recordId": "REQ-004",
+      "category": "Site Slope",
+      "parameter": "Terrain Inclination",
+      "value": "0° inclination",
+      "status": "VERIFIED"
+    }
+  ],
+  "programVolumes": [
+    {
+      "roomId": "ROOM-GREAT-ROOM",
+      "name": "Great Room & Living Lounge",
+      "areaSqFt": 520,
+      "dimensionsXYZ": [
+        7.5,
+        3.2,
+        6.5
+      ],
+      "positionXYZ": [
+        -3.75,
+        1.6,
+        -2.25
+      ]
+    },
+    {
+      "roomId": "ROOM-PRIMARY-SUITE",
+      "name": "Primary Bedroom Suite",
+      "areaSqFt": 340,
+      "dimensionsXYZ": [
+        5.5,
+        3,
+        5.8
+      ],
+      "positionXYZ": [
+        4.75,
+        1.5,
+        -4
+      ]
+    },
+    {
+      "roomId": "ROOM-PRIMARY-BATH",
+      "name": "Primary Ensuite Bathroom",
+      "areaSqFt": 150,
+      "dimensionsXYZ": [
+        3.8,
+        2.8,
+        3.7
+      ],
+      "positionXYZ": [
+        5.6,
+        1.4,
+        1
+      ]
+    },
+    {
+      "roomId": "ROOM-BEDROOM-2",
+      "name": "Guest Bedroom 2",
+      "areaSqFt": 180,
+      "dimensionsXYZ": [
+        4.2,
+        2.8,
+        4
+      ],
+      "positionXYZ": [
+        -6.4,
+        1.4,
+        4
+      ]
+    },
+    {
+      "roomId": "ROOM-BEDROOM-3",
+      "name": "Guest Bedroom 3",
+      "areaSqFt": 170,
+      "dimensionsXYZ": [
+        4,
+        2.8,
+        3.9
+      ],
+      "positionXYZ": [
+        -2,
+        1.4,
+        4
+      ]
+    },
+    {
+      "roomId": "ROOM-KITCHEN",
+      "name": "Gourmet Kitchen & Island",
+      "areaSqFt": 220,
+      "dimensionsXYZ": [
+        4.8,
+        3,
+        4.3
+      ],
+      "positionXYZ": [
+        -3.8,
+        1.5,
+        -7.5
+      ]
+    },
+    {
+      "roomId": "ROOM-DINING",
+      "name": "Dining Area",
+      "areaSqFt": 160,
+      "dimensionsXYZ": [
+        4,
+        3,
+        3.7
+      ],
+      "positionXYZ": [
+        1.5,
+        1.5,
+        -7.5
+      ]
+    },
+    {
+      "roomId": "ROOM-OFFICE",
+      "name": "Dedicated Home Office",
+      "areaSqFt": 140,
+      "dimensionsXYZ": [
+        3.6,
+        2.8,
+        3.6
+      ],
+      "positionXYZ": [
+        -7,
+        1.4,
+        -8
+      ]
+    },
+    {
+      "roomId": "ROOM-UTILITY-MEP",
+      "name": "MEP Utility Room",
+      "areaSqFt": 80,
+      "dimensionsXYZ": [
+        2.5,
+        2.8,
+        3
+      ],
+      "positionXYZ": [
+        7.2,
+        1.4,
+        4.5
+      ]
+    },
+    {
+      "roomId": "ROOM-FOYER",
+      "name": "Main Entry Foyer",
+      "areaSqFt": 80,
+      "dimensionsXYZ": [
+        2.5,
+        3,
+        3
+      ],
+      "positionXYZ": [
+        -0.5,
+        1.5,
+        -10
+      ]
+    }
+  ],
+  "buildingComponents": [
+    {
+      "componentId": "COMP-FOUNDATION-01",
+      "name": "POST TENSIONED SLAB (2400 sq ft)",
+      "category": "Foundation",
+      "discipline": "Civil/Structural",
+      "ifcType": "IfcSlab",
+      "positionXYZ": [
+        -0.5,
+        -0.15,
+        -1
+      ],
+      "dimensionsXYZ": [
+        17.5,
+        0.35,
+        15
+      ],
+      "material": "4000 PSI Concrete + Steel Tendons",
+      "installationPhase": "SUBSTRUCTURE",
+      "inspectionStatus": "PASSED"
+    }
+  ],
+  "materialsOnsite": [
+    {
+      "materialBatchId": "MAT-REBAR-LOT-01",
+      "name": "Grade 60 Deformed Steel Rebar #4 & #5",
+      "category": "REBAR",
+      "quantity": 8.5,
+      "unit": "tons",
+      "currentLocation": "INSTALLED_BUILDING",
+      "worldPosition": [
+        20,
+        0.4,
+        -12
+      ],
+      "dimensionsXYZ": [
+        3,
+        0.8,
+        1.5
+      ],
+      "supplierName": "Gerdau Tampa Steel Mill",
+      "verificationStatus": "INSTALLED",
+      "targetComponentId": "COMP-FOUNDATION-01"
+    },
+    {
+      "materialBatchId": "MAT-PT-TENDONS-01",
+      "name": "0.5\" 270k Low-Relaxation Post-Tensioned Tendons",
+      "category": "CONCRETE",
+      "quantity": 4200,
+      "unit": "linear ft",
+      "currentLocation": "INSTALLED_BUILDING",
+      "worldPosition": [
+        22,
+        0.5,
+        -10
+      ],
+      "dimensionsXYZ": [
+        1.8,
+        1,
+        1.8
+      ],
+      "supplierName": "Suncoast Post-Tension Systems",
+      "verificationStatus": "INSTALLED",
+      "targetComponentId": "COMP-FOUNDATION-01"
+    },
+    {
+      "materialBatchId": "MAT-FORMWORK-LOT-01",
+      "name": "3/4\" MDO Concrete Form Plywood & Stiffbacks",
+      "category": "FORMWORK",
+      "quantity": 160,
+      "unit": "sheets",
+      "currentLocation": "INSTALLED_BUILDING",
+      "worldPosition": [
+        18,
+        0.6,
+        -14
+      ],
+      "dimensionsXYZ": [
+        2.4,
+        1.2,
+        1.2
+      ],
+      "supplierName": "84 Lumber Tampa Distribution Yard",
+      "verificationStatus": "INSTALLED",
+      "targetComponentId": "COMP-FOUNDATION-01"
+    },
+    {
+      "materialBatchId": "MAT-CONCRETE-MIX-01",
+      "name": "4,000 PSI Ready-Mix Concrete with Superplasticizer",
+      "category": "CONCRETE",
+      "quantity": 65,
+      "unit": "cu yd",
+      "currentLocation": "INSTALLED_BUILDING",
+      "worldPosition": [
+        20,
+        0,
+        -8
+      ],
+      "dimensionsXYZ": [
+        2,
+        2,
+        2
+      ],
+      "supplierName": "Cemex Ready-Mix Tampa Plant",
+      "verificationStatus": "INSTALLED",
+      "targetComponentId": "COMP-FOUNDATION-01"
+    }
+  ],
+  "clashes": [],
+  "bomItems": [],
+  "scheduleActivities": [],
+  "inspectionTickets": [],
+  "events": [
+    {
+      "eventId": "EVT-GENESIS-000",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-GENESIS-ATTEMPT-1788409036522",
+      "timestamp": "2026-09-03T04:17:16.522Z",
+      "sequence": 1,
+      "eventType": "WORLD_GENESIS_INITIALIZED",
+      "actor": {
+        "systemId": "HERMES_PRIME"
+      },
+      "entitiesAffected": [
+        "FACILITY-EXEC-HQ",
+        "FACILITY-ACADEMY-HQ",
+        "FACILITY-ARCH-DEPOT",
+        "FACILITY-CIVIL-DEPOT",
+        "FACILITY-STRUCT-DEPOT",
+        "FACILITY-MEP-DEPOT",
+        "FACILITY-LOGISTICS-DEPOT",
+        "FACILITY-ESTIMATING-DEPOT",
+        "FACILITY-SCHEDULING-DEPOT",
+        "FACILITY-SAFETY-HQ",
+        "FACILITY-GEOTECH-YARD",
+        "FACILITY-SURVEY-DEPOT",
+        "FACILITY-LAYDOWN-YARD",
+        "FACILITY-FAB-SHOP",
+        "FACILITY-DRONE-PORT",
+        "FACILITY-CUSTOMER-ENTRANCE",
+        "FACILITY-TRANSFORMER"
+      ],
+      "payload": {
+        "message": "Clean HERMES site initialized. 0 house components present. Autonomous Task Engine Active.",
+        "mode": "LIVE_PROJECT"
+      },
+      "visualIntent": {
+        "cameraHint": "OVERVIEW_SITE",
+        "emphasis": "WORLD_GENESIS"
+      }
+    },
+    {
+      "eventId": "EVT-INTAKE-002",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-INTAKE-1788482894484",
+      "timestamp": "2026-09-04T00:48:14.484Z",
+      "sequence": 2,
+      "eventType": "CUSTOMER_BRIEF_REGISTERED",
+      "actor": {
+        "customerId": "CUSTOMER-001"
+      },
+      "entitiesAffected": [
+        "FACILITY-CUSTOMER-ENTRANCE"
+      ],
+      "payload": {
+        "message": "Registered Customer Brief: 2400 sq ft, 3 Bed/2 Bath, $425000 Cap, Slope: 0°, Water Table: 6ft.",
+        "params": {
+          "location": "Tampa Bay, FL",
+          "jurisdiction": "Florida Building Code 2023 (8th Edition)",
+          "targetSqFt": 2400,
+          "bedrooms": 3,
+          "bathrooms": 2,
+          "budgetCap": 425000,
+          "windRatingMph": 160,
+          "siteSlopeDegrees": 0,
+          "soilBearingPsf": 2200,
+          "waterTableFt": 6
+        }
+      },
+      "visualIntent": {
+        "cameraHint": "SITE_OVERVIEW",
+        "emphasis": "CUSTOMER_INTAKE"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-003",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-INTAKE_COMPLETE-1788482894500",
+      "timestamp": "2026-09-04T00:48:14.500Z",
+      "sequence": 3,
+      "eventType": "TASK_COMPLETED_INTAKE_COMPLETE",
+      "actor": {
+        "agentId": "CUSTOMER-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "INTAKE_COMPLETE",
+        "stageName": "Customer Brief & Requirements Board",
+        "phase": "INTAKE",
+        "priorityScore": 777,
+        "priorityRationale": "Selected task INTAKE_COMPLETE (Score: 777): Unblocks 1 downstream tasks with Risk Severity 2/10.",
+        "message": "Requirements Board instantiated with 4 parameter bounds.",
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "SITE_OVERVIEW",
+        "emphasis": "INTAKE"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-004",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-RESOLVE_JURISDICTION-1788482897155",
+      "timestamp": "2026-09-04T00:48:17.155Z",
+      "sequence": 4,
+      "eventType": "TASK_COMPLETED_RESOLVE_JURISDICTION",
+      "actor": {
+        "agentId": "AGENT-CIVIL-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "RESOLVE_JURISDICTION",
+        "stageName": "Location & Jurisdiction Resolver",
+        "phase": "FEASIBILITY",
+        "priorityScore": 45,
+        "priorityRationale": "Selected task RESOLVE_JURISDICTION (Score: 45): Unblocks 1 downstream tasks with Risk Severity 5/10.",
+        "message": "Jurisdiction resolved: Florida Building Code 2023 (8th Edition) (160 MPH Wind Rating, Status: VERIFIED_SOURCE).",
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "SITE_OVERVIEW",
+        "emphasis": "FEASIBILITY"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-005",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-SITE_SURVEY_CONTROL-1788482899679",
+      "timestamp": "2026-09-04T00:48:19.679Z",
+      "sequence": 5,
+      "eventType": "TASK_COMPLETED_SITE_SURVEY_CONTROL",
+      "actor": {
+        "agentId": "AGENT-SURVEY-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "SITE_SURVEY_CONTROL",
+        "stageName": "Survey Control & Benchmark Boundary",
+        "phase": "SURVEY",
+        "priorityScore": 39,
+        "priorityRationale": "Selected task SITE_SURVEY_CONTROL (Score: 39): Unblocks 1 downstream tasks with Risk Severity 4/10.",
+        "message": "Survey control established: 5 boundary stakes placed. Measured slope: 0°.",
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "SITE_OVERVIEW",
+        "emphasis": "SURVEY"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-006",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-GEOTECHNICAL_INVESTIGATION-1788482922487",
+      "timestamp": "2026-09-04T00:48:42.487Z",
+      "sequence": 6,
+      "eventType": "TASK_COMPLETED_GEOTECHNICAL_INVESTIGATION",
+      "actor": {
+        "agentId": "AGENT-GEOTECH-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "GEOTECHNICAL_INVESTIGATION",
+        "stageName": "Geotechnical SPT Soil Boring Test",
+        "phase": "GEOTECH",
+        "priorityScore": 57,
+        "priorityRationale": "Selected task GEOTECHNICAL_INVESTIGATION (Score: 57): Unblocks 1 downstream tasks with Risk Severity 7/10.",
+        "message": "SPT Boring complete: Allowable Bearing = 2200 PSF, Water Table = 6 ft (Data Origin: VERIFIED_IMPORT).",
+        "embodiedExecution": {
+          "assignedAgent": "AGENT-GEOTECH-001",
+          "agentPositionXYZ": [
+            6,
+            0,
+            5
+          ],
+          "workLocationXYZ": [
+            6,
+            0,
+            5
+          ],
+          "equipmentDeployed": [
+            "EQUIP-SPT-DRILL-RIG-01"
+          ],
+          "materialsAssigned": [],
+          "operationalStatus": "EXECUTING_IN_WORK_ZONE"
+        },
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "SITE_OVERVIEW",
+        "emphasis": "GEOTECH"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-007",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-FOUNDATION_SELECTION_ENGINE-1788482922505",
+      "timestamp": "2026-09-04T00:48:42.505Z",
+      "sequence": 7,
+      "eventType": "TASK_COMPLETED_FOUNDATION_SELECTION_ENGINE",
+      "actor": {
+        "agentId": "AGENT-STRUCT-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "FOUNDATION_SELECTION_ENGINE",
+        "stageName": "Foundation Engineering Multi-Factor Solver",
+        "phase": "FOUNDATION_DESIGN",
+        "priorityScore": 69,
+        "priorityRationale": "Selected task FOUNDATION_SELECTION_ENGINE (Score: 69): Unblocks 1 downstream tasks with Risk Severity 9/10.",
+        "message": "Foundation Decision Locked: POST_TENSIONED_SLAB (Composite Score: 91.9). Selected Post-Tensioned Slab (Score: 91.9). Optimal for flat site (0°) with adequate bearing (2200 PSF) and groundwater depth (6 ft).",
+        "embodiedExecution": {
+          "assignedAgent": "AGENT-STRUCT-001",
+          "agentPositionXYZ": [
+            -65,
+            1.5,
+            18
+          ],
+          "workLocationXYZ": [
+            -65,
+            1.5,
+            18
+          ],
+          "equipmentDeployed": [],
+          "materialsAssigned": [],
+          "operationalStatus": "EXECUTING_IN_WORK_ZONE"
+        },
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "BUILDING_FOCUS",
+        "emphasis": "FOUNDATION_DESIGN"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-008",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-SPACE_PLANNING_SOLVER-1788482922510",
+      "timestamp": "2026-09-04T00:48:42.510Z",
+      "sequence": 8,
+      "eventType": "TASK_COMPLETED_SPACE_PLANNING_SOLVER",
+      "actor": {
+        "agentId": "AGENT-ARCH-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "SPACE_PLANNING_SOLVER",
+        "stageName": "Architectural Spatial Solver & Candidate Layouts",
+        "phase": "ARCHITECTURAL_DESIGN",
+        "priorityScore": 51,
+        "priorityRationale": "Selected task SPACE_PLANNING_SOLVER (Score: 51): Unblocks 1 downstream tasks with Risk Severity 6/10.",
+        "message": "Spatial solver evaluated 3 candidate layouts. Selected: L-Shaped Plan (Score: 93.0). Calculated footprint = 2320 sq ft.",
+        "embodiedExecution": {
+          "assignedAgent": "AGENT-ARCH-001",
+          "agentPositionXYZ": [
+            -0.5,
+            0,
+            0
+          ],
+          "workLocationXYZ": [
+            -0.5,
+            0,
+            0
+          ],
+          "equipmentDeployed": [
+            "EQUIP-ARCH-WORKSTATION-01"
+          ],
+          "materialsAssigned": [],
+          "operationalStatus": "EXECUTING_IN_WORK_ZONE"
+        },
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "BUILDING_FOCUS",
+        "emphasis": "ARCHITECTURAL_DESIGN"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-009",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-STRUCTURAL_ANALYSIS_LAYER-1788482922515",
+      "timestamp": "2026-09-04T00:48:42.515Z",
+      "sequence": 9,
+      "eventType": "TASK_COMPLETED_STRUCTURAL_ANALYSIS_LAYER",
+      "actor": {
+        "agentId": "AGENT-STRUCT-001"
+      },
+      "entitiesAffected": [],
+      "payload": {
+        "taskId": "STRUCTURAL_ANALYSIS_LAYER",
+        "stageName": "Deterministic Structural Engineering Analysis",
+        "phase": "STRUCTURAL_ENGINEERING",
+        "priorityScore": 63,
+        "priorityRationale": "Selected task STRUCTURAL_ANALYSIS_LAYER (Score: 63): Unblocks 1 downstream tasks with Risk Severity 8/10.",
+        "message": "Deterministic structural calculations complete: q_z = 47.35 PSF, Wind Uplift = 1207 lbs, Bolt Utilization = 0.65. Tag: STRUCTURAL_DETERMINISTIC_CHECK_PASSED",
+        "embodiedExecution": {
+          "assignedAgent": "AGENT-STRUCT-001",
+          "agentPositionXYZ": [
+            -65,
+            1.5,
+            18
+          ],
+          "workLocationXYZ": [
+            -65,
+            1.5,
+            18
+          ],
+          "equipmentDeployed": [],
+          "materialsAssigned": [],
+          "operationalStatus": "EXECUTING_IN_WORK_ZONE"
+        },
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [],
+        "cameraHint": "BUILDING_FOCUS",
+        "emphasis": "STRUCTURAL_ENGINEERING"
+      }
+    },
+    {
+      "eventId": "EVT-TASK-010",
+      "projectId": "HERMES-LIVE-HOUSE-001",
+      "traceId": "TRACE-CONSTRUCT_FOUNDATION_MESH-1788482922521",
+      "timestamp": "2026-09-04T00:48:42.521Z",
+      "sequence": 10,
+      "eventType": "TASK_COMPLETED_CONSTRUCT_FOUNDATION_MESH",
+      "actor": {
+        "agentId": "AGENT-STRUCT-001"
+      },
+      "entitiesAffected": [
+        "COMP-FOUNDATION-01"
+      ],
+      "payload": {
+        "taskId": "CONSTRUCT_FOUNDATION_MESH",
+        "stageName": "Substructure Foundation Construction",
+        "phase": "CONSTRUCTION_SUBSTRUCTURE",
+        "priorityScore": 63,
+        "priorityRationale": "Selected task CONSTRUCT_FOUNDATION_MESH (Score: 63): Unblocks 1 downstream tasks with Risk Severity 8/10.",
+        "message": "Foundation substructure constructed: 3D mesh for POST_TENSIONED_SLAB deployed.",
+        "embodiedExecution": {
+          "assignedAgent": "AGENT-STRUCT-001",
+          "agentPositionXYZ": [
+            -0.5,
+            0,
+            -1
+          ],
+          "workLocationXYZ": [
+            -0.5,
+            0,
+            -1
+          ],
+          "equipmentDeployed": [
+            "EQUIP-MINI-EXCAVATOR-01",
+            "EQUIP-CONCRETE-PUMP-01"
+          ],
+          "materialsAssigned": [
+            "MAT-REBAR-LOT-01",
+            "MAT-PT-TENDONS-01",
+            "MAT-FORMWORK-LOT-01",
+            "MAT-CONCRETE-MIX-01"
+          ],
+          "operationalStatus": "EXECUTING_IN_WORK_ZONE"
+        },
+        "details": {}
+      },
+      "visualIntent": {
+        "focusEntityIds": [
+          "COMP-FOUNDATION-01"
+        ],
+        "cameraHint": "BUILDING_FOCUS",
+        "emphasis": "CONSTRUCTION_SUBSTRUCTURE"
+      }
+    }
+  ],
+  "eventSequence": 10,
+  "completedTasks": [
+    "INTAKE_COMPLETE",
+    "RESOLVE_JURISDICTION",
+    "SITE_SURVEY_CONTROL",
+    "GEOTECHNICAL_INVESTIGATION",
+    "FOUNDATION_SELECTION_ENGINE",
+    "SPACE_PLANNING_SOLVER",
+    "STRUCTURAL_ANALYSIS_LAYER",
+    "CONSTRUCT_FOUNDATION_MESH"
+  ],
+  "diagnostics": {
+    "checkpoint": 8,
+    "checkpointName": "TASK 8 — Construct Substructure Footing & Slab Assembly",
+    "autorun": false,
+    "facilityCount": 17,
+    "agentCount": 69,
+    "programSpaceCount": 10,
+    "buildingComponentCount": 1,
+    "clashCount": 0,
+    "calculatedCostUSD": 0,
+    "calculatedDurationDays": 0,
+    "criticalPathDays": 135,
+    "worldStateHash": "bf4c375fcf880c719103736a56bcc2b710cc70628eb7128eca6be867837ba402",
+    "sceneSignature": "SCENE_SIGNATURE_TASK_CONSTRUCT_FOUNDATION_MESH",
+    "ownerAuthorizationStatus": "ACTIVE_IN_PROGRESS"
+  },
+  "lastTaskPriorityEvaluations": [
+    {
+      "taskId": "CONSTRUCT_FOUNDATION_MESH",
+      "dependencyReadinessRatio": 1,
+      "riskSeverity": 8,
+      "criticalPathImpactWeight": 15,
+      "blockedDownstreamCount": 1,
+      "inspectionFailureSeverity": 0,
+      "customerDecisionWeight": 0,
+      "compositePriorityScore": 63,
+      "selectionRationale": "Selected task CONSTRUCT_FOUNDATION_MESH (Score: 63): Unblocks 1 downstream tasks with Risk Severity 8/10."
+    }
+  ],
+  "jurisdictionTruth": {
+    "userProvidedAddress": "Tampa Bay, FL",
+    "geocodedJurisdiction": "City of Tampa / Hillsborough County Jurisdiction",
+    "codeEdition": "Florida Building Code 2023 (8th Edition)",
+    "windCriteriaMph": 160,
+    "floodData": {
+      "zone": "Zone AE (Base Flood Elevation +11.0 ft NAVD88)",
+      "baseFloodElevationFt": 11,
+      "riskLevel": "MODERATE"
+    },
+    "climateData": {
+      "ashraeZone": "Zone 2A - Hot Humid Coastal",
+      "humidityLevel": "HIGH"
+    },
+    "sourceEvidence": "FBC 2023 Wind Velocity Maps / FEMA Flood Insurance Rate Map FIRM Panel 12057C",
+    "status": "VERIFIED_SOURCE"
+  },
+  "equipmentEntities": [
+    {
+      "equipmentId": "EQUIP-TOTAL-STATION-01",
+      "name": "Leica TS16 Robotic Total Station & Carbon Tripod",
+      "equipmentType": "SURVEY_INSTRUMENT",
+      "homeDepotId": "FACILITY-SURVEY-DEPOT",
+      "worldPosition": [
+        20,
+        0.5,
+        30
+      ],
+      "dimensionsXYZ": [
+        0.6,
+        1.5,
+        0.6
+      ],
+      "operationalStatus": "STAGED_IN_DEPOT",
+      "modelName": "Leica TS16 I 1\" R1000",
+      "clearanceRadiusMeters": 2
+    },
+    {
+      "equipmentId": "EQUIP-SPT-DRILL-RIG-01",
+      "name": "CME-55 Mobile Geotechnical SPT Soil Drill Rig",
+      "equipmentType": "DRILL_RIG",
+      "homeDepotId": "FACILITY-GEOTECH-YARD",
+      "worldPosition": [
+        6.8,
+        0.1,
+        5.8
+      ],
+      "dimensionsXYZ": [
+        2.5,
+        3.2,
+        5
+      ],
+      "operationalStatus": "OPERATING_ON_SITE",
+      "modelName": "CME-55 High Torque Rotary Core Rig",
+      "clearanceRadiusMeters": 4.5,
+      "targetLocationXYZ": [
+        6,
+        0,
+        5
+      ],
+      "assignedAgentId": "AGENT-GEOTECH-001",
+      "assignedTaskId": "GEOTECHNICAL_INVESTIGATION"
+    },
+    {
+      "equipmentId": "EQUIP-ARCH-WORKSTATION-01",
+      "name": "Mobile Spatial Planning & Digitizing Workstation",
+      "equipmentType": "PLANNING_STATION",
+      "homeDepotId": "FACILITY-ARCH-DEPOT",
+      "worldPosition": [
+        0.30000000000000004,
+        0.1,
+        0.8
+      ],
+      "dimensionsXYZ": [
+        1.8,
+        1.2,
+        1
+      ],
+      "operationalStatus": "OPERATING_ON_SITE",
+      "modelName": "Hermes ArchDesk Ruggedized Field Studio",
+      "clearanceRadiusMeters": 1.5,
+      "targetLocationXYZ": [
+        -0.5,
+        0,
+        0
+      ],
+      "assignedAgentId": "AGENT-ARCH-001",
+      "assignedTaskId": "SPACE_PLANNING_SOLVER"
+    },
+    {
+      "equipmentId": "EQUIP-MINI-EXCAVATOR-01",
+      "name": "CAT 308 CR Mini Hydraulic Excavator",
+      "equipmentType": "EXCAVATOR",
+      "homeDepotId": "FACILITY-LAYDOWN-YARD",
+      "worldPosition": [
+        2,
+        0.3,
+        1.5
+      ],
+      "dimensionsXYZ": [
+        2.4,
+        2.7,
+        6.2
+      ],
+      "operationalStatus": "OPERATING_ON_SITE",
+      "modelName": "Caterpillar 308 CR with Tiltrotator",
+      "clearanceRadiusMeters": 5,
+      "targetLocationXYZ": [
+        -0.5,
+        0,
+        -1
+      ],
+      "assignedAgentId": "AGENT-STRUCT-001",
+      "assignedTaskId": "CONSTRUCT_FOUNDATION_MESH"
+    },
+    {
+      "equipmentId": "EQUIP-CONCRETE-PUMP-01",
+      "name": "Putzmeister 36-Meter Concrete Boom Pump Truck",
+      "equipmentType": "CONCRETE_PUMP",
+      "homeDepotId": "FACILITY-LAYDOWN-YARD",
+      "worldPosition": [
+        -3,
+        0.3,
+        -3.5
+      ],
+      "dimensionsXYZ": [
+        2.5,
+        3.8,
+        10.5
+      ],
+      "operationalStatus": "OPERATING_ON_SITE",
+      "modelName": "Putzmeister BSF 36-4.16 H",
+      "clearanceRadiusMeters": 6,
+      "targetLocationXYZ": [
+        -0.5,
+        0,
+        -1
+      ],
+      "assignedAgentId": "AGENT-STRUCT-001",
+      "assignedTaskId": "CONSTRUCT_FOUNDATION_MESH"
+    }
+  ],
+  "capabilityTruthMatrix": [
+    {
+      "id": "CAP-CANONICAL-SPATIAL",
+      "domain": "Spatial & Geometry",
+      "feature": "Single Source of Truth Spatial World State & Event Sourcing",
+      "status": "IMPLEMENTED",
+      "truthRationale": "All physical entities, facilities, equipment, and building elements exist in one shared 3D coordinate system with persistent state and hash validation.",
+      "verificationEvidence": "HermesLiveHouseEngine.computeHash and event stream in state.events"
+    },
+    {
+      "id": "CAP-AUTONOMOUS-TASK-PRIORITIZATION",
+      "domain": "Orchestration",
+      "feature": "Multi-Factor Autonomous Task Graph & Prioritization Engine",
+      "status": "IMPLEMENTED",
+      "truthRationale": "Task execution selects candidate tasks dynamically using dependency readiness, downstream unblocking count, risk severity, and customer gate weights.",
+      "verificationEvidence": "HermesLiveHouseEngine.executeNextTask scoring loop with PriorityEvaluation"
+    },
+    {
+      "id": "CAP-EMBODIED-EXECUTION",
+      "domain": "Embodied Agents",
+      "feature": "Embodied Agent Spatial Trajectories & On-Site Deployment",
+      "status": "IMPLEMENTED",
+      "truthRationale": "Agents have physical positions, move to task work locations during execution, and report operational status in event payloads.",
+      "verificationEvidence": "activeTaskDetails.workLocationXYZ updates agentSpatialStates and worldEvent.payload.embodiedExecution"
+    },
+    {
+      "id": "CAP-EQUIPMENT-FLEET",
+      "domain": "Machinery & Equipment",
+      "feature": "Physical Construction Equipment Lifecycle & Spatial Staging",
+      "status": "IMPLEMENTED",
+      "truthRationale": "Total stations, drill rigs, excavators, and concrete pumps are tracked with depot locations, clearance radii, and on-site operational states.",
+      "verificationEvidence": "equipmentEntities in state with active deployment to work location"
+    },
+    {
+      "id": "CAP-LOGISTICS-STAGING",
+      "domain": "Supply Chain",
+      "feature": "Material Batch Procurement, Laydown Staging & Installation Tracking",
+      "status": "IMPLEMENTED",
+      "truthRationale": "Rebar, concrete, tendons, and formwork are staged physically in the laydown yard with suppliers and quantity tracking before transition to installed components.",
+      "verificationEvidence": "materialsOnsite array with verificationStatus transition"
+    },
+    {
+      "id": "CAP-CLASH-REPAIR",
+      "domain": "BIM Quality",
+      "feature": "Real 3D Bounding-Box Clash Detection & Dynamic Auto-Repair Injection",
+      "status": "IMPLEMENTED",
+      "truthRationale": "Clash engine performs 3D bounding box intersection tests between disciplines and dynamically spawns high-priority repair tasks in the graph.",
+      "verificationEvidence": "HermesLiveHouseEngine.runClashDetectionEngine and REPAIR-CLASH-001"
+    },
+    {
+      "id": "CAP-STRUCTURAL-CALC",
+      "domain": "Engineering",
+      "feature": "Deterministic ASCE 7-22 / FBC 2023 Wind Load & Tributary Calculations",
+      "status": "SIMULATED",
+      "truthRationale": "Wind velocity pressures and tributary wall loads are calculated using code formulas for standard low-rise residential geometry; full 3D finite element analysis is simulated.",
+      "verificationEvidence": "structuralEngineering object in state with q_z and utilization ratio"
+    },
+    {
+      "id": "CAP-GEOTECH-SIM",
+      "domain": "Geotechnical",
+      "feature": "Soil Stratification & SPT Penetration Resistance Analysis",
+      "status": "SIMULATED",
+      "truthRationale": "Soil class and bearing capacities are derived from Florida geological regional profiles and fixture calibrations; continuous multi-layer soil borehole logs are simulated.",
+      "verificationEvidence": "geotechTruth object and SPT-BORING-001"
+    },
+    {
+      "id": "CAP-MATERIAL-PHYSICS",
+      "domain": "Physics",
+      "feature": "Concrete Hydration Curing, Thermal Transfer & Slump Physics",
+      "status": "SIMULATED",
+      "truthRationale": "Basic curing periods and strength progression are parameterized based on mix design; full thermodynamic hydration modeling is simulated.",
+      "verificationEvidence": "State parameters and schedule duration derivations"
+    },
+    {
+      "id": "CAP-ROBOTIC-HARDWARE",
+      "domain": "Robotics",
+      "feature": "ROS2 / Direct Actuator & Hydraulic Hardware Control",
+      "status": "PLANNED",
+      "truthRationale": "Hermes generates spatial waypoints and toolpath envelopes ready for robotic equipment teleoperation, but real hardware CAN bus drivers are planned.",
+      "verificationEvidence": "clearanceRadiusMeters and workLocationXYZ waypoint coordinates"
+    },
+    {
+      "id": "CAP-PE-STAMP",
+      "domain": "Regulatory",
+      "feature": "Licensed Professional Engineer Electronic Seal & Municipal AHJ Approval",
+      "status": "NOT_IMPLEMENTED",
+      "truthRationale": "Hermes performs deterministic automated checks against FBC 2023; legal PE seal of record requires independent licensed human professional review.",
+      "verificationEvidence": "inspectionTickets with AHJInspection: PENDING_CITY_INSPECTION"
+    }
+  ],
+  "activeTaskDetails": {
+    "taskId": "CONSTRUCT_FOUNDATION_MESH",
+    "title": "Construct Substructure Footing & Slab Assembly",
+    "assignedAgentId": "AGENT-STRUCT-001",
+    "workLocationXYZ": [
+      -0.5,
+      0,
+      -1
+    ],
+    "requiredEquipment": [
+      "EQUIP-MINI-EXCAVATOR-01",
+      "EQUIP-CONCRETE-PUMP-01"
+    ],
+    "requiredMaterials": [
+      "MAT-REBAR-LOT-01",
+      "MAT-PT-TENDONS-01",
+      "MAT-FORMWORK-LOT-01",
+      "MAT-CONCRETE-MIX-01"
+    ],
+    "phase": "CONSTRUCTION_SUBSTRUCTURE"
+  },
+  "geotechTruth": {
+    "dataOrigin": "VERIFIED_IMPORT",
+    "sampleId": "SPT-BORING-001",
+    "depthFt": 20,
+    "soilClass": "Medium Dense Fine Sand over Stiff Clay",
+    "bearingCapacityPsf": 2200,
+    "waterTableFt": 6,
+    "recommendation": "Post-Tensioned Monolithic Slab",
+    "evidenceNotes": "Standard Penetration Test N-values per ASTM D1586."
+  },
+  "foundationSelection": {
+    "selectedFoundation": "POST_TENSIONED_SLAB",
+    "candidatesEvaluated": [
+      {
+        "foundationType": "POST_TENSIONED_SLAB",
+        "bearingCapacityScore": 95,
+        "groundwaterScore": 90,
+        "slopeScore": 92,
+        "buildingLoadScore": 90,
+        "settlementRiskScore": 92,
+        "constructabilityScore": 90,
+        "costScore": 88,
+        "compositeScore": 91.9
+      },
+      {
+        "foundationType": "SLAB_ON_GRADE",
+        "bearingCapacityScore": 90,
+        "groundwaterScore": 85,
+        "slopeScore": 90,
+        "buildingLoadScore": 80,
+        "settlementRiskScore": 85,
+        "constructabilityScore": 95,
+        "costScore": 95,
+        "compositeScore": 87.8
+      },
+      {
+        "foundationType": "PILE_FOUNDATION",
+        "bearingCapacityScore": 98,
+        "groundwaterScore": 65,
+        "slopeScore": 85,
+        "buildingLoadScore": 98,
+        "settlementRiskScore": 98,
+        "constructabilityScore": 65,
+        "costScore": 55,
+        "compositeScore": 85
+      },
+      {
+        "foundationType": "STEM_WALL_FOUNDATION",
+        "bearingCapacityScore": 88,
+        "groundwaterScore": 80,
+        "slopeScore": 70,
+        "buildingLoadScore": 92,
+        "settlementRiskScore": 88,
+        "constructabilityScore": 82,
+        "costScore": 75,
+        "compositeScore": 82.3
+      },
+      {
+        "foundationType": "CRAWLSPACE",
+        "bearingCapacityScore": 75,
+        "groundwaterScore": 80,
+        "slopeScore": 80,
+        "buildingLoadScore": 75,
+        "settlementRiskScore": 75,
+        "constructabilityScore": 78,
+        "costScore": 70,
+        "compositeScore": 76.9
+      }
+    ],
+    "rationale": "Selected Post-Tensioned Slab (Score: 91.9). Optimal for flat site (0°) with adequate bearing (2200 PSF) and groundwater depth (6 ft).",
+    "structuralCapacityPsf": 2200,
+    "waterTableFt": 6,
+    "dataOrigin": "VERIFIED_ENGINEERING"
+  },
+  "spacePlanningCandidateLogs": [
+    {
+      "candidateId": "LAYOUT-VAR-01",
+      "layoutVariantName": "L-Shaped Public/Private Zoned Plan",
+      "adjacencyScore": 94,
+      "wetAreaClusteringScore": 92,
+      "privacyZoneScore": 96,
+      "daylightScore": 90,
+      "totalScore": 93,
+      "selected": true,
+      "description": "Clusters Kitchen, Primary Bath, Guest Bath, and Utility along east wet wall; separates Primary Bedroom suite from guest wing."
+    },
+    {
+      "candidateId": "LAYOUT-VAR-02",
+      "layoutVariantName": "Central Courtyard & Split Bedroom Plan",
+      "adjacencyScore": 88,
+      "wetAreaClusteringScore": 78,
+      "privacyZoneScore": 92,
+      "daylightScore": 95,
+      "totalScore": 88.2,
+      "selected": false,
+      "description": "Offers high daylight access but increases plumbing distribution lengths across opposite wings."
+    },
+    {
+      "candidateId": "LAYOUT-VAR-03",
+      "layoutVariantName": "Linear Compact Coastal Plan",
+      "adjacencyScore": 82,
+      "wetAreaClusteringScore": 85,
+      "privacyZoneScore": 80,
+      "daylightScore": 88,
+      "totalScore": 83.8,
+      "selected": false,
+      "description": "Simple footprint but places guest bedrooms directly adjacent to noisy living/great room area."
+    }
+  ],
+  "buildableEnvelope": {
+    "envelopeId": "ENVELOPE-V1",
+    "dimensionsXYZ": [
+      18,
+      9,
+      16
+    ],
+    "positionXYZ": [
+      0,
+      4.5,
+      0
+    ],
+    "calculatedFootprintSqFt": 2320
+  },
+  "structuralEngineering": {
+    "roofDeadLoadPsf": 15,
+    "roofLiveLoadPsf": 20,
+    "totalGravityLoadPsf": 35,
+    "wallTributaryLoadLbsPerFt": 2100,
+    "windVelocityPressureQz": 47.35,
+    "windUpliftDemandLbs": 1207,
+    "headerBeamDemandKips": 25.2,
+    "headerBeamCapacityKips": 14.5,
+    "anchorBoltCapacityLbs": 1850,
+    "foundationReactionPsf": 199,
+    "utilizationRatio": 0.65,
+    "calculationMethod": "ASCE 7-22 / FBC 2023 Deterministic Load Path Calculation",
+    "assumptions": [
+      "Kz = 0.85 (Exposure B)",
+      "Kd = 0.85 (Building directionality factor)",
+      "Anchor Bolts: 5/8\" ASTM A307 @ 48\" OC embedded 7\" in slab"
+    ],
+    "complianceTag": "STRUCTURAL_DETERMINISTIC_CHECK_PASSED"
+  }
+}

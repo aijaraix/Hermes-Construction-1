@@ -165,13 +165,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
   // Generic Canonical World State Reduction
   if (rawData) {
     // 1. Facilities / Spatial Entities (17 facilities)
-    (rawData.spatialEntities || []).forEach((fac: any) => {
+    (rawData.spatialEntities || []).forEach((fac: any, fIdx: number) => {
       const created = fac.createdCheckpoint ?? 0;
       if (eventIndex >= created) {
+        const facId = fac.entityId || fac.id || `FACILITY-${fIdx + 1}`;
         components.push({
-          id: fac.entityId || fac.id,
+          id: facId,
           name: fac.name || 'Site Facility',
-          ifcGuid: `GUID-${fac.entityId || fac.id}`,
+          ifcGuid: `GUID-${facId}`,
           ifcType: 'IfcSiteFacility',
           category: 'Site',
           storeyId: 'STOREY-GROUND',
@@ -180,7 +181,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: fac.positionXYZ || [0, 0, 0],
           orientationDegrees: 0,
           materialSpecIds: ['STEEL-CONTAINER'],
-          propertySets: [{ name: 'Pset_FacilityDetails', properties: { FacilityId: fac.entityId || fac.id, Capacity: fac.maxOccupancy || 8 } }],
+          propertySets: [{ name: 'Pset_FacilityDetails', properties: { FacilityId: facId, Capacity: fac.maxOccupancy || 8 } }],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -190,25 +191,29 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
 
     // 2. Workforce Agents (69 actors)
-    (rawData.agentSpatialStates || []).forEach((agent: any) => {
-      const created = agent.createdCheckpoint ?? 0;
+    (rawData.agentSpatialStates || []).forEach((agent: any, aIdx: number) => {
+      const created = agent.createdCheckpoint ?? agent.createdEventIndex ?? 0;
       if (eventIndex >= created) {
         const isCustomer = agent.agentId === 'CUSTOMER-001';
-        let pos = agent.worldPosition || [0, 0, 0];
-        if (isCustomer) {
-          pos = eventIndex < 1 ? [-35.0, 0.0, 25.0] : [-28.0, 0.0, 0.0];
-        } else if (agent.agentId === 'PROJECT-PRIME') {
-          pos = eventIndex < 1 ? [-55.0, 0.0, -15.0] : [-28.0, 0.0, 0.0];
-        } else if (agent.agentId === 'AGENT-SURVEY-001') {
-          pos = eventIndex < 3 ? [-40.0, 0.0, -15.0] : eventIndex === 3 ? [-27.5, 0.25, -15.0] : [15.0, 2.8, -15.0];
-        } else if (agent.agentId === 'AGENT-GEOTECH-001') {
-          pos = eventIndex < 4 ? [-40.0, 0.0, -15.0] : eventIndex === 4 ? [-17.5, 0.9, -5.0] : [5.0, 1.8, 5.0];
+        let pos = agent.worldPosition || agent.currentPositionXYZ || [0, 0, 0];
+        const isLegacyVal = rawData.projectId && typeof rawData.projectId === 'string' && rawData.projectId.startsWith('LIVE-WORLD-VISUAL-VALIDATION');
+        if (isLegacyVal) {
+          if (isCustomer) {
+            pos = eventIndex < 1 ? [-35.0, 0.0, 25.0] : [-28.0, 0.0, 0.0];
+          } else if (agent.agentId === 'PROJECT-PRIME') {
+            pos = eventIndex < 1 ? [-55.0, 0.0, -15.0] : [-28.0, 0.0, 0.0];
+          } else if (agent.agentId === 'AGENT-SURVEY-001') {
+            pos = eventIndex < 3 ? [-40.0, 0.0, -15.0] : eventIndex === 3 ? [-27.5, 0.25, -15.0] : [15.0, 2.8, -15.0];
+          } else if (agent.agentId === 'AGENT-GEOTECH-001') {
+            pos = eventIndex < 4 ? [-40.0, 0.0, -15.0] : eventIndex === 4 ? [-17.5, 0.9, -5.0] : [5.0, 1.8, 5.0];
+          }
         }
 
+        const agentId = isCustomer ? 'CUSTOMER-001' : (agent.agentId ? `AGENT-${agent.agentId}` : `AGENT-${aIdx + 1}`);
         components.push({
-          id: isCustomer ? 'CUSTOMER-001' : `AGENT-${agent.agentId}`,
-          name: isCustomer ? 'Project Customer / Owner (CUSTOMER-001)' : `${agent.role} (${agent.agentId})`,
-          ifcGuid: `GUID-${agent.agentId}`,
+          id: agentId,
+          name: isCustomer ? 'Project Customer / Owner (CUSTOMER-001)' : `${agent.role || 'Agent'} (${agent.agentId || agentId})`,
+          ifcGuid: `GUID-${agentId}`,
           ifcType: 'IfcActor',
           category: isCustomer ? 'Customer' : 'Workforce',
           storeyId: 'STOREY-GROUND',
@@ -217,7 +222,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: pos,
           orientationDegrees: 0,
           materialSpecIds: [isCustomer ? 'CUSTOMER-ACTOR' : 'WORKFORCE-AGENT'],
-          propertySets: [{ name: 'Pset_AgentDetails', properties: { AgentId: agent.agentId, Role: agent.role, Discipline: agent.discipline || 'Management', State: agent.currentState || 'ACTIVE' } }],
+          propertySets: [{ name: 'Pset_AgentDetails', properties: { AgentId: agent.agentId || agentId, Role: agent.role, Discipline: agent.discipline || 'Management', State: agent.currentState || 'ACTIVE' } }],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -249,13 +254,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     }
 
     // 4. Survey Marks & Geotech
-    (rawData.surveyMarks || []).forEach((sm: any) => {
+    (rawData.surveyMarks || []).forEach((sm: any, sIdx: number) => {
       const created = sm.createdCheckpoint ?? 3;
       if (eventIndex >= created) {
+        const markId = sm.markId || sm.id || `SURVEY-MARK-${sIdx + 1}`;
         components.push({
-          id: sm.markId || sm.id,
-          name: sm.name || `Survey Stake (${sm.markId})`,
-          ifcGuid: `GUID-${sm.markId || sm.id}`,
+          id: markId,
+          name: sm.name || `Survey Stake (${markId})`,
+          ifcGuid: `GUID-${markId}`,
           ifcType: 'IfcSurveyMark',
           category: 'Site',
           storeyId: 'STOREY-GROUND',
@@ -264,7 +270,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: sm.worldPosition || sm.coordinatesXYZ || [0, 0, 0],
           orientationDegrees: 0,
           materialSpecIds: ['WOODEN-CONTROL-STAKE'],
-          propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: sm.markId, Elevation: sm.measuredElevationMeters, Verification: 'RTK GPS Verified' } }],
+          propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: markId, Elevation: sm.measuredElevationMeters, Verification: 'RTK GPS Verified' } }],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -273,13 +279,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       }
     });
 
-    (rawData.boringSamples || []).forEach((bs: any) => {
+    (rawData.boringSamples || []).forEach((bs: any, bIdx: number) => {
       const created = bs.createdCheckpoint ?? 4;
       if (eventIndex >= created) {
+        const sampleId = bs.sampleId || bs.id || `SPT-00${bIdx + 1}`;
         components.push({
-          id: bs.sampleId || bs.id,
-          name: bs.name || 'Geotechnical Soil Boring Sample (SPT-001)',
-          ifcGuid: `GUID-${bs.sampleId || bs.id}`,
+          id: sampleId,
+          name: bs.name || `Geotechnical Soil Boring Sample (${sampleId})`,
+          ifcGuid: `GUID-${sampleId}`,
           ifcType: 'IfcGeotechTest',
           category: 'Geotechnical',
           storeyId: 'STOREY-GROUND',
@@ -302,10 +309,11 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       const env = rawData.buildableEnvelope;
       const created = env.createdCheckpoint ?? 5;
       if (eventIndex >= created) {
+        const envelopeId = env.envelopeId || env.id || 'ENVELOPE-V1';
         components.push({
-          id: env.envelopeId,
-          name: env.name,
-          ifcGuid: `GUID-${env.envelopeId}`,
+          id: envelopeId,
+          name: env.name || 'Buildable Envelope Boundary',
+          ifcGuid: `GUID-${envelopeId}`,
           ifcType: 'IfcBuildableEnvelope',
           category: 'Design',
           storeyId: 'STOREY-GROUND',
@@ -324,13 +332,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     }
 
     // 6. Program Volumes
-    (rawData.programVolumes || []).forEach((pv: any) => {
+    (rawData.programVolumes || []).forEach((pv: any, pvIdx: number) => {
       const created = pv.createdCheckpoint ?? 6;
       if (eventIndex >= created) {
+        const roomId = pv.roomId || pv.volumeId || pv.id || `ROOM-SPACE-${pvIdx + 1}`;
         components.push({
-          id: pv.volumeId || pv.id,
-          name: pv.name,
-          ifcGuid: `GUID-${pv.volumeId || pv.id}`,
+          id: roomId,
+          name: pv.name || `Room Space (${roomId})`,
+          ifcGuid: `GUID-${roomId}`,
           ifcType: 'IfcSpace',
           category: 'Architecture',
           storeyId: 'STOREY-GROUND',
@@ -339,7 +348,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: pv.positionXYZ || [0, 0, 0],
           orientationDegrees: 0,
           materialSpecIds: ['PROGRAM-SPACE-VOLUME'],
-          propertySets: [{ name: 'Pset_SpaceDetails', properties: { TargetAreaSqFt: pv.targetAreaSqFt, RoomType: pv.name } }],
+          propertySets: [{ name: 'Pset_SpaceDetails', properties: { TargetAreaSqFt: pv.targetAreaSqFt || pv.areaSqFt, RoomType: pv.name } }],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -348,23 +357,78 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       }
     });
 
-    // 7. Materials Onsite
-    (rawData.materialsOnsite || []).forEach((m: any) => {
-      const created = m.createdCheckpoint ?? 10;
+    // 7. Machinery & Construction Equipment
+    (rawData.equipmentEntities || []).forEach((eq: any, eqIdx: number) => {
+      const created = eq.createdCheckpoint ?? eq.createdEventIndex ?? 0;
       if (eventIndex >= created) {
+        const eqId = eq.equipmentId || eq.id || `EQUIP-${eqIdx + 1}`;
         components.push({
-          id: m.materialId || m.id,
-          name: m.materialType || m.name,
-          ifcGuid: `GUID-${m.materialId || m.id}`,
+          id: eqId,
+          name: `${eq.name || eq.equipmentName || 'Equipment'} [${eq.operationalStatus || eq.status || 'STAGED'}]`,
+          ifcGuid: `GUID-${eqId}`,
+          ifcType: 'IfcConstructionEquipment',
+          category: 'Equipment',
+          storeyId: 'STOREY-GROUND',
+          storeyName: 'Ground Level (0.00m Datum)',
+          dimensions: eq.dimensionsXYZ || (eq.equipmentType === 'EXCAVATOR' ? [3.2, 2.8, 4.5] : eq.equipmentType === 'DRILL_RIG' ? [2.5, 4.5, 3.5] : eq.equipmentType === 'CONCRETE_PUMP' ? [2.5, 3.8, 10.5] : [2.4, 2.2, 3.2]),
+          position: eq.worldPosition || eq.currentPositionXYZ || [15.0, 0.0, -15.0],
+          orientationDegrees: 0,
+          materialSpecIds: ['HEAVY-EQUIPMENT-STEEL'],
+          propertySets: [
+            {
+              name: 'Pset_EquipmentDetails',
+              properties: {
+                EquipmentId: eqId,
+                EquipmentType: eq.equipmentType || eq.type || 'HEAVY_MACHINERY',
+                ModelName: eq.modelName || 'Industrial Grade',
+                OperationalStatus: eq.operationalStatus || eq.status || 'STAGED_IN_DEPOT',
+                HomeDepot: eq.homeDepotId || 'FACILITY-OPS-CAMP',
+                ClearanceRadius: `${eq.clearanceRadiusMeters || 3.0}m`,
+                AssignedTask: eq.assignedTaskId || 'STANDBY_UNASSIGNED',
+                AssignedAgent: eq.assignedAgentId || 'NONE'
+              }
+            }
+          ],
+          connectedComponentIds: [],
+          openings: [],
+          inspectionStatus: 'PASSED',
+          provenance: { source: 'LOGISTICS_FLEET_REGISTRY', creator: 'HERMES_LIVE_WORLD', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        });
+      }
+    });
+
+    // 8. Materials Onsite & Laydown Staging
+    (rawData.materialsOnsite || []).forEach((m: any, mIdx: number) => {
+      const created = m.createdCheckpoint ?? m.createdEventIndex ?? 0;
+      if (eventIndex >= created) {
+        const matId = m.materialBatchId || m.materialId || m.id || `MAT-${mIdx + 1}`;
+        const isInstalled = m.currentLocation === 'INSTALLED_BUILDING' || m.stagingLocation === 'INSTALLED_BUILDING' || m.verificationStatus === 'INSTALLED';
+        components.push({
+          id: matId,
+          name: `${m.name || m.materialName || m.materialType || 'Material Batch'} [${m.currentLocation || m.stagingLocation || m.stage || 'STAGED'}]`,
+          ifcGuid: `GUID-${matId}`,
           ifcType: 'IfcElementAssembly',
           category: 'Structure',
           storeyId: 'STOREY-GROUND',
           storeyName: 'Ground Level (0.00m Datum)',
-          dimensions: [2.0, 1.5, 2.0],
-          position: m.currentPosition || [18.0, 0.0, -12.0],
+          dimensions: m.dimensionsXYZ || [2.0, 1.0, 1.5],
+          position: m.worldPosition || m.currentPositionXYZ || m.currentPosition || [20.0, 0.5, -12.0],
           orientationDegrees: 0,
-          materialSpecIds: ['DELIVERED-MATERIAL-SPEC'],
-          propertySets: [{ name: 'Pset_MaterialState', properties: { Stage: m.stage, WeightKg: m.weightKg } }],
+          materialSpecIds: [isInstalled ? 'INSTALLED-MATERIAL-SPEC' : 'DELIVERED-MATERIAL-SPEC'],
+          propertySets: [
+            {
+              name: 'Pset_MaterialState',
+              properties: {
+                BatchId: matId,
+                Category: m.category || 'STRUCTURAL',
+                Location: m.currentLocation || m.stagingLocation || m.stage || 'LAYDOWN_YARD',
+                Quantity: `${m.quantity} ${m.unit || 'units'}`,
+                Supplier: m.supplierName || 'Verified Regional Supplier',
+                Verification: m.verificationStatus || 'PURCHASED',
+                TargetComponent: m.targetComponentId || 'N/A'
+              }
+            }
+          ],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
@@ -373,13 +437,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       }
     });
 
-    // 8. Building Components (Structural & MEP)
-    (rawData.buildingComponents || []).forEach((comp: any) => {
+    // 9. Building Components (Structural & MEP)
+    (rawData.buildingComponents || []).forEach((comp: any, compIdx: number) => {
       const created = comp.createdCheckpoint ?? 12;
       if (eventIndex >= created) {
+        const compId = comp.componentId || comp.id || `COMP-${compIdx + 1}`;
         let pos = comp.positionXYZ || comp.position;
         let status = comp.inspectionStatus || 'PASSED';
-        if (comp.componentId === 'COMP-PLUMB-MAIN') {
+        if (compId === 'COMP-PLUMB-MAIN') {
           if (eventIndex === 19) {
             pos = [-7.5, 0.3, 0.0];
             status = 'FAILED_CLASH_DETECTED';
@@ -390,15 +455,15 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
         }
 
         components.push({
-          id: comp.componentId || comp.id,
-          ifcGuid: `GUID-${comp.componentId || comp.id}`,
+          id: compId,
+          ifcGuid: `GUID-${compId}`,
           ifcType: comp.ifcType || (comp.category === 'Foundation' ? 'IfcSlab' : comp.category === 'Roofing' ? 'IfcRoof' : comp.discipline === 'Plumbing' ? 'IfcFlowSegment' : comp.discipline === 'Electrical' ? 'IfcElectricDistributionBoard' : comp.discipline === 'HVAC' ? 'IfcUnitaryEquipment' : 'IfcWall'),
-          name: comp.name,
-          category: comp.category,
+          name: comp.name || `Component (${compId})`,
+          category: comp.category || 'Structure',
           storeyId: 'STOREY-GROUND',
           storeyName: 'Ground Level (0.00m Datum)',
-          position: pos,
-          dimensions: comp.dimensionsXYZ || comp.dimensions,
+          position: pos || [0, 0, 0],
+          dimensions: comp.dimensionsXYZ || comp.dimensions || [1, 1, 1],
           orientationDegrees: 0,
           materialSpecIds: [comp.material || 'GENERIC-SPEC'],
           propertySets: [{ name: 'Pset_ComponentDetails', properties: { Discipline: comp.discipline, InstallationPhase: comp.installationPhase } }],
@@ -793,13 +858,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
     });
   } else if (!isVal005 && !isVal006) {
     const programVolumes = rawData.programVolumes || [];
-    programVolumes.forEach((pv: any) => {
-      const pvIdx = isVal004 ? getEntityEventIdx(pv, 27) : (isVal003 ? 18 : 5);
-      if (eventIndex >= pvIdx) {
+    programVolumes.forEach((pv: any, pvIdx: number) => {
+      const pvIdxEvent = isVal004 ? getEntityEventIdx(pv, 27) : (isVal003 ? 18 : 5);
+      if (eventIndex >= pvIdxEvent) {
+        const pId = pv.roomId || pv.volumeId || pv.id || `ROOM-SPACE-${pvIdx + 1}`;
         components.push({
-          id: pv.id,
-          name: pv.name,
-          ifcGuid: `GUID-${pv.id}`,
+          id: pId,
+          name: pv.name || `Room Space (${pId})`,
+          ifcGuid: `GUID-${pId}`,
           ifcType: 'IfcSpace',
           category: 'Architecture',
           storeyId: 'STOREY-GROUND',
@@ -1740,8 +1806,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       if (hiddenCompIds.has(comp.id) && !forceAllVisible) return;
       if (isolatedCompId && comp.id !== isolatedCompId && !forceAllVisible) return;
 
-      // Category filter
-      if (!activeCategories[comp.category] && !forceAllVisible) return;
+      // Category filter (only skip if explicitly set to false)
+      if (activeCategories[comp.category] === false && !forceAllVisible) return;
 
       // Storey filter
       const isCurrentStorey = selectedStoreyId === 'ALL' || comp.storeyId === selectedStoreyId;
@@ -1806,7 +1872,93 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         return;
       }
 
-      if (comp.ifcType === 'IfcSurveyMark' || comp.id.startsWith('SURVEY-MARK-')) {
+      if (comp.ifcType === 'IfcConstructionEquipment' || comp.category === 'Equipment' || (comp.id && comp.id.startsWith('EQUIP-'))) {
+        // HEAVY CONSTRUCTION EQUIPMENT MESH
+        const group = new THREE.Group();
+
+        // 1. Undercarriage / Tracks Base (dark steel)
+        const baseGeom = new THREE.BoxGeometry(w * 0.95, h * 0.35, d * 0.95);
+        baseGeom.translate(0, (h * 0.35) / 2, 0);
+        const baseMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : 0x1e293b,
+          roughness: 0.8,
+          metalness: 0.5,
+        });
+        const baseMesh = new THREE.Mesh(baseGeom, baseMat);
+        group.add(baseMesh);
+
+        // 2. Cab / Machine Body (industrial equipment amber/yellow)
+        const cabGeom = new THREE.BoxGeometry(w * 0.75, h * 0.65, d * 0.75);
+        cabGeom.translate(0, h * 0.35 + (h * 0.65) / 2, 0);
+        const cabMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : 0xd97706,
+          roughness: 0.4,
+          metalness: 0.3,
+        });
+        const cabMesh = new THREE.Mesh(cabGeom, cabMat);
+        group.add(cabMesh);
+
+        // 3. Edges outline
+        const edges = new THREE.EdgesGeometry(cabGeom);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xfbbf24, linewidth: 2 });
+        cabMesh.add(new THREE.LineSegments(edges, lineMat));
+
+        group.position.set(px, py, pz);
+        group.userData = { compId: comp.id };
+
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(group);
+        }
+        meshesMapRef.current.set(comp.id, cabMesh);
+        return;
+      }
+
+      if (comp.id && comp.id.startsWith('MAT-')) {
+        // MATERIAL STAGING PALLET & CARGO BUNDLE
+        const group = new THREE.Group();
+
+        // Wood pallet base
+        const palletGeom = new THREE.BoxGeometry(w, 0.15, d);
+        palletGeom.translate(0, 0.075, 0);
+        const palletMat = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.8 });
+        const palletMesh = new THREE.Mesh(palletGeom, palletMat);
+        group.add(palletMesh);
+
+        // Staged material bundle
+        const isInstalled = Boolean(comp.name && (comp.name.includes('[INSTALLED') || comp.name.includes('[INSTALLED_BUILDING]')));
+        const bundleHeight = Math.max(0.3, h - 0.15);
+        const bundleGeom = new THREE.BoxGeometry(w * 0.9, bundleHeight, d * 0.9);
+        bundleGeom.translate(0, 0.15 + bundleHeight / 2, 0);
+
+        let matColor = 0x334155; // Rebar dark steel
+        const cName = (comp.name || '').toLowerCase();
+        if (cName.includes('concrete') || cName.includes('formwork')) matColor = 0xb45309;
+        else if (cName.includes('tendon')) matColor = 0x0284c7;
+
+        const bundleMat = new THREE.MeshStandardMaterial({
+          color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : matColor,
+          roughness: 0.5,
+          transparent: isInstalled,
+          opacity: isInstalled ? 0.45 : 1.0,
+        });
+        const bundleMesh = new THREE.Mesh(bundleGeom, bundleMat);
+        group.add(bundleMesh);
+
+        const edges = new THREE.EdgesGeometry(bundleGeom);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x94a3b8, linewidth: 1 });
+        bundleMesh.add(new THREE.LineSegments(edges, lineMat));
+
+        group.position.set(px, py, pz);
+        group.userData = { compId: comp.id };
+
+        if (ifcGroupRef.current) {
+          ifcGroupRef.current.add(group);
+        }
+        meshesMapRef.current.set(comp.id, bundleMesh);
+        return;
+      }
+
+      if (comp.ifcType === 'IfcSurveyMark' || (comp.id && (comp.id.startsWith('SURVEY-MARK-') || comp.id.startsWith('SURVEY-STAKE-')))) {
         // SURVEY STAKE: High-vis cylinder stake + bright yellow flag
         const group = new THREE.Group();
 
@@ -1835,7 +1987,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         return;
       }
 
-      if (comp.ifcType === 'IfcSpace' || comp.id.startsWith('PROG-VOL-')) {
+      if (comp.ifcType === 'IfcSpace' || (comp.id && (comp.id.startsWith('PROG-VOL-') || comp.id.startsWith('ROOM-')))) {
         // 3D PROGRAM VOLUME ROOM BLOCK
         const boxGeom = new THREE.BoxGeometry(w, h, d);
         boxGeom.translate(px, py + h / 2, pz);
@@ -1851,16 +2003,16 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         const edges = new THREE.EdgesGeometry(boxGeom);
         const lineMat = new THREE.LineBasicMaterial({ color: 0xc084fc, linewidth: 2 });
         mesh.add(new THREE.LineSegments(edges, lineMat));
-      } else if (comp.id.startsWith('FACILITY-')) {
+      } else if (comp.id && comp.id.startsWith('FACILITY-')) {
         // TEMPORARY SITE FACILITY CONTAINER
         const facGeom = new THREE.BoxGeometry(w, h, d);
         facGeom.translate(px, py + h / 2, pz);
 
         let facColor = 0x1e3a8a; // Navy trailer
-        if (comp.id.includes('LEARNING')) facColor = 0x0e7490;
-        else if (comp.id.includes('WORKFORCE')) facColor = 0x334155;
-        else if (comp.id.includes('LAYDOWN')) facColor = 0x92400e;
-        else if (comp.id.includes('RECEIVING')) facColor = 0x15803d;
+        if (comp.id?.includes('LEARNING')) facColor = 0x0e7490;
+        else if (comp.id?.includes('WORKFORCE')) facColor = 0x334155;
+        else if (comp.id?.includes('LAYDOWN')) facColor = 0x92400e;
+        else if (comp.id?.includes('RECEIVING')) facColor = 0x15803d;
 
         const facMat = new THREE.MeshStandardMaterial({
           color: isSelected ? 0x0284c7 : isHovered ? 0xf59e0b : facColor,
@@ -2116,12 +2268,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                   <span className="text-[10px] text-slate-500 font-mono shrink-0">{(projectData?.components || []).length} Items</span>
                 </div>
 
-                {activeProjectId.startsWith('LIVE-WORLD-VISUAL-VALIDATION-') || (projectData?.components && projectData.components.length > 0) ? (
+                {(activeProjectId && activeProjectId.startsWith('LIVE-WORLD-VISUAL-VALIDATION-')) || (projectData?.components && projectData.components.length > 0) ? (
                   /* STRUCTURED LIVE WORLD & MODEL TREE */
                   <div className="space-y-2 text-xs">
                     {/* 1. OPERATIONS CAMPUS FACILITIES */}
                     {(() => {
-                      const campusComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSiteFacility' || c.id.startsWith('FACILITY-'));
+                      const campusComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSiteFacility' || (c.id && c.id.startsWith('FACILITY-')));
                       const isExpanded = expandedNodes['campus-facilities'] ?? true;
                       return (
                         <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
@@ -2249,7 +2401,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
                     {/* 5. SURVEY & GEOTECH EQUIPMENT */}
                     {(() => {
-                      const equipComps = (projectData?.components || []).filter((c) => c.category === 'Equipment' || c.id.startsWith('EQUIP-'));
+                      const equipComps = (projectData?.components || []).filter((c) => c.category === 'Equipment' || (c.id && c.id.startsWith('EQUIP-')));
                       if (equipComps.length === 0) return null;
                       const isExpanded = expandedNodes['equipment'] ?? true;
                       return (
@@ -2289,7 +2441,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
                     {/* 6. SURVEY CONTROL STAKES */}
                     {(() => {
-                      const stakeComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSurveyMark' || c.id.startsWith('SURVEY-STAKE-'));
+                      const stakeComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSurveyMark' || (c.id && (c.id.startsWith('SURVEY-STAKE-') || c.id.startsWith('SURVEY-MARK-'))));
                       if (stakeComps.length === 0) return null;
                       const isExpanded = expandedNodes['survey-stakes'] ?? true;
                       return (
@@ -2354,7 +2506,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
                     {/* 8. BUILDABLE ENVELOPE OVERLAY */}
                     {(() => {
-                      const envelopeComp = (projectData?.components || []).find((c) => c.id === 'ENVELOPE-V5-001' || c.ifcType === 'IfcBuildableEnvelope');
+                      const envelopeComp = (projectData?.components || []).find((c) => c.id === 'ENVELOPE-V5-001' || c.id === 'ENVELOPE-V1' || c.ifcType === 'IfcBuildableEnvelope');
                       if (!envelopeComp) return null;
                       return (
                         <div className="border border-sky-200 rounded-xl overflow-hidden bg-sky-50/50">
@@ -2377,34 +2529,128 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                       );
                     })()}
 
-                    {/* 9. MATERIALS ONSITE (0 Items at Checkpoint 2) */}
+                    {/* 8b. PROGRAM SPATIAL VOLUMES */}
                     {(() => {
-                      const matComps = (projectData?.components || []).filter((c) => c.id.startsWith('MAT-'));
+                      const spaceComps = (projectData?.components || []).filter((c) => c.ifcType === 'IfcSpace' || (c.id && (c.id.startsWith('ROOM-') || c.id.startsWith('PROG-VOL-'))));
+                      if (spaceComps.length === 0) return null;
+                      const isExpanded = expandedNodes['program-spaces'] ?? true;
                       return (
-                        <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 opacity-70">
-                          <div className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-600 flex items-center justify-between text-xs">
+                        <div className="border border-purple-200 rounded-xl overflow-hidden bg-purple-50/50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'program-spaces': !p['program-spaces'] }))}
+                            className="w-full px-3 py-2 bg-purple-100/80 font-bold text-purple-900 flex items-center justify-between text-xs hover:bg-purple-200/80"
+                          >
                             <span className="flex items-center gap-1.5 truncate">
-                              <Package className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                              Materials Onsite ({matComps.length} Items)
+                              <Box className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                              Program Spatial Layout ({spaceComps.length} Rooms)
                             </span>
-                            <span className="text-[9px] font-mono text-slate-400">CHECKPOINT 2 = 0</span>
-                          </div>
+                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-purple-600 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-purple-600 shrink-0" />}
+                          </button>
+                          {isExpanded && (
+                            <div className="p-2 space-y-1">
+                              {spaceComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-purple-600 text-white font-bold' : 'hover:bg-purple-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       );
                     })()}
 
-                    {/* 10. APPROVED BUILDING BIM COMPONENTS (0 Components at Checkpoint 2) */}
+                    {/* 9. MATERIALS ONSITE */}
                     {(() => {
-                      const bimComps = (projectData?.components || []).filter((c) => ['IfcWall', 'IfcSlab', 'IfcDoor', 'IfcWindow', 'IfcRoof'].includes(c.ifcType));
+                      const matComps = (projectData?.components || []).filter((c) => c.id && c.id.startsWith('MAT-'));
+                      const isExpanded = expandedNodes['materials-onsite'] ?? false;
                       return (
-                        <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 opacity-70">
-                          <div className="w-full px-3 py-2 bg-slate-100 font-bold text-slate-600 flex items-center justify-between text-xs">
+                        <div className="border border-amber-200 rounded-xl overflow-hidden bg-amber-50/50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'materials-onsite': !p['materials-onsite'] }))}
+                            className="w-full px-3 py-2 bg-amber-100/80 font-bold text-amber-900 flex items-center justify-between text-xs hover:bg-amber-200/80"
+                          >
                             <span className="flex items-center gap-1.5 truncate">
-                              <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                              Approved Building BIM ({bimComps.length} Components)
+                              <Package className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                              Materials Staging & Onsite ({matComps.length})
                             </span>
-                            <span className="text-[9px] font-mono text-slate-400">CHECKPOINT 2 = 0</span>
-                          </div>
+                            {matComps.length > 0 ? (
+                              isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-amber-600 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                            ) : (
+                              <span className="text-[9px] font-mono opacity-75 shrink-0">EMPTY</span>
+                            )}
+                          </button>
+                          {isExpanded && matComps.length > 0 && (
+                            <div className="p-2 space-y-1">
+                              {matComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-amber-600 text-white font-bold' : 'hover:bg-amber-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    {/* 10. APPROVED BUILDING BIM COMPONENTS */}
+                    {(() => {
+                      const bimComps = (projectData?.components || []).filter((c) => ['IfcWall', 'IfcSlab', 'IfcDoor', 'IfcWindow', 'IfcRoof', 'IfcColumn', 'IfcBeam', 'IfcFooting'].includes(c.ifcType) || (c.id && c.id.startsWith('COMP-')));
+                      const isExpanded = expandedNodes['building-bim'] ?? false;
+                      return (
+                        <div className="border border-blue-200 rounded-xl overflow-hidden bg-blue-50/50">
+                          <button
+                            onClick={() => setExpandedNodes((p) => ({ ...p, 'building-bim': !p['building-bim'] }))}
+                            className="w-full px-3 py-2 bg-blue-100/80 font-bold text-blue-900 flex items-center justify-between text-xs hover:bg-blue-200/80"
+                          >
+                            <span className="flex items-center gap-1.5 truncate">
+                              <Layers className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                              Approved Building BIM ({bimComps.length})
+                            </span>
+                            {bimComps.length > 0 ? (
+                              isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-blue-600 shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                            ) : (
+                              <span className="text-[9px] font-mono opacity-75 shrink-0">PENDING</span>
+                            )}
+                          </button>
+                          {isExpanded && bimComps.length > 0 && (
+                            <div className="p-2 space-y-1">
+                              {bimComps.map((comp) => (
+                                <button
+                                  key={comp.id}
+                                  onClick={() => {
+                                    setSelectedCompId(comp.id);
+                                    setRightInspectorOpen(true);
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center justify-between ${
+                                    selectedCompId === comp.id ? 'bg-blue-600 text-white font-bold' : 'hover:bg-blue-200/60 text-slate-700'
+                                  }`}
+                                >
+                                  <span className="truncate">{comp.name}</span>
+                                  <span className="text-[9px] font-mono opacity-75 shrink-0 ml-1">{comp.id}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       );
                     })()}
@@ -3053,6 +3299,27 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {/* DYNAMIC IFC PROPERTY SETS */}
+                {(selectedComponent.propertySets || []).length > 0 && (
+                  <div className="space-y-2">
+                    {selectedComponent.propertySets.map((pset: any, pIdx: number) => (
+                      <div key={pIdx} className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                        <span className="text-[10px] uppercase font-bold text-slate-500 block font-mono">
+                          {pset.name}
+                        </span>
+                        <div className="space-y-1 text-[11px] font-mono">
+                          {Object.entries(pset.properties || {}).map(([k, v]) => (
+                            <div key={k} className="flex justify-between items-start gap-2 border-b border-slate-100 pb-1">
+                              <span className="text-slate-500">{k}:</span>
+                              <span className="font-bold text-slate-800 text-right truncate max-w-[180px]">{String(v)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* CAUSAL ENTITY PROVENANCE (WHY DOES THIS EXIST?) */}
                 <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 space-y-2">

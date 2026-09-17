@@ -247,13 +247,21 @@ export interface BOMItem {
   procurementQuantity: number;
   sourceComponentIds: string[];
   unitPrice: number;
-  priceSource: PriceSourceType;
+  priceSource: PriceSourceType | string;
   priceDate: string;
   supplierName: string;
   supplierDistanceMiles: number;
   leadTimeWeeks: number;
   estimatedTotalCost: number;
   confidence: number; // 0-100%
+  // Optional Deepened Truth Fields
+  quantitySource?: string;
+  quantityModeled?: number;
+  wasteFactorPct?: number;
+  quantityProcurement?: number;
+  unitPriceUSD?: number;
+  supplier?: string;
+  linked3DComponents?: string[];
 }
 
 export interface SupplierSource {
@@ -3812,6 +3820,98 @@ export interface PrehouseSpatialProofReport {
   academyHouse0002Created: 'NO';
   academyHouse0002Started: 'NO';
 }
+
+export interface EquipmentEntity {
+  equipmentId: string;
+  name: string;
+  equipmentType: 'SURVEY_INSTRUMENT' | 'DRILL_RIG' | 'EXCAVATOR' | 'CONCRETE_PUMP' | 'CRANE' | 'PLANNING_STATION' | 'TRANSPORT_VEHICLE';
+  homeDepotId: string;
+  worldPosition: [number, number, number];
+  dimensionsXYZ: [number, number, number];
+  operationalStatus: 'STAGED_IN_DEPOT' | 'EN_ROUTE' | 'OPERATING_ON_SITE' | 'COMPLETED' | 'STANDBY';
+  assignedAgentId?: string;
+  assignedTaskId?: string;
+  targetLocationXYZ?: [number, number, number];
+  modelName: string;
+  clearanceRadiusMeters: number;
+}
+
+export interface MaterialStagingEntity {
+  materialBatchId: string;
+  name: string;
+  category: 'REBAR' | 'FORMWORK' | 'CONCRETE' | 'LUMBER' | 'PLUMBING' | 'ELECTRICAL' | 'ROOFING';
+  quantity: number;
+  unit: string;
+  currentLocation: 'OFFSITE_SUPPLIER' | 'TRANSIT_TRUCK' | 'LAYDOWN_YARD' | 'INSTALLED_BUILDING';
+  worldPosition: [number, number, number];
+  dimensionsXYZ: [number, number, number];
+  targetComponentId?: string;
+  supplierName: string;
+  verificationStatus: 'ESTIMATED' | 'PURCHASED' | 'DELIVERED_VERIFIED' | 'INSTALLED';
+}
+
+export interface CapabilityTruthItem {
+  id: string;
+  domain: string;
+  feature: string;
+  status: 'IMPLEMENTED' | 'PARTIAL' | 'SIMULATED' | 'PLANNED' | 'NOT_IMPLEMENTED';
+  truthRationale: string;
+  verificationEvidence: string;
+}
+
+export interface HermesWorldState {
+  projectId: string;
+  projectName: string;
+  attemptId: string;
+  currentCheckpoint: number;
+  currentStepIndex: number;
+  currentPhase: string;
+  currentTask: string;
+  activeAgents: string[];
+  nextTask: string;
+  overallCompletionPct: number;
+  status: string;
+  mode: string;
+  projectParams: any;
+  jurisdictionTruth?: any;
+  geotechTruth?: any;
+  foundationSelection?: any;
+  structuralEngineering?: any;
+  spacePlanningCandidateLogs?: any[];
+  costScopeBreakdown?: any;
+  spatialEntities?: any[];
+  agentSpatialStates?: any[];
+  equipmentEntities?: EquipmentEntity[];
+  surveyMarks?: any[];
+  boringSamples?: any[];
+  buildableEnvelope?: any;
+  requirementRecords?: any[];
+  programVolumes?: any[];
+  buildingComponents?: any[];
+  materialsOnsite?: any[];
+  clashes?: any[];
+  bomItems?: any[];
+  scheduleActivities?: any[];
+  inspectionTickets?: any[];
+  events?: any[];
+  eventSequence?: number;
+  completedTasks?: string[];
+  dynamicTaskIds?: string[];
+  lastTaskPriorityEvaluations?: any[];
+  capabilityTruthMatrix?: CapabilityTruthItem[];
+  activeTaskDetails?: {
+    taskId: string;
+    title: string;
+    assignedAgentId: string;
+    workLocationXYZ: [number, number, number];
+    requiredEquipment: string[];
+    requiredMaterials: string[];
+    phase: string;
+  };
+  pendingQuestion?: any;
+  diagnostics?: any;
+}
+
 
 
 

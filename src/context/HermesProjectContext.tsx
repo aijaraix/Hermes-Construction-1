@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { HermesWorldState as BaseHermesWorldState } from '../types/hermes';
 
 export interface LiveProjectMeta {
   id: string;
@@ -13,35 +14,10 @@ export interface LiveProjectMeta {
   isRegressionFixture?: boolean;
 }
 
-export interface HermesWorldState {
-  projectId: string;
-  projectName: string;
-  currentCheckpoint: number;
-  currentStepIndex?: number;
-  revision: number;
-  status: string;
-  overallCompletionPct?: number;
-  currentTask?: string;
+export type HermesWorldState = BaseHermesWorldState & {
+  revision?: number;
   eventStream?: any[];
-  diagnostics?: {
-    checkpointName?: string;
-    entityCount?: number;
-    agentCount?: number;
-    issueCount?: number;
-    clashCount?: number;
-  };
-  spatialEntities?: any[];
-  agentSpatialStates?: any[];
-  requirementRecords?: any[];
-  surveyMarks?: any[];
-  boringSamples?: any[];
-  buildableEnvelope?: any;
-  programVolumes?: any[];
-  materialsOnsite?: any[];
-  buildingComponents?: any[];
-  clashes?: any[];
-  events?: any[];
-}
+};
 
 export type ConnectionStatus = 'CONNECTED' | 'SYNCING' | 'ERROR';
 export type PlaybackState = 'PAUSED' | 'PLAYING';
