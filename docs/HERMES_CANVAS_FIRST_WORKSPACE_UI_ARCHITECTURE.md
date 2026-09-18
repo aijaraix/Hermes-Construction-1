@@ -1,165 +1,238 @@
-# HERMES CANVAS-FIRST WORKSPACE UI ARCHITECTURE
+# HERMES IMMERSIVE WORKSPACE PRODUCT ARCHITECTURE
 
-**Status:** Owner-directed visual architecture  
+**Status:** Owner-directed product architecture  
 **Basis:** Physical browser review of Academy House 001 on Railway, September 18, 2026  
-**Purpose:** Remove dashboard-style noise and make the 3D construction world the primary product surface.
+**Purpose:** Define HERMES as an immersive, full-screen construction operating application where every tool, inspector, material view, project control, replay surface, and system function exists inside the working world.
 
-## 1. Owner direction
+## 1. Core product definition
 
-The current Academy House workspace is visually overloaded.
+The construction workspace is not a dashboard containing a 3D viewport.
 
-The problem is not primarily color or styling. The problem is **information architecture**.
+It is the application.
 
-Too many controls, status cards, phase controls, audit controls, workforce controls, inspector panes, and playback surfaces compete with the 3D world.
+When an operator enters a project, the project world should consume the entire usable application window.
 
-HERMES should feel closer to a professional CAD/BIM/construction application than an admin dashboard.
+The correct mental model is closer to a desktop CAD/BIM application than a website:
 
-Core principle:
+> **THE PROJECT WORLD IS THE APPLICATION SHELL.**
 
-> **THE WORLD IS THE PRODUCT. UI EXISTS TO INSPECT, COMMAND, FILTER, AND REPLAY THE WORLD.**
+There should be no separate persistent outer dashboard chrome competing with the world.
 
-The 3D canvas should dominate the viewport.
+Every project tool should exist inside that space as:
 
-## 2. Current physical findings
+- floating tools;
+- dockable panels;
+- contextual inspectors;
+- drawers;
+- command palettes;
+- in-world overlays;
+- timelines;
+- project/entity browsers;
+- temporary modal workspaces.
 
-Physical browser review showed:
+The operator must always be able to return to an unobstructed edge-to-edge world.
 
-- two stacked top-navigation/control rows;
-- persistent project/status/heartbeat labels;
-- architectural/construction/X-ray/section controls outside the world;
-- audit/truth/workforce/prime controls outside the world;
-- a large central checkpoint/task strip overlapping the world;
-- persistent left model/workforce tree;
-- persistent right autonomy/status inspector;
-- a bottom playback/timeline shelf consuming additional height;
-- engineering/status overlays floating over the canvas;
-- duplicated information between header, world overlays, side panels, and bottom playback.
+## 2. Two distinct product experiences
 
-Even after manually closing both side panels, the top and bottom chrome still materially reduces the visible world area.
+HERMES needs two separate viewing paradigms.
 
-This is a **BLOCKER** for the intended professional construction/BIM experience.
+### A. Construction / Operations Workspace
 
-## 3. Target workspace
+Primary audience:
 
-Use a canvas-first layout:
+- owner/operator;
+- builder;
+- architect;
+- engineer;
+- construction manager;
+- inspector;
+- internal HERMES operator;
+- future robotics/site-computer operators.
 
-```
-+--------------------------------------------------------------------------------+
-| MINIMAL APP BAR                                                               |
-| Project | Command/Search | World Mode | Health | User                         |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|                       FULL 3D CONSTRUCTION CANVAS                              |
-|                                                                                |
-|  [Floating tool palette]                         [Context / selection HUD]      |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|                                                                    [View Cube] |
-|                                                                                |
-| [Collapsible timeline / playback scrubber]                                     |
-+--------------------------------------------------------------------------------+
-```
+Purpose:
 
-Persistent sidebars are not the default.
+- inspect what HERMES designed;
+- inspect what HERMES built;
+- watch construction happen;
+- replay construction;
+- examine materials;
+- validate systems;
+- inspect provenance;
+- review clashes;
+- examine task sequencing;
+- see actors/equipment/logistics;
+- view spatial reasoning;
+- inspect cost/schedule/material state;
+- understand why decisions were made.
 
-## 4. What remains outside the world
+This is the primary system being designed now.
 
-Only a very small set of global controls may live in the persistent top application bar:
+### B. Customer / Presentation Experience
 
-- HERMES identity/logo;
-- active project selector;
-- command/search entry;
-- current world mode;
-- compact health indicator;
-- user/account/environment access.
+Separate mode for:
 
-Target persistent bar height: approximately 48–56 px.
+- customers;
+- investors;
+- partners;
+- presentations;
+- guided walkthroughs;
+- design reviews.
 
-No second permanent header row.
+This experience may prioritize:
 
-## 5. What moves into the canvas
+- clean architectural presentation;
+- narrative;
+- guided comparisons;
+- approvals;
+- options;
+- before/after;
+- selected engineering explanations.
 
-The following controls should become compact floating canvas tools:
+Do **not** force customer/presentation UI requirements into the construction workspace.
 
-### View / display tools
-- Architectural;
-- Construction;
-- X-Ray;
-- Section / Cutaway;
-- Walkthrough;
-- Fit View;
-- Orbit/Pan/Select.
+The customer experience can be designed later.
 
-Prefer icon/tool-group behavior similar to CAD/BIM applications.
+## 3. Owner interaction model
 
-### Construction-time controls
-- Play/pause;
-- checkpoint step;
-- scrubber;
-- playback speed.
+The owner/operator is not manually drafting every wall.
 
-Timeline remains collapsed to a thin bottom strip by default and expands only when requested.
+HERMES is doing the building/planning work.
 
-### World status HUD
-A small, translucent status chip may show:
+Therefore the human workspace should optimize for:
 
-- checkpoint;
-- phase;
-- current task;
-- completion %.
+- observation;
+- inspection;
+- validation;
+- intervention;
+- comparison;
+- command;
+- replay;
+- evidence.
 
-Do not use a large banner across the center of the world.
+The human should be able to ask:
 
-## 6. Left rail
+- What did HERMES build?
+- Why?
+- What material is this?
+- Who/what installed it?
+- What task created it?
+- What source/rule justified it?
+- What is hidden behind this wall?
+- What is scheduled next?
+- What failed?
+- What changed?
+- What did this cost?
+- Where did the material come from?
+- Could this have been sequenced differently?
+- What does the site look like at another checkpoint?
 
-Default state:
+The workspace must make those questions easy to answer.
 
-**collapsed icon rail only.**
+## 4. Default application state
 
-Possible icons:
+When entering a project:
+
+- the 3D construction world fills the application edge-to-edge;
+- no persistent left sidebar is open;
+- no persistent right sidebar is open;
+- no second header exists;
+- no tall bottom shelf is open;
+- no large task card covers the center;
+- no audit/status dashboard competes with the model.
+
+Only minimal floating application controls are visible.
+
+Target:
+
+**approximately 95%+ of the usable application window should remain visually part of the project workspace when no contextual panels are expanded.**
+
+This is stronger than an 80% canvas target.
+
+## 5. Application shell
+
+The project workspace may have a tiny overlay shell rather than conventional page chrome.
+
+Possible persistent elements:
+
+### Top-left
+- HERMES mark;
+- project name;
+- project switcher.
+
+### Top-center
+- command/search palette trigger.
+
+### Top-right
+- world state/health;
+- user/environment;
+- notifications if necessary.
+
+These controls float over the world and should consume minimal height.
+
+There should not be a conventional full-width multi-row website header.
+
+## 6. Project navigation inside the world
+
+All project navigation belongs inside the project shell.
+
+A compact launcher/icon rail can expose:
 
 - Model;
-- Systems;
+- Project;
+- Customers;
+- Materials;
+- Procurement;
+- Schedule;
 - Tasks;
 - Workforce;
+- Equipment;
 - Logistics;
+- Systems;
+- Inspections;
 - Issues;
+- Documents;
+- Evidence;
 - Academy;
-- Files/Evidence.
+- Analytics;
+- Settings.
 
-Clicking an icon opens a temporary/dockable drawer over the canvas.
+Selecting an icon opens a drawer or dockable workspace **inside the application space**.
 
-The drawer should close with:
+The project world remains underneath.
 
-- X;
-- Escape;
-- clicking the canvas;
-- keyboard shortcut.
+## 7. Inspector architecture
 
-Do not permanently reserve 300–400 px for the model tree.
+The inspector is a contextual universal workspace.
 
-## 7. Right inspector
+Default: closed.
 
-The right inspector becomes the primary information surface.
+It opens when:
 
-Default:
+- a component is selected;
+- an actor is selected;
+- a material batch is selected;
+- a task is selected;
+- an issue is selected;
+- a user explicitly opens the inspector.
 
-**closed until selection or explicit request.**
+Possible inspector tabs:
 
-Inspector should be contextual and tabbed.
-
-Recommended tabs:
-
-### Selection
-- component properties;
+### Object
 - dimensions;
-- material;
-- assembly;
+- geometry;
+- type;
+- location;
 - system;
-- location.
+- assembly.
+
+### Material
+- specification;
+- batch;
+- supplier;
+- quantity;
+- cost;
+- inventory/staging;
+- substitutions.
 
 ### Provenance
 - task;
@@ -167,329 +240,433 @@ Recommended tabs:
 - event;
 - revision;
 - source;
+- knowledge/evidence;
 - dependency reason.
 
 ### Construction
 - install state;
-- sequence;
 - work package;
+- predecessors;
+- successors;
 - inspection;
-- predecessor/successor.
+- rework.
 
 ### Spatial
 - work zone;
-- access;
+- route;
 - clearance;
 - payload;
-- route;
-- conflicts.
+- conflicts;
+- future-access implications.
 
 ### Systems
-- structure;
+- structural;
 - plumbing;
 - electrical;
 - HVAC;
-- envelope.
+- envelope;
+- fire/life safety.
 
-### Project / Prime
-- Prime status;
-- autonomy;
-- current recommendations;
-- alerts.
+### Commercial
+- quantity;
+- budget;
+- cost;
+- procurement;
+- lead time.
 
-### Audit / Truth
+### Prime / Project
+- HERMES status;
+- recommendations;
+- alerts;
+- autonomy decisions.
+
+### Audit
 - truth tests;
-- validation;
 - evidence;
-- legacy audit data.
+- validation;
+- source status.
 
-All current “Prime / Status”, “Run Truth Tests”, engineering details, and similar surfaces belong here rather than in the global chrome.
+Everything currently spread across multiple status cards can converge here.
 
-## 8. Bottom shelf
+## 8. Materials workspace
 
-Current bottom shelf/timeline should become:
+Building materials are a core operating capability, not a secondary dashboard.
 
-### Collapsed mode
-Thin scrubber, approximately 36–44 px.
+The workspace should make it easy to inspect:
 
-Contains:
+- what materials were specified;
+- why they were selected;
+- required quantity;
+- actual quantity;
+- supplier/source;
+- cost;
+- lead time;
+- current location;
+- delivery state;
+- staging;
+- assigned task;
+- installed components;
+- compatibility;
+- substitutions;
+- remaining inventory;
+- waste.
 
-- play/pause;
-- event/checkpoint number;
-- scrubber;
-- speed.
+Material interactions should be accessible through both:
 
-### Expanded mode
-Optional drawer containing:
+- the object/material inspector;
+- a dedicated materials drawer.
 
-- event stream;
-- task transitions;
-- timeline details;
-- revision compare;
-- replay controls.
+Where possible, selecting a material highlights:
 
-Do not permanently display a tall shelf.
+- all installed instances;
+- staged inventory;
+- delivery/staging location;
+- future consumption.
 
-## 9. Construction task card
+## 9. Visual construction controls
 
-The current large central intake/checkpoint card blocks the world.
-
-Replace with one of:
-
-### Preferred
-Small floating task HUD in upper-left canvas corner.
-
-Contains:
-
-- current task title;
-- phase;
-- one primary action;
-- small expand button.
-
-### Expanded
-Task details open in right inspector.
-
-The world must remain visible while reading or advancing tasks.
-
-## 10. Engineering calculations
-
-Engineering calculation cards should not permanently float over the model.
-
-Move calculations to:
-
-- right inspector → Engineering/Analysis tab;
-- component selection;
-- task-specific expanded view.
-
-Only critical warnings should appear as temporary in-world notifications.
-
-## 11. In-world contextual overlays
-
-HERMES may show information inside the world where it has physical meaning.
-
-Examples:
-
-- labels anchored to components;
-- route lines;
-- work-zone outlines;
-- collision volumes;
-- staging zones;
-- actor paths;
-- selected system highlights;
-- future constructability warning at actual opening;
-- task markers at work location.
-
-This is preferable to detached dashboard cards.
-
-## 12. Default clean mode
-
-On initial load, owner should see:
-
-- project/world title;
-- nearly full-screen 3D world;
-- tiny collapsed left rail;
-- minimal top bar;
-- thin collapsed timeline;
-- no inspector unless selected.
-
-This should be the default, not an optional “focus mode.”
-
-## 13. Advanced/operator mode
-
-Power users may optionally pin:
-
-- model tree;
-- inspector;
-- event stream;
-- engineering panel.
-
-Docking is allowed.
-
-The key rule:
-
-**advanced panels are opt-in, not permanent default chrome.**
-
-## 14. View modes
-
-Do not represent every mode as a full-width text button.
-
-Use a compact floating mode selector.
+All view controls should be floating/dockable inside the world.
 
 Modes:
 
 - Architectural;
 - Construction;
 - X-Ray;
-- Section;
+- Section/Cutaway;
 - Walkthrough;
 - Logistics;
-- Spatial/Agent.
+- Spatial/Agent;
+- Systems isolation.
 
-System isolation belongs in a compact layer/filter control.
+Navigation:
 
-## 15. Command palette
+- select;
+- orbit;
+- pan;
+- zoom;
+- fit;
+- measure;
+- section plane;
+- visibility/isolate;
+- view cube.
 
-Add a CAD-style command/search palette.
+These should behave like application tools, not webpage navigation buttons.
+
+## 10. Construction timeline
+
+The project timeline is fundamental, but it should live inside the world.
+
+Default:
+
+- thin scrubber overlay;
+- play/pause;
+- checkpoint;
+- speed.
+
+Expanded:
+
+- tasks;
+- phases;
+- event stream;
+- world revisions;
+- material deliveries;
+- inspections;
+- rework;
+- actor activity.
+
+The operator should be able to scrub the world through time and see the physical project change.
+
+## 11. Task / mission HUD
+
+Current task information should be compact.
+
+Small floating HUD:
+
+- current phase;
+- task;
+- progress;
+- next action;
+- warning if blocked.
+
+Click/expand opens full task information in the inspector.
+
+No giant task panel should cover the working world.
+
+## 12. In-world intelligence
+
+Information with physical meaning should be anchored to the physical world.
 
 Examples:
 
-- `isolate plumbing`
-- `show structure`
-- `go to checkpoint 14`
-- `select roof`
-- `show task dependencies`
-- `hide temporary works`
-- `walkthrough`
-- `section east-west`
+- task marker at work location;
+- selected component label;
+- material staging label;
+- actor path;
+- crane swing zone;
+- work-zone boundary;
+- clash highlight;
+- future-access warning;
+- inspection failure;
+- sensor observation;
+- delivery route;
+- inaccessible opening;
+- hidden MEP path.
 
-Keyboard shortcut:
+This makes HERMES intelligence spatial rather than dashboard-based.
+
+## 13. Customers and project business data
+
+Even non-spatial project functions should open as internal application workspaces rather than navigating away to unrelated pages.
+
+Examples:
+
+- customer/project brief;
+- approvals;
+- scope;
+- budget;
+- schedule;
+- procurement;
+- documents;
+- communications;
+- change history.
+
+These may temporarily occupy large portions of the app, but remain inside the same application shell.
+
+Closing the workspace returns directly to the project world.
+
+## 14. Command palette
+
+A universal command surface should be central to HERMES.
+
+Shortcut:
 
 `Ctrl/Cmd + K`
 
-Later natural-language HERMES commands can use the same surface.
+Examples:
 
-## 16. Keyboard interaction
+- show plumbing;
+- isolate structure;
+- show materials not yet installed;
+- show today’s tasks;
+- go to checkpoint 18;
+- select roof;
+- explain this wall;
+- show material source;
+- compare current state to design;
+- replay foundation;
+- show blocked tasks;
+- open customer brief;
+- show budget;
+- show logistics;
+- section through kitchen;
+- show future constructability conflicts.
 
-Professional desktop use should support shortcuts.
+Later natural-language commands and AI interaction can use the same surface.
 
-Initial examples:
+## 15. Full-screen behavior
 
-- Esc — close current drawer/inspector;
-- F — fit view;
-- 1 — Architectural;
-- 2 — Construction;
-- 3 — X-Ray;
-- 4 — Section;
-- W — Walkthrough;
-- Space — play/pause;
-- Left/Right — previous/next checkpoint;
-- M — model drawer;
-- I — inspector;
-- Ctrl/Cmd+K — command palette.
+The web application should support true browser full-screen.
 
-Shortcuts are secondary to visible controls but improve professional feel.
+Longer term, it may also be packaged as a desktop application.
 
-## 17. Responsive behavior
+Important principle:
 
-Desktop is primary for engineering workspace.
+**desktop packaging is not required to achieve the desired interaction model.**
 
-Tablet/mobile:
+The current web app can already behave like a full-screen professional application.
 
-- canvas remains primary;
-- side panels become full-height overlays;
-- no simultaneous permanent left/right panels;
-- bottom timeline becomes gesture-friendly compact control.
+Possible future packaging options may include:
 
-Do not attempt to squeeze desktop dashboard density onto mobile.
+- Progressive Web App;
+- Tauri desktop shell;
+- Electron desktop shell.
 
-## 18. Visual hierarchy
+Do not select or implement desktop packaging yet.
 
-Persistent visual hierarchy should be:
+First make the web workspace interaction correct.
 
-1. 3D construction world;
-2. selected physical object / active task;
-3. compact world controls;
-4. contextual inspector;
-5. project/audit/admin information.
+## 16. Why a desktop app may eventually make sense
 
-Current UI reverses this hierarchy too often.
+A desktop shell may later provide:
 
-## 19. Information relocation matrix
+- dedicated app window;
+- local file access;
+- stronger offline behavior;
+- native notifications;
+- multiple monitors/windows;
+- local GPU/inference integration;
+- large BIM file workflows;
+- site-edge deployment;
+- hardware integration.
 
-Move current controls as follows:
+But packaging a cluttered web UI inside a desktop executable would not solve the real problem.
 
-| Current surface | New location |
-|---|---|
-| Architectural / Construction / X-Ray | Floating canvas view toolbar |
-| Section / Cutaway | Floating canvas view toolbar |
-| Phase Audit | Inspector → Audit |
-| Run Truth Tests | Inspector → Audit/Truth |
-| Workforce | Left rail drawer / Inspector |
-| Prime / Status | Inspector → Project/Prime |
-| Fit View | Canvas navigation toolbar |
-| Checkpoint / Current task large bar | Compact canvas task HUD |
-| Intake/task card | Compact HUD + Inspector expansion |
-| Model Tree | Collapsed left rail drawer |
-| Workforce tree | Left rail drawer |
-| Materials / BIM lists | Left rail Model/Logistics drawer |
-| Prime Inspector | Contextual right inspector |
-| Engineering calculations | Inspector → Analysis |
-| Replay | Collapsed bottom timeline |
-| Event stream | Expanded bottom timeline |
-| Heartbeat | Compact health indicator / Inspector |
-| Technical/Summary/Audit depth selector | Inspector mode / command palette |
+The full-screen workspace architecture comes first.
 
-## 20. Acceptance benchmark
+## 17. Multi-window future
 
-The redesigned workspace passes when:
+Professional users may eventually want:
 
-1. At least ~80% of the usable desktop viewport is available to the 3D world in default state.
-2. No persistent left/right panel is open by default.
-3. There is only one persistent top application bar.
-4. The timeline is thin/collapsed by default.
-5. The current task does not obscure the center of the model.
-6. All removed controls remain discoverable through toolbars/drawers/inspector.
-7. Selecting a component opens useful contextual information without navigating away.
-8. X-Ray, Construction, Section, and Walkthrough are reachable in one or two clicks.
-9. Closing all context panels returns immediately to a clean CAD/BIM-style workspace.
-10. The UI can be understood as a professional construction modeling workspace without reading every status card.
+- main 3D world on monitor 1;
+- inspector/materials on monitor 2;
+- schedule/analytics on monitor 3.
 
-## 21. Implementation order
+Design dockable panels so they could later become detachable windows.
 
-Do not rebuild everything at once.
+Do not implement this in the current visual pass.
 
-### Slice A — chrome reduction
-- merge two header rows;
-- remove duplicate controls;
-- make canvas fill available space;
-- collapse bottom timeline.
+## 18. Construction vs presentation rendering
 
-### Slice B — contextual panels
-- left rail icons;
-- right inspector closed by default;
-- move Prime/Truth/Audit/Engineering into inspector.
+The same canonical world should support both experiences.
 
-### Slice C — canvas toolbars
+### Construction workspace
+Prioritizes:
+- assemblies;
+- MEP;
+- structure;
+- tasks;
+- provenance;
+- materials;
+- work zones;
+- actors;
+- evidence.
+
+### Presentation mode
+Prioritizes:
+- finished architecture;
+- clean walkthrough;
+- customer options;
+- storytelling;
+- approvals.
+
+Do not create two separate sources of geometry.
+
+One canonical world, different presentation layers.
+
+## 19. Internal data surfaces
+
+The following all belong inside the application workspace:
+
+- project/customer;
+- material inventory;
+- suppliers;
+- procurement;
+- tasks;
+- schedule;
+- cost;
+- BIM/model;
+- workforce;
+- equipment;
+- logistics;
+- inspections;
+- issues;
+- documents;
+- evidence;
+- Academy;
+- Prime/autonomy;
+- system health.
+
+They should not become a collection of unrelated web pages.
+
+## 20. Visual acceptance requirements
+
+The workspace passes when:
+
+1. Project world extends edge-to-edge across the application.
+2. There is no conventional multi-row page header.
+3. No left/right drawer is open by default.
+4. No tall bottom shelf is open by default.
+5. No large card obscures the center.
+6. Almost all functions remain reachable through in-world tools/drawers/inspector.
+7. Closing tools restores an essentially unobstructed world.
+8. Materials, tasks, provenance, and systems can be inspected without leaving the project.
+9. Timeline/replay feels part of the world.
+10. The product feels like a professional installed application even while running in a browser.
+
+## 21. Implementation sequence
+
+### Slice A — Immersive shell
+- remove conventional dashboard chrome;
+- make world edge-to-edge;
+- minimal floating project shell;
+- collapse timeline;
+- close side panels by default.
+
+### Slice B — Universal inspector
+- migrate Prime/status;
+- audit/truth;
+- engineering;
+- provenance;
+- construction;
+- materials.
+
+### Slice C — Internal launcher/drawers
+- project;
+- customers;
+- materials;
+- schedule;
+- workforce;
+- logistics;
+- documents;
+- issues.
+
+### Slice D — Canvas tools
 - view modes;
 - navigation;
-- timeline HUD;
-- task HUD.
+- clipping;
+- isolate;
+- measure;
+- walkthrough.
 
-### Slice D — in-world context
-- anchored labels;
-- spatial warnings;
-- work zones/routes;
-- future-constructability visualization.
+### Slice E — Timeline/task HUD
+- compact replay;
+- task/phase HUD;
+- expandable event timeline.
 
-### Slice E — keyboard/command palette
-- shortcuts;
-- command/search.
+### Slice F — In-world intelligence
+- labels;
+- routes;
+- work zones;
+- constructability;
+- clashes;
+- material location;
+- task locations.
 
-Physical browser acceptance after each slice.
+### Slice G — Command palette
+- keyboard shortcuts;
+- natural-language/project command entry.
 
-## 22. Do not lose functionality
+Physical browser acceptance after every slice.
 
-This is an information-architecture cleanup, not a capability deletion.
+## 22. Non-negotiable rule
 
-Do not remove:
+No capability should require the operator to abandon the construction application and navigate through a website-style dashboard unless it truly belongs to a different product experience.
 
-- truth tests;
-- Prime status;
-- engineering calculations;
-- workforce;
-- model tree;
-- provenance;
-- replay;
-- event stream.
+The operator should always feel:
 
-Move them to better contextual locations.
+> “I am inside this construction project.”
 
-## 23. Final product feeling
+not:
 
-The target feeling is:
+> “I am browsing pages about this construction project.”
 
-**professional BIM/CAD construction world first, HERMES intelligence second, administrative telemetry third.**
+## 23. Product feeling
 
-Not:
+Construction Workspace target:
 
-**dashboard with a 3D viewport embedded inside it.**
+**AutoCAD / Revit / Navisworks class of immersive working application, but AI-native and centered on a living construction world.**
+
+HERMES does the planning/building work.
+
+The human:
+
+- watches;
+- inspects;
+- understands;
+- validates;
+- intervenes;
+- commands.
+
+Customer Presentation target:
+
+**separate guided experience built from the same canonical world.**
