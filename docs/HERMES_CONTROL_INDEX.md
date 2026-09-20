@@ -22,6 +22,20 @@ Do **not** crawl the entire `docs/` directory unless the task actually requires 
 
 Historical phase plans, audits, validation fixtures, and prior handoffs remain evidence/reference material; they are not automatically controlling instructions.
 
+## Human-experience implementation authority
+
+For the immersive human-facing HERMES application, the authoritative execution sequence is:
+
+`docs/HERMES_HUMAN_EXPERIENCE_CONSOLIDATED_IMPLEMENTATION_MASTER.md`
+
+That master consolidates the earlier standalone UI/NAV/Overview/Attention/Timeline/Materials/Inspector planning into three implementation passes:
+
+1. `HERMES-HX-01` — immersive foundation, navigation, executive overview
+2. `HERMES-HX-02` — inspector, attention, timeline / What Changed
+3. `HERMES-HX-03` — materials, schedule, logistics workspaces
+
+The older standalone implementation tickets remain detailed domain references but must not be executed independently unless the consolidated master is explicitly revised.
+
 ## Product definition
 
 HERMES is a **living construction academy and embodied construction operating system**.
