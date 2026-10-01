@@ -8,7 +8,7 @@ import {
   LearnedLesson,
 } from './types/hermes';
 import { AppShell, NavTab, UserExperienceLevel } from './components/AppShell';
-import { BimWorkspaceView } from './components/BimWorkspaceView';
+import { ImmersiveProjectShell } from './components/immersive/ImmersiveProjectShell';
 import { HermesSystemDrawer } from './components/HermesSystemDrawer';
 import { CommandCenterView } from './components/CommandCenterView';
 import { ProjectOverviewView } from './components/ProjectOverviewView';
@@ -37,7 +37,7 @@ import { OwnerSmeDashboardView } from './components/OwnerSmeDashboardView';
 import { PrehouseSpatialProofView } from './components/PrehouseSpatialProofView';
 
 function HermesAppContent() {
-  const { activeProjectId, activeProjectMeta, setActiveProjectId, worldState } = useHermesProject();
+  const { activeProjectId, activeProjectMeta, setActiveProjectId, selectEntity, openInspectorDrawer, worldState } = useHermesProject();
 
   const [activeTab, setActiveTab] = useState<NavTab>('bim-workspace');
   const [isSystemDrawerOpen, setIsSystemDrawerOpen] = useState<boolean>(false);
@@ -156,14 +156,16 @@ function HermesAppContent() {
   };
 
   const handleHighlightComponents = (compIds: string[], itemName: string) => {
-    setHighlightCategory(itemName);
-    setActiveTab('3d-twin');
+    selectEntity(compIds[0] || null);
+    if (compIds.length) openInspectorDrawer();
+    setIsSystemDrawerOpen(false);
   };
 
   const currentProject = defaultFallbackProject;
 
   return (
     <AppShell
+      immersive
       activeTab={activeTab}
       setActiveTab={setActiveTab}
       currentProject={currentProject}
@@ -178,82 +180,11 @@ function HermesAppContent() {
       setUxLevel={setUxLevel}
       onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
     >
-      {/* Primary Operating Experience: OpenBIM CAD Workspace */}
-      {activeTab === 'bim-workspace' && (
-        <BimWorkspaceView
-          onOpenSystemDrawer={() => setIsSystemDrawerOpen(true)}
-          initialSelectedComponentId={selectedComponent?.id}
-        />
-      )}
-
-      {/* Command Center */}
-      {activeTab === 'command-center' && (
-        <CommandCenterView
-          project={currentProject}
-          heartbeatState={heartbeatState}
-          onTriggerHeartbeat={handleTriggerHeartbeat}
-          onNavigateTab={setActiveTab}
-        />
-      )}
-
-      {/* Project Overview */}
-      {activeTab === 'project-overview' && (
-        <ProjectOverviewView
-          project={currentProject}
-          heartbeatState={heartbeatState}
-          onNavigateTab={setActiveTab}
-        />
-      )}
-
-      {/* Legacy 3D Digital Twin Viewer */}
-      {activeTab === '3d-twin' && (
-        <ThreeBIMViewer
-          components={currentProject.components}
-          selectedComponentId={selectedComponent?.id}
-          onSelectComponent={setSelectedComponent}
-          highlightCategory={highlightCategory}
-        />
-      )}
-
-      {/* Rooms & Spaces Workspace */}
-      {activeTab === 'rooms-spaces' && (
-        <RoomsSpacesView project={currentProject} onSelectComponent={setSelectedComponent} />
-      )}
-
-      {/* Plans & Systems Workspace */}
-      {activeTab === 'plans-systems' && <PlansSystemsView project={currentProject} />}
-
-      {/* Inspections Workspace */}
-      {activeTab === 'inspections' && (
-        <InspectorView
-          tickets={currentProject.inspectionTickets}
-          onRepairTicket={handleRepairTicket}
-          onTriggerHeartbeat={handleTriggerHeartbeat}
-        />
-      )}
-
-      {/* BOM & Quantities */}
-      {activeTab === 'bom' && (
-        <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
-      )}
-
-      {/* Procurement & Price Truth */}
-      {activeTab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
-
-      {/* 4D Schedule */}
-      {activeTab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
-
-      {/* Change-Order Risks */}
-      {activeTab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
-
-      {/* Customizer & Revisions */}
-      {activeTab === 'customizer' && (
-        <CustomizerView
-          projectId={currentProject.id}
-          onProposeRevision={handleProposeRevision}
-          onApplyRevision={handleApplyRevision}
-        />
-      )}
+      <ImmersiveProjectShell
+        developerOpen={isSystemDrawerOpen}
+        onDeveloperOpen={() => setIsSystemDrawerOpen(true)}
+        onDeveloperClose={() => setIsSystemDrawerOpen(false)}
+      />
 
       {/* HERMES System Developer Area Drawer */}
       <HermesSystemDrawer
@@ -300,7 +231,7 @@ function HermesAppContent() {
           <BOMView bom={currentProject.bom} onHighlightComponents={handleHighlightComponents} />
         )}
         {activeSystemSubtab === 'procurement' && <ProcurementView suppliers={currentProject.suppliers} />}
-        {activeSystemSubtab === 'schedule' && <ScheduleView schedule={currentProject.schedule} />}
+        {activeSystemSubtab === 'schedule' && <ScheduleView schedule={currentProject.schedule} onInspect={handleHighlightComponents} />}
         {activeSystemSubtab === 'risks' && <ChangeOrderView risks={currentProject.changeOrderRisks} />}
         {activeSystemSubtab === 'customizer' && (
           <CustomizerView

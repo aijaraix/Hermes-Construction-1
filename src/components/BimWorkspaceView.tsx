@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { ImmersiveWorkspaceId } from '../lib/immersiveWorkspaceRegistry';
+import { InternalWorkspaceSurface } from './immersive/InternalWorkspaceSurface';
+import { UniversalInspector } from './immersive/UniversalInspector';
+import { ConstructionTimeline } from './immersive/ConstructionTimeline';
+import { finitePosition, rendererEntityId } from '../lib/inspectorViewState';
+import { resolveInspectableEntity } from '../lib/inspectableEntity';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -101,7 +107,7 @@ export interface ReferenceBimComponent {
   provenance: {
     source: string;
     creator: string;
-    verifiedDate: string;
+    verifiedDate?: string;
     license: string;
   };
 }
@@ -144,14 +150,24 @@ export interface ReferenceBimProject {
   };
 }
 
+export interface BimWorkspaceHandle {
+  closeTopOverlay(): boolean;
+  collapseTimeline(): boolean;
+  focusEntity(id: string): boolean;
+  focusPosition(position: [number,number,number]): boolean;
+  replayEvent(eventId: string): boolean;
+}
 interface BimWorkspaceViewProps {
+  workspaceId?: ImmersiveWorkspaceId | null;
+  onWorkspaceClose?: () => void;
+  onWhatChanged?: () => void;
   activeProjectId?: string;
   onSelectProject?: (projectId: string) => void;
   onOpenSystemDrawer?: () => void;
   initialSelectedComponentId?: string | null;
 }
 
-function computeReducedComponentsForEvent(eventIndex: number, rawData: any): ReferenceBimComponent[] {
+export function computeReducedComponentsForEvent(eventIndex: number, rawData: any): ReferenceBimComponent[] {
   if (!rawData) return [];
 
   const isVal003 = rawData.projectId === 'LIVE-WORLD-VISUAL-VALIDATION-003';
@@ -185,7 +201,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'HERMES_LIVE_ENGINE', creator: 'HERMES_LIVE_WORLD', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'HERMES_LIVE_ENGINE', creator: 'HERMES_LIVE_WORLD', license: 'HERMES' }
         });
       }
     });
@@ -229,7 +245,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'WORKFORCE_ROSTER', creator: 'HERMES_LIVE_WORLD', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'WORKFORCE_ROSTER', creator: 'HERMES_LIVE_WORLD', license: 'HERMES' }
         });
       }
     });
@@ -252,7 +268,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
         connectedComponentIds: [],
         openings: [],
         inspectionStatus: 'PASSED',
-        provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'PROJECT-PRIME', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+        provenance: { source: 'CUSTOMER_INTAKE_ENGINE', creator: 'PROJECT-PRIME', license: 'HERMES' }
       });
     }
 
@@ -273,11 +289,11 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: sm.worldPosition || sm.coordinatesXYZ || [0, 0, 0],
           orientationDegrees: 0,
           materialSpecIds: ['WOODEN-CONTROL-STAKE'],
-          propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: markId, Elevation: sm.measuredElevationMeters, Verification: 'RTK GPS Verified' } }],
+          propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: markId, Elevation: sm.measuredElevationMeters, Verification: sm.verificationStatus || 'Not recorded' } }],
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'SURVEY_ENGINE', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'SURVEY_ENGINE', creator: 'AGENT-SURVEY-001', license: 'HERMES' }
         });
       }
     });
@@ -298,11 +314,11 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           position: bs.worldPosition || [5.0, 1.8, 5.0],
           orientationDegrees: 0,
           materialSpecIds: ['SOIL-BORING-SAMPLE'],
-          propertySets: [{ name: 'Pset_GeotechDetails', properties: { BearingCapacity: `${bs.allowableBearingPsf || 3960} PSF`, SoilType: bs.soilType || 'Stiff Clay Loam' } }],
+          propertySets: [{ name: 'Pset_GeotechDetails', properties: { BearingCapacity: typeof bs.allowableBearingPsf === 'number' && Number.isFinite(bs.allowableBearingPsf) ? `${bs.allowableBearingPsf} PSF` : 'Not recorded', SoilType: bs.soilType || 'Not recorded' } }],
           connectedComponentIds: [],
           openings: [],
-          inspectionStatus: 'PASSED',
-          provenance: { source: 'GEOTECH_LAB', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          inspectionStatus: ['PASSED','FAILED'].includes(bs.inspectionStatus) ? bs.inspectionStatus : 'UNINSPECTED',
+          provenance: { source: 'GEOTECH_LAB', creator: 'AGENT-GEOTECH-001', license: 'HERMES' }
         });
       }
     });
@@ -329,7 +345,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', license: 'HERMES' }
         });
       }
     }
@@ -355,7 +371,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'ARCHITECTURAL_ENGINE', creator: 'AGENT-ARCH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'ARCHITECTURAL_ENGINE', creator: 'AGENT-ARCH-001', license: 'HERMES' }
         });
       }
     });
@@ -395,7 +411,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'LOGISTICS_FLEET_REGISTRY', creator: 'HERMES_LIVE_WORLD', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'LOGISTICS_FLEET_REGISTRY', creator: 'HERMES_LIVE_WORLD', license: 'HERMES' }
         });
       }
     });
@@ -435,7 +451,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'SPATIAL_LOGISTICS_ENGINE', creator: 'MATERIAL_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'SPATIAL_LOGISTICS_ENGINE', creator: 'MATERIAL_MANAGER', license: 'HERMES' }
         });
       }
     });
@@ -475,7 +491,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: status as any,
-          provenance: comp.provenance || { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: comp.provenance || { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', license: 'HERMES' }
         });
       }
     });
@@ -514,7 +530,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       provenance: {
         source: 'ACADEMY_SPATIAL_ENGINE',
         creator: 'HERMES_LIVE_WORLD',
-        verifiedDate: new Date().toISOString(),
         license: 'HERMES',
       },
     });
@@ -567,7 +582,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       provenance: {
         source: 'WORKFORCE_ROSTER',
         creator: 'HERMES_LIVE_WORLD',
-        verifiedDate: new Date().toISOString(),
         license: 'HERMES',
       },
     });
@@ -621,7 +635,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       provenance: {
         source: 'CUSTOMER_INTAKE_ENGINE',
         creator: 'PROJECT-PRIME',
-        verifiedDate: new Date().toISOString(),
         license: 'HERMES',
       },
     });
@@ -645,7 +658,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       connectedComponentIds: [],
       openings: [],
       inspectionStatus: 'PASSED',
-      provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+      provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', license: 'HERMES' },
     });
 
     components.push({
@@ -664,7 +677,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       connectedComponentIds: [],
       openings: [],
       inspectionStatus: 'PASSED',
-      provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+      provenance: { source: 'SURVEY_DEPOT', creator: 'AGENT-SURVEY-001', license: 'HERMES' },
     });
 
     components.push({
@@ -683,7 +696,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       connectedComponentIds: [],
       openings: [],
       inspectionStatus: 'PASSED',
-      provenance: { source: 'CIVIL_DEPOT', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+      provenance: { source: 'CIVIL_DEPOT', creator: 'AGENT-GEOTECH-001', license: 'HERMES' },
     });
   }
 
@@ -708,11 +721,11 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
         position: [s.pos[0], s.pos[1], s.pos[2]] as [number, number, number],
         orientationDegrees: 0,
         materialSpecIds: ['WOODEN-CONTROL-STAKE'],
-        propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: s.id, Elevation: s.elev, Verification: 'RTK GPS Verified' } }],
+        propertySets: [{ name: 'Pset_SurveyDetails', properties: { StakeId: s.id, Elevation: s.elev, Verification: 'SIMULATED_FIXTURE — NOT FIELD VERIFIED' } }],
         connectedComponentIds: [],
         openings: [],
         inspectionStatus: 'PASSED',
-        provenance: { source: 'SURVEY_ENGINE', creator: 'AGENT-SURVEY-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+        provenance: { source: 'SURVEY_ENGINE', creator: 'AGENT-SURVEY-001', license: 'HERMES' },
       });
     });
 
@@ -737,14 +750,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
             TestMethod: 'Standard Penetration Test (SPT)',
             TopsoilDepthMeters: 0.5,
             SubsoilType: 'Clay Loam Stiff',
-            Status: 'VERIFIED_ON_SITE',
+            Status: 'SIMULATED_FIXTURE — NOT FIELD VERIFIED',
           },
         },
       ],
       connectedComponentIds: [],
       openings: [],
       inspectionStatus: 'PASSED',
-      provenance: { source: 'GEOTECH_LAB', creator: 'AGENT-GEOTECH-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+      provenance: { source: 'GEOTECH_LAB', creator: 'AGENT-GEOTECH-001', license: 'HERMES' },
     });
   }
 
@@ -778,7 +791,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
       connectedComponentIds: [],
       openings: [],
       inspectionStatus: 'PASSED',
-      provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', verifiedDate: new Date().toISOString(), license: 'HERMES' },
+      provenance: { source: 'CIVIL_ENGINEERING', creator: 'AGENT-CIVIL-001', license: 'HERMES' },
     });
   }
 
@@ -812,7 +825,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           provenance: {
             source: 'SURVEY_ENGINE',
             creator: 'AGENT-SURVEY-LEAD',
-            verifiedDate: new Date().toISOString(),
             license: 'HERMES',
           },
         });
@@ -856,7 +868,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
         provenance: {
           source: 'ARCHITECTURAL_ENGINE',
           creator: 'AGENT-ARCH-LEAD',
-          verifiedDate: new Date().toISOString(),
           license: 'HERMES',
         },
       });
@@ -891,7 +902,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           provenance: {
             source: 'ARCHITECTURAL_ENGINE',
             creator: 'AGENT-ARCH-LEAD',
-            verifiedDate: new Date().toISOString(),
             license: 'HERMES',
           },
         });
@@ -935,7 +945,6 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
         provenance: {
           source: 'SPATIAL_LOGISTICS_ENGINE',
           creator: 'MATERIAL_MANAGER',
-          verifiedDate: new Date().toISOString(),
           license: 'HERMES',
         },
       });
@@ -964,7 +973,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
             connectedComponentIds: [],
             openings: [],
             inspectionStatus: comp.inspectionStatus || 'PASSED',
-            provenance: comp.provenance || { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+            provenance: comp.provenance || { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', license: 'HERMES' }
           });
         }
       });
@@ -995,7 +1004,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: 'PASSED',
-          provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', license: 'HERMES' }
         });
       });
     }
@@ -1029,7 +1038,7 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
           connectedComponentIds: [],
           openings: [],
           inspectionStatus: comp.status as any,
-          provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', verifiedDate: new Date().toISOString(), license: 'HERMES' }
+          provenance: { source: 'HERMES_CONSTRUCTION', creator: 'DISCIPLINE_MANAGER', license: 'HERMES' }
         });
       });
     }
@@ -1085,11 +1094,14 @@ function computeReducedComponentsForEvent(eventIndex: number, rawData: any): Ref
   return components;
 }
 
-export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
+export const BimWorkspaceView = forwardRef<BimWorkspaceHandle, BimWorkspaceViewProps>(({
   onSelectProject,
   onOpenSystemDrawer,
   initialSelectedComponentId = null,
-}) => {
+  workspaceId = null,
+  onWorkspaceClose = () => {},
+  onWhatChanged = () => {},
+}, ref) => {
   // Consume canonical project state directly from HermesProjectContext
   const {
     activeProjectId,
@@ -1100,7 +1112,14 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     runAll,
     resetWorld,
     setActiveProjectId,
+    selectedEntityId: selectedCompId,
+    selectEntity: setSelectedCompId,
+    isInspectorDrawerOpen: rightInspectorOpen,
+    openInspectorDrawer,
+    closeInspectorDrawer,
+    playbackState, setPlaybackState, playbackSpeed, setPlaybackSpeed, autoFollow, setAutoFollow,
   } = useHermesProject();
+  const setRightInspectorOpen = (open: boolean) => open ? openInspectorDrawer() : closeInspectorDrawer();
 
   const [intakeModalOpen, setIntakeModalOpen] = useState<boolean>(false);
 
@@ -1114,7 +1133,6 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [house0002RawData, setHouse0002RawData] = useState<any | null>(null);
 
   // Selection & Nav State
-  const [selectedCompId, setSelectedCompId] = useState<string | null>(initialSelectedComponentId);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedStoreyId, setSelectedStoreyId] = useState<string>('ALL');
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
@@ -1135,10 +1153,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [sectionBarOpen, setSectionBarOpen] = useState<boolean>(false);
 
   // Drawers & Tabs
-  const [leftTreeOpen, setLeftTreeOpen] = useState<boolean>(true);
-  const [rightInspectorOpen, setRightInspectorOpen] = useState<boolean>(true);
-  const [rightInspectorTab, setRightInspectorTab] = useState<'SCOPED' | 'PRIME_AUTONOMY'>('PRIME_AUTONOMY');
-  const [leftTab, setLeftTab] = useState<'TREE' | 'WORKFORCE' | 'SYSTEMS' | 'TRACE'>('TREE');
+  const leftTreeOpen = workspaceId === 'MODEL' || workspaceId === 'WORKFORCE' || workspaceId === 'SYSTEMS';
+  const leftTab = workspaceId === 'MODEL' ? 'TREE' : workspaceId === 'WORKFORCE' ? 'WORKFORCE' : 'SYSTEMS';
+  const [rightInspectorTab, setRightInspectorTab] = useState<'SCOPED' | 'PRIME_AUTONOMY'>('SCOPED');
+  const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [timelineExpanded, setTimelineExpanded] = useState(false);
+  const [showReplayDetails, setShowReplayDetails] = useState(false);
   const [inspectorTab, setInspectorTab] = useState<'OVERVIEW' | 'ASSEMBLY' | 'ENGINEERING' | 'QUANTITIES'>('OVERVIEW');
   const [autonomyAudit, setAutonomyAudit] = useState<any>(null);
 
@@ -1157,6 +1177,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   });
 
   // Category Layer Filters
+  const selectedRenderId = worldState?.projectId === activeProjectId && selectedCompId ? rendererEntityId(worldState, selectedCompId) : null;
   const [activeCategories, setActiveCategories] = useState<Record<string, boolean>>({
     Architecture: true,
     Structure: true,
@@ -1176,9 +1197,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   // Timeline & Replay Engine State
   const [replayEvents, setReplayEvents] = useState<any[]>([]);
   const [currentEventIndex, setCurrentEventIndex] = useState<number>(0);
-  const [isPlayingTimeline, setIsPlayingTimeline] = useState<boolean>(false);
-  const [replaySpeed, setReplaySpeed] = useState<number>(1);
-  const [autoCameraEnabled, setAutoCameraEnabled] = useState<boolean>(true);
+  const isPlayingTimeline = playbackState === 'PLAYING';
+  const setIsPlayingTimeline = (value: boolean) => setPlaybackState(value ? 'PLAYING' : 'PAUSED');
+  const replaySpeed = playbackSpeed;
+  const setReplaySpeed = setPlaybackSpeed;
+  const autoCameraEnabled = autoFollow;
+  const setAutoCameraEnabled = setAutoFollow;
+  const [legacyPrimeOpen, setLegacyPrimeOpen] = useState(false);
 
   // Spatial Operations World & Truth Test State
   const [truthTestReport, setTruthTestReport] = useState<any>(null);
@@ -1187,6 +1212,50 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const [isPhase1ModalOpen, setIsPhase1ModalOpen] = useState<boolean>(false);
   const [selectedDisciplineFilter, setSelectedDisciplineFilter] = useState<string>('ALL');
   const [cameraPreset, setCameraPreset] = useState<string>('ORBIT');
+
+  useImperativeHandle(ref, () => ({
+    focusEntity,
+    focusPosition,
+    replayEvent,
+    closeTopOverlay() {
+      if (isTruthTestModalOpen) setIsTruthTestModalOpen(false);
+      else if (isPhase1ModalOpen) setIsPhase1ModalOpen(false);
+      else if (intakeModalOpen) setIntakeModalOpen(false);
+      else if (advancedOpen) setAdvancedOpen(false);
+      else if (sectionBarOpen) setSectionBarOpen(false);
+      else if (showReplayDetails) setShowReplayDetails(false);
+      else if (legacyPrimeOpen) setLegacyPrimeOpen(false);
+      else if (rightInspectorOpen) closeInspectorDrawer();
+      else return false;
+      return true;
+    },
+    collapseTimeline() {
+      if (!timelineExpanded) return false;
+      setTimelineExpanded(false);
+      return true;
+    },
+  }));
+  useEffect(() => {
+    setRightInspectorTab('SCOPED');
+    if (selectedCompId) openInspectorDrawer();
+  }, [selectedCompId]);
+  useEffect(() => {
+    closeInspectorDrawer();
+    setRightInspectorTab('SCOPED');
+    setSelectedStoreyId('ALL');
+    setSearchQuery('');
+    setWorkforceDisciplineFilter('ALL');
+    setTracedCompIds(new Set());
+    setIsPlayingTimeline(false);
+    setTimelineExpanded(false);
+    setShowReplayDetails(false);
+    setAdvancedOpen(false);
+    setLegacyPrimeOpen(false);
+    setIntakeModalOpen(false);
+    setHouse0002RawData(null);
+    setProjectData(null);
+    setReplayEvents([]);
+  }, [activeProjectId]);
 
   const handleRunTruthTests = async () => {
     try {
@@ -1425,7 +1494,6 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         }
         meshesMapRef.current.clear();
 
-        setSelectedCompId(null);
         setSelectedRoomId(null);
         setSelectedSystem(null);
         setActiveTrace(null);
@@ -1442,7 +1510,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           }
         }
 
-        if (!mounted || !dataToUse) return;
+        if (!mounted) return;
+        if (!dataToUse || dataToUse.projectId !== activeProjectId) throw new Error("Current project state unavailable");
 
         setHouse0002RawData(dataToUse);
         const evs = dataToUse.eventStream || dataToUse.events || [];
@@ -1658,12 +1727,12 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [leftTreeOpen, rightInspectorOpen, isFullscreen]);
+  }, [isFullscreen]);
 
   // Camera Framing Utility
-  const fitModelToCamera = () => {
+  const fitModelToCamera = (force = false) => {
     // STAGE 2: If owner has interacted or disabled auto-camera, DO NOT RECENTER!
-    if (!autoCameraEnabled) return;
+    if (!autoCameraEnabled && !force) return;
 
     const cam = cameraPerspRef.current;
     const controls = controlsRef.current;
@@ -1704,6 +1773,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
     controls.target.copy(center);
     controls.update();
   };
+
+  const lastAutoFramedData = useRef<ReferenceBimProject | null>(null);
 
   // Build 3D Meshes strictly backed by active project records
   useEffect(() => {
@@ -1826,7 +1897,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       // System Trace filter
       const isTraced = activeTrace && tracedCompIds.has(comp.id);
 
-      const isSelected = selectedCompId === comp.id;
+      const isSelected = selectedRenderId === comp.id;
       const isHovered = hoveredCompId === comp.id;
 
       let geom = ifcGeometriesRef.current.get(comp.id);
@@ -2109,8 +2180,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       }
     });
 
-    fitModelToCamera();
-  }, [projectData, activeCategories, selectedCompId, hoveredCompId, selectedStoreyId, selectedSystem, isolatedCompId, hiddenCompIds, debugMaterialMode, forceAllVisible, tracedCompIds, activeTrace, visualMode, sectionXEnabled, sectionXValue, sectionYEnabled, sectionYValue]);
+    if (lastAutoFramedData.current !== projectData) {
+      lastAutoFramedData.current = projectData;
+      fitModelToCamera();
+    }
+  }, [projectData, activeCategories, selectedRenderId, hoveredCompId, selectedStoreyId, selectedSystem, isolatedCompId, hiddenCompIds, debugMaterialMode, forceAllVisible, tracedCompIds, activeTrace, visualMode, sectionXEnabled, sectionXValue, sectionYEnabled, sectionYValue]);
 
   // Selected Component Lookup
   const selectedComponent = (projectData?.components || []).find((c) => c.id === selectedCompId) || null;
@@ -2128,11 +2202,41 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
   const workforce = house0002RawData?.agentSpatialStates || [];
   const activeWorkforceCount = workforce.filter((actor: any) => actor.currentState === 'EXECUTING_IN_WORK_ZONE' || actor.currentState === 'PAYLOAD_STAGED_BEFORE_FUTURE_CLOSURE').length;
 
+  const currentWorld = worldState?.projectId === activeProjectId ? worldState : null;
+  const inspected = currentWorld ? resolveInspectableEntity(currentWorld, selectedCompId || currentWorld.projectId) : null;
+  const selectedIsRendered = Boolean(selectedRenderId && projectData?.projectId === activeProjectId && projectData.components.some(c => c.id === selectedRenderId));
+  function focusPosition(position: [number,number,number]): boolean {
+    if (!currentWorld || !finitePosition(position) || !cameraPerspRef.current || !controlsRef.current) return false;
+    setAutoCameraEnabled(false);
+    const target = new THREE.Vector3(...position);
+    const offset = cameraPerspRef.current.position.clone().sub(controlsRef.current.target);
+    cameraPerspRef.current.position.copy(target).add(offset);
+    controlsRef.current.target.copy(target); controlsRef.current.update();
+    return true;
+  }
+  function focusEntity(id: string): boolean {
+    if (!currentWorld) return false;
+    const entity = resolveInspectableEntity(currentWorld,id);
+    if (!finitePosition(entity?.spatial?.position)) return false;
+    return focusPosition(entity.spatial.position);
+  }
+  function replayEvent(eventId: string): boolean {
+    if (house0002RawData?.projectId !== activeProjectId) return false;
+    const index = replayEvents.findIndex((event,index) => (event.eventId || `EVENT-${index + 1}`) === eventId && (!event.projectId || event.projectId === activeProjectId) && (!event.attemptId || event.attemptId === currentWorld?.attemptId));
+    if (index < 0) return false;
+    setIsPlayingTimeline(false); setCurrentEventIndex(index); setTimelineExpanded(true);
+    return true;
+  }
+  const eventActions = {
+    replay: replayEvent, focusEntity, focusPosition,
+    canFocusEntity: (id: string) => Boolean(currentWorld && finitePosition(resolveInspectableEntity(currentWorld,id)?.spatial?.position)),
+  };
+
   return (
-    <div className="h-full w-full flex flex-col bg-slate-50 text-slate-900 font-sans overflow-hidden select-none">
+    <div className="hx-bim bg-slate-50 text-slate-900 font-sans select-none">
       {/* RUNTIME PROJECT MISMATCH INVARIANT CHECK */}
       {activeProjectId === 'HERMES-LIVE-HOUSE-001' && worldState && worldState.projectId !== 'HERMES-LIVE-HOUSE-001' && (
-        <div className="bg-red-600 text-white px-4 py-2 font-mono font-bold flex items-center justify-between z-50 shadow-lg animate-pulse">
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-red-600 text-white px-4 py-2 font-mono font-bold flex items-center justify-between z-50 shadow-lg">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-yellow-300 shrink-0" />
             <div>
@@ -2151,147 +2255,40 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
         </div>
       )}
 
-      {/* 1. TOP CONTROL RIBBON */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between gap-3 shadow-2xs z-20 shrink-0 flex-wrap">
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Canonical Active Project Display (No secondary selector) */}
-          <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 px-3 py-1 rounded-xl text-xs font-mono">
-            <Building className="w-4 h-4 text-blue-600 shrink-0" />
-            <span className="font-extrabold text-blue-950 truncate max-w-xs md:max-w-md">
-              {activeProjectMeta.name || activeProjectId}
-            </span>
-            <span className="text-[10px] bg-blue-200 text-blue-900 px-1.5 py-0.5 rounded font-bold">
-              CANONICAL
-            </span>
-          </div>
-
-          <span className="text-slate-300 hidden sm:inline">|</span>
-
-          {/* Camera Presets Toolbar */}
-          <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-medium">
-            <Compass className="w-3.5 h-3.5 text-slate-500 ml-2" />
-            <select
-              value={cameraPreset}
-              onChange={(e) => applyCameraPreset(e.target.value)}
-              className="bg-transparent text-slate-700 font-bold focus:outline-none cursor-pointer text-xs pr-2"
-            >
-              <option value="ORBIT">Camera: Orbit Standard</option>
-              <option value="WALK">Camera: Walk Eye-Level</option>
-              <option value="INSPECT">Camera: Close Inspection</option>
-              <option value="BUILD">Camera: Isometric Footprint</option>
-              <option value="REPLAY">Camera: Event Replay View</option>
-              <option value="SITE_OVERVIEW">Camera: Site Overview (50m)</option>
-              <option value="OPS_CAMP">Camera: Operations Camp</option>
-              <option value="LEARNING_CENTER">Camera: Learning Center</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Viewport Tools & Truth Test Suite Button */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-xl border border-slate-200">
-            {(['ARCHITECTURAL', 'CONSTRUCTION', 'XRAY'] as const).map((mode) => (
-              <button key={mode} onClick={() => setVisualMode(mode)} className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold transition ${visualMode === mode ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-white'}`}>
-                {mode === 'XRAY' ? 'X-RAY' : mode}
-              </button>
-            ))}
-          </div>
-
-          <button onClick={() => setSectionBarOpen((open) => !open)} className={`px-2.5 py-1 rounded-xl border text-xs font-bold transition ${sectionBarOpen ? 'bg-cyan-600 text-white border-cyan-600' : 'bg-white text-slate-700 border-slate-200'}`}>
-            Section / Cutaway
-          </button>
-          {/* Phase 1 Specification Audit Trigger */}
-          <button
-            onClick={handleRunPhase1Audit}
-            className="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-2xs transition flex items-center gap-1.5 font-mono"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" /> PHASE 1 AUDIT (STAGES 0–2)
-          </button>
-
-          {/* Spatial Truth Test Suite Trigger */}
-          <button
-            onClick={handleRunTruthTests}
-            className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-2xs transition flex items-center gap-1.5 font-mono"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" /> RUN TRUTH TESTS
-          </button>
-
-          {/* Mobile Drawer Toggles */}
-          <button
-            onClick={() => {
-              setLeftTreeOpen(!leftTreeOpen);
-              if (!leftTreeOpen) setRightInspectorOpen(false);
-            }}
-            className={`px-2.5 py-1 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 sm:hidden ${leftTreeOpen ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-700 border-slate-200'}`}
-          >
-            <FolderTree className="w-3.5 h-3.5" /> Tree
-          </button>
-
-          <button
-            onClick={() => {
-              setLeftTreeOpen(true);
-              setLeftTab('WORKFORCE');
-              setRightInspectorOpen(false);
-            }}
-            className="px-2.5 py-1 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
-          >
-            <Users className="w-3.5 h-3.5 text-amber-600" /> Workforce (68)
-          </button>
-
-          <button
-            onClick={() => {
-              setSelectedCompId(null);
-              setRightInspectorTab('PRIME_AUTONOMY');
-              setRightInspectorOpen(true);
-            }}
-            className={`px-3 py-1 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 ${
-              rightInspectorOpen && rightInspectorTab === 'PRIME_AUTONOMY'
-                ? 'bg-purple-600 text-white border-purple-600 shadow-xs font-mono'
-                : 'bg-purple-50 text-purple-900 border-purple-200 hover:bg-purple-100 font-mono'
-            }`}
-          >
-            <Brain className="w-3.5 h-3.5 text-purple-600" /> PRIME / STATUS
-          </button>
-
-          <button onClick={fitModelToCamera} className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-2xs transition flex items-center gap-1.5">
-            <Maximize2 className="w-3.5 h-3.5" /> Fit View
-          </button>
-        </div>
+      <div className="hx-view-tools" role="toolbar" aria-label="View controls">
+        <select aria-label="Visual mode" value={visualMode} onChange={e => setVisualMode(e.target.value as typeof visualMode)}>
+          <option value="ARCHITECTURAL">Architectural</option><option value="CONSTRUCTION">Construction</option><option value="XRAY">X-ray</option>
+        </select>
+        <button aria-pressed={sectionBarOpen} onClick={() => setSectionBarOpen(!sectionBarOpen)}>Section</button>
+        <button onClick={() => fitModelToCamera(true)}>Fit view</button>
+        <button aria-expanded={advancedOpen} onClick={() => setAdvancedOpen(!advancedOpen)}>More</button>
+        {advancedOpen && <div className="hx-advanced">
+          <label>Camera <select aria-label="Camera preset" value={cameraPreset} onChange={e => applyCameraPreset(e.target.value)}>
+            {['ORBIT','WALK','INSPECT','BUILD','REPLAY','SITE_OVERVIEW','OPS_CAMP','LEARNING_CENTER'].map(p => <option key={p}>{p}</option>)}
+          </select></label>
+          <button onClick={handleRunPhase1Audit}>Phase 1 audit</button>
+          <button onClick={handleRunTruthTests}>Run truth tests</button>
+          <button onClick={() => { setShowReplayDetails(!showReplayDetails); setAdvancedOpen(false); }}>Legacy replay details / transcript</button>
+          <button onClick={() => { setRightInspectorTab('PRIME_AUTONOMY'); setLegacyPrimeOpen(true); setAdvancedOpen(false); }}>Developer: Prime status</button>
+          <label><input type="checkbox" checked={autoCameraEnabled} onChange={e => setAutoCameraEnabled(e.target.checked)}/> Follow replay camera</label>
+          <hr/><span>Live project actions</span>
+          <button onClick={() => handleValidation006Step('step')} disabled={house0002RawData?.status === 'COMPLETED' || connectionStatus !== 'CONNECTED'}>Step +1</button>
+          <button onClick={() => handleValidation006Step('run-all')} disabled={connectionStatus !== 'CONNECTED'}>Run all</button>
+          <button onClick={() => { if (window.confirm('Reset this project world to its initial state?')) handleValidation006Step('reset'); }}>Reset world</button>
+          <button onClick={onOpenSystemDrawer}>Developer / System</button>
+        </div>}
       </div>
 
       {/* 2. MAIN CENTER WORKSPACE LAYOUT */}
-      <div className="flex-1 flex overflow-hidden relative">
-        {/* LEFT BUILDING NAVIGATOR SIDEBAR */}
-        <div className={`${leftTreeOpen ? 'w-full sm:w-80' : 'w-0'} bg-white border-r border-slate-200 transition-all duration-200 ease-in-out flex flex-col shrink-0 z-10 overflow-hidden shadow-2xs`}>
-          {/* Subtabs Header */}
-          <div className="p-2 border-b border-slate-200 bg-slate-50 flex items-center justify-around text-xs font-bold font-sans">
-            <button
-              onClick={() => setLeftTab('TREE')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 ${leftTab === 'TREE' ? 'bg-white text-blue-700 shadow-2xs border border-slate-200' : 'text-slate-500 hover:text-slate-900'}`}
-            >
-              <FolderTree className="w-3.5 h-3.5" /> Model Tree
-            </button>
-            <button
-              onClick={() => setLeftTab('WORKFORCE')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 ${leftTab === 'WORKFORCE' ? 'bg-white text-amber-700 shadow-2xs border border-slate-200 font-bold' : 'text-slate-500 hover:text-slate-900'}`}
-            >
-              <Users className="w-3.5 h-3.5 text-amber-600" /> Workforce
-            </button>
-            <button
-              onClick={() => setLeftTab('SYSTEMS')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 ${leftTab === 'SYSTEMS' ? 'bg-white text-blue-700 shadow-2xs border border-slate-200' : 'text-slate-500 hover:text-slate-900'}`}
-            >
-              <Network className="w-3.5 h-3.5" /> Systems
-            </button>
-          </div>
-
+      <div className="hx-bim-center">
+        {leftTreeOpen && <InternalWorkspaceSurface workspaceId={workspaceId!} onClose={onWorkspaceClose}>
           {/* Search Box */}
           <div className="p-2.5 border-b border-slate-200">
             <div className="relative">
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
               <input
                 type="text"
-                placeholder={leftTab === 'WORKFORCE' ? 'Search 68 workforce agents...' : 'Search walls, facilities, systems...'}
+                placeholder={leftTab === 'WORKFORCE' ? 'Search workforce...' : 'Search walls, facilities, systems...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-50 text-slate-800 text-xs pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 font-sans"
@@ -2301,7 +2298,18 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           {/* Left Tab Content */}
           <div className="flex-1 overflow-y-auto p-3 text-xs font-mono space-y-2">
-            {leftTab === 'TREE' && projectData && (
+            {leftTab === 'TREE' && <div className="flex gap-2 flex-wrap font-sans">
+              <button disabled={!selectedIsRendered} onClick={() => setIsolatedCompId(selectedRenderId)} className="text-blue-700 disabled:text-slate-400">Isolate selection</button>
+              <button disabled={!selectedIsRendered} onClick={() => { if (selectedRenderId) setHiddenCompIds(current => new Set([...current, selectedRenderId])); }} className="text-blue-700 disabled:text-slate-400">Hide selection</button>
+              <button onClick={() => { setHiddenCompIds(new Set()); setIsolatedCompId(null); }} className="text-blue-700">Show all</button>
+            </div>}
+            {leftTab === 'TREE' && searchQuery && <div className="space-y-1">
+              {(projectData?.components || []).filter(component => `${component.id} ${component.name} ${component.category}`.toLowerCase().includes(searchQuery.toLowerCase())).map(component =>
+                <button key={component.id} className="block text-left w-full p-2 rounded hover:bg-blue-50" onClick={() => setSelectedCompId(component.id)}>{component.name}<small className="block text-slate-500">{component.id}</small></button>
+              )}
+              {!(projectData?.components || []).some(component => `${component.id} ${component.name} ${component.category}`.toLowerCase().includes(searchQuery.toLowerCase())) && <p>No matching components.</p>}
+            </div>}
+            {leftTab === 'TREE' && !searchQuery && projectData && (
               <div className="space-y-2 font-sans">
                 {/* Project Header */}
                 <div className="px-2 py-1.5 bg-slate-100 rounded-xl text-slate-900 font-bold text-xs flex items-center justify-between">
@@ -2540,9 +2548,9 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                           >
                             <span className="flex items-center gap-1.5 truncate">
                               <Box className="w-3.5 h-3.5 text-orange-600 shrink-0" />
-                              Geotech Boring SPT-001 (190 kPa)
+                              {geotechComp.name}
                             </span>
-                            <span className="text-[9px] font-mono opacity-75 shrink-0">TESTED</span>
+                            <span className="text-[9px] font-mono opacity-75 shrink-0">RECORDED</span>
                           </button>
                         </div>
                       );
@@ -2767,8 +2775,8 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                       <span className="font-bold text-amber-800 text-xs">{activeWorkforceCount} Active</span>
                     </div>
                     <div className="p-1.5 bg-white rounded-lg border border-amber-200">
-                      <span className="text-slate-400 block">Learning Reserve</span>
-                      <span className="font-bold text-blue-700 text-xs">{Math.max(0, workforce.length - activeWorkforceCount)} Available</span>
+                      <span className="text-slate-400 block">Other recorded states</span>
+                      <span className="font-bold text-blue-700 text-xs">{Math.max(0, workforce.length - activeWorkforceCount)} Records</span>
                     </div>
                   </div>
                 </div>
@@ -2781,23 +2789,23 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                     onChange={(e) => setWorkforceDisciplineFilter(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-2 text-xs font-bold focus:outline-none"
                   >
-                    <option value="ALL">All Disciplines (17 Trades)</option>
-                    <option value="EXECUTIVE">Executive / Prime (1)</option>
-                    <option value="MANAGEMENT">Management (5)</option>
-                    <option value="SURVEY">Survey (2)</option>
-                    <option value="CONCRETE">Concrete / Foundation (6)</option>
-                    <option value="MASONRY">Masonry (6)</option>
-                    <option value="FRAMING">Framing (6)</option>
-                    <option value="ROOFING">Roofing (4)</option>
-                    <option value="ENVELOPE">Envelope (4)</option>
-                    <option value="PLUMBING">Plumbing (4)</option>
-                    <option value="ELECTRICAL">Electrical (4)</option>
-                    <option value="HVAC">HVAC (3)</option>
-                    <option value="INTERIOR">Interior (3)</option>
-                    <option value="LOGISTICS">Logistics (3)</option>
-                    <option value="MATERIALS">Materials (3)</option>
-                    <option value="INSPECTION">Inspection (4)</option>
-                    <option value="KNOWLEDGE">Learning Reserve (46)</option>
+                    <option value="ALL">All Disciplines</option>
+                    <option value="EXECUTIVE">Executive / Prime</option>
+                    <option value="MANAGEMENT">Management</option>
+                    <option value="SURVEY">Survey</option>
+                    <option value="CONCRETE">Concrete / Foundation</option>
+                    <option value="MASONRY">Masonry</option>
+                    <option value="FRAMING">Framing</option>
+                    <option value="ROOFING">Roofing</option>
+                    <option value="ENVELOPE">Envelope</option>
+                    <option value="PLUMBING">Plumbing</option>
+                    <option value="ELECTRICAL">Electrical</option>
+                    <option value="HVAC">HVAC</option>
+                    <option value="INTERIOR">Interior</option>
+                    <option value="LOGISTICS">Logistics</option>
+                    <option value="MATERIALS">Materials</option>
+                    <option value="INSPECTION">Inspection</option>
+                    <option value="KNOWLEDGE">Learning Reserve</option>
                   </select>
                 </div>
 
@@ -2818,13 +2826,6 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
                             setSelectedCompId(`AGENT-${agent.agentId}`);
                             setRightInspectorOpen(true);
 
-                            // Focus 3D camera
-                            if (cameraPerspRef.current && controlsRef.current && agent.worldPosition) {
-                              const [x, y, z] = agent.worldPosition;
-                              controlsRef.current.target.set(x, y + 1, z);
-                              cameraPerspRef.current.position.set(x + 3, y + 2.5, z + 3);
-                              controlsRef.current.update();
-                            }
                           }}
                           className={`w-full text-left p-2.5 rounded-xl border transition flex items-center justify-between ${
                             isSelected ? 'bg-amber-100 border-amber-300 font-bold shadow-2xs' : 'bg-white border-slate-200 hover:bg-slate-50'
@@ -2864,6 +2865,26 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             {leftTab === 'SYSTEMS' && (
               <div className="space-y-2 font-sans">
                 <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">System Isolation Networks</span>
+                <fieldset className="space-y-2"><legend>Visible categories</legend>
+                  {Object.keys(activeCategories).map(category => <label className="flex gap-2" key={category}><input type="checkbox" checked={activeCategories[category]} onChange={e => setActiveCategories(current => ({ ...current, [category]: e.target.checked }))}/>{category}</label>)}
+                </fieldset>
+                <p>Trace recorded connectivity from the selected component.</p>
+                {(['ELECTRICAL_CIRCUIT','PLUMBING_WASTE','HVAC_AIR_PATH'] as const).map(trace => <button key={trace} disabled={!selectedCompId} className="block text-blue-700 disabled:text-slate-400" onClick={() => {
+                  const category = trace === 'ELECTRICAL_CIRCUIT' ? 'Electrical' : trace === 'PLUMBING_WASTE' ? 'Plumbing' : 'HVAC';
+                  const seen = new Set<string>();
+                  const pending = selectedCompId ? [selectedCompId] : [];
+                  while (pending.length) {
+                    const id = pending.pop()!;
+                    if (seen.has(id)) continue;
+                    const component = projectData?.components.find(c => c.id === id && c.category === category);
+                    if (!component) continue;
+                    seen.add(id);
+                    pending.push(...component.connectedComponentIds);
+                  }
+                  setTracedCompIds(seen); setActiveTrace(trace);
+                }}>{trace.replace(/_/g, ' ')}</button>)}
+                {activeTrace && <p>{tracedCompIds.size} connected component records. Direction / service validation is not inferred.</p>}
+
                 {(['Architecture', 'Structure', 'Plumbing', 'HVAC', 'Electrical', 'Site'] as const).map((sys) => {
                   const isActive = selectedSystem === sys;
                   return (
@@ -2885,16 +2906,11 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               </div>
             )}
           </div>
-        </div>
-
-        {/* Toggle Left Sidebar Button */}
-        <button onClick={() => setLeftTreeOpen(!leftTreeOpen)} className="absolute left-0 top-3 z-20 p-1.5 bg-white border border-slate-200 rounded-r-xl text-slate-600 hover:text-slate-900 shadow-md">
-          {leftTreeOpen ? <X className="w-4 h-4" /> : <FolderTree className="w-4 h-4 text-blue-600" />}
-        </button>
+        </InternalWorkspaceSurface>}
 
         {/* CENTER WebGL BIM VIEWPORT */}
-        <div className="flex-1 min-h-[450px] relative bg-slate-50">
-          <div ref={containerRef} className="w-full h-full min-h-[450px] relative overflow-hidden" />
+        <div className="hx-bim-viewport bg-slate-50">
+          <div ref={containerRef} className="hx-canvas overflow-hidden" data-testid="persistent-world-canvas" />
 
           {sectionBarOpen && (
             <div className="absolute left-1/2 top-16 -translate-x-1/2 z-30 rounded-2xl border border-slate-700 bg-slate-900/95 px-4 py-3 text-white shadow-2xl backdrop-blur-md min-w-[330px]">
@@ -2909,6 +2925,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           {/* Phase 2 Live World In-World Labels, Action Overlay & Event HUD */}
           <Phase2WorldOverlay
+            showLegacyChrome={showReplayDetails}
             camera={cameraPerspRef.current}
             controls={controlsRef.current}
             containerRef={containerRef}
@@ -2927,120 +2944,13 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
             onSelectComponent={(id) => setSelectedCompId(id)}
           />
 
-          {/* Floating Canvas Indicator */}
-          <div className="absolute top-3 left-4 z-10 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-extrabold text-slate-900 shadow-xs flex items-center gap-2 pointer-events-none">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-            <span>HERMES BIM SPATIAL WORKSPACE ({activeProjectId})</span>
-          </div>
-
-          {/* CHECKPOINT 0: CUSTOMER INTAKE HUD OVERLAY CARD */}
-          {(house0002RawData?.currentCheckpoint ?? 0) === 0 && (
-            <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-white/95 backdrop-blur-md border border-blue-300 shadow-2xl rounded-2xl p-4 max-w-xl w-[92vw] sm:w-full text-slate-900 animate-in fade-in slide-in-from-top-4 duration-300">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-2 text-blue-700 font-extrabold text-sm">
-                  <Zap className="w-5 h-5 text-blue-600 shrink-0 animate-pulse" />
-                  <span>PROJECT CREATED — Site Investigation & Customer Intake Ready</span>
-                </div>
-                <span className="text-[10px] font-mono bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-bold shrink-0">
-                  GENESIS 0
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                Site parcel in Tampa Bay, FL is clean, surveyed, and primed. HERMES requires the owner's project requirements brief to generate building geometry and commence construction orchestration.
-              </p>
-              <div className="mt-3.5 flex items-center gap-2 flex-wrap">
-                <button
-                  onClick={() => setIntakeModalOpen(true)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-blue-500/20 transition flex items-center gap-2 cursor-pointer"
-                >
-                  <FileText className="w-4 h-4" />
-                  START CUSTOMER INTAKE
-                </button>
-                <button
-                  onClick={() => stepForward()}
-                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer"
-                >
-                  Or Step (+1)
-                </button>
-              </div>
-            </div>
+          {house0002RawData?.projectId === activeProjectId && house0002RawData.currentCheckpoint === 0 && (
+            <details className="hx-intake-prompt">
+              <summary>Project intake</summary>
+              <p>Review the project brief before advancing construction work. Site readiness is not established by this screen.</p>
+              <button onClick={() => setIntakeModalOpen(true)}>Open existing intake form</button>
+            </details>
           )}
-
-          {/* Top Center: Construction Phase Progress Strip */}
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-slate-900/90 text-white backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-700/80 shadow-xl flex items-center gap-2 text-xs font-mono overflow-x-auto max-w-[90vw] sm:max-w-none">
-            {[
-              { id: 'INTAKE', name: 'Intake', range: [0, 1] },
-              { id: 'SURVEY', name: 'Survey & Geotech', range: [2, 4] },
-              { id: 'DESIGN', name: 'Design', range: [5, 7] },
-              { id: 'FOUNDATION', name: 'Foundation', range: [8, 12] },
-              { id: 'FRAMING', name: 'Framing', range: [13, 17] },
-              { id: 'MEP', name: 'MEP Rough-In', range: [18, 22] },
-              { id: 'INSPECTIONS', name: 'Inspections', range: [23, 26] },
-              { id: 'FINISH', name: 'Finishes & Handover', range: [27, 30] },
-            ].map((phase) => {
-              const currentCp = house0002RawData?.currentCheckpoint ?? 0;
-              const isActive = currentCp >= phase.range[0] && currentCp <= phase.range[1];
-              const isPassed = currentCp > phase.range[1];
-
-              return (
-                <button
-                  key={phase.id}
-                  onClick={() => handleValidation006Step('step')}
-                  className={`px-3 py-1 rounded-xl text-[11px] font-extrabold transition shrink-0 flex items-center gap-1.5 ${
-                    isActive
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 border border-blue-400 font-bold'
-                      : isPassed
-                      ? 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                      : 'bg-slate-950/60 text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white animate-pulse' : isPassed ? 'bg-emerald-400' : 'bg-slate-600'}`} />
-                  <span>{phase.name}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Top Right: Player & Camera Control Bar */}
-          <div className="absolute top-3 right-4 z-20 bg-slate-900/95 text-white backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-700 shadow-xl flex items-center gap-3 text-xs font-mono">
-            <div className="flex flex-col">
-              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                Checkpoint {house0002RawData?.currentCheckpoint ?? 0} / {totalCanonicalTasks}
-              </span>
-              <span className="font-bold text-white max-w-[240px] truncate">
-                {house0002RawData?.diagnostics?.checkpointName || 'CHECKPOINT 0 — CLEAN WORLD GENESIS'}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1.5 ml-2">
-              <button
-                onClick={() => handleValidation006Step('reset')}
-                className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold border border-slate-700 text-[11px] transition flex items-center gap-1"
-                title="Reset to Checkpoint 0"
-              >
-                <RotateCcw className="w-3 h-3 text-slate-400" />
-                <span>Reset</span>
-              </button>
-
-              <button
-                onClick={() => handleValidation006Step('step')}
-                className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold border border-blue-500 text-[11px] shadow-xs transition flex items-center gap-1 disabled:opacity-50"
-                disabled={house0002RawData?.status === 'COMPLETED'}
-              >
-                <span>Step (+1)</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                onClick={() => handleValidation006Step('run-all')}
-                className="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold border border-purple-500 text-[11px] shadow-xs transition flex items-center gap-1"
-              >
-                <Play className="w-3.5 h-3.5" />
-                <span>Run All</span>
-              </button>
-            </div>
-          </div>
 
           {/* Active Filter Floating Badge */}
           {(selectedSystem || activeTrace || isolatedCompId) && (
@@ -3061,17 +2971,17 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
           )}
         </div>
 
-        {/* RIGHT CONTEXT INSPECTOR SIDEBAR */}
-        <div className={`${rightInspectorOpen ? 'w-full sm:w-96 fixed sm:static inset-x-0 bottom-0 max-h-[85vh] sm:max-h-none border-t sm:border-t-0 border-l border-slate-200 z-40' : 'w-0 hidden sm:flex'} bg-white transition-all duration-200 ease-in-out flex flex-col shrink-0 overflow-hidden shadow-2xl sm:shadow-2xs`}>
+        {/* RIGHT CONTEXT INSPECTOR */}
+        {legacyPrimeOpen && <div className="hx-legacy-inspector">
           {/* Inspector Header */}
           <div className="p-3 border-b border-slate-200 flex items-center justify-between gap-2 bg-slate-50">
             <div className="flex items-center gap-2">
               <Brain className="w-4 h-4 text-purple-600" />
               <span className="text-xs font-bold uppercase tracking-wider text-slate-900 font-sans">
-                {selectedAgent ? 'Agent Scope Inspector' : selectedFacility ? 'Facility Scope Inspector' : selectedComponent ? 'Component Scope Inspector' : 'HERMES Prime / Autonomy Inspector'}
+                {selectedAgent ? 'Agent Scope Inspector' : selectedFacility ? 'Facility Scope Inspector' : selectedComponent ? 'Component Scope Inspector' : rightInspectorTab === 'PRIME_AUTONOMY' ? 'HERMES Prime / Autonomy Inspector' : 'Selection inspector'}
               </span>
             </div>
-            <button onClick={() => setRightInspectorOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
+            <button onClick={() => setLegacyPrimeOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -3098,7 +3008,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
 
           {/* Inspector Body */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans text-xs">
-            {rightInspectorTab === 'PRIME_AUTONOMY' || (!selectedAgent && !selectedFacility && !selectedComponent) ? (
+            {rightInspectorTab === 'PRIME_AUTONOMY' ? (
               /* PRIME / PROJECT STATUS & AUTONOMY INSPECTOR */
               <div className="space-y-3 font-sans">
                 {/* 1. CHECKPOINT & GATE STATUS */}
@@ -3438,67 +3348,25 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
               </div>
             )}
           </div>
-        </div>
+        </div>}
+
+        {rightInspectorOpen && currentWorld && <UniversalInspector state={currentWorld} selectedId={selectedCompId} onClose={closeInspectorDrawer} actions={{
+          canFocus: finitePosition(inspected?.spatial?.position), canIsolate: selectedIsRendered, canHide: selectedIsRendered,
+          focus: () => { if (selectedCompId) focusEntity(selectedCompId); },
+          isolate: () => { if (selectedIsRendered) setIsolatedCompId(selectedRenderId); },
+          hide: () => { if (selectedIsRendered && selectedRenderId) setHiddenCompIds(current => new Set([...current,selectedRenderId])); },
+          select: id => { setSelectedCompId(id); openInspectorDrawer(); },
+        }}/>}
 
         {/* Toggle Right Inspector Button */}
-        <button onClick={() => setRightInspectorOpen(!rightInspectorOpen)} className="absolute right-0 top-3 z-20 p-1.5 bg-white border border-slate-200 rounded-l-xl text-slate-600 hover:text-slate-900 shadow-md">
+        <button onClick={() => setRightInspectorOpen(!rightInspectorOpen)} aria-label="Toggle inspector" className="hx-inspector-toggle">
           {rightInspectorOpen ? <X className="w-4 h-4" /> : <FileText className="w-4 h-4 text-blue-600" />}
         </button>
       </div>
 
-      {/* 3. BOTTOM REPLAY TIMELINE DOCK */}
-      <div className="bg-white border-t border-slate-200 px-4 py-2 flex items-center justify-between gap-4 z-20 shrink-0 font-sans shadow-2xs">
-        {activeProjectId === 'REFERENCE-BIM-0001' ? (
-          <div className="w-full text-center text-xs font-bold text-slate-500 font-mono py-1">
-            READ ONLY REFERENCE MODEL - NO HERMES BUILD HISTORY
-          </div>
-        ) : (
-          <>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsPlayingTimeline(!isPlayingTimeline)}
-                className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-2xs"
-              >
-                {isPlayingTimeline ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                <span>{isPlayingTimeline ? 'Pause Replay' : 'Play Replay'}</span>
-              </button>
-
-              <div className="flex items-center bg-slate-100 rounded-xl p-0.5 border border-slate-200 text-[11px] font-mono">
-                {[1, 2, 5, 10].map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setReplaySpeed(s)}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition ${replaySpeed === s ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    {s}x
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex-1 flex items-center gap-3 font-mono text-xs max-w-xl">
-              <span className="text-slate-500 text-[11px]">
-                Event {currentEventIndex + 1} / {replayEvents.length || 1}
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={Math.max(0, replayEvents.length - 1)}
-                value={currentEventIndex}
-                onChange={(e) => setCurrentEventIndex(Number(e.target.value))}
-                className="w-full accent-blue-600 cursor-pointer h-1.5 bg-slate-200 rounded-lg"
-              />
-            </div>
-
-            {activeReplayEvent && (
-              <div className="hidden md:flex items-center gap-2 text-xs font-bold text-blue-900 bg-blue-50 px-3 py-1 rounded-xl border border-blue-200 max-w-sm truncate">
-                <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span className="truncate">{activeReplayEvent.message || activeReplayEvent.decision || activeReplayEvent.title || activeReplayEvent.questionOrTopic || activeReplayEvent.eventType}</span>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      <ConstructionTimeline state={currentWorld} index={currentEventIndex} count={replayEvents.length} isPlaying={isPlayingTimeline} speed={replaySpeed}
+        expanded={timelineExpanded} setExpanded={setTimelineExpanded} setPlaying={setIsPlayingTimeline} setIndex={setCurrentEventIndex} setSpeed={setReplaySpeed}
+        actions={eventActions} onWhatChanged={onWhatChanged}/>
 
       {/* 4. SPATIAL TRUTH TEST SUITE REPORT MODAL */}
       {isTruthTestModalOpen && truthTestReport && (
@@ -3748,7 +3616,7 @@ export const BimWorkspaceView: React.FC<BimWorkspaceViewProps> = ({
       )}
     </div>
   );
-};
+});
 
 function getCategoryColorHex(cat: string): number {
   switch (cat) {

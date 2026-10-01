@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import type { CanonicalEvidenceRefs, Claim, RealityClass } from '../src/types/hermes';
+import { createClaim } from '../src/lib/projectEvidence';
 
 // --- WORLD EVENT RECORD ---
 export interface HermesWorldEvent {
@@ -31,7 +33,7 @@ export interface HermesWorldEvent {
 }
 
 // --- TRUTH & DOMAIN MODELS ---
-export interface JurisdictionTruth {
+export interface JurisdictionTruth extends CanonicalEvidenceRefs {
   userProvidedAddress: string | null;
   geocodedJurisdiction: string | null;
   codeEdition: string | null;
@@ -49,7 +51,7 @@ export interface JurisdictionTruth {
   status: 'VERIFIED_SOURCE' | 'SIMULATION_FIXTURE' | 'USER_INPUT' | 'UNVERIFIED';
 }
 
-export interface GeotechTruth {
+export interface GeotechTruth extends CanonicalEvidenceRefs {
   dataOrigin: 'VERIFIED_IMPORT' | 'USER_ASSUMPTION' | 'SIMULATION_FIXTURE';
   sampleId: string;
   depthFt: number;
@@ -73,13 +75,13 @@ export interface FoundationCandidateEvaluation {
   eliminatedReason?: string;
 }
 
-export interface FoundationSelectionTruth {
+export interface FoundationSelectionTruth extends CanonicalEvidenceRefs {
   selectedFoundation: 'SLAB_ON_GRADE' | 'POST_TENSIONED_SLAB' | 'STEM_WALL_FOUNDATION' | 'CRAWLSPACE' | 'PILE_FOUNDATION';
   candidatesEvaluated: FoundationCandidateEvaluation[];
   rationale: string;
   structuralCapacityPsf: number;
   waterTableFt: number;
-  dataOrigin: 'VERIFIED_ENGINEERING' | 'SIMULATION_DEFAULT';
+  dataOrigin: 'VERIFIED_ENGINEERING' | 'SIMULATION_DEFAULT' | 'CALCULATED_UNVERIFIED';
 }
 
 export interface StructuralEngineeringTruth {
@@ -111,7 +113,7 @@ export interface SpacePlanningCandidate {
   description: string;
 }
 
-export interface QuantityTakeoffLineItem {
+export interface QuantityTakeoffLineItem extends CanonicalEvidenceRefs {
   itemId: string;
   category: string;
   description: string;
@@ -152,7 +154,8 @@ export interface CPMActivity {
   status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED';
 }
 
-export interface HermesInspectionTicket {
+export interface HermesInspectionTicket extends CanonicalEvidenceRefs {
+  realityClass?: RealityClass;
   ticketId: string;
   discipline: string;
   inspector: string;
@@ -245,9 +248,14 @@ export interface ChangePropagationRecord {
 
 // --- HERMES LIVE HOUSE WORLD STATE ---
 export interface HermesLiveHouseState {
+  evidenceClaims?: Claim[];
+  legacyUnverifiedTruth?: Record<string, unknown>;
   projectId: string;
   projectName: string;
   attemptId: string;
+  /** FND-01 additive canonical metadata; attempt identity remains distinct. */
+  currentProjectRevisionId?: string;
+  projectWorldFrameId?: string;
   currentCheckpoint: number; // Monotonic event observation sequence index
   currentStepIndex: number;
   currentPhase: string;
@@ -365,7 +373,7 @@ export interface EquipmentEntity {
   createdCheckpoint?: number;
 }
 
-export interface MaterialStagingEntity {
+export interface MaterialStagingEntity extends CanonicalEvidenceRefs {
   materialBatchId: string;
   name: string;
   category: 'REBAR' | 'FORMWORK' | 'CONCRETE' | 'LUMBER' | 'PLUMBING' | 'ELECTRICAL' | 'ROOFING';
@@ -423,6 +431,7 @@ export class HermesLiveHouseEngine {
     customParams?: Partial<HermesLiveHouseState['projectParams']>
   ): HermesLiveHouseState {
     if (this.currentState) {
+      this.normalizeLegacyTruth(this.currentState);
       return this.currentState;
     }
 
@@ -458,6 +467,7 @@ export class HermesLiveHouseEngine {
           }));
         }
         console.log(`[HERMES Live House Engine] Hydrated state from disk. Event Sequence: ${this.currentState?.eventSequence}, Status: ${this.currentState?.status}`);
+        this.normalizeLegacyTruth(this.currentState!);
         return this.currentState!;
       } catch (err) {
         console.warn('[HERMES Live House Engine] Failed to parse state file, building clean genesis state.');
@@ -814,6 +824,8 @@ export class HermesLiveHouseEngine {
       projectId: 'HERMES-LIVE-HOUSE-001',
       projectName: 'HERMES Autonomous Residence',
       attemptId,
+      currentProjectRevisionId: 'PROJECT-REV-HERMES-LIVE-HOUSE-001-0001',
+      projectWorldFrameId: 'FRAME-HERMES-LIVE-HOUSE-001-ROOT',
       currentCheckpoint: 0,
       currentStepIndex: 0,
       currentPhase: 'GENESIS_INTAKE',
@@ -886,8 +898,81 @@ export class HermesLiveHouseEngine {
       }
     };
 
+    this.attachFnd01CanonicalMetadata(state);
     state.diagnostics.worldStateHash = this.computeHash(state);
     return state;
+  }
+
+  /** Labels unambiguous live records without altering their legacy coordinates. */
+  private static attachFnd01CanonicalMetadata(state: HermesLiveHouseState): void {
+    const frameId = state.projectWorldFrameId!;
+    const decorate = (record: any, id: string, entityClass: string) => {
+      if (!record || !id) return;
+      record.canonicalEntityId = record.canonicalEntityId || id;
+      record.canonicalFrameId = record.canonicalFrameId || frameId;
+      record.canonicalRevisionId = record.canonicalRevisionId || state.currentProjectRevisionId;
+      record.canonicalSpatial = record.canonicalSpatial || {
+        frameId,
+        lengthUnit: 'METER',
+        positionAnchor: 'LEGACY_UNSPECIFIED',
+        entityClass
+      };
+    };
+    state.spatialEntities.forEach((record: any) => decorate(record, record.entityId, 'SITE_OBJECT'));
+    state.equipmentEntities.forEach((record: any) => decorate(record, record.equipmentId, 'EQUIPMENT'));
+    state.materialsOnsite.forEach((record: any) => decorate(record, record.materialBatchId, 'MATERIAL_BATCH'));
+    state.agentSpatialStates.forEach((record: any) => decorate(record, record.agentId, 'ACTOR'));
+  }
+
+  private static normalizeLegacyTruth(state: HermesLiveHouseState): void {
+    // Legacy snapshots contain no canonical external approval evidence registry.
+    // Preserve the old assertion for history; never treat it as verified on hydration.
+    const remember = (key: string, value: unknown) => {
+      state.legacyUnverifiedTruth ??= {};
+      if (!(key in state.legacyUnverifiedTruth)) state.legacyUnverifiedTruth[key] = structuredClone(value);
+    };
+    if (state.jurisdictionTruth?.status === 'VERIFIED_SOURCE') {
+      remember('jurisdiction', state.jurisdictionTruth);
+      state.jurisdictionTruth.status = state.mode === 'LIVE_PROJECT' ? 'UNVERIFIED' : 'SIMULATION_FIXTURE';
+      state.jurisdictionTruth.sourceEvidence = 'Legacy source citation has no canonical evidence-backed promotion.';
+    }
+    if (state.geotechTruth?.dataOrigin === 'VERIFIED_IMPORT') {
+      remember('geotech', state.geotechTruth);
+      state.geotechTruth.dataOrigin = state.mode === 'LIVE_PROJECT' ? 'USER_ASSUMPTION' : 'SIMULATION_FIXTURE';
+      state.geotechTruth.evidenceNotes = 'Legacy geotech assertion has no attached project report/test evidence.';
+    }
+    if (state.foundationSelection?.dataOrigin === 'VERIFIED_ENGINEERING') {
+      remember('foundation', state.foundationSelection);
+      state.foundationSelection.dataOrigin = state.mode === 'LIVE_PROJECT' ? 'CALCULATED_UNVERIFIED' : 'SIMULATION_DEFAULT';
+    }
+    for (const ticket of state.inspectionTickets ?? []) {
+      if (ticket.licensedProfessionalApproval === 'REVIEWED' || ticket.AHJInspection === 'PASSED' || ticket.certificateOfOccupancyStatus === 'ISSUED') {
+        remember(ticket.ticketId, ticket);
+        ticket.licensedProfessionalApproval = 'PENDING'; ticket.AHJInspection = 'NOT_SUBMITTED'; ticket.certificateOfOccupancyStatus = 'NOT_ELIGIBLE';
+        ticket.notes = 'Unverified legacy external approval assertion; retained in legacyUnverifiedTruth for audit.';
+      }
+      ticket.realityClass = state.mode === 'LIVE_PROJECT' ? 'LIVE' : state.mode === 'REGRESSION_TEST' ? 'REGRESSION_FIXTURE' : 'SIMULATION';
+    }
+  }
+
+  private static attachFnd02Claims(state: HermesLiveHouseState, event: HermesWorldEvent): void {
+    const realityClass: RealityClass = state.mode === 'LIVE_PROJECT' ? 'LIVE' : state.mode === 'REGRESSION_TEST' ? 'REGRESSION_FIXTURE' : 'SIMULATION';
+    const claims = state.evidenceClaims ??= [];
+    const added: string[] = [];
+    const attach = (record: CanonicalEvidenceRefs, subject: string, domain: Claim['domain'], predicate: string, value: Claim['value'], calculated = false, ownerInput = false) => {
+      const claim = createClaim({ claimId: `CLAIM-${state.projectId}-${event.sequence}-${subject}-${predicate}`, projectId: state.projectId, subjectEntityId: subject, projectRevisionId: state.currentProjectRevisionId!, domain, predicate, value, recordedAt: event.timestamp, evidenceIds: [], realityClass, derivationMethod: realityClass !== 'LIVE' ? 'SIMULATED' : calculated ? 'DETERMINISTIC_CALCULATION' : ownerInput ? 'DIRECT_SOURCE' : 'ASSUMED', sourceAuthorityClass: realityClass !== 'LIVE' ? 'SIMULATION_FIXTURE' : ownerInput ? 'OWNER_INPUT' : 'HERMES_INTERNAL', legacyProvenance: { taskEventId: event.eventId } });
+      claims.push(claim); record.claimIds = [...(record.claimIds ?? []), claim.claimId]; added.push(claim.claimId);
+    };
+    if (event.payload.taskId === 'RESOLVE_JURISDICTION' && state.jurisdictionTruth) attach(state.jurisdictionTruth, state.projectId, 'JURISDICTION', 'jurisdiction.planning_context', { location: state.projectParams.location ?? '', code: state.jurisdictionTruth.codeEdition, wind: state.jurisdictionTruth.windCriteriaMph }, false, true);
+    if (event.payload.taskId === 'GEOTECHNICAL_INVESTIGATION' && state.geotechTruth) attach(state.geotechTruth, state.projectId, 'GEOTECH', 'geotech.bearing_assumption', state.geotechTruth.bearingCapacityPsf, false, true);
+    if (event.payload.taskId === 'FOUNDATION_SELECTION_ENGINE' && state.foundationSelection) attach(state.foundationSelection, state.projectId, 'GEOTECH', 'foundation.selection', state.foundationSelection.selectedFoundation, true);
+    for (const ticket of state.inspectionTickets) if (!ticket.claimIds?.length) attach(ticket, ticket.ticketId, 'GENERAL', 'hermes.internal_validation', ticket.status, true);
+    for (const material of state.materialsOnsite) {
+      const latest = claims.find(c => c.claimId === material.claimIds?.at(-1));
+      if (latest?.value !== material.verificationStatus) attach(material, material.materialBatchId, 'MATERIAL', 'material.lifecycle', material.verificationStatus);
+    }
+    for (const price of state.bomItems) if (!price.claimIds?.length) attach(price, price.itemId, 'PRICE', 'price.estimate', price.materialUnitCostUSD);
+    event.payload.claimIds = added;
   }
 
   // --- CORE STEP CONTROL ---
@@ -1188,6 +1273,7 @@ export class HermesLiveHouseEngine {
         }
       };
       state.events.push(worldEvent);
+      this.attachFnd02Claims(state, worldEvent);
       if (selectedTask.taskId === 'STAGE_LONG_MATERIAL_BEFORE_CLOSURE' && state.constructabilityProof) {
         state.constructabilityProof.evidenceEventId = worldEvent.eventId;
       }
@@ -1288,7 +1374,7 @@ export class HermesLiveHouseEngine {
           state.projectParams.windRatingMph = wind;
           state.projectParams.jurisdiction = codeEdition;
 
-          const isVerified = state.mode === 'LIVE_PROJECT' && Boolean(state.projectParams.location);
+          const isLive = state.mode === 'LIVE_PROJECT';
 
           state.jurisdictionTruth = {
             userProvidedAddress: loc,
@@ -1304,10 +1390,10 @@ export class HermesLiveHouseEngine {
               ashraeZone: 'Zone 2A - Hot Humid Coastal',
               humidityLevel: 'HIGH'
             },
-            sourceEvidence: isVerified 
-              ? 'FBC 2023 Wind Velocity Maps / FEMA Flood Insurance Rate Map FIRM Panel 12057C'
+            sourceEvidence: isLive
+              ? 'Owner location and unverified planning estimates; no geocoding, code, wind or flood evidence retrieved.'
               : 'SIMULATED_JURISDICTION_RESOLVER (Fixture Estimate)',
-            status: isVerified ? 'VERIFIED_SOURCE' : 'SIMULATION_FIXTURE'
+            status: isLive ? 'USER_INPUT' : 'SIMULATION_FIXTURE'
           };
 
           return { success: true, eventMessage: `Jurisdiction resolved: ${codeEdition} (${wind} MPH Wind Rating, Status: ${state.jurisdictionTruth.status}).` };
@@ -1352,17 +1438,17 @@ export class HermesLiveHouseEngine {
           const bearing = state.projectParams.soilBearingPsf || (state.projectParams.siteSlopeDegrees > 8 ? 1400 : 2200);
           const groundwater = state.projectParams.waterTableFt || (bearing < 1500 ? 2.0 : 6.0);
 
-          const isVerified = state.mode === 'LIVE_PROJECT' && Boolean(state.projectParams.soilBearingPsf);
+          const isLive = state.mode === 'LIVE_PROJECT';
 
           state.geotechTruth = {
-            dataOrigin: isVerified ? 'VERIFIED_IMPORT' : 'SIMULATION_FIXTURE',
+            dataOrigin: isLive ? 'USER_ASSUMPTION' : 'SIMULATION_FIXTURE',
             sampleId: 'SPT-BORING-001',
             depthFt: 20.0,
             soilClass: bearing < 1500 ? 'Soft Silty Clay & Organic Muck' : 'Medium Dense Fine Sand over Stiff Clay',
             bearingCapacityPsf: bearing,
             waterTableFt: groundwater,
             recommendation: bearing < 1500 ? 'Deep Concrete Piles Required' : state.projectParams.siteSlopeDegrees >= 6 ? 'Stem Wall Foundation' : 'Post-Tensioned Monolithic Slab',
-            evidenceNotes: 'Standard Penetration Test N-values per ASTM D1586.'
+            evidenceNotes: isLive ? 'Unverified owner input/planning assumption. No boring, SPT, lab result or professional report is attached.' : 'Simulation fixture only; no physical SPT was performed.'
           };
 
           state.boringSamples = [
@@ -1377,7 +1463,7 @@ export class HermesLiveHouseEngine {
             }
           ];
 
-          return { success: true, eventMessage: `SPT Boring complete: Allowable Bearing = ${bearing} PSF, Water Table = ${groundwater} ft (Data Origin: ${state.geotechTruth.dataOrigin}).` };
+          return { success: true, eventMessage: `Geotech planning estimate: Assumed Bearing = ${bearing} PSF, Water Table = ${groundwater} ft (Data Origin: ${state.geotechTruth.dataOrigin}).` };
         }
       },
       {
@@ -1488,7 +1574,7 @@ export class HermesLiveHouseEngine {
             rationale,
             structuralCapacityPsf: bearing,
             waterTableFt: groundwater,
-            dataOrigin: state.geotechTruth?.dataOrigin === 'VERIFIED_IMPORT' ? 'VERIFIED_ENGINEERING' : 'SIMULATION_DEFAULT'
+            dataOrigin: state.mode === 'LIVE_PROJECT' ? 'CALCULATED_UNVERIFIED' : 'SIMULATION_DEFAULT'
           };
 
           return { success: true, eventMessage: `Foundation Decision Locked: ${winner.foundationType} (Composite Score: ${winner.compositeScore}). ${rationale}` };
@@ -1846,11 +1932,12 @@ export class HermesLiveHouseEngine {
             discipline: 'Substructure Reinforcement Audit (ACI 318-19)',
             inspector: 'AGENT-INSPECT-001',
             status: 'HERMES_VALIDATED',
-            licensedProfessionalApproval: 'REVIEWED',
-            AHJInspection: 'PASSED',
-            certificateOfOccupancyStatus: 'PENDING_AHJ_FINAL_WALK',
+            licensedProfessionalApproval: 'PENDING',
+            AHJInspection: 'NOT_SUBMITTED',
+            certificateOfOccupancyStatus: 'NOT_ELIGIBLE',
+            realityClass: state.mode === 'LIVE_PROJECT' ? 'LIVE' : state.mode === 'REGRESSION_TEST' ? 'REGRESSION_FIXTURE' : 'SIMULATION',
             date: new Date().toISOString(),
-            notes: 'Pre-pour rebar inspection PASSED: 3" concrete bottom clearance chairs verified. Post-tension tendon profile follows 2" parabolic drape. Anchors torqued and duct sheathing intact.'
+            notes: 'Internal model check only; external approval pending. Model pre-pour check: 3" concrete bottom clearance chairs verified. Post-tension tendon profile follows 2" parabolic drape. Anchors torqued and duct sheathing intact.'
           });
 
           return { success: true, eventMessage: `Stage 4 Reinforcement placed: Grade 60 rebar grid & post-tension tendon layout verified with ACI 318 pre-pour clearance audit.` };
@@ -2376,15 +2463,16 @@ export class HermesLiveHouseEngine {
               discipline: 'Multi-Trade Structural & MEP Audit',
               inspector: 'AGENT-INSPECT-001',
               status: 'HERMES_VALIDATED',
-              licensedProfessionalApproval: isLive ? 'REVIEWED' : 'PENDING',
-              AHJInspection: isLive ? 'PENDING_CITY_INSPECTION' : 'PASSED',
-              certificateOfOccupancyStatus: 'PENDING_AHJ_FINAL_WALK',
+              licensedProfessionalApproval: 'PENDING',
+              AHJInspection: 'NOT_SUBMITTED',
+              certificateOfOccupancyStatus: 'NOT_ELIGIBLE',
+            realityClass: state.mode === 'LIVE_PROJECT' ? 'LIVE' : state.mode === 'REGRESSION_TEST' ? 'REGRESSION_FIXTURE' : 'SIMULATION',
               date: new Date().toISOString(),
-              notes: 'HERMES internal multi-trade audit PASSED. Building components comply with FBC 2023 standards. Awaiting final AHJ municipal inspector walk.'
+              notes: 'HERMES internal model audit passed against planning assumptions. No professional or AHJ approval evidence is attached.'
             }
           ];
 
-          return { success: true, eventMessage: `Multi-trade inspection status: HERMES_VALIDATED (CO Status: PENDING_AHJ_FINAL_WALK).` };
+          return { success: true, eventMessage: `Multi-trade inspection status: HERMES_VALIDATED (external approvals pending; CO NOT_ELIGIBLE).` };
         }
       },
       {

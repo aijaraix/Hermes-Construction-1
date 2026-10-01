@@ -5,6 +5,7 @@ import { AlertTriangle, CheckCircle2, Wrench, ShieldCheck, ArrowRight, RefreshCw
 interface InspectorViewProps {
   tickets: InspectionTicket[];
   onRepairTicket: (ticketId: string) => void;
+  repairAvailable?: boolean;
   onTriggerHeartbeat: () => void;
 }
 
@@ -12,6 +13,7 @@ export const InspectorView: React.FC<InspectorViewProps> = ({
   tickets,
   onRepairTicket,
   onTriggerHeartbeat,
+  repairAvailable = false,
 }) => {
   const [repairingId, setRepairingId] = useState<string | null>(null);
 
@@ -31,30 +33,25 @@ export const InspectorView: React.FC<InspectorViewProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-bold uppercase tracking-widest text-red-400 bg-red-950 px-2.5 py-0.5 rounded-full border border-red-800">
-              INDEPENDENT INSPECTOR SWARM
+              INTERNAL INSPECTION RECORDS
             </span>
           </div>
           <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-cyan-400" /> Inspection & Auto-Repair Sub-System
+            <ShieldCheck className="w-5 h-5 text-cyan-400" /> Inspection records
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            The builder does NOT grade itself. Independent inspector agents attempt to find failures and assign dedicated repair swarms.
+            Recorded internal checks. Professional and municipal approval require their own evidence.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="px-4 py-2 bg-slate-950 rounded-xl border border-slate-800 text-xs">
             <span className="text-slate-400 block text-[10px] uppercase">Open Failures</span>
-            <span className={`font-bold text-lg ${openTickets.length > 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+            <span className={`font-bold text-lg ${openTickets.length > 0 ? 'text-red-400' : 'text-slate-400'}`}>
               {openTickets.length} Active
             </span>
           </div>
-          <button
-            onClick={onTriggerHeartbeat}
-            className="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs rounded-xl transition shadow flex items-center gap-1.5"
-          >
-            <RefreshCw className="w-4 h-4" /> Run Inspection Sweep
-          </button>
+          <span className="text-xs text-slate-400">Inspection execution is not connected in this legacy view.</span>
         </div>
       </div>
 
@@ -66,10 +63,10 @@ export const InspectorView: React.FC<InspectorViewProps> = ({
 
         {openTickets.length === 0 ? (
           <div className="p-8 bg-slate-900/60 rounded-2xl border border-slate-800 text-center space-y-2">
-            <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-            <h4 className="text-base font-bold text-slate-200">Zero Active Inspection Failures</h4>
+            <Clock className="w-10 h-10 text-slate-400 mx-auto" />
+            <h4 className="text-base font-bold text-slate-200">{tickets.length ? "No open inspection failures recorded" : "No inspection results recorded yet"}</h4>
             <p className="text-xs text-slate-400 max-w-md mx-auto">
-              All digital building systems have passed independent inspection checks across Florida Building Code & IPC standards.
+              Missing failures do not establish inspection completion or external approval.
             </p>
           </div>
         ) : (
@@ -112,11 +109,11 @@ export const InspectorView: React.FC<InspectorViewProps> = ({
 
                   <button
                     onClick={() => handleRepairClick(ticket.id)}
-                    disabled={repairingId === ticket.id}
+                    disabled={!repairAvailable || repairingId === ticket.id}
                     className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-semibold text-xs rounded-xl transition shadow flex items-center gap-1.5 disabled:opacity-50"
                   >
                     <Wrench className={`w-3.5 h-3.5 ${repairingId === ticket.id ? 'animate-spin' : ''}`} />
-                    {repairingId === ticket.id ? 'Repairing & Reinspecting...' : 'Auto-Repair & Reinspect'}
+                    {!repairAvailable ? 'Repair execution not connected' : repairingId === ticket.id ? 'Repair requested...' : 'Request repair'}
                   </button>
                 </div>
               </div>

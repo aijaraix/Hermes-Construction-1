@@ -9,6 +9,7 @@ import {
 } from '../src/types/hermes';
 
 import { QuotaIntegrityEngine } from './quotaIntegrityEngine';
+import { LEGACY_GEMINI_MODELS } from './ai/providers/geminiConfig';
 
 export interface ReasoningExecutionParams {
   agentRole: AgentContract;
@@ -18,6 +19,7 @@ export interface ReasoningExecutionParams {
   promptOverride?: string;
   allowSimulationFallback?: boolean;
   forceSimulationMode?: boolean;
+  signal?: AbortSignal;
 }
 
 export interface ReasoningExecutionResult {
@@ -32,6 +34,8 @@ export interface ReasoningExecutionResult {
   usageMetadata?: any;
   executed: boolean;
   promptHash: string;
+  promptSha256?: string;
+  usageSource?: 'PROVIDER_REPORTED' | 'ESTIMATED' | 'UNKNOWN';
 }
 
 export interface ConstructionReasoningProvider {
@@ -42,8 +46,11 @@ export interface ConstructionReasoningProvider {
 
 export class GeminiReasoningProvider implements ConstructionReasoningProvider {
   public providerName = 'GoogleGemini';
-  public modelName = 'gemini-3.7-flash';
-  private fallbackModels = ['gemini-3.1-flash-lite', 'gemini-flash-latest'];
+  public modelName: string;
+  private fallbackModels: string[];
+  constructor(private options: {modelName?:string;fallbackModels?:string[];deferOnFailure?:boolean}={}) {
+    this.modelName=options.modelName??LEGACY_GEMINI_MODELS[0];this.fallbackModels=options.fallbackModels??LEGACY_GEMINI_MODELS.slice(1);
+  }
 
   private generateDeterministicSimulationResponse(params: ReasoningExecutionParams, promptHash: string): ReasoningExecutionResult {
     return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'Deterministic Simulation Fallback Mode');
@@ -52,7 +59,8 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
   public async generateReasoning(params: ReasoningExecutionParams): Promise<ReasoningExecutionResult> {
     const apiKey = process.env.GEMINI_API_KEY;
     const prompt = this.buildPrompt(params);
-    const promptHash = crypto.createHash('sha256').update(prompt).digest('hex').substring(0, 16);
+    const promptSha256 = crypto.createHash('sha256').update(prompt).digest('hex');
+    const promptHash = promptSha256.substring(0, 16);
     const executionId = `EXEC-${params.agentRole.roleId}-${Date.now()}`;
 
     // Check if force simulation mode is requested (e.g. Proof B simulation isolation test)
@@ -114,6 +122,7 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
             model: modelCandidate,
             contents: prompt,
             config: {
+              abortSignal: params.signal,
               temperature: 0.2,
               responseMimeType: 'application/json'
             }
@@ -159,8 +168,10 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
             executionMode: 'LLM_REASONED',
             responseStatus: '200_OK',
             usageMetadata: response.usageMetadata || { promptTokens: prompt.length / 4, candidateTokens: rawText.length / 4 },
+            usageSource: response.usageMetadata ? 'PROVIDER_REPORTED' : 'ESTIMATED',
             executed: true,
-            promptHash
+            promptHash,
+            promptSha256
           };
         } catch (err: any) {
           lastError = err;
@@ -191,13 +202,13 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
             httpStatus: isTransientOrQuota ? (err?.code || 503) : 500,
             quotaStatus: isTransientOrQuota,
             success: false,
-            reason: err?.message || String(err)
+            reason: `Provider request failed (${isTransientOrQuota ? 'RATE_LIMIT_OR_UNAVAILABLE' : 'API_ERROR'})`
           });
 
           if (isTransientOrQuota) {
-            console.log(`[REASONING PROVIDER] Model ${modelCandidate} rate limit / unavailable (${err?.code || err?.status || '503'}). Trying next tier model.`);
+            console.log(`[REASONING PROVIDER] Selected model unavailable; fallback is controlled by the calling policy.`);
           } else {
-            console.warn(`[REASONING PROVIDER] Model ${modelCandidate} call error:`, err?.message || String(err));
+            console.warn('[REASONING PROVIDER] Selected model request failed.');
           }
         }
       }
@@ -205,7 +216,7 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
       // If simulation fallback is permitted, fall back to simulation proposal
       if (params.allowSimulationFallback) {
         console.warn('[REASONING PROVIDER] All Gemini models unavailable or rate limited. Using deterministic simulation fallback.');
-        return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, `Gemini API Unavailable (${lastError?.message || '503/429 Error'}) - Simulation Fallback`);
+        return DeterministicProposalSimulator.generateSimulationProposal(params, promptHash, 'Gemini API unavailable - Explicit Simulation Fallback');
       }
 
       // If all Gemini models failed due to quota / rate limit / 503 high demand
@@ -222,19 +233,19 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
 
       if (isTransientOrQuota) {
         // Enqueue real reasoning job in Deferred Reasoning Queue
-        QuotaIntegrityEngine.enqueueDeferredJob({
+        if(this.options.deferOnFailure!==false)QuotaIntegrityEngine.enqueueDeferredJob({
           agentRoleId: params.agentRole.roleId,
           scenarioId: params.scenario.scenarioId,
           knowledgePackId: params.knowledgePack.packId,
           retrievedChunkIds: params.retrievedChunks.map((c) => c.chunkId),
           discipline: params.agentRole.discipline,
-          lastErrorReason: `DEFERRED_UNAVAILABLE: ${lastError?.message || 'High demand / quota exceeded across Gemini models'}`
+          lastErrorReason: 'DEFERRED_UNAVAILABLE: selected models unavailable or rate limited'
         });
 
-        console.log('[REASONING PROVIDER] All Gemini reasoning models rate limited / unavailable. Reasoning job queued as DEFERRED_QUOTA.');
+        console.log(this.options.deferOnFailure!==false?'[REASONING PROVIDER] Reasoning job queued as DEFERRED_QUOTA.':'[REASONING PROVIDER] Returning deferred result to capability policy.');
 
         return {
-          rawResponse: `[EXECUTION_DEFERRED_QUOTA] All Gemini reasoning models rate limited or unavailable (${lastError?.code || '503/429'}). Real reasoning job queued for automatic replay upon capacity recovery. Last error: ${lastError?.message || '503/429 Error'}`,
+          rawResponse: `[EXECUTION_DEFERRED_QUOTA] All Gemini reasoning models rate limited or unavailable (${lastError?.code || '503/429'}). Real reasoning job queued for automatic replay upon capacity recovery. Provider unavailable.`,
           structuredProposal: {},
           citations: [],
           providerName: this.providerName,
@@ -247,7 +258,7 @@ export class GeminiReasoningProvider implements ConstructionReasoningProvider {
       }
 
       return {
-        rawResponse: `[EXECUTION_FAILED] Gemini API call failed: ${lastError?.message || String(lastError)}`,
+        rawResponse: '[EXECUTION_FAILED] Gemini API call failed; raw provider errors are not persisted.',
         structuredProposal: {},
         citations: [],
         providerName: this.providerName,

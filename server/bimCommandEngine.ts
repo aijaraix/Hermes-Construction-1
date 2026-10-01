@@ -76,7 +76,8 @@ export class BimCommandEngine {
   private static revisionHistory: Map<string, BimRevisionRecord[]> = new Map(); // projectId -> revisions
   private static ifcGuidCounter = 1000;
 
-  private static generateIfcGuid(typePrefix: string): string {
+  /** Local source alias only; it is deliberately not represented as a valid IFC GlobalId. */
+  private static generateSourceLocalIfcAlias(typePrefix: string): string {
     this.ifcGuidCounter++;
     return `${typePrefix.substring(0, 4).toUpperCase()}-${Date.now().toString(36)}-${this.ifcGuidCounter}`;
   }
@@ -135,7 +136,7 @@ export class BimCommandEngine {
       const midZ = (startPos[2] + endPos[2]) / 2;
 
       const wallId = `WALL-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('WALL');
+      const ifcGuid = this.generateSourceLocalIfcAlias('WALL');
 
       // Check assembly material graph validity
       let assembly = '2x6 Stud Framed Wall Assembly';
@@ -208,7 +209,7 @@ export class BimCommandEngine {
     } else if (input.commandType === 'CREATE_SLAB') {
       const { position, dimensions, storeyId, materialSpecId } = input.params;
       const slabId = `SLAB-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('SLAB');
+      const ifcGuid = this.generateSourceLocalIfcAlias('SLAB');
       const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
       const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -270,7 +271,7 @@ export class BimCommandEngine {
         errors.push(`Host wall ${hostWallId} not found in project store`);
       } else {
         const doorId = `DOOR-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-        const ifcGuid = this.generateIfcGuid('DOOR');
+        const ifcGuid = this.generateSourceLocalIfcAlias('DOOR');
         const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
         const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -345,7 +346,7 @@ export class BimCommandEngine {
         errors.push(`Host wall ${hostWallId} not found in project store`);
       } else {
         const windowId = `WIN-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-        const ifcGuid = this.generateIfcGuid('WIND');
+        const ifcGuid = this.generateSourceLocalIfcAlias('WIND');
         const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
         const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -414,7 +415,7 @@ export class BimCommandEngine {
     } else if (input.commandType === 'CREATE_PIPE_SEGMENT') {
       const { startPos, endPos, diameterInches, systemType, materialSpecId } = input.params;
       const pipeId = `PIPE-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('PIPE');
+      const ifcGuid = this.generateSourceLocalIfcAlias('PIPE');
       const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
       const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -484,7 +485,7 @@ export class BimCommandEngine {
     } else if (input.commandType === 'CREATE_PIPE_FITTING') {
       const { position, fittingType, diameterInches, connectToPipeIds } = input.params;
       const fittingId = `FIT-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('FITT');
+      const ifcGuid = this.generateSourceLocalIfcAlias('FITT');
       const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
       const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -554,7 +555,7 @@ export class BimCommandEngine {
     } else if (input.commandType === 'CREATE_ELECTRICAL_DEVICE') {
       const { position, deviceType, voltage, amperage } = input.params;
       const devId = `ELEC-DEV-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('EAPPL');
+      const ifcGuid = this.generateSourceLocalIfcAlias('EAPPL');
       const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
       const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -611,7 +612,7 @@ export class BimCommandEngine {
     } else if (input.commandType === 'CREATE_CABLE_OR_CONDUIT_ROUTE') {
       const { startPos, endPos, wireGauge, conductorType, connectToDeviceId } = input.params;
       const cableId = `CABLE-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('CABL');
+      const ifcGuid = this.generateSourceLocalIfcAlias('CABL');
       const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
       const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -687,7 +688,7 @@ export class BimCommandEngine {
     } else if (input.commandType === 'CREATE_DUCT_SEGMENT') {
       const { startPos, endPos, widthInches, heightInches, systemType } = input.params;
       const ductId = `DUCT-${Date.now()}-${Math.floor(Math.random() * 100)}`;
-      const ifcGuid = this.generateIfcGuid('DUCT');
+      const ifcGuid = this.generateSourceLocalIfcAlias('DUCT');
       const revIndex = (this.revisionHistory.get(projectId)?.length || 0) + 1;
       const revisionId = `REV-${revIndex.toString().padStart(4, '0')}`;
 
@@ -769,6 +770,17 @@ export class BimCommandEngine {
     }
 
     // Determine current revision id
+    // All command inputs for these paths are explicitly meter-named. Preserve
+    // legacy records untouched, but label newly created geometry at the boundary.
+    for (const componentId of createdModifiedIds) {
+      const component = projectStore.get(componentId);
+      if (component) {
+        component.geometry.lengthUnit = component.geometry.lengthUnit || 'METER';
+        component.geometry.frameId = component.geometry.frameId || `FRAME-${projectId}-ROOT`;
+        component.geometry.positionAnchor = component.geometry.positionAnchor || 'BASE_INSERTION';
+      }
+    }
+
     const currentRevIndex = this.revisionHistory.get(projectId)?.length || 1;
     const revId = `REV-${currentRevIndex.toString().padStart(4, '0')}`;
 
@@ -853,6 +865,7 @@ export class BimCommandEngine {
     return this.commandHistory.get(projectId) || [];
   }
 
+  /** Compatibility/debug semantic JSON only. This is NOT an IFC STEP file exporter. */
   public static exportToIfcJson(projectId: string): { schema: string; projectId: string; timestamp: string; objectCount: number; hash: string; entities: any[] } {
     const components = this.getCanonicalProjectComponents(projectId);
     const entities = components.map(c => ({

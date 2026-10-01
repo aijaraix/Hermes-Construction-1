@@ -1,195 +1,31 @@
-import React, { useState } from 'react';
-import { BOMItem } from '../types/hermes';
-import { DollarSign, ShieldCheck, Truck, CheckCircle, Search, Layers, ExternalLink, PieChart } from 'lucide-react';
+import React from 'react';
+import type { BOMItem } from '../types/hermes';
 import { useHermesProject } from '../context/HermesProjectContext';
+import { deriveMaterialWorkspaceState } from '../lib/materialWorkspaceState';
+import { MaterialRequirements } from './immersive/MaterialsWorkspace';
+import { money } from './immersive/ProjectOverviewWorkspace';
 
 interface BOMViewProps {
   bom: BOMItem[];
+  sourceProjectId?: string;
   onHighlightComponents?: (componentIds: string[], itemName: string) => void;
 }
 
-export const BOMView: React.FC<BOMViewProps> = ({ bom, onHighlightComponents }) => {
-  const { worldState } = useHermesProject();
-  const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
-
-  const categories = ['ALL', 'Structure', 'Envelope', 'Plumbing', 'HVAC', 'Electrical'];
-
-  const filtered = bom.filter((item) => {
-    const matchesSearch = item.item.toLowerCase().includes(search.toLowerCase()) || item.specification.toLowerCase().includes(search.toLowerCase());
-    const matchesCat = selectedCategory === 'ALL' || item.category === selectedCategory;
-    return matchesSearch && matchesCat;
-  });
-
-  const totalCost = bom.reduce((acc, curr) => acc + curr.estimatedTotalCost, 0);
-  const verifiedCount = bom.filter((b) => b.priceSource === 'VERIFIED CURRENT QUOTE' || b.priceSource === 'PUBLISHED CURRENT PRICE' || b.priceSource?.includes('VERIFIED')).length;
-
-  const costBreakdown = worldState?.costScopeBreakdown || {
-    materialsTotalUSD: Math.round(totalCost * 0.45),
-    laborTotalUSD: Math.round(totalCost * 0.32),
-    equipmentRentalTotalUSD: Math.round(totalCost * 0.08),
-    subcontractorTotalUSD: Math.round(totalCost * 0.07),
-    deliveryFreightTotalUSD: Math.round(totalCost * 0.03),
-    permitsUtilityFeesTotalUSD: Math.round(totalCost * 0.02),
-    contingencyReserveTotalUSD: Math.round(totalCost * 0.03),
-    turnkeyTotalUSD: Math.round(totalCost * 1.00),
+export const BOMView: React.FC<BOMViewProps> = ({ bom, sourceProjectId, onHighlightComponents }) => {
+  const { worldState, selectEntity, openInspectorDrawer } = useHermesProject();
+  if (!worldState) return <p>Awaiting current project state.</p>;
+  const materials = deriveMaterialWorkspaceState(worldState,{ projectBom: bom, sourceProjectId });
+  const select = (id: string) => {
+    if (onHighlightComponents) onHighlightComponents([id],id);
+    else { selectEntity(id); openInspectorDrawer(); }
   };
-
-  return (
-    <div className="space-y-6">
-      {/* Top Header & Summary Stats */}
-      <div className="p-6 bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-emerald-400" /> Deterministic Quantity & Turnkey BOM Engine
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Material quantities calculated deterministically from 3D BIM spatial volume. Includes labor, equipment, and freight scope breakdowns.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4 bg-slate-950 px-4 py-2.5 rounded-xl border border-slate-800 font-mono">
-            <div>
-              <span className="text-[10px] uppercase text-slate-400 block font-sans">Turnkey Construction Cost</span>
-              <span className="text-2xl font-black text-emerald-400">${(costBreakdown.turnkeyTotalUSD ?? totalCost).toLocaleString()}</span>
-            </div>
-            <div className="h-6 w-px bg-slate-800 mx-1" />
-            <div>
-              <span className="text-[10px] uppercase text-slate-400 block font-sans">Verified Quote Sources</span>
-              <span className="text-xs font-bold text-cyan-400">{verifiedCount} / {bom.length} Items</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Turnkey Cost Scope Breakdown Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 pt-3 border-t border-slate-800 text-xs font-mono">
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Materials</span>
-            <span className="font-bold text-emerald-400">${costBreakdown.materialsTotalUSD?.toLocaleString()}</span>
-          </div>
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Labor</span>
-            <span className="font-bold text-cyan-400">${costBreakdown.laborTotalUSD?.toLocaleString()}</span>
-          </div>
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Equipment</span>
-            <span className="font-bold text-amber-400">${costBreakdown.equipmentRentalTotalUSD?.toLocaleString()}</span>
-          </div>
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Subcontractors</span>
-            <span className="font-bold text-blue-400">${costBreakdown.subcontractorTotalUSD?.toLocaleString()}</span>
-          </div>
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Freight & Delivery</span>
-            <span className="font-bold text-indigo-400">${costBreakdown.deliveryFreightTotalUSD?.toLocaleString()}</span>
-          </div>
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Permits & Fees</span>
-            <span className="font-bold text-purple-400">${costBreakdown.permitsUtilityFeesTotalUSD?.toLocaleString()}</span>
-          </div>
-          <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-sans uppercase">Contingency</span>
-            <span className="font-bold text-rose-400">${costBreakdown.contingencyReserveTotalUSD?.toLocaleString()}</span>
-          </div>
-        </div>
-
-        {/* Filter & Search Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
-          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 w-full sm:w-72">
-            <Search className="w-4 h-4 text-slate-500" />
-            <input
-              type="text"
-              placeholder="Search materials or specs..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent text-xs text-slate-200 outline-none w-full"
-            />
-          </div>
-
-          <div className="flex items-center gap-1.5 overflow-x-auto">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-lg transition ${
-                  selectedCategory === cat
-                    ? 'bg-cyan-600 text-white font-semibold shadow'
-                    : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* BOM Table */}
-      <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl font-mono text-xs">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-slate-300">
-            <thead className="bg-slate-950/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800 font-semibold font-sans">
-              <tr>
-                <th className="p-3.5">Material / Spec</th>
-                <th className="p-3.5">Category</th>
-                <th className="p-3.5">Modeled Qty</th>
-                <th className="p-3.5">Waste %</th>
-                <th className="p-3.5">Procurement Qty</th>
-                <th className="p-3.5">Unit Price</th>
-                <th className="p-3.5">Price Source</th>
-                <th className="p-3.5">Supplier</th>
-                <th className="p-3.5">Total Est</th>
-                <th className="p-3.5 text-right font-sans">3D Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {filtered.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-950/50 transition">
-                  <td className="p-3.5 font-sans">
-                    <div className="font-bold text-slate-100">{item.item}</div>
-                    <div className="text-[10px] text-slate-400 font-mono mt-0.5">{item.specification}</div>
-                    <div className="text-[9px] text-cyan-400 font-mono mt-0.5">
-                      Source: {item.quantitySource || 'DETERMINISTIC_3D_BIM_QTO'}
-                    </div>
-                  </td>
-                  <td className="p-3.5">
-                    <span className="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-300 text-[10px] font-sans">
-                      {item.category}
-                    </span>
-                  </td>
-                  <td className="p-3.5 font-bold text-slate-100">
-                    {item.quantityModeled} {item.unit}
-                  </td>
-                  <td className="p-3.5 text-slate-400">{item.wasteFactorPct}%</td>
-                  <td className="p-3.5 font-bold text-cyan-400">
-                    {item.quantityProcurement} {item.unit}
-                  </td>
-                  <td className="p-3.5 text-slate-200">${item.unitPriceUSD}</td>
-                  <td className="p-3.5">
-                    <span className="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800 text-[10px] font-sans flex items-center gap-1 w-fit">
-                      <ShieldCheck className="w-3 h-3" />
-                      {item.priceSource}
-                    </span>
-                  </td>
-                  <td className="p-3.5 text-slate-300 font-sans">{item.supplier}</td>
-                  <td className="p-3.5 font-bold text-emerald-400">${item.estimatedTotalCost?.toLocaleString()}</td>
-                  <td className="p-3.5 text-right">
-                    {item.linked3DComponents && item.linked3DComponents.length > 0 && onHighlightComponents && (
-                      <button
-                        onClick={() => onHighlightComponents(item.linked3DComponents, item.item)}
-                        className="px-2.5 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyan-400 border border-cyan-800 rounded text-[10px] font-sans font-bold transition flex items-center gap-1 ml-auto"
-                      >
-                        <Layers className="w-3 h-3" /> View in 3D
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="hx-summary hx-operations rounded-xl bg-white p-5 text-slate-800">
+    <section><h3>Project quantity & cost records</h3><p>{worldState.mode} · {worldState.projectName}</p>
+      <p>Materials estimate: {money(materials.summary.canonicalMaterialsCostUSD)}</p>
+      <p>Turnkey estimate: {money(materials.summary.canonicalTurnkeyCostUSD)}</p>
+      <p>Cost categories require a recorded cost breakdown. Supplier quote verification is not connected.</p>
+      {bom.length > 0 && sourceProjectId !== worldState.projectId && <p>Unscoped legacy BOM records are excluded from this project.</p>}
+    </section>
+    <MaterialRequirements state={worldState} materials={materials} actions={{ select, focusEntity: select, focusPosition: () => {}, focusAvailable: false }}/>
+  </div>;
 };

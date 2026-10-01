@@ -3,6 +3,8 @@ import path from 'path';
 import crypto from 'crypto';
 import { AuthoritativeSourceDefinition, FetchedDocument, HttpSourceFetchRecord } from '../src/types/hermes';
 
+import { sourceRights } from '../src/lib/evidenceAdapters';
+
 const SOURCE_DOCS_DIR = path.join(process.cwd(), 'data', 'source-documents');
 
 export class HttpSourceFetcher {
@@ -26,18 +28,7 @@ export class HttpSourceFetcher {
     const now = new Date().toISOString();
 
     // Strict Rights Gate Check
-    const openStatuses = ['PUBLIC_DOMAIN', 'PERMITTED_OPEN', 'OPEN_LICENSE', 'PERMITTED_FULL_TEXT'];
-    const licenseStr = String(source.copyrightLicenseStatus);
-    const rightsPermitted =
-      source.bulkIngestionPermitted &&
-      source.fullTextStoragePermitted &&
-      openStatuses.includes(licenseStr);
-
-    const rightsStatus = rightsPermitted
-      ? source.copyrightLicenseStatus
-      : licenseStr === 'RIGHTS_REVIEW_REQUIRED'
-      ? 'RIGHTS_REVIEW_REQUIRED'
-      : 'RIGHTS_RESTRICTED_METADATA_ONLY';
+    const { permitted: rightsPermitted, rightsStatus } = sourceRights(source);
 
     let rawBuffer: Buffer = Buffer.alloc(0);
     let httpStatus = 0;
@@ -136,7 +127,7 @@ Full-text storage and bulk ingestion BLOCKED by HERMES Rights Gate.`;
       sizeBytes: rawBuffer.length,
       checksumSha256,
       filePathOrKey: filePath,
-      licenseStatus: source.copyrightLicenseStatus === 'PUBLIC_DOMAIN' ? 'PUBLIC_DOMAIN' : source.copyrightLicenseStatus === 'PERMITTED_OPEN' ? 'PERMITTED_OPEN' : 'RESTRICTED',
+      licenseStatus: source.copyrightLicenseStatus,
       rightsStatus,
       sourceAuthority: source.authorityLevel,
       pageCount: fetchStatus === 'SUCCESS' ? 1 : 0,
@@ -162,7 +153,9 @@ Full-text storage and bulk ingestion BLOCKED by HERMES Rights Gate.`;
       throw new Error(`Local approved document file not found at path: ${localFilePath}`);
     }
 
-    const rawBuffer = fs.readFileSync(localFilePath);
+    const { permitted, rightsStatus } = sourceRights(source);
+    // Local presence cannot grant full-text ingestion permission. Restricted records expose metadata only.
+    const rawBuffer = permitted ? fs.readFileSync(localFilePath) : Buffer.alloc(0);
     const checksumSha256 = crypto.createHash('sha256').update(rawBuffer).digest('hex');
     const isPdf = localFilePath.endsWith('.pdf');
     const isHtml = localFilePath.endsWith('.html');
@@ -175,13 +168,13 @@ Full-text storage and bulk ingestion BLOCKED by HERMES Rights Gate.`;
       requestedUrl: `file://${localFilePath}`,
       finalUrl: `file://${localFilePath}`,
       retrievedAt: now,
-      httpStatus: 200,
+      httpStatus: permitted ? 200 : 403,
       contentType,
       contentLength: rawBuffer.length,
       checksumSha256,
-      rightsStatus: 'LOCAL_APPROVED_DOCUMENT',
-      storagePath: localFilePath,
-      fetchStatus: 'SUCCESS'
+      rightsStatus,
+      storagePath: permitted ? localFilePath : '',
+      fetchStatus: permitted ? 'SUCCESS' : 'RIGHTS_RESTRICTED'
     };
 
     const document: FetchedDocument = {
@@ -193,11 +186,11 @@ Full-text storage and bulk ingestion BLOCKED by HERMES Rights Gate.`;
       mimeType: contentType,
       sizeBytes: rawBuffer.length,
       checksumSha256,
-      filePathOrKey: localFilePath,
-      licenseStatus: 'PUBLIC_DOMAIN',
-      rightsStatus: 'LOCAL_APPROVED_DOCUMENT',
+      filePathOrKey: permitted ? localFilePath : '',
+      licenseStatus: source.copyrightLicenseStatus,
+      rightsStatus,
       sourceAuthority: source.authorityLevel,
-      pageCount: 1,
+      pageCount: permitted ? 1 : 0,
       parsedText: isPdf ? '' : rawBuffer.toString('utf-8')
     };
 

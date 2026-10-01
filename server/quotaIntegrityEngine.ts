@@ -8,6 +8,7 @@ import {
   RetroactiveAuditReport,
   StructuredProviderErrorMetadata
 } from '../src/types/hermes';
+import { LEGACY_GEMINI_MODELS } from './ai/providers/geminiConfig';
 
 export class QuotaIntegrityEngine {
   private static providerAttempts: ProviderAttemptRecord[] = [];
@@ -17,10 +18,10 @@ export class QuotaIntegrityEngine {
   private static mockQuotaExhaustedForTesting = false;
 
   public static readonly FAILOVER_POLICY: ProviderFailoverPolicy = {
-    tier1Model: 'gemini-3.7-flash',
-    tier2Model: 'gemini-3.1-flash-lite',
-    tier3Model: 'gemini-flash-latest',
-    verifiedModels: ['gemini-3.7-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'],
+    tier1Model: LEGACY_GEMINI_MODELS[0],
+    tier2Model: LEGACY_GEMINI_MODELS[1],
+    tier3Model: LEGACY_GEMINI_MODELS[2],
+    verifiedModels: [...LEGACY_GEMINI_MODELS],
     invalidModels: [],
     allowSimulationFallbackForContinuity: true,
     maxQueueRetries: 5,
@@ -85,7 +86,7 @@ export class QuotaIntegrityEngine {
       retryCount,
       maxRetries: this.FAILOVER_POLICY.maxQueueRetries,
       status: 'QUEUED_DEFERRED',
-      lastErrorReason: params.lastErrorReason || 'Gemini reasoning provider rate limited / quota exhausted (429)',
+      lastErrorReason: params.lastErrorReason || 'Reasoning provider rate limited / quota exhausted (429)',
       discipline: params.discipline || 'GENERAL',
       criticality: params.criticality || 'STANDARD'
     };

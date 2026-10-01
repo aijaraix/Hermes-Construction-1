@@ -13,6 +13,7 @@ export interface GenesisProjectState {
   status: CanonicalProjectStatus;
   classification: 'GENESIS_LIVE' | 'ACADEMY_REAL' | 'REFERENCE';
   createdAt: string;
+  currentProjectRevisionId: string;
   worldFrame: ProjectWorldFrame;
   clock: RuntimeClockState;
   events: any[];
@@ -51,11 +52,14 @@ export class GenesisProjectEngine {
     const worldFrame: ProjectWorldFrame = {
       projectWorldFrameId: `FRAME-${projectId}-ROOT`,
       projectId,
-      surveyOrigin: [27.9506, -82.4572, 0], // Tampa Datum Metric Origin
+      surveyOrigin: [27.9506, -82.4572, 0], // compatibility fixture only; not projected coordinates
       groundDatum: 0.000,
-      coordinateReference: 'UTM Zone 17N / LOCAL METRIC WORLD FRAME',
+      coordinateReference: 'LOCAL METRIC WORLD FRAME (geodetic fixture origin declared separately)',
       lengthUnit: 'METERS',
-      rotationUnit: 'QUATERNION',
+      rotationUnit: 'RADIANS',
+      geodeticOrigin: { latitudeDeg: 27.9506, longitudeDeg: -82.4572, elevationMeters: 0, crs: 'WGS84' },
+      localMetricFrame: { frameId: `FRAME-${projectId}-ROOT`, description: 'Renderer-compatible local metric project frame' },
+      currentRevisionId: `PROJECT-REV-${projectId}-0001`,
       timeReference: nowISO
     };
 
@@ -89,6 +93,7 @@ export class GenesisProjectEngine {
       status: 'NEW',
       classification: 'GENESIS_LIVE',
       createdAt: nowISO,
+      currentProjectRevisionId: `PROJECT-REV-${projectId}-0001`,
       worldFrame,
       clock,
       events: [genesisEvent],

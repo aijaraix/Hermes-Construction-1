@@ -1,0 +1,470 @@
+{
+  "schema_version": 1,
+  "campaign_id": "hermes-aedryx-autonomous-build-20260930",
+  "continuity_id": "sxc_903F37FR",
+  "blueprint_revision": 1,
+  "project_id": "hermes-construction",
+  "repository_role": "application",
+  "repository_full_name": "aijaraix/Hermes-Construction-1",
+  "repository_id": "1340995765",
+  "source_branch": "feature/fnd-01-canonical-identity",
+  "target_branch": "feature/fnd-01-canonical-identity",
+  "initial_accepted_head": "b1cb699637f23b1faf28f0d2eaa90804869d805d",
+  "initial_source_sha256": "cd77b8c0e6da0caa674728f060184aac94ce81bec83b9ddf5c940ee68ecda105",
+  "initial_recovery_manifest_sha256": "569f3c47ca31f220916a891daae61409baf6437a3a4f83f7f4009babba512ac0",
+  "authorization_observed": "APPROVED",
+  "authorization_is_live_requirement": true,
+  "first_checkpoint": "CAMPAIGN-DOCS",
+  "documentation_checkpoint_status": "PRESERVED",
+  "milestone_order": [
+    "FND-03",
+    "FND-04",
+    "FND-05",
+    "HX-01",
+    "HX-02",
+    "HX-03"
+  ],
+  "milestones": [
+    {
+      "id": "FND-03",
+      "title": "Production persistence, PostgreSQL/PostGIS and artifact storage",
+      "prerequisite": "CAMPAIGN-DOCS",
+      "status": "IMPLEMENTED \u2014 NOT PHYSICALLY VERIFIED",
+      "document": "milestones/FND-03.md",
+      "checkpoint": {
+        "accepted_head": "8d2de4fdc065e9602e0c03eac66c2b244499db9f",
+        "source_sha256": "fe33dcbb0e99ffeff8c1566a4f8ab5c33e326ca591328c8c6b75f851ba271ffd",
+        "archive": "/workspace/scratch/41668df7aa0c/fnd03-accepted.tar",
+        "full_tree": "PASS",
+        "files": 311,
+        "file_closure": "PASS",
+        "base_sha": "8a78923238c005254fceaf38b1c2446bd31336ca",
+        "candidate_sha": "8d2de4fdc065e9602e0c03eac66c2b244499db9f",
+        "truth_audit": "IN_SYNC",
+        "recovery_manifest_sha256": "d7ddd7fe499483cdd79d7d1b768c05c1d30ca6a0d7a265afb5d4a4045981a718",
+        "publication_state": "PENDING"
+      },
+      "engineering_gates": {
+        "focused_tests": "15 PASS",
+        "regressions": "53 PASS",
+        "typecheck": "PASS",
+        "build": "PASS"
+      },
+      "physical_gates": {
+        "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+        "live_provider": "NOT APPLICABLE",
+        "browser": "NOT APPLICABLE"
+      },
+      "implementation_base": "8a78923238c005254fceaf38b1c2446bd31336ca",
+      "report": "../validation/HERMES_FND03_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "id": "FND-04",
+      "title": "openBIM normalization and immutable model revision pipeline",
+      "prerequisite": "FND-03",
+      "status": "IMPLEMENTED \u2014 NOT PHYSICALLY VERIFIED",
+      "document": "milestones/FND-04.md",
+      "checkpoint": {
+        "accepted_head": "13c96c8fdafbc68071892e3ac642de5196197787",
+        "source_sha256": "2ddfe62296f2c95da70e9c9666493032b735533fbf9d295014e44ba3ba5eeaa6",
+        "archive": "/workspace/scratch/41668df7aa0c/fnd04-accepted.tar",
+        "full_tree": "PASS",
+        "files": 327,
+        "file_closure": "PASS",
+        "base_sha": "8d2de4fdc065e9602e0c03eac66c2b244499db9f",
+        "candidate_sha": "13c96c8fdafbc68071892e3ac642de5196197787",
+        "truth_audit": "IN_SYNC",
+        "recovery_manifest_sha256": "5b79f86e35c33485437bda0d80f37123700d24856385b80d9fa962ffdf209749",
+        "publication_state": "PENDING"
+      },
+      "engineering_gates": {
+        "focused_tests": "15 PASS",
+        "regressions": "68 PASS",
+        "typecheck": "PASS",
+        "build": "PASS",
+        "production_parser_bundle": "PASS"
+      },
+      "physical_gates": {
+        "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+        "live_provider": "NOT APPLICABLE",
+        "browser": "BLOCKED / UNVERIFIED \u2014 Chrome net::ERR_BLOCKED_BY_CLIENT for isolated localhost runtime"
+      },
+      "implementation_base": "8d2de4fdc065e9602e0c03eac66c2b244499db9f",
+      "report": "../validation/HERMES_FND04_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "id": "FND-05",
+      "title": "Provider-neutral capability routing and AI provenance",
+      "prerequisite": "FND-04",
+      "status": "IMPLEMENTED \u2014 NOT PHYSICALLY VERIFIED",
+      "document": "milestones/FND-05.md",
+      "checkpoint": {
+        "accepted_head": "67f8f9588c91de65b47c3f24fc2a2b2404ff08e3",
+        "source_sha256": "b66d4666544ef64ed4acf6a2e95b12ed30f0c87ba7b32fa8a2885a8e5ade7582",
+        "archive": "/workspace/scratch/41668df7aa0c/fnd05-accepted.tar",
+        "full_tree": "PASS",
+        "files": 344,
+        "file_closure": "PASS",
+        "base_sha": "13c96c8fdafbc68071892e3ac642de5196197787",
+        "candidate_sha": "67f8f9588c91de65b47c3f24fc2a2b2404ff08e3",
+        "truth_audit": "IN_SYNC",
+        "recovery_manifest_sha256": "8a1f89fe67d087e8c563ac6df3b6e11d65eb9ad43c523298efc701132eeeaa8d",
+        "publication_state": "PENDING"
+      },
+      "engineering_gates": {
+        "focused_tests": "19 PASS",
+        "regressions": "88 PASS (83 foundation/Academy plus 5 quota)",
+        "genuine_reasoning": "6 PASS / 5 pre-existing FAIL; exact baseline comparison unchanged",
+        "typecheck": "PASS",
+        "build": "PASS"
+      },
+      "physical_gates": {
+        "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+        "live_provider": "NOT RUN \u2014 only test adapters / SDK mocks executed",
+        "browser": "NOT APPLICABLE; prior physical gate remains BLOCKED / UNVERIFIED"
+      },
+      "implementation_base": "13c96c8fdafbc68071892e3ac642de5196197787",
+      "report": "../validation/HERMES_FND05_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "id": "HX-01",
+      "title": "Immersive foundation, navigation and executive overview",
+      "prerequisite": "FND-05",
+      "status": "IMPLEMENTED \u2014 NOT PHYSICALLY VERIFIED",
+      "document": "milestones/HX-01.md",
+      "checkpoint": {
+        "accepted_head": "886862ce6332f68fda1d4ef43a0c871fc22b9dc5",
+        "source_sha256": "08caf2fdf1a18b6ca83a3268f9903d2c4c5ddac8c95b699a763033d631ee6e8f",
+        "archive": "/workspace/scratch/41668df7aa0c/hx01-accepted.tar",
+        "full_tree": "PASS",
+        "files": 365,
+        "file_closure": "PASS",
+        "base_sha": "67f8f9588c91de65b47c3f24fc2a2b2404ff08e3",
+        "candidate_sha": "886862ce6332f68fda1d4ef43a0c871fc22b9dc5",
+        "truth_audit": "IN_SYNC",
+        "recovery_manifest_sha256": "96b694ad9a1b73f8d939b378f4afad7fc08c2ae324ab5d0d12ee3b9a9f9cdc92",
+        "publication_state": "PENDING"
+      },
+      "engineering_gates": {
+        "focused_tests": "18 PASS",
+        "regressions": "107 PASS",
+        "stage_c_bim": "8 PASS",
+        "typecheck": "PASS",
+        "build": "PASS"
+      },
+      "physical_gates": {
+        "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+        "live_provider": "NOT RUN",
+        "browser": "BLOCKED / UNVERIFIED \u2014 cloud browser URL policy rejects isolated preview"
+      },
+      "implementation_base": "67f8f9588c91de65b47c3f24fc2a2b2404ff08e3",
+      "report": "../validation/HERMES_HX01_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "id": "HX-02",
+      "title": "Universal Inspector, Attention and timeline",
+      "prerequisite": "HX-01",
+      "status": "IMPLEMENTED \u2014 NOT PHYSICALLY VERIFIED",
+      "document": "milestones/HX-02.md",
+      "checkpoint": {
+        "accepted_head": "f9d913838bbdf06fec6399ac949843c53b648247",
+        "source_sha256": "7be62590a346989a8f4255460a621cb07176833e64f567d493933cda8efdd4fa",
+        "archive": "/workspace/scratch/41668df7aa0c/hx02-accepted.tar",
+        "full_tree": "PASS",
+        "files": 375,
+        "file_closure": "PASS",
+        "base_sha": "886862ce6332f68fda1d4ef43a0c871fc22b9dc5",
+        "candidate_sha": "f9d913838bbdf06fec6399ac949843c53b648247",
+        "truth_audit": "IN_SYNC",
+        "recovery_manifest_sha256": "722fc84a1b094bde6bc8d119bfd98ca8531f5dc78adaddc1577935b59fef1db2",
+        "publication_state": "PENDING"
+      },
+      "engineering_gates": {
+        "focused_tests": "18 HX02 + 18 HX01 PASS",
+        "regressions": "107 PASS",
+        "stage_c_bim": "8 PASS",
+        "typecheck": "PASS",
+        "build": "PASS"
+      },
+      "physical_gates": {
+        "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+        "live_provider": "NOT RUN",
+        "browser": "BLOCKED / UNVERIFIED \u2014 inherited explicit cloud browser security-policy block; no bypass"
+      },
+      "implementation_base": "886862ce6332f68fda1d4ef43a0c871fc22b9dc5",
+      "report": "../validation/HERMES_HX02_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "id": "HX-03",
+      "title": "Materials, Schedule and Logistics",
+      "prerequisite": "HX-02",
+      "status": "IMPLEMENTED \u2014 NOT PHYSICALLY VERIFIED",
+      "document": "milestones/HX-03.md",
+      "checkpoint": "REQUIRE EXTERNAL GATEWAY RECEIPT FOR THIS TREE",
+      "engineering_gates": {
+        "focused_tests": "24 HX03 + 18 HX02 + 18 HX01 PASS",
+        "regressions": "107 PASS; 14 database cases skipped",
+        "stage_c_bim": "8 PASS",
+        "renderer_geometry": "11 actual source snapshot checkpoints match HX02 geometry/identity/topology; metadata excluded",
+        "typecheck": "PASS",
+        "build": "PASS"
+      },
+      "physical_gates": {
+        "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+        "live_provider": "NOT RUN",
+        "browser": "BLOCKED / UNVERIFIED \u2014 inherited explicit cloud browser security-policy block; no bypass"
+      },
+      "implementation_base": "f9d913838bbdf06fec6399ac949843c53b648247",
+      "report": "../validation/HERMES_HX03_IMPLEMENTATION_REPORT.md",
+      "deferred": "Developer/System duplicate cleanup requires physical replacement acceptance"
+    }
+  ],
+  "baseline_scoped_tests": {
+    "passed": 53,
+    "failed": 0,
+    "typecheck": "PASS",
+    "production_build": "PASS",
+    "physical_browser": "UNVERIFIED"
+  },
+  "known_unrelated_baseline_failures": [
+    "genuine reasoning: 6 PASS / 5 FAIL, exact FND05 baseline/candidate comparison unchanged",
+    "synthetic PDF: expected 2 pages, observed 1; unrelated baseline failure retained"
+  ],
+  "unavailable_physical_gates_do_not_imply_acceptance": true,
+  "conditional_engineering_continuation_authorized": true,
+  "github_publication_required_for_preservation": false,
+  "prohibited": [
+    "merge main",
+    "production deployment",
+    "production database cutover",
+    "destructive database/production changes",
+    "spend",
+    "live money",
+    "credentials/security authority changes",
+    "cross-project changes",
+    "force push",
+    "weaken tests",
+    "fabricated professional/AHJ/legal/physical verification"
+  ],
+  "references": [
+    {
+      "path": "docs/HERMES_CODEX_WORK_RULES.md",
+      "snapshot": "references/HERMES_CODEX_WORK_RULES.md",
+      "git_blob_sha": "20cde0b81cbf9dbfa84e235631f39ca67dbf35ad",
+      "sha256": "c5f12f6569082edb78db90ffd9106b3c78540486ff0839658368e12648e5e5b6",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_CONTROL_INDEX.md",
+      "snapshot": "references/HERMES_CONTROL_INDEX.md",
+      "git_blob_sha": "7c142a3f845f84cb283d7b2b6300db2dccf7f137",
+      "sha256": "12228d86dbbd53a0f57fc1e80f20c83f2ea12625ef53da1ef1d44fbd2124b2e6",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_CURRENT_STATE.md",
+      "snapshot": "references/HERMES_CURRENT_STATE.md",
+      "git_blob_sha": "19956268c77a54aeba170635cd51851cac0bfbfa",
+      "sha256": "e330ce0779a63fb81f47b2d197ce65836ee1b5ec8a7f44b8ae619881f7dfbcc3",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_EXECUTION_ROADMAP.md",
+      "snapshot": "references/HERMES_EXECUTION_ROADMAP.md",
+      "git_blob_sha": "36b97020ac078423ca734acf7e0a241039107ed8",
+      "sha256": "e8600fddfcb269868dea130981ed52be02155a55d84e7b9525a9c1b24edfae3c",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_03_COMPATIBILITY_TEST_MATRIX.md",
+      "snapshot": "references/HERMES_FND_03_COMPATIBILITY_TEST_MATRIX.md",
+      "git_blob_sha": "d3ddc76ae17ea751f7f232ae23f19d9884c47cae",
+      "sha256": "866864d546093ebdf41379d41c81241b293e00075059c96ce4776c5321b9ca0a",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_03_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "snapshot": "references/HERMES_FND_03_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "git_blob_sha": "ee94abf002e37b1a3457c07fb80b3134f744efd9",
+      "sha256": "104fbe6c08489527a8c3fe4f692693d0f0819b63d61d1e4b7814f72131e16ddc",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_03_PRODUCTION_PERSISTENCE_POSTGRES_POSTGIS_OBJECT_STORAGE.md",
+      "snapshot": "references/HERMES_FND_03_PRODUCTION_PERSISTENCE_POSTGRES_POSTGIS_OBJECT_STORAGE.md",
+      "git_blob_sha": "e4834b3c4c6b4bf6aab56cac502feeff8e76076f",
+      "sha256": "40d488ee1db6c9c6a6fc913575942be03ee661d2e9f571bcbb54a6c75855bf33",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_03_SOURCE_AUDIT.md",
+      "snapshot": "references/HERMES_FND_03_SOURCE_AUDIT.md",
+      "git_blob_sha": "09e0b08f8a17df7472316e9e4333eedd1f8c8db5",
+      "sha256": "25f9fcb8a5534d66a53be82979e1eb53e4376912a209502a2c73a06e1faacf0a",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_04_COMPATIBILITY_TEST_MATRIX.md",
+      "snapshot": "references/HERMES_FND_04_COMPATIBILITY_TEST_MATRIX.md",
+      "git_blob_sha": "bd415aa775be4c8bf1cf05036bdbb447fe83c18f",
+      "sha256": "b30e2aa6a967674cae15cd9acc0a0cdcf689f986d7a69359f3dc96a82454aea2",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_04_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "snapshot": "references/HERMES_FND_04_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "git_blob_sha": "5e50e7314b51b06d26044103242a28f2e41478ce",
+      "sha256": "f5054b02116c9479633994a779b395ac00fb2346f5dbb915fa956032b576bae7",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_04_OPENBIM_SERVER_NORMALIZATION_MODEL_REVISION_PIPELINE.md",
+      "snapshot": "references/HERMES_FND_04_OPENBIM_SERVER_NORMALIZATION_MODEL_REVISION_PIPELINE.md",
+      "git_blob_sha": "ee5f37676bc165dcc9c50b68fa5c8074cbd71202",
+      "sha256": "c6ba563e36c1a54d6e3eb96ced461161b7220fd7bec59911ac7d6e32f0118bff",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_04_SOURCE_AUDIT.md",
+      "snapshot": "references/HERMES_FND_04_SOURCE_AUDIT.md",
+      "git_blob_sha": "718d36eb52c94f9bdfc77b7653f019cf9870f5f4",
+      "sha256": "3001b708529f115b85e0235372cc192f07f9c9a3be7fa04a5192f73a161c9edc",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_05_AI_CAPABILITY_ROUTER_AND_AI_PROVENANCE.md",
+      "snapshot": "references/HERMES_FND_05_AI_CAPABILITY_ROUTER_AND_AI_PROVENANCE.md",
+      "git_blob_sha": "9b9c66009150503918443a7f4464e8a74a7ed957",
+      "sha256": "02fea31bc4bae3ab5cda9e9e764c8d6d924358e4a400abec458da1f9f89a48d0",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_05_COMPATIBILITY_TEST_MATRIX.md",
+      "snapshot": "references/HERMES_FND_05_COMPATIBILITY_TEST_MATRIX.md",
+      "git_blob_sha": "3d54b549d60305d35cbb755ddcd396740a6c9c10",
+      "sha256": "b65ad8aa3fff062af9d129e8ac37ee469618af7d3dbe120b4af0e8e8dda1d525",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_05_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "snapshot": "references/HERMES_FND_05_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "git_blob_sha": "d7205ea153b329b88dc0a5cdec4c2378db85cd4c",
+      "sha256": "a7b53de14e3857331a679c109fc89c082865eed0cf4ec07dada37e66aa6be52a",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FND_05_SOURCE_AUDIT.md",
+      "snapshot": "references/HERMES_FND_05_SOURCE_AUDIT.md",
+      "git_blob_sha": "dee6136004f319fcdb43bab359ec38b075a19cba",
+      "sha256": "cbb8ac02f6fe4d3d6890acc6e3d518c3b4e56ba965647bff169ed7b7ab3a7147",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_FOUNDATION_HARDENING_MASTER.md",
+      "snapshot": "references/HERMES_FOUNDATION_HARDENING_MASTER.md",
+      "git_blob_sha": "d0c2d99aff43af985e93c954561993eca42b981d",
+      "sha256": "fd858d432bccf73964975224609dabe043ba12c596a7c17c1d2c9ce8574f7911",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HUMAN_EXPERIENCE_CONSOLIDATED_IMPLEMENTATION_MASTER.md",
+      "snapshot": "references/HERMES_HUMAN_EXPERIENCE_CONSOLIDATED_IMPLEMENTATION_MASTER.md",
+      "git_blob_sha": "86188b45ffd71ca4fc15d12ab5530756dfb8ebba",
+      "sha256": "bc3b7123fadbe5667ffffba4def2acda2869311ecdafd892b355f6a8ff8a12e9",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HX_01_COMPATIBILITY_TEST_MATRIX.md",
+      "snapshot": "references/HERMES_HX_01_COMPATIBILITY_TEST_MATRIX.md",
+      "git_blob_sha": "b1c41aa1d88ff00d4401f20cc17600e6f2483b53",
+      "sha256": "e5bf48c5aa12c603f413ac712ae0d95eb5e0a2f1742b9c8e668d11419bb81032",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HX_01_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "snapshot": "references/HERMES_HX_01_EXACT_FILE_BY_FILE_CODEX_HANDOFF.md",
+      "git_blob_sha": "3ea5241c35e000f32818e105d2b932336b210f6d",
+      "sha256": "119dd52b54a71b700fb07737684b1f2d9e9c16ae5d2d48c1b5ef530a42642664",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HX_01_IMMERSIVE_FOUNDATION_TICKET.md",
+      "snapshot": "references/HERMES_HX_01_IMMERSIVE_FOUNDATION_TICKET.md",
+      "git_blob_sha": "f15104346cad72534205e3a4c788bd878b741ba8",
+      "sha256": "d9b01390a9c4f363f0ba56450ef196cb4eb2f36cc8ec4ab3059802a84a60d1a2",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HX_01_SOURCE_AUDIT.md",
+      "snapshot": "references/HERMES_HX_01_SOURCE_AUDIT.md",
+      "git_blob_sha": "5a2e47fc0fe4aa0bc855890196fcfa96b65ba716",
+      "sha256": "94f8742c411d7cb58d56b2b06599ecc446f10964101e2d867c9ddd397cc76820",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HX_02_OBSERVABILITY_TICKET.md",
+      "snapshot": "references/HERMES_HX_02_OBSERVABILITY_TICKET.md",
+      "git_blob_sha": "6b40c8a7ad271b387e9dfad833584286221fa7be",
+      "sha256": "b53720ce205de784165516f9e9187040078f3e59199cc6a16b34056bdf756fa9",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_HX_03_OPERATIONS_WORKSPACES_TICKET.md",
+      "snapshot": "references/HERMES_HX_03_OPERATIONS_WORKSPACES_TICKET.md",
+      "git_blob_sha": "6dac1bbb75ee2c243a7e3b8288972805f7035fb3",
+      "sha256": "a91deb0211528a9502fbf673368975e58764178c8fac7847b099df6b2a622da5",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_UNIVERSAL_INSPECTOR_IMPLEMENTATION_SPEC.md",
+      "snapshot": "references/HERMES_UNIVERSAL_INSPECTOR_IMPLEMENTATION_SPEC.md",
+      "git_blob_sha": "282786c7040779f5edef8d7f2a2e9e78e931562b",
+      "sha256": "a851053edd160269b7023800fddb65527144cd362a6b4b1904edf2557461bd57",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_NEEDS_YOUR_ATTENTION_IMPLEMENTATION_SPEC.md",
+      "snapshot": "references/HERMES_NEEDS_YOUR_ATTENTION_IMPLEMENTATION_SPEC.md",
+      "git_blob_sha": "000dc0022a8b5aced1ca4f219e81bde84e339641",
+      "sha256": "1356296d37c2e652557ee445eab3fbe66cb2e885138c19e5a7c0e6ecdc665241",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_SCHEDULE_TIMELINE_WHAT_CHANGED_SPEC.md",
+      "snapshot": "references/HERMES_SCHEDULE_TIMELINE_WHAT_CHANGED_SPEC.md",
+      "git_blob_sha": "aeea9b580a05b602cfd8ed985b172f74ff6a3b11",
+      "sha256": "5d4da5bdbd4ed0e3a2dc9d020cf6d8a543dbfb072906af90d5351b60b1b82372",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_MATERIALS_PROCUREMENT_HUMAN_WORKSPACE_SPEC.md",
+      "snapshot": "references/HERMES_MATERIALS_PROCUREMENT_HUMAN_WORKSPACE_SPEC.md",
+      "git_blob_sha": "82012868eb0c108aec3f468cf7de034c2e33895a",
+      "sha256": "e36bee3470376d2d859a04a41de2d0b5499389c21b09c18e6ed5faf0e47b2efc",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    },
+    {
+      "path": "docs/HERMES_IMMERSIVE_LAUNCHER_WORKSPACE_INTERACTION_SPEC.md",
+      "snapshot": "references/HERMES_IMMERSIVE_LAUNCHER_WORKSPACE_INTERACTION_SPEC.md",
+      "git_blob_sha": "274120d7d33b0bb1b4afac7550b1f96c9436f8bd",
+      "sha256": "28238ed5f0ae9de5d9cdec9c45c4da0b4f24214227ca6d3161a8a1899cd88882",
+      "origin_ref": "planning/hermes-control-layer-2026-09-18"
+    }
+  ],
+  "documentation_checkpoint": {
+    "accepted_head": "8a78923238c005254fceaf38b1c2446bd31336ca",
+    "source_sha256": "6c9538d807420c1c39cd4c1c10ca641825d89ed59721a6e622768fe140a39fc1",
+    "archive": "/workspace/scratch/41668df7aa0c/campaign-docs-accepted.tar",
+    "full_tree": "PASS",
+    "files": 297,
+    "file_closure": "PASS",
+    "base_sha": "b1cb699637f23b1faf28f0d2eaa90804869d805d",
+    "candidate_sha": "8a78923238c005254fceaf38b1c2446bd31336ca",
+    "truth_audit": "IN_SYNC",
+    "recovery_manifest_sha256": "02f0eb648287ab146d0050ca0eb84ca8c7540ff82c57a0a42877cb180c8929a1",
+    "publication_state": "PENDING"
+  },
+  "engineering_implementation_status": "ALL SIX IMPLEMENTED; completion requires this tree external checkpoint and independent recovery receipt",
+  "physical_acceptance_status": "BLOCKED / UNVERIFIED",
+  "final_handoff": "09_FINAL_ENGINEERING_HANDOFF.md"
+}

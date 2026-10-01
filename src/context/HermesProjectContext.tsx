@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { HermesWorldState as BaseHermesWorldState } from '../types/hermes';
+import { isCurrentProjectResponse } from '../lib/projectResponseScope';
 
 export interface LiveProjectMeta {
   id: string;
@@ -90,6 +91,7 @@ const HermesProjectContext = createContext<HermesProjectContextType | null>(null
 
 export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activeProjectId, setActiveProjectIdState] = useState<string>('HERMES-LIVE-HOUSE-001');
+  const requestScope = useRef({ projectId: 'HERMES-LIVE-HOUSE-001', generation: 0 });
   const [liveProjects, setLiveProjects] = useState<LiveProjectMeta[]>(DEFAULT_LIVE_PROJECTS);
   const [regressionFixtures] = useState<LiveProjectMeta[]>(DEFAULT_REGRESSION_FIXTURES);
   const [worldState, setWorldState] = useState<HermesWorldState | null>(null);
@@ -103,22 +105,31 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
   const [isRegressionModalOpen, setIsRegressionModalOpen] = useState<boolean>(false);
   const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState<boolean>(false);
 
+  // A new attempt is a selection/playback boundary even when the project ID is unchanged.
+  useEffect(() => {
+    setSelectedEntityId(null);
+    setIsInspectorDrawerOpen(false);
+    setPlaybackState('PAUSED');
+  }, [activeProjectId,worldState?.attemptId]);
+
   const activeProjectMeta =
     liveProjects.find((p) => p.id === activeProjectId) ||
     regressionFixtures.find((p) => p.id === activeProjectId) ||
-    DEFAULT_LIVE_PROJECTS[0];
+    { ...DEFAULT_LIVE_PROJECTS[0], id: activeProjectId, name: activeProjectId, location: '', isRegressionFixture: false };
 
   const refreshWorldState = async () => {
+    const scope = requestScope.current;
     try {
       setConnectionStatus('SYNCING');
       const res = await fetch(`/api/hermes/projects/${activeProjectId}/world`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!isCurrentProjectResponse(scope, requestScope.current, data)) { if (scope === requestScope.current) setConnectionStatus('ERROR'); return; }
       setWorldState(data);
       setConnectionStatus('CONNECTED');
     } catch (err) {
       console.error('Failed to fetch world state:', err);
-      setConnectionStatus('ERROR');
+      if (scope === requestScope.current) setConnectionStatus('ERROR');
     }
   };
 
@@ -127,11 +138,18 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
   }, [activeProjectId]);
 
   const setActiveProjectId = (id: string) => {
+    if (id === requestScope.current.projectId) return;
+    requestScope.current = { projectId: id, generation: requestScope.current.generation + 1 };
     setActiveProjectIdState(id);
+    setWorldState(null);
+    setConnectionStatus('SYNCING');
     setSelectedEntityId(null);
+    setIsInspectorDrawerOpen(false);
+    setPlaybackState('PAUSED');
   };
 
   const stepForward = async () => {
+    const scope = requestScope.current;
     try {
       setConnectionStatus('SYNCING');
       const res = await fetch(`/api/hermes/projects/${activeProjectId}/step`, {
@@ -140,15 +158,17 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!isCurrentProjectResponse(scope, requestScope.current, data.state || data)) { if (scope === requestScope.current) setConnectionStatus('ERROR'); return; }
       setWorldState(data.state || data);
       setConnectionStatus('CONNECTED');
     } catch (err) {
       console.error('Step forward error:', err);
-      setConnectionStatus('ERROR');
+      if (scope === requestScope.current) setConnectionStatus('ERROR');
     }
   };
 
   const runAll = async () => {
+    const scope = requestScope.current;
     try {
       setConnectionStatus('SYNCING');
       const res = await fetch(`/api/hermes/projects/${activeProjectId}/run`, {
@@ -157,15 +177,17 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!isCurrentProjectResponse(scope, requestScope.current, data.state || data)) { if (scope === requestScope.current) setConnectionStatus('ERROR'); return; }
       setWorldState(data.state || data);
       setConnectionStatus('CONNECTED');
     } catch (err) {
       console.error('Run all error:', err);
-      setConnectionStatus('ERROR');
+      if (scope === requestScope.current) setConnectionStatus('ERROR');
     }
   };
 
   const resetWorld = async () => {
+    const scope = requestScope.current;
     try {
       setConnectionStatus('SYNCING');
       const res = await fetch(`/api/hermes/projects/${activeProjectId}/reset`, {
@@ -174,15 +196,17 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!isCurrentProjectResponse(scope, requestScope.current, data.state || data)) { if (scope === requestScope.current) setConnectionStatus('ERROR'); return; }
       setWorldState(data.state || data);
       setConnectionStatus('CONNECTED');
     } catch (err) {
       console.error('Reset world error:', err);
-      setConnectionStatus('ERROR');
+      if (scope === requestScope.current) setConnectionStatus('ERROR');
     }
   };
 
   const submitIntakeBrief = async (brief: any) => {
+    const scope = requestScope.current;
     try {
       setConnectionStatus('SYNCING');
       const res = await fetch(`/api/hermes/projects/${activeProjectId}/intake`, {
@@ -192,11 +216,12 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!isCurrentProjectResponse(scope, requestScope.current, data.state || data)) { if (scope === requestScope.current) setConnectionStatus('ERROR'); return; }
       setWorldState(data.state || data);
       setConnectionStatus('CONNECTED');
     } catch (err) {
       console.error('Submit intake error:', err);
-      setConnectionStatus('ERROR');
+      if (scope === requestScope.current) setConnectionStatus('ERROR');
     }
   };
 
@@ -221,7 +246,7 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
     const fullProj: LiveProjectMeta = {
       id,
       name: newProj.name || `Live House ${liveProjects.length + 1}`,
-      location: newProj.location || 'Tampa, Florida',
+      location: newProj.location || '',
       buildingType: newProj.buildingType || 'Single-Family Residence',
       sqFt: newProj.sqFt || 2500,
       bedrooms: newProj.bedrooms || 3,
@@ -231,7 +256,7 @@ export const HermesProjectProvider: React.FC<{ children: ReactNode }> = ({ child
       isRegressionFixture: false,
     };
     setLiveProjects((prev) => [...prev, fullProj]);
-    setActiveProjectIdState(id);
+    setActiveProjectId(id);
     setIsNewProjectModalOpen(false);
   };
 

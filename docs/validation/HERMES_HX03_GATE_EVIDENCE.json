@@ -1,0 +1,73 @@
+{
+  "milestone": "HX-03",
+  "base": {
+    "accepted_head": "f9d913838bbdf06fec6399ac949843c53b648247",
+    "source_sha256": "7be62590a346989a8f4255460a621cb07176833e64f567d493933cda8efdd4fa",
+    "archive": "/workspace/scratch/41668df7aa0c/hx02-accepted.tar",
+    "full_tree": "PASS",
+    "files": 375,
+    "file_closure": "PASS",
+    "base_sha": "886862ce6332f68fda1d4ef43a0c871fc22b9dc5",
+    "candidate_sha": "f9d913838bbdf06fec6399ac949843c53b648247",
+    "truth_audit": "IN_SYNC",
+    "recovery_manifest_sha256": "722fc84a1b094bde6bc8d119bfd98ca8531f5dc78adaddc1577935b59fef1db2",
+    "publication_state": "PENDING"
+  },
+  "gates": {
+    "focused": {
+      "command": "node node_modules/vitest/vitest.mjs run --maxWorkers=2 src/lib/__tests__/hx01_immersive.test.tsx src/lib/__tests__/hx02_observability.test.tsx src/lib/__tests__/hx03_operations.test.tsx",
+      "exit_code": 0,
+      "stdout_sha256": "014e4523dca50a635ec03005bc24e5fdb441880675256bd7221e2a3b1d42bb83",
+      "passed": 60,
+      "hx03": 24,
+      "hx02": 18,
+      "hx01": 18
+    },
+    "regressions": {
+      "command": "node node_modules/vitest/vitest.mjs run --maxWorkers=2 server/__tests__/fnd05_ai_capability_router.test.ts server/__tests__/fnd05_postgres.integration.test.ts server/__tests__/fnd04_openbim.test.ts server/__tests__/fnd04_postgres.integration.test.ts server/__tests__/fnd03_persistence_contract.test.ts server/__tests__/fnd03_postgres.integration.test.ts server/__tests__/fnd02_evidence_provenance.test.ts server/__tests__/fnd01_canonical_spatial_identity.test.ts server/__tests__/academy_house_001_vertical_slice.test.ts server/__tests__/phase_3_18d_validation005_visual_gate.test.ts server/__tests__/phase_3_18a2_quota_integrity.test.ts",
+      "exit_code": 0,
+      "stdout_sha256": "235545b1af93ec406b1286cc48bc27fe4f2f43ec1e060ac4f24d57328d94d871",
+      "passed": 107,
+      "database_skipped": 14
+    },
+    "stagec": {
+      "command": "node --import tsx hx-stagec-run.ts (disposable runner invokes existing StageCBimProofTests.runAllTests())",
+      "exit_code": 0,
+      "stdout_sha256": "f8b1f99ca102a5165151363cd69079f3c5fbd4ba335385cffe78e553f166433b",
+      "passed": 8
+    },
+    "typecheck": {
+      "command": "npm run lint",
+      "exit_code": 0,
+      "stdout_sha256": "a6b21efd55cdba93c857a8b986c6aa67f41a33d644c5aa05f06a0a0ec4bcb73d"
+    },
+    "build": {
+      "command": "npm run build",
+      "exit_code": 0,
+      "stdout_sha256": "af7799b78163c128d673170456bb21fb7cce33b9c17bf37106c139387099065c"
+    }
+  },
+  "renderer_comparison": {
+    "status": "PASS",
+    "cases": 11,
+    "project": "HERMES-LIVE-HOUSE-001",
+    "excluded_metadata": [
+      "provenance",
+      "propertySets",
+      "inspectionStatus"
+    ],
+    "scope": "Actual source snapshot; reducer geometry/identity/topology only, not WebGL pixels"
+  },
+  "validation_copy_source_match": "PASS",
+  "provider_credentials": "OMITTED from child process environment",
+  "database": "NOT RUN \u2014 DATABASE UNAVAILABLE",
+  "live_provider": "NOT RUN",
+  "browser_webgl": "BLOCKED / UNVERIFIED \u2014 inherited explicit cloud browser security-policy block; no bypass",
+  "physical_acceptance": false,
+  "limitations": [
+    "SSR markup/adapter tests do not prove pixels, pointer, focus, camera or WebGL behavior",
+    "Reasoning baseline remains 6 PASS / 5 FAIL; unchanged from exact FND05 baseline comparison",
+    "Legacy synthetic PDF expected 2 pages but observed 1; no green whole-suite claim",
+    "Developer duplicate cleanup deferred until physical acceptance"
+  ]
+}

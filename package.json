@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm run copy:wasm && tsx server.ts",
     "copy:wasm": "mkdir -p public/wasm && cp -f node_modules/web-ifc/*.wasm public/wasm/ && cp -f node_modules/sql.js/dist/sql-wasm.wasm public/wasm/",
-    "build": "npm run copy:wasm && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build": "npm run copy:wasm && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs && esbuild server/bim/openBim.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/openBim.cjs && cp server/bim/ifcWorker.cjs dist/ifcWorker.cjs",
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.cjs",
     "test": "vitest run",
@@ -28,16 +28,18 @@
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^2.4.5",
     "pdf2json": "^4.0.3",
+    "pg": "^8.23.1",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "sql.js": "^1.14.2",
     "three": "^0.185.1",
     "vite": "^6.2.3",
-    "web-ifc": "^0.0.77"
+    "web-ifc": "0.0.77"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@types/sql.js": "^1.4.11",

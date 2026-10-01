@@ -8,7 +8,7 @@ interface ChangeOrderViewProps {
 
 export const ChangeOrderView: React.FC<ChangeOrderViewProps> = ({ risks }) => {
   const unresolved = risks.filter((r) => !r.resolved);
-  const totalPotentialCost = unresolved.reduce((a, b) => a + b.potentialCost, 0);
+  const totalPotentialCost = risks.length && unresolved.every(r => Number.isFinite(r.potentialCost)) ? unresolved.reduce((a,b) => a + b.potentialCost,0) : undefined;
 
   return (
     <div className="space-y-6">
@@ -25,8 +25,8 @@ export const ChangeOrderView: React.FC<ChangeOrderViewProps> = ({ risks }) => {
           </div>
 
           <div className="bg-slate-950 px-4 py-2.5 rounded-xl border border-slate-800">
-            <span className="text-[10px] uppercase text-slate-400 block">Prevented Cost Exposure</span>
-            <span className="text-2xl font-black text-rose-400">${(totalPotentialCost ?? 0).toLocaleString()}</span>
+            <span className="text-[10px] uppercase text-slate-400 block">Potential Cost Exposure</span>
+            <span className="text-2xl font-black text-rose-400">{totalPotentialCost === undefined ? 'Not recorded' : '$' + totalPotentialCost.toLocaleString()}</span>
           </div>
         </div>
       </div>

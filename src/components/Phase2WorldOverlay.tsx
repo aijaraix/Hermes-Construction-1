@@ -23,6 +23,7 @@ import {
 import { ProjectEventRecord, EventVisualizationContract } from '../types/hermes';
 
 interface Phase2WorldOverlayProps {
+  showLegacyChrome?: boolean;
   camera: THREE.PerspectiveCamera | null;
   controls: any;
   containerRef: React.RefObject<HTMLDivElement>;
@@ -102,6 +103,7 @@ const FACILITY_CATALOG: Record<string, { shortName: string; category: string; co
 };
 
 export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
+  showLegacyChrome = true,
   camera,
   controls,
   containerRef,
@@ -348,6 +350,7 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
       {/* ============================================================ */}
       {/* PERSISTENT CAUSAL LAYER LEGEND (Requirement D)                */}
       {/* ============================================================ */}
+      {showLegacyChrome && <>
       <div className="absolute top-16 left-4 pointer-events-auto z-40 bg-slate-900/90 border border-slate-700/80 backdrop-blur-md rounded-xl p-2.5 shadow-xl text-[10px] font-mono space-y-1.5 text-slate-200 hidden sm:block">
         <div className="font-bold text-amber-400 uppercase tracking-wider border-b border-slate-800 pb-1 flex items-center gap-1">
           <Layers className="w-3 h-3 text-amber-400" /> Layer Legend
@@ -394,6 +397,7 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
           </div>
         </div>
       </div>
+      </>}
       {/* ============================================================ */}
       {/* 1. IN-WORLD PERSISTENT FACILITY BILLBOARD LABELS             */}
       {/* ============================================================ */}
@@ -494,6 +498,7 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
       {/* ============================================================ */}
       {/* 3. EVENT HUD OVERLAY: TOP HUD BANNER                         */}
       {/* ============================================================ */}
+      {showLegacyChrome && <>
       <div className="absolute top-3 left-1/2 -translate-x-1/2 pointer-events-auto z-50 flex flex-col items-center gap-2 max-w-2xl w-full px-4">
         <div className="bg-slate-900/90 border border-slate-700/90 backdrop-blur-md text-white rounded-2xl px-4 py-2.5 shadow-2xl w-full flex items-center justify-between gap-3">
           {/* Left: Event Step & Type */}
@@ -601,10 +606,11 @@ export const Phase2WorldOverlay: React.FC<Phase2WorldOverlayProps> = ({
         </div>
       </div>
 
+      </>}
       {/* ============================================================ */}
       {/* 4. BOTTOM ACTION & DIALOGUE DETAIL BANNER                    */}
       {/* ============================================================ */}
-      {activeEvent && (
+      {showLegacyChrome && activeEvent && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-auto z-50 max-w-xl w-full px-4">
           <div className="bg-slate-900/95 border border-slate-700/90 backdrop-blur-md text-white rounded-2xl p-3 shadow-2xl flex items-start justify-between gap-3">
             <div className="flex items-start gap-2.5">

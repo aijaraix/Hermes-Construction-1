@@ -65,6 +65,10 @@ export class ReasoningBudgetManager {
   public static canBeCompletedDeterministically(taskType: TaskType): boolean {
     return this.DETERMINISTIC_TASK_TYPES.includes(taskType);
   }
+  /** Provider-neutral input for CapabilityRouter; this method grants no execution/spend authority. */
+  public static routingHints(taskType:TaskType,groundedMatch=false) {
+    return {deterministicAvailable:this.canBeCompletedDeterministically(taskType),groundedReuseAvailable:groundedMatch,modelReasoningNeeded:!this.canBeCompletedDeterministically(taskType)&&!groundedMatch};
+  }
 
   public static recordDeterministicOperation(operationName: string): void {
     this.deterministicOperationsCount++;
@@ -108,7 +112,7 @@ export class ReasoningBudgetManager {
       return {
         allowed: false,
         executionMode: 'DETERMINISTIC_WORK',
-        reason: 'Task is deterministic. Executed without Gemini LLM call.'
+        reason: 'Task is deterministic. Execute through the deterministic boundary without a model.'
       };
     }
 
@@ -147,8 +151,8 @@ export class ReasoningBudgetManager {
         purpose: params.purpose,
         reasoningRequiredWhy: params.reasoningRequiredWhy,
         estimatedPriority: priority,
-        provider: 'GoogleGemini',
-        model: 'gemini-3.7-flash',
+        provider: 'UNSELECTED',
+        model: 'UNSELECTED',
         executionMode: 'DEFERRED_QUOTA',
         resultStatus: 'QUEUED_DEFERRED',
         knowledgePackVersion: kvVersion,
@@ -170,10 +174,10 @@ export class ReasoningBudgetManager {
       purpose: params.purpose,
       reasoningRequiredWhy: params.reasoningRequiredWhy,
       estimatedPriority: priority,
-      provider: 'GoogleGemini',
-      model: 'gemini-3.7-flash',
+      provider: 'UNSELECTED',
+      model: 'UNSELECTED',
       executionMode: 'LLM_REASONED',
-      resultStatus: 'AUTHORIZED_LLM_EXECUTION',
+      resultStatus: 'REQUIRES_CAPABILITY_ROUTING_AND_OWNER_POLICY',
       knowledgePackVersion: kvVersion,
       timestamp: new Date().toISOString()
     };
@@ -182,7 +186,7 @@ export class ReasoningBudgetManager {
     return {
       allowed: true,
       executionMode: 'LLM_REASONED',
-      reason: 'Task requires genuine specialist reasoning. Authorized Gemini LLM call.'
+      reason: 'Task needs specialist reasoning. Capability routing and Owner policy still govern execution.'
     };
   }
 

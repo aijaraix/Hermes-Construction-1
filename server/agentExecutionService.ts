@@ -4,9 +4,12 @@ import {
   AgentKnowledgePack,
   CompetencyScenario,
   KnowledgeChunk,
-  ValidationResult
+  ValidationResult,
+  Claim
 } from '../src/types/hermes';
-import { GeminiReasoningProvider } from './reasoningProvider';
+import { ScenarioAiRuntime, type ScenarioAiOptions } from './ai/scenarioRuntime';
+import { aiRunToClaim, attachAiValidation, type AiRun } from './ai/aiRun';
+import { randomUUID } from 'node:crypto';
 import {
   ElectricalValidator,
   FoundationValidator,
@@ -17,7 +20,10 @@ import {
 
 export class AgentExecutionService {
   private static executionHistory: AgentExecutionRecord[] = [];
-  private static provider = new GeminiReasoningProvider();
+  private static runtime = new ScenarioAiRuntime();
+  private static aiRuns: AiRun[] = [];
+  /** Trusted composition seam; no HTTP endpoint exposes provider or policy registration. */
+  public static configureAiRuntime(runtime:ScenarioAiRuntime) {this.runtime=runtime;}
 
   public static async executeAgentScenario(params: {
     agentRole: AgentContract;
@@ -26,20 +32,22 @@ export class AgentExecutionService {
     retrievedChunks: KnowledgeChunk[];
     allowSimulationFallback?: boolean;
     forceSimulationMode?: boolean;
-  }): Promise<{ executionRecord: AgentExecutionRecord; validation: ValidationResult }> {
+    ai?: ScenarioAiOptions;
+  }): Promise<{ executionRecord: AgentExecutionRecord; validation: ValidationResult; aiRun?:AiRun; proposedClaims?:Claim[] }> {
     const { agentRole, scenario, knowledgePack, retrievedChunks, allowSimulationFallback, forceSimulationMode } = params;
     const startedAt = new Date().toISOString();
-    const executionId = `EXEC-${agentRole.roleId}-${Date.now()}`;
+    const executionId = `EXEC-${agentRole.roleId}-${randomUUID()}`;
 
     // 1. Invoke Model Reasoning Provider
-    const reasoningResult = await this.provider.generateReasoning({
+    const routed = await this.runtime.execute({
       agentRole,
       scenario,
       knowledgePack,
       retrievedChunks,
       allowSimulationFallback,
       forceSimulationMode
-    });
+    },params.ai);
+    const reasoningResult=routed.reasoning;
 
     const completedAt = new Date().toISOString();
 
@@ -57,14 +65,16 @@ export class AgentExecutionService {
       rawResponse: reasoningResult.rawResponse,
       structuredProposal: reasoningResult.structuredProposal,
       citations: reasoningResult.citations,
-      toolCalls: [],
+      toolCalls: routed.run?.toolCalls??[],
+      aiRunId: routed.run?.runId,
       startedAt,
       completedAt,
       usageMetadata: reasoningResult.usageMetadata,
+      providerRequestId: reasoningResult.providerRequestId,
       responseStatus: reasoningResult.responseStatus,
       executionStatus: reasoningResult.executed
         ? 'EXECUTED'
-        : reasoningResult.executionMode === 'EXECUTION_FAILED'
+        : reasoningResult.executionMode === 'EXECUTION_FAILED' || reasoningResult.executionMode === 'FAILED_PROVIDER'
         ? 'FAILED'
         : 'NOT_EXECUTED'
     };
@@ -100,9 +110,9 @@ export class AgentExecutionService {
         criticalFailure: true,
         criticalFailureReason:
           executionRecord.executionMode === 'DEFERRED_QUOTA'
-            ? 'REASONING EXECUTION DEFERRED (QUOTA EXHAUSTED): Gemini 429 rate limit reached across all models. Job queued for automatic replay upon provider recovery. Competency credit denied.'
+            ? 'REASONING EXECUTION DEFERRED (QUOTA EXHAUSTED): Eligible providers unavailable. Job queued for replay upon provider recovery. Competency credit denied.'
             : executionRecord.executionMode === 'EXECUTION_DEFERRED_NO_PROVIDER'
-            ? 'REASONING EXECUTION DEFERRED: No approved reasoning provider available (GEMINI_API_KEY missing). Competency credit denied.'
+            ? 'REASONING EXECUTION DEFERRED: No approved provider satisfies the capability policy. Competency credit denied.'
             : 'REASONING EXECUTION FAILED: Reasoning provider execution error. Competency credit denied.',
         calculatedMetrics: {},
         violations: [
@@ -111,7 +121,8 @@ export class AgentExecutionService {
         unsupportedCitations: [],
         validatedAt: completedAt
       };
-      return { executionRecord, validation: emptyValidation };
+      const aiRun=routed.run?attachAiValidation(routed.run,emptyValidation):undefined;if(aiRun)this.aiRuns.push(structuredClone(aiRun));
+      return { executionRecord, validation: emptyValidation, aiRun };
     }
 
     // 3. Select Independent Validator
@@ -132,7 +143,12 @@ export class AgentExecutionService {
       validation.passed = false;
     }
 
-    return { executionRecord, validation };
+    let aiRun=routed.run?attachAiValidation(routed.run,validation):undefined;const proposedClaims:Claim[]=[];
+    if(aiRun?.executionKind==='MODEL'&&aiRun.executionStatus==='SUCCEEDED'&&params.ai?.projectId&&params.ai?.projectRevisionId&&params.ai?.subjectEntityId&&params.ai?.realityClass) {
+      const claim=aiRunToClaim(aiRun,params.ai.subjectEntityId,params.ai.realityClass);proposedClaims.push(claim);aiRun={...aiRun,outputClaimIds:[claim.claimId]};
+    }
+    if(aiRun)this.aiRuns.push(structuredClone(aiRun));
+    return { executionRecord, validation, aiRun, proposedClaims };
   }
 
   private static selectValidatorForRole(agentRoleId: string): IndependentValidator {
@@ -151,6 +167,7 @@ export class AgentExecutionService {
   public static getExecutionHistory(): AgentExecutionRecord[] {
     return [...this.executionHistory];
   }
+  public static getAiRuns(): AiRun[] {return structuredClone(this.aiRuns);}
 
   public static getExecution(executionId: string): AgentExecutionRecord | undefined {
     return this.executionHistory.find((e) => e.executionId === executionId);

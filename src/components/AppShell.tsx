@@ -74,6 +74,7 @@ export type NavTab =
 export type UserExperienceLevel = 'SUMMARY' | 'TECHNICAL' | 'AUDIT';
 
 interface AppShellProps {
+  immersive?: boolean;
   activeTab: NavTab;
   setActiveTab: (tab: NavTab) => void;
   currentProject: DigitalTwinProject;
@@ -91,6 +92,7 @@ interface AppShellProps {
 }
 
 export const AppShell: React.FC<AppShellProps> = ({
+  immersive = false,
   activeTab,
   setActiveTab,
   currentProject,
@@ -130,6 +132,8 @@ export const AppShell: React.FC<AppShellProps> = ({
       ],
     },
   ];
+
+  if (immersive) return <>{children}<RegressionFixturesModal/><NewProjectModal/></>;
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-slate-50 text-slate-900 font-sans flex flex-col selection:bg-blue-500 selection:text-white">

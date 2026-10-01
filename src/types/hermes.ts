@@ -8,6 +8,115 @@ export type SystemCategory =
   | 'Envelope'
   | 'Site';
 
+// FND-01 canonical contracts. These are additive: legacy records remain valid
+// until their individual domain adapters are migrated.
+export type ConstructionEntityId = string;
+export type ProjectRevisionId = string;
+export type EntityRevisionId = string;
+export type SpatialFrameId = string;
+export type EvidenceRefId = string;
+// FND-02: provenance axes are independent of legacy TruthOrigin.
+export type SourceAuthorityClass = 'REGIONAL_PUBLIC_DATA' | 'SITE_REMOTE_SENSING' | 'PROJECT_SURVEY' | 'FIELD_OBSERVATION' | 'LAB_TEST' | 'LICENSED_PROFESSIONAL_REPORT' | 'CONTRACT_DOCUMENT' | 'AHJ_RECORD' | 'MANUFACTURER_DATA' | 'SUPPLIER_QUOTE' | 'OWNER_INPUT' | 'HERMES_INTERNAL' | 'SIMULATION_FIXTURE' | 'TECHNICAL_REFERENCE' | 'UNKNOWN';
+export type DerivationMethod = 'DIRECT_SOURCE' | 'MEASURED' | 'OBSERVED' | 'IMPORTED' | 'DETERMINISTIC_CALCULATION' | 'RULE_DERIVED' | 'MODEL_INFERENCE' | 'HUMAN_INTERPRETATION' | 'SIMULATED' | 'ASSUMED';
+export type RealityClass = 'LIVE' | 'SIMULATION' | 'REGRESSION_FIXTURE' | 'HISTORICAL_REFERENCE';
+export type ClaimStatus = 'PROPOSED' | 'OBSERVED' | 'CALCULATED' | 'VERIFIED' | 'REJECTED' | 'STALE' | 'SUPERSEDED' | 'PROFESSIONAL_REVIEW_REQUIRED';
+export type SourceLicenseStatus = 'PUBLIC_DOMAIN' | 'PERMITTED_OPEN' | 'COPYRIGHT_METADATA_ONLY' | 'RESTRICTED' | 'PROPRIETARY' | 'OPEN_LICENSE' | 'PERMITTED_FULL_TEXT' | 'RIGHTS_REVIEW_REQUIRED' | 'RIGHTS_RESTRICTED';
+export type RightsClassification = 'REDISTRIBUTABLE' | 'CACHE_ALLOWED' | 'REFERENCE_ONLY' | 'LICENSE_REVIEW_REQUIRED' | 'DO_NOT_STORE';
+export interface Source {
+  sourceId: string; sourceType: string; title: string; ownerOrMaintainer?: string; uri?: string;
+  projectId?: string; jurisdiction?: string; geographicScope?: string; editionVersion?: string;
+  effectiveFrom?: string; effectiveTo?: string; authorityClass: SourceAuthorityClass;
+  licenseStatus: SourceLicenseStatus; rightsClassification: RightsClassification;
+  storagePolicy: { bulkIngestionPermitted: boolean; fullTextStoragePermitted: boolean; chunkingPermitted: boolean };
+  lastChecked?: string; updateCadence?: string; citationRequirements?: string; legacyAuthorityLevel?: string;
+}
+export interface Evidence {
+  evidenceId: EvidenceRefId; projectId: string; sourceId: string;
+  relatedEntityIds: ConstructionEntityId[]; relatedTaskIds?: string[]; relatedInspectionIds?: string[]; relatedMaterialIds?: string[];
+  artifactUri?: string; artifactHash?: string; mimeType?: string;
+  /** Assertions explicitly bound to this artifact by a trusted source/reviewer adapter. */
+  supports?: { predicate: string; value: ClaimValue; units?: string }[];
+  capturedAt?: string; observedAt?: string; recordedAt: string; authorOrDevice?: string;
+  spatialFrameId?: SpatialFrameId; pose?: CanonicalPose; projectRevisionId: ProjectRevisionId;
+  rightsClassification: RightsClassification; confidentiality?: string; retentionPolicy?: string;
+  realityClass: RealityClass; contentKind: 'CONTENT' | 'METADATA_ONLY' | 'FAILED_RETRIEVAL';
+  lineage?: { documentId?: string; fetchId?: string; chunkId?: string; pageOrSection?: string; provenanceChainId?: string };
+}
+export type ClaimValue = null | boolean | number | string | ClaimValue[] | { [key: string]: ClaimValue };
+export type ClaimDomain = 'GENERAL' | 'JURISDICTION' | 'GEOTECH' | 'PROFESSIONAL_APPROVAL' | 'AHJ_APPROVAL' | 'LEGAL_COMPLETION' | 'PRICE' | 'MATERIAL';
+export interface Claim {
+  claimId: string; projectId: string; subjectEntityId: ConstructionEntityId; domain: ClaimDomain;
+  predicate: string; value: ClaimValue; units?: string; validFrom?: string; validTo?: string;
+  observedAt?: string; recordedAt: string; confidence?: number; evidenceIds: EvidenceRefId[];
+  derivationMethod: DerivationMethod; sourceAuthorityClass: SourceAuthorityClass; realityClass: RealityClass;
+  softwareOrModelVersion?: string; status: ClaimStatus; approvedBy?: string; promotionEventId?: string;
+  supersedesClaimId?: string; supersededByClaimId?: string; projectRevisionId: ProjectRevisionId; entityRevisionId?: EntityRevisionId;
+  legacyProvenance?: Record<string, string>;
+}
+export interface ClaimPromotionEvent {
+  eventId: string; eventType: 'CLAIM_PROMOTED'; timestamp: string; projectId: string;
+  projectRevisionId: ProjectRevisionId; entitiesAffected: ConstructionEntityId[];
+  actor: { reviewerId: string }; policyVersion: 'FND02-1';
+  payload: { before: Claim; after: Claim; evidenceIds: EvidenceRefId[]; sourceIds: string[]; reason: string };
+}
+export interface CanonicalEvidenceRefs { sourceIds?: string[]; evidenceIds?: EvidenceRefId[]; claimIds?: string[]; }
+export type Vector3 = [number, number, number];
+export type EulerRadians = [number, number, number];
+export type Quaternion = [number, number, number, number];
+
+export type ExternalIdentitySystem = 'HERMES' | 'IFC' | 'REVIT' | 'GIS' | 'MANUFACTURER' | 'SERIAL' | 'SENSOR' | 'BCF' | 'OTHER';
+export interface ExternalIdentity { system: ExternalIdentitySystem; externalId: string; sourceId?: string; revisionId?: string; }
+export interface ClassificationRef { system: string; code: string; label?: string; }
+export interface ConstructionEntity {
+  entityId: ConstructionEntityId;
+  projectId: string;
+  entityClass: string;
+  name?: string;
+  externalIds: ExternalIdentity[];
+  classificationRefs?: ClassificationRef[];
+  lifecycleState?: string;
+  constructionState?: string;
+  currentRevisionId: EntityRevisionId;
+}
+export interface ProjectRevision {
+  revisionId: ProjectRevisionId;
+  projectId: string;
+  revisionIndex: number;
+  recordedAt: string;
+  sourceEventId?: string;
+  supersedesRevisionId?: ProjectRevisionId;
+  validFrom?: string;
+  validTo?: string;
+}
+export interface EntityRevision {
+  revisionId: EntityRevisionId;
+  entityId: ConstructionEntityId;
+  projectRevisionId: ProjectRevisionId;
+  revisionIndex: number;
+  recordedAt: string;
+  sourceEventId?: string;
+  supersedesRevisionId?: EntityRevisionId;
+  validFrom?: string;
+  validTo?: string;
+}
+export type LengthUnit = 'METER' | 'FOOT' | 'INCH';
+export type AreaUnit = 'SQUARE_METER' | 'SQUARE_FOOT';
+export type VolumeUnit = 'CUBIC_METER' | 'CUBIC_FOOT' | 'CUBIC_YARD';
+export type AngleUnit = 'RADIAN' | 'DEGREE';
+export interface AxisAlignedSizeMeters { x: number; y: number; z: number; }
+export type PoseAnchor = 'BASE_INSERTION' | 'CENTER' | 'ACTOR_ORIGIN' | 'SENSOR_ORIGIN' | 'SOURCE_DEFINED' | 'LEGACY_UNSPECIFIED';
+export interface CanonicalPose {
+  frameId: SpatialFrameId;
+  positionMeters: Vector3;
+  orientation: { kind: 'EULER_XYZ_RADIANS'; value: EulerRadians } | { kind: 'QUATERNION_XYZW'; value: Quaternion };
+  anchor: PoseAnchor;
+}
+export interface GeodeticOrigin { latitudeDeg: number; longitudeDeg: number; elevationMeters: number; crs?: string; }
+export interface ProjectedOrigin { crs: string; eastingMeters: number; northingMeters: number; elevationMeters: number; }
+export interface LocalMetricFrame { frameId: SpatialFrameId; parentFrameId?: SpatialFrameId; description: string; }
+export interface SpatialFrame { frameId: SpatialFrameId; projectId: string; kind: 'GEODETIC' | 'PROJECT_SURVEY' | 'SITE_LOCAL' | 'BUILDING' | 'STOREY' | 'SPACE' | 'COMPONENT' | 'TASK_AREA' | 'EQUIPMENT_BASE' | 'TOOL' | 'SENSOR'; parentFrameId?: SpatialFrameId; }
+export interface SpatialTransform { transformId: string; sourceFrameId: SpatialFrameId; targetFrameId: SpatialFrameId; translationMeters: Vector3; orientation: { kind: 'EULER_XYZ_RADIANS'; value: EulerRadians }; revisionId?: ProjectRevisionId; evidenceRefId?: EvidenceRefId; }
+
 export type ComponentType = 
   | 'wall'
   | 'slab'
@@ -59,6 +168,10 @@ export interface BIMComponent {
     position: [number, number, number]; // [x, y, z]
     dimensions: [number, number, number]; // [width, height, depth/length]
     rotation?: [number, number, number];
+    /** Explicit only for new/normalized records; absent values retain legacy behavior. */
+    lengthUnit?: 'METER' | 'FOOT';
+    frameId?: SpatialFrameId;
+    positionAnchor?: PoseAnchor;
   };
   fireRatingHours?: number;
   acousticSTC?: number;
@@ -81,7 +194,8 @@ export interface BIMComponent {
   projectId?: string;
   attemptId?: string;
   ifcType?: string; // e.g., 'IfcWallStandardCase', 'IfcPipeSegment', 'IfcFlowTerminal'
-  ifcGlobalId?: string; // 22-character GUID
+  /** Compatibility field. Command-created values are source-local aliases, not asserted IFC GlobalIds. */
+  ifcGlobalId?: string;
   parentSpatialContainer?: string;
   storeyId?: string;
   spaceId?: string;
@@ -236,7 +350,7 @@ export interface QuantityProvenance {
   contributingComponentIds: string[];
 }
 
-export interface BOMItem {
+export interface BOMItem extends CanonicalEvidenceRefs {
   id: string;
   item: string;
   category: SystemCategory;
@@ -1133,7 +1247,7 @@ export interface AuthoritativeSourceDefinition {
     | 'SECONDARY_TECHNICAL'
     | 'REFERENCE_ONLY';
   accessType: 'FREE_PUBLIC' | 'PERMITTED_BULK' | 'VIEW_ONLY_METADATA';
-  copyrightLicenseStatus: 'PUBLIC_DOMAIN' | 'PERMITTED_OPEN' | 'COPYRIGHT_METADATA_ONLY';
+  copyrightLicenseStatus: SourceLicenseStatus;
   bulkIngestionPermitted: boolean;
   fullTextStoragePermitted: boolean;
   chunkingPermitted: boolean;
@@ -1277,7 +1391,7 @@ export interface FetchedDocument {
   sizeBytes: number;
   checksumSha256: string;
   filePathOrKey: string;
-  licenseStatus: 'PUBLIC_DOMAIN' | 'PERMITTED_OPEN' | 'COPYRIGHT_METADATA_ONLY' | 'RESTRICTED';
+  licenseStatus: SourceLicenseStatus;
   rightsStatus: string;
   sourceAuthority: string;
   pageCount?: number;
@@ -1629,6 +1743,7 @@ export interface Phase318A2Report {
 
 export interface AgentExecutionRecord {
   executionId: string;
+  aiRunId?: string;
   agentRoleId: string;
   executionMode: ExecutionMode;
   modelProvider: string; // e.g. "GoogleGemini" or "DeterministicProposalSimulator"
@@ -3288,7 +3403,7 @@ export interface SpatialEntityRecord {
   worldPosition?: [number, number, number]; // [x, y, z] in METERS
   positionXYZ?: [number, number, number]; // alias
   rotation?: [number, number, number];
-  worldRotation?: [number, number, number]; // degrees or radians
+  worldRotation?: [number, number, number]; // Euler XYZ radians when present
   dimensions?: [number, number, number]; // [length, width, height] in METERS
   dimensionsXYZ?: [number, number, number]; // alias
   boundingEnvelope: { min: [number, number, number]; max: [number, number, number] } | [number, number, number, number, number, number] | any;
@@ -3338,11 +3453,16 @@ export type CanonicalProjectStatus =
 export interface ProjectWorldFrame {
   projectWorldFrameId: string;
   projectId: string;
-  surveyOrigin: [number, number, number]; // [lat/northing, lon/easting, elevation] or metric local datum
+  /** @deprecated Compatibility-only tuple. Use geodeticOrigin or projectedOrigin. */
+  surveyOrigin: [number, number, number];
   groundDatum: number; // elevation in meters
-  coordinateReference: string; // e.g. "UTM / LOCAL METRIC WORLD FRAME"
+  coordinateReference: string;
   lengthUnit: 'METERS';
   rotationUnit: 'RADIANS' | 'QUATERNION';
+  geodeticOrigin?: GeodeticOrigin;
+  projectedOrigin?: ProjectedOrigin;
+  localMetricFrame?: LocalMetricFrame;
+  currentRevisionId?: ProjectRevisionId;
   timeReference: string; // UTC ISO String
 }
 
@@ -3412,14 +3532,6 @@ export type SpatialActionPrimitive =
   | 'HANDOFF'
   | 'RETURN';
 
-export interface RobotReadySpatialContract {
-  contractId: string;
-  projectId: string;
-  methodId: string;
-  actions: SpatialActionRecord[];
-  compiledAt: string;
-  verified: boolean;
-}
 
 export type DetailedAgentState =
   | 'HOME'
@@ -3876,6 +3988,15 @@ export interface HermesWorldState {
   jurisdictionTruth?: any;
   geotechTruth?: any;
   foundationSelection?: any;
+  // Optional existing runtime proof consumed by human-facing adapters. Absence is not a pass.
+  constructabilityProof?: {
+    proofId?: string;
+    status: string;
+    rationale?: string;
+    materialId?: string;
+    closureComponentId?: string;
+    closureTaskId?: string;
+  };
   structuralEngineering?: any;
   spacePlanningCandidateLogs?: any[];
   costScopeBreakdown?: any;
@@ -3911,12 +4032,6 @@ export interface HermesWorldState {
   pendingQuestion?: any;
   diagnostics?: any;
 }
-
-
-
-
-
-
 
 
 

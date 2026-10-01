@@ -18,6 +18,8 @@ export interface ReasoningExecutionAudit {
 
 export class ReasoningGatingEngine {
   private static auditLogs: ReasoningExecutionAudit[] = [];
+  /** Governance input only. CapabilityRouter owns provider selection; this preserves the Owner gate. */
+  public static routingConstraints() {return {modelExecutionAllowed:false,reason:'OWNER_AUTONOMOUS_MODEL_GATE_DEFERRED'} as const;}
 
   public static isGeminiKeyConfigured(): boolean {
     const key = process.env.GEMINI_API_KEY;

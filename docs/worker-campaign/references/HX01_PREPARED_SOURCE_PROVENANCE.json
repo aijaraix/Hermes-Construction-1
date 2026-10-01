@@ -1,0 +1,52 @@
+[
+  {
+    "path": "src/lib/humanProjectStatus.ts",
+    "git_blob_sha": "6c40e8acc8563081c42b72e60da4355c6c589cac",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "src/lib/inspectableEntity.ts",
+    "git_blob_sha": "105a98d0ba9e46d06791919a6da87dea77052046",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "src/lib/materialWorkspaceState.ts",
+    "git_blob_sha": "50775b4854effe8ba8bd4f9d4f2b78ffb43bceda",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "src/lib/projectTimelineState.ts",
+    "git_blob_sha": "8c048c69b6f8dd09f27338a73eed4eb3064c674b",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "src/lib/projectAttentionState.ts",
+    "git_blob_sha": "c7b23038cd2dab92464404d0a1e7ca62faf70abc",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "src/lib/projectOverviewState.ts",
+    "git_blob_sha": "87dfa271a9753063b7b35ed6caa4c8b2bd5c7f3d",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "src/lib/immersiveWorkspaceRegistry.ts",
+    "git_blob_sha": "b40801cd9d7176001255643c8f1e4ecb7369c159",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "docs/HERMES_UI_01_EXACT_FILE_BY_FILE_PATCH_PLAN.md",
+    "git_blob_sha": "f50dca55fb2c383461aa8fb6eec59201f3562214",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "docs/HERMES_PROJECT_OVERVIEW_EXECUTIVE_HOME_SPEC.md",
+    "git_blob_sha": "50f38a2a54e0b6ab6e0ef3c4d438544025838313",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  },
+  {
+    "path": "docs/HERMES_IMMERSIVE_REACT_COMPONENT_STATE_ARCHITECTURE.md",
+    "git_blob_sha": "d57fb47887c87fa7df2481efcf57c9c9ff4a27c6",
+    "origin_ref": "planning/hermes-control-layer-2026-09-18"
+  }
+]

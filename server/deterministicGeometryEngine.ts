@@ -1,4 +1,5 @@
 import { BIMComponent, BOMItem, ProposedRevision, DigitalTwinProject } from '../src/types/hermes';
+import { convertArea, convertLength, convertVolume } from '../src/lib/physicalUnits';
 
 /**
  * HERMES Deterministic Geometry & Quantity Calculation Engine
@@ -6,28 +7,34 @@ import { BIMComponent, BOMItem, ProposedRevision, DigitalTwinProject } from '../
  */
 
 export function calculateComponentQuantities(comp: BIMComponent): { value: number; unit: string; totalCost: number } {
-  const [w, h, d] = comp.geometry.dimensions; // width, height, depth/length in feet
+  const [w, h, d] = comp.geometry.dimensions;
+  // Compatibility is intentionally explicit: unlabelled historical geometry
+  // retains the old imperial interpretation instead of silently changing.
+  const lengthUnit = comp.geometry.lengthUnit || 'FOOT';
+  const lengthFeet = (value: number) => convertLength(value, lengthUnit, 'FOOT');
+  const areaSquareFeet = (squareMeters: number) => convertArea(squareMeters, 'SQUARE_METER', 'SQUARE_FOOT');
 
   let qty = 0;
   let unit = 'ea';
 
   switch (comp.type) {
     case 'wall':
-      // Wall surface area (length * height) in sq ft
-      qty = w * h;
+      // Command-engine wall tuple is [thickness, height, length]. Legacy
+      // unlabeled walls preserve their historic [width, height, depth] path.
+      qty = comp.geometry.lengthUnit === 'METER' ? areaSquareFeet(h * d) : w * h;
       unit = 'sq ft';
       break;
 
     case 'slab':
     case 'footing':
-      // Volume in cubic yards (w * h * d / 27)
-      qty = Math.round(((w * h * d) / 27) * 100) / 100;
+      qty = Math.round((comp.geometry.lengthUnit === 'METER'
+        ? convertVolume(w * h * d, 'CUBIC_METER', 'CUBIC_YARD')
+        : (w * h * d) / 27) * 100) / 100;
       unit = 'cu yd';
       break;
 
     case 'roof':
-      // Surface area taking pitch into account
-      qty = Math.round(w * d * 1.12);
+      qty = Math.round((comp.geometry.lengthUnit === 'METER' ? areaSquareFeet(w * d) : w * d) * 1.12);
       unit = 'sq ft';
       break;
 
@@ -35,13 +42,13 @@ export function calculateComponentQuantities(comp: BIMComponent): { value: numbe
     case 'duct':
     case 'conduit':
       // Linear length in feet
-      qty = d || w;
+      qty = comp.geometry.lengthUnit === 'METER' ? lengthFeet(d || w) : d || w;
       unit = 'lin ft';
       break;
 
     case 'column':
     case 'beam':
-      qty = d || h;
+      qty = comp.geometry.lengthUnit === 'METER' ? lengthFeet(d || h) : d || h;
       unit = 'lin ft';
       break;
 
@@ -59,12 +66,12 @@ export function calculateComponentQuantities(comp: BIMComponent): { value: numbe
     case 'waterproofing':
     case 'flashing':
     case 'drainage':
-      qty = w * (d || h);
+      qty = comp.geometry.lengthUnit === 'METER' ? areaSquareFeet(w * (d || h)) : w * (d || h);
       unit = 'sq ft';
       break;
 
     default:
-      qty = w * h;
+      qty = comp.geometry.lengthUnit === 'METER' ? areaSquareFeet(w * h) : w * h;
       unit = 'sq ft';
       break;
   }
